@@ -8,6 +8,7 @@ This is a test.
 
 {% highlight haskell %}
 main :: IO ()
+main = 
   putStrLn "test"
 {% endhighlight %}
 
