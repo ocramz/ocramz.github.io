@@ -12,3 +12,12 @@ main =
   putStrLn "test"
 {% endhighlight %}
 
+
+
+{% highlight latex %}
+\begin{document}
+
+potato
+
+\end{document}
+{% endhighlight %}
