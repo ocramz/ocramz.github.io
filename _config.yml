@@ -1,6 +1,6 @@
 # Site settings
 title: ocramz.github.io
-email: zocca.marco@gmail.com
+
 description: > # this means to ignore newlines until "baseurl:"
   lambdas and large linear systems, oh my
 baseurl: "" # the subpath of your site, e.g. /blog/

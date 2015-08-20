@@ -4,5 +4,7 @@ title: About
 permalink: /about/
 ---
 
-Made with [Jekyll](http://jekyllrb.com/), with [Jekyll new](https://github.com/jglovier/jekyll-new) theme
+I read, take apart and build stuff for a living
+
+Blog made with [Jekyll](http://jekyllrb.com/), using [Jekyll new](https://github.com/jglovier/jekyll-new) theme
 
