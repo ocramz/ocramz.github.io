@@ -9,4 +9,5 @@ twitter_username: ocramz_yo
 github_username:  ocramz
 
 # Build settings
-markdown: kramdown
+# markdown: kramdown
+markdown: redcarpet

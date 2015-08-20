@@ -1,10 +1,10 @@
 ---
 layout: post
-title: "Haskell test"
+title: "Test"
 date: 2015-08-20 15:23
 categories: tests
 ---
-This is a test.
+A couple lines of Haskell
 
 {% highlight haskell %}
 main :: IO ()
@@ -14,10 +14,12 @@ main =
 
 
 
-{% highlight latex %}
-\begin{document}
 
-potato
+Cauchy's integral theorem:
 
-\end{document}
-{% endhighlight %}
+$$ 
+f(a) = \frac{1}{2\pi\iota} \oint_\gamma \frac{f(z)}{z-a} dz
+$$
+
+
+Yay interwebs 2.0 !
