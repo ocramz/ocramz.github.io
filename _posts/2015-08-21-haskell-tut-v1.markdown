@@ -602,6 +602,8 @@ The keyword `type` is reserved to declare transparent type synonyms (i.e. that a
 
 > Type synonyms let us describe the problem domain more accurately, and enforce consistency among the functions using them.
 
+# A worked example
+
 We now show a slightly longer example, with a sketch of customer database and query functions. The code captures the situation of having an array of structured data and having to take a decision based on some computation performed on each entry. Here we aim to display together a few of the syntactic elements shown so far, in a not-too-contrived setting.
 
 {% highlight haskell %}

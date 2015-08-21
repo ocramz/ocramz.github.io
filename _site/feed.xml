@@ -6,8 +6,8 @@
 </description>
     <link>http://yourdomain.com/</link>
     <atom:link href="http://yourdomain.com/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Fri, 21 Aug 2015 16:11:19 +0200</pubDate>
-    <lastBuildDate>Fri, 21 Aug 2015 16:11:19 +0200</lastBuildDate>
+    <pubDate>Fri, 21 Aug 2015 16:12:52 +0200</pubDate>
+    <lastBuildDate>Fri, 21 Aug 2015 16:12:52 +0200</lastBuildDate>
     <generator>Jekyll v2.5.3</generator>
     
       <item>
@@ -516,6 +516,8 @@ If a datatype is an instance of one or more classes, it &amp;quot;inherits&amp;q
 &lt;blockquote&gt;
 &lt;p&gt;Type synonyms let us describe the problem domain more accurately, and enforce consistency among the functions using them.&lt;/p&gt;
 &lt;/blockquote&gt;
+
+&lt;h1&gt;A worked example&lt;/h1&gt;
 
 &lt;p&gt;We now show a slightly longer example, with a sketch of customer database and query functions. The code captures the situation of having an array of structured data and having to take a decision based on some computation performed on each entry. Here we aim to display together a few of the syntactic elements shown so far, in a not-too-contrived setting.&lt;/p&gt;
 
