@@ -11,9 +11,9 @@ In the following we show an example interactive session with GHCi, to familiariz
 
 The `>`character at the start of a line indicates the interpreter prompt, whereas `:t` is the GHCi macro for requesting the type of an expression.
 
-If the prompt is not present, we assume we are working in a `.hs` text file, to be loaded in GHCi.
+If the prompt is not present, we assume to be working in a `.hs` text file, to be loaded in GHCi.
 
-The `--` token at the start of a line specifies a comment: the line is not interpreted as Haskell code.
+The `--` token at the start of a line specifies a comment: the line as a whole is not interpreted as Haskell code. Longer comments are enclosed in `{-  -}`
 
 
 If we input an expression that already has a value associated, GHCi computes and prints the expression value on the next line.
