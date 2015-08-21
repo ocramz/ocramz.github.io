@@ -13,7 +13,7 @@ The `>`character at the start of a line indicates the interpreter prompt, wherea
 
 If the prompt is not present, we assume to be working in a `.hs` text file, to be loaded in GHCi.
 
-The `--` token at the start of a line specifies a comment: the line as a whole is not interpreted as Haskell code. Longer comments are enclosed in a `{-`,  `-}` pair.
+The `--` token at the start of a line specifies a comment: the line as a whole is not interpreted as Haskell code. Multiple-line comments are enclosed in a `{-`,  `-}` pair.
 
 
 If we input an expression that already has a value associated, GHCi computes and prints the expression value on the next line.
