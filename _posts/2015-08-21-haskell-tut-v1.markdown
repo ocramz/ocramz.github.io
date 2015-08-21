@@ -11,9 +11,8 @@ categories: Haskell tutorials
 *   [Defining new symbols, functions and modules](#io)
 *   [Datatypes](#data)
 
-<a id="overview" /></a>
+<a id="overview" /> </a>
 ## The interactive Haskell interpreter, GHCi  
-
 
 In the following we show an example interactive session with GHCi, to familiarize the reader with the notation and some fundamental concepts of the language. Only a minimal familiarity with programming concepts and mathematical notation is required.
 
