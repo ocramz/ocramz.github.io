@@ -51,7 +51,7 @@ The actual letter indicating a type in a signature, like `a` in the previous exa
 > Why is the type signature of something as simple as a number so verbose? 
 > Because many things have number-like properties (can be counted, added, subtracted etc.): potatoes, firemen, structs containing arrays of CSV files, etc. 
 
-> Making a new type an instance of a class such as `Num` hints the programmer to provide the corresponding functions to operate "numerically" on it.
+> If a type is an "instance" of a typeclass such as `Num`, the corresponding functions to operate "numerically", e.g. sum, product, absolute value etc., can be used on data objects belonging to it. Another way of seeing this is that `+`, `*`, `abs` have been "overloaded" to work on the given type. 
 
 Let's interact some more with the interpreter and see what happens:
 

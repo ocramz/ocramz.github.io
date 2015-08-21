@@ -109,7 +109,7 @@ the reader is encouraged to install the latest version of the <a href="http://ww
 <p>Why is the type signature of something as simple as a number so verbose? 
 Because many things have number-like properties (can be counted, added, subtracted etc.): potatoes, firemen, structs containing arrays of CSV files, etc. </p>
 
-<p>Making a new type an instance of a class such as <code>Num</code> hints the programmer to provide the corresponding functions to operate &quot;numerically&quot; on it.</p>
+<p>If a type is an &quot;instance&quot; of a typeclass such as <code>Num</code>, the corresponding functions to operate &quot;numerically&quot;, e.g. sum, product, absolute value etc., can be used on data objects belonging to it. Another way of seeing this is that <code>+</code>, <code>*</code>, <code>abs</code> have been &quot;overloaded&quot; to work on the given type. </p>
 </blockquote>
 
 <p>Let&#39;s interact some more with the interpreter and see what happens:</p>
