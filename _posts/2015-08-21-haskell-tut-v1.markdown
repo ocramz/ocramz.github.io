@@ -16,7 +16,7 @@ categories: Haskell tutorials
 
 In the following we will see an example interactive session with GHCi, to familiarize the reader with the notation and some fundamental concepts of the language. Some familiarity with programming concepts and mathematical notation is required, but the tutorial is intended to be as self-contained as possible (All feedback is very welcome!).
 
-The `>`character at the start of a line indicates the interpreter prompt, whereas `:t` is the GHCi macro for requesting the type of an expression.
+The `>`character at the start of a line indicates the interpreter prompt, whereas `:t` is the GHCi macro for requesting the _type_ of an expression.
 
 If the prompt is not present, we assume to be working in a `.hs` text file, to be loaded in GHCi.
 
