@@ -586,8 +586,153 @@ Next, we access an internal field in a purely functional style, by composition o
 
 > The second line, "In the first argument of 'Tee'", is the hint!
 
+# Type synonyms
+
+The keyword `type` is reserved to declare transparent type synonyms (i.e. that are internally re-written into their elementary types at compile time). Let's see a few examples: 
+
+{% highlight haskell %}
+> type Name = String
+
+> type Address = (String, Int)
+
+> type Contact = (Name, Address)
+
+> type Directory = [Contact]
+{% endhighlight %}
+
+> Type synonyms let us describe the problem domain more accurately, and enforce consistency among the functions using them.
+
+We now show a slightly longer example, with a sketch of customer database and query functions. The code captures the situation of having an array of structured data and having to take a decision based on some computation performed on each entry. Here we aim to display together a few of the syntactic elements shown so far, in a not-too-contrived setting.
+
+{% highlight haskell %}
+type NameStr = String
+type AddrStr = String
+type AddrN = Int
+data Address = A {addressStr :: AddrStr,
+                  houseNo :: AddrN} deriving (Show, Eq)
+                                                   
+data Name = N {nameStr :: NameStr} deriving (Show, Eq)
+
+data Contact = C {name :: Name,
+                  addr :: Address} deriving (Show, Eq)
+
+houseNoContact = houseNo . addr
+nameContact = nameStr . name
+addressContact = addressStr . addr
+{% endhighlight %}
+
+A query method `deliver` : if the house number is within range, return `True`
+
+{% highlight haskell %}
+deliver nMax nMin c
+  | inRange (houseNoContact c) = True
+  | otherwise = False where
+       inRange m = abs (nMax - nMin) > abs (m - nMin)
+{% endhighlight %}
+
+or, more concisely: 
+
+{% highlight haskell %}
+deliver' nMax nMin c = abs (nMax - nMin) > abs (houseNoContact c - nMin)
+{% endhighlight %}
+
+Partial application of both `deliver` and `filter` : 
+
+{% highlight haskell %}
+todaysDeliveries n1 n2 = filter (deliver n1 n2)
+{% endhighlight %}
+
+We can now load the previous code snippet in GHCi and see the signature of today's delivery list, mapping from two house numbers and a list of contacts to the subset of the original contact list whose house number lies within the range.
+
+{% highlight haskell %}
+> :t todaysDeliveries
+todaysDeliveries :: AddrN -> AddrN -> [Contact] -> [Contact]
+{% endhighlight %}
+
+> Haskell uses a _decidable_ type system (the Hindley-Milner system) which allows the type-checking algorithm to always terminate without the user having to supply type annotations; in the above example we see the utility of this: using partial application wisely, we can achieve the desired signature function very concisely.
+
+> Concise code has very far-reaching implications than just "looking clever": it greatly simplifies reasoning, correctness checks, refactoring and knowledge propagation. This is one of the many examples in which Haskell's theoretical foundations enable very practical advantages.
+
+An example data entry for the delivery example above:
+
+{% highlight haskell %}
+name1 = N "John Doe"
+addr1 = A "Potato St." 42
+contact1 = C name1 addr1
+
+> :t contact1
+contact1 :: Contact
+{% endhighlight %}
+
+# Algebraic types
+
+We have already seen an instance of an algebraic datatype (ADT): `Bool` can have two mutually exclusive values.
+
+{% highlight haskell %}
+> data Bool = True | False
+
+> data PS = Tri | Cir | Sqr | Crs
+{% endhighlight %}
+
+
+# Polymorphic types
+Polymorphic types can be thought of a labeled scaffolding for more elementary types; in the following example we show how the constructor `Pt a a` can be specialized to cater for various needs:
+
+{% highlight haskell %}
+> data Point a = Pt a a
+
+> :t Pt 2 3 
+Pt 2 3 :: Num a => Point a
+
+> :t Pt 'c' 'd'
+Pt 'c' 'd' :: Point Char
+
+> let inside p1 p2 = let normP (Pt x y) = x^2 + y^2 in normP p1 < normP p2 
+
+> :t inside
+inside :: (Ord a, Num a) => Point a -> Point a -> Bool
+{% endhighlight %}
+
+A simple polymorphic datatype to represent a computation that can fail is `Maybe a`:
+
+{% highlight haskell %}
+> data Maybe a = Nothing | Just a
+{% endhighlight %}
+
+For example, we can implement a simple "safe division", as follows
+
+{% highlight haskell %}
+safeDiv a b
+  | b /= 0 = Just ( a/b )
+  | otherwise = Nothing 
+
+> :t safeDiv
+safeDiv :: (Eq a, Fractional a) => a -> a -> Maybe a
+{% endhighlight %}
+
+> The `Maybe a` type is a simple way to treat _errors as values_, and to perform further computation on them, rather than letting the program fail and stop. 
+
+# Recursive types 
+
+Next, we introduce a handy binary tree type `Tree a`, which can be either a "leaf" `L` carrying a type `a`, i.e. `L a`, or a ``branch'' `B` carrying two `Tree a`'s.
+
+{% highlight haskell %}
+> data Tree a = L a | B (Tree a) (Tree a) deriving Show
+
+> :t L
+L :: a -> Tree a
+
+> :t B
+B :: Tree a -> Tree a -> Tree a
+
+> let leaf1 = L 15
+ 
+> let leaf2 = L 27
+ 
+> B leaf1 leaf2
+B (L 15) (L 27)
+{% endhighlight %}
 
 
 {% highlight haskell %}
-
 {% endhighlight %}

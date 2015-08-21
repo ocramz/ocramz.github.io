@@ -554,6 +554,135 @@ If a datatype is an instance of one or more classes, it &quot;inherits&quot; the
 <p>The second line, &quot;In the first argument of &#39;Tee&#39;&quot;, is the hint!</p>
 </blockquote>
 
+<h1>Type synonyms</h1>
+
+<p>The keyword <code>type</code> is reserved to declare transparent type synonyms (i.e. that are internally re-written into their elementary types at compile time). Let&#39;s see a few examples: </p>
+
+<div class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="o">&gt;</span> <span class="kr">type</span> <span class="kt">Name</span> <span class="ow">=</span> <span class="kt">String</span>
+
+<span class="o">&gt;</span> <span class="kr">type</span> <span class="kt">Address</span> <span class="ow">=</span> <span class="p">(</span><span class="kt">String</span><span class="p">,</span> <span class="kt">Int</span><span class="p">)</span>
+
+<span class="o">&gt;</span> <span class="kr">type</span> <span class="kt">Contact</span> <span class="ow">=</span> <span class="p">(</span><span class="kt">Name</span><span class="p">,</span> <span class="kt">Address</span><span class="p">)</span>
+
+<span class="o">&gt;</span> <span class="kr">type</span> <span class="kt">Directory</span> <span class="ow">=</span> <span class="p">[</span><span class="kt">Contact</span><span class="p">]</span></code></pre></div>
+
+<blockquote>
+<p>Type synonyms let us describe the problem domain more accurately, and enforce consistency among the functions using them.</p>
+</blockquote>
+
+<p>We now show a slightly longer example, with a sketch of customer database and query functions. The code captures the situation of having an array of structured data and having to take a decision based on some computation performed on each entry. Here we aim to display together a few of the syntactic elements shown so far, in a not-too-contrived setting.</p>
+
+<div class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="kr">type</span> <span class="kt">NameStr</span> <span class="ow">=</span> <span class="kt">String</span>
+<span class="kr">type</span> <span class="kt">AddrStr</span> <span class="ow">=</span> <span class="kt">String</span>
+<span class="kr">type</span> <span class="kt">AddrN</span> <span class="ow">=</span> <span class="kt">Int</span>
+<span class="kr">data</span> <span class="kt">Address</span> <span class="ow">=</span> <span class="kt">A</span> <span class="p">{</span><span class="n">addressStr</span> <span class="ow">::</span> <span class="kt">AddrStr</span><span class="p">,</span>
+                  <span class="n">houseNo</span> <span class="ow">::</span> <span class="kt">AddrN</span><span class="p">}</span> <span class="kr">deriving</span> <span class="p">(</span><span class="kt">Show</span><span class="p">,</span> <span class="kt">Eq</span><span class="p">)</span>
+                                                   
+<span class="kr">data</span> <span class="kt">Name</span> <span class="ow">=</span> <span class="kt">N</span> <span class="p">{</span><span class="n">nameStr</span> <span class="ow">::</span> <span class="kt">NameStr</span><span class="p">}</span> <span class="kr">deriving</span> <span class="p">(</span><span class="kt">Show</span><span class="p">,</span> <span class="kt">Eq</span><span class="p">)</span>
+
+<span class="kr">data</span> <span class="kt">Contact</span> <span class="ow">=</span> <span class="kt">C</span> <span class="p">{</span><span class="n">name</span> <span class="ow">::</span> <span class="kt">Name</span><span class="p">,</span>
+                  <span class="n">addr</span> <span class="ow">::</span> <span class="kt">Address</span><span class="p">}</span> <span class="kr">deriving</span> <span class="p">(</span><span class="kt">Show</span><span class="p">,</span> <span class="kt">Eq</span><span class="p">)</span>
+
+<span class="nf">houseNoContact</span> <span class="ow">=</span> <span class="n">houseNo</span> <span class="o">.</span> <span class="n">addr</span>
+<span class="nf">nameContact</span> <span class="ow">=</span> <span class="n">nameStr</span> <span class="o">.</span> <span class="n">name</span>
+<span class="nf">addressContact</span> <span class="ow">=</span> <span class="n">addressStr</span> <span class="o">.</span> <span class="n">addr</span></code></pre></div>
+
+<p>A query method <code>deliver</code> : if the house number is within range, return <code>True</code></p>
+
+<div class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="nf">deliver</span> <span class="n">nMax</span> <span class="n">nMin</span> <span class="n">c</span>
+  <span class="o">|</span> <span class="n">inRange</span> <span class="p">(</span><span class="n">houseNoContact</span> <span class="n">c</span><span class="p">)</span> <span class="ow">=</span> <span class="kt">True</span>
+  <span class="o">|</span> <span class="n">otherwise</span> <span class="ow">=</span> <span class="kt">False</span> <span class="kr">where</span>
+       <span class="n">inRange</span> <span class="n">m</span> <span class="ow">=</span> <span class="n">abs</span> <span class="p">(</span><span class="n">nMax</span> <span class="o">-</span> <span class="n">nMin</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">abs</span> <span class="p">(</span><span class="n">m</span> <span class="o">-</span> <span class="n">nMin</span><span class="p">)</span></code></pre></div>
+
+<p>or, more concisely: </p>
+
+<div class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="nf">deliver&#39;</span> <span class="n">nMax</span> <span class="n">nMin</span> <span class="n">c</span> <span class="ow">=</span> <span class="n">abs</span> <span class="p">(</span><span class="n">nMax</span> <span class="o">-</span> <span class="n">nMin</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">abs</span> <span class="p">(</span><span class="n">houseNoContact</span> <span class="n">c</span> <span class="o">-</span> <span class="n">nMin</span><span class="p">)</span></code></pre></div>
+
+<p>Partial application of both <code>deliver</code> and <code>filter</code> : </p>
+
+<div class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="nf">todaysDeliveries</span> <span class="n">n1</span> <span class="n">n2</span> <span class="ow">=</span> <span class="n">filter</span> <span class="p">(</span><span class="n">deliver</span> <span class="n">n1</span> <span class="n">n2</span><span class="p">)</span></code></pre></div>
+
+<p>We can now load the previous code snippet in GHCi and see the signature of today&#39;s delivery list, mapping from two house numbers and a list of contacts to the subset of the original contact list whose house number lies within the range.</p>
+
+<div class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="o">&gt;</span> <span class="kt">:</span><span class="n">t</span> <span class="n">todaysDeliveries</span>
+<span class="nf">todaysDeliveries</span> <span class="ow">::</span> <span class="kt">AddrN</span> <span class="ow">-&gt;</span> <span class="kt">AddrN</span> <span class="ow">-&gt;</span> <span class="p">[</span><span class="kt">Contact</span><span class="p">]</span> <span class="ow">-&gt;</span> <span class="p">[</span><span class="kt">Contact</span><span class="p">]</span></code></pre></div>
+
+<blockquote>
+<p>Haskell uses a <em>decidable</em> type system (the Hindley-Milner system) which allows the type-checking algorithm to always terminate without the user having to supply type annotations; in the above example we see the utility of this: using partial application wisely, we can achieve the desired signature function very concisely.</p>
+
+<p>Concise code has very far-reaching implications than just &quot;looking clever&quot;: it greatly simplifies reasoning, correctness checks, refactoring and knowledge propagation. This is one of the many examples in which Haskell&#39;s theoretical foundations enable very practical advantages.</p>
+</blockquote>
+
+<p>An example data entry for the delivery example above:</p>
+
+<div class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="nf">name1</span> <span class="ow">=</span> <span class="kt">N</span> <span class="s">&quot;John Doe&quot;</span>
+<span class="nf">addr1</span> <span class="ow">=</span> <span class="kt">A</span> <span class="s">&quot;Potato St.&quot;</span> <span class="mi">42</span>
+<span class="nf">contact1</span> <span class="ow">=</span> <span class="kt">C</span> <span class="n">name1</span> <span class="n">addr1</span>
+
+<span class="o">&gt;</span> <span class="kt">:</span><span class="n">t</span> <span class="n">contact1</span>
+<span class="nf">contact1</span> <span class="ow">::</span> <span class="kt">Contact</span></code></pre></div>
+
+<h1>Algebraic types</h1>
+
+<p>We have already seen an instance of an algebraic datatype (ADT): <code>Bool</code> can have two mutually exclusive values.</p>
+
+<div class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="o">&gt;</span> <span class="kr">data</span> <span class="kt">Bool</span> <span class="ow">=</span> <span class="kt">True</span> <span class="o">|</span> <span class="kt">False</span>
+
+<span class="o">&gt;</span> <span class="kr">data</span> <span class="kt">PS</span> <span class="ow">=</span> <span class="kt">Tri</span> <span class="o">|</span> <span class="kt">Cir</span> <span class="o">|</span> <span class="kt">Sqr</span> <span class="o">|</span> <span class="kt">Crs</span></code></pre></div>
+
+<h1>Polymorphic types</h1>
+
+<p>Polymorphic types can be thought of a labeled scaffolding for more elementary types; in the following example we show how the constructor <code>Pt a a</code> can be specialized to cater for various needs:</p>
+
+<div class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="o">&gt;</span> <span class="kr">data</span> <span class="kt">Point</span> <span class="n">a</span> <span class="ow">=</span> <span class="kt">Pt</span> <span class="n">a</span> <span class="n">a</span>
+
+<span class="o">&gt;</span> <span class="kt">:</span><span class="n">t</span> <span class="kt">Pt</span> <span class="mi">2</span> <span class="mi">3</span> 
+<span class="kt">Pt</span> <span class="mi">2</span> <span class="mi">3</span> <span class="ow">::</span> <span class="kt">Num</span> <span class="n">a</span> <span class="ow">=&gt;</span> <span class="kt">Point</span> <span class="n">a</span>
+
+<span class="o">&gt;</span> <span class="kt">:</span><span class="n">t</span> <span class="kt">Pt</span> <span class="n">&#39;c&#39;</span> <span class="n">&#39;d&#39;</span>
+<span class="kt">Pt</span> <span class="n">&#39;c&#39;</span> <span class="n">&#39;d&#39;</span> <span class="ow">::</span> <span class="kt">Point</span> <span class="kt">Char</span>
+
+<span class="o">&gt;</span> <span class="kr">let</span> <span class="n">inside</span> <span class="n">p1</span> <span class="n">p2</span> <span class="ow">=</span> <span class="kr">let</span> <span class="n">normP</span> <span class="p">(</span><span class="kt">Pt</span> <span class="n">x</span> <span class="n">y</span><span class="p">)</span> <span class="ow">=</span> <span class="n">x</span><span class="o">^</span><span class="mi">2</span> <span class="o">+</span> <span class="n">y</span><span class="o">^</span><span class="mi">2</span> <span class="kr">in</span> <span class="n">normP</span> <span class="n">p1</span> <span class="o">&lt;</span> <span class="n">normP</span> <span class="n">p2</span> 
+
+<span class="o">&gt;</span> <span class="kt">:</span><span class="n">t</span> <span class="n">inside</span>
+<span class="nf">inside</span> <span class="ow">::</span> <span class="p">(</span><span class="kt">Ord</span> <span class="n">a</span><span class="p">,</span> <span class="kt">Num</span> <span class="n">a</span><span class="p">)</span> <span class="ow">=&gt;</span> <span class="kt">Point</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="kt">Point</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="kt">Bool</span></code></pre></div>
+
+<p>A simple polymorphic datatype to represent a computation that can fail is <code>Maybe a</code>:</p>
+
+<div class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="o">&gt;</span> <span class="kr">data</span> <span class="kt">Maybe</span> <span class="n">a</span> <span class="ow">=</span> <span class="kt">Nothing</span> <span class="o">|</span> <span class="kt">Just</span> <span class="n">a</span></code></pre></div>
+
+<p>For example, we can implement a simple &quot;safe division&quot;, as follows</p>
+
+<div class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="nf">safeDiv</span> <span class="n">a</span> <span class="n">b</span>
+  <span class="o">|</span> <span class="n">b</span> <span class="o">/=</span> <span class="mi">0</span> <span class="ow">=</span> <span class="kt">Just</span> <span class="p">(</span> <span class="n">a</span><span class="o">/</span><span class="n">b</span> <span class="p">)</span>
+  <span class="o">|</span> <span class="n">otherwise</span> <span class="ow">=</span> <span class="kt">Nothing</span> 
+
+<span class="o">&gt;</span> <span class="kt">:</span><span class="n">t</span> <span class="n">safeDiv</span>
+<span class="nf">safeDiv</span> <span class="ow">::</span> <span class="p">(</span><span class="kt">Eq</span> <span class="n">a</span><span class="p">,</span> <span class="kt">Fractional</span> <span class="n">a</span><span class="p">)</span> <span class="ow">=&gt;</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="kt">Maybe</span> <span class="n">a</span></code></pre></div>
+
+<blockquote>
+<p>The <code>Maybe a</code> type is a simple way to treat <em>errors as values</em>, and to perform further computation on them, rather than letting the program fail and stop. </p>
+</blockquote>
+
+<h1>Recursive types</h1>
+
+<p>Next, we introduce a handy binary tree type <code>Tree a</code>, which can be either a &quot;leaf&quot; <code>L</code> carrying a type <code>a</code>, i.e. <code>L a</code>, or a `<code>branch&#39;&#39;</code>B<code>carrying two</code>Tree a`&#39;s.</p>
+
+<div class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="o">&gt;</span> <span class="kr">data</span> <span class="kt">Tree</span> <span class="n">a</span> <span class="ow">=</span> <span class="kt">L</span> <span class="n">a</span> <span class="o">|</span> <span class="kt">B</span> <span class="p">(</span><span class="kt">Tree</span> <span class="n">a</span><span class="p">)</span> <span class="p">(</span><span class="kt">Tree</span> <span class="n">a</span><span class="p">)</span> <span class="kr">deriving</span> <span class="kt">Show</span>
+
+<span class="o">&gt;</span> <span class="kt">:</span><span class="n">t</span> <span class="kt">L</span>
+<span class="kt">L</span> <span class="ow">::</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="kt">Tree</span> <span class="n">a</span>
+
+<span class="o">&gt;</span> <span class="kt">:</span><span class="n">t</span> <span class="kt">B</span>
+<span class="kt">B</span> <span class="ow">::</span> <span class="kt">Tree</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="kt">Tree</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="kt">Tree</span> <span class="n">a</span>
+
+<span class="o">&gt;</span> <span class="kr">let</span> <span class="n">leaf1</span> <span class="ow">=</span> <span class="kt">L</span> <span class="mi">15</span>
+ 
+<span class="o">&gt;</span> <span class="kr">let</span> <span class="n">leaf2</span> <span class="ow">=</span> <span class="kt">L</span> <span class="mi">27</span>
+ 
+<span class="o">&gt;</span> <span class="kt">B</span> <span class="n">leaf1</span> <span class="n">leaf2</span>
+<span class="kt">B</span> <span class="p">(</span><span class="kt">L</span> <span class="mi">15</span><span class="p">)</span> <span class="p">(</span><span class="kt">L</span> <span class="mi">27</span><span class="p">)</span></code></pre></div>
+
   </article>
 
 </div>
