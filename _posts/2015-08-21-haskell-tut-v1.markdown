@@ -465,6 +465,92 @@ foldr f z []     = z
 foldr f z (x:xs) = f x (foldr f z xs)
 {% endhighlight %}
 
+One of the most famous examples of Haskell conciseness is this implementation of the QuickSort algorithm:
+
+{% highlight haskell %}
+qsort [] = []
+qsort (x:xs) = qsort l ++ [x] ++ qsort r where
+   l = filter (< x) xs
+   r = filter (> x) xs
+{% endhighlight %}
+
+The first element of the unsorted list is chosen as pivot (This choice of pivoting means that this naive version of QuickSort will be suboptimal for partially sorted inputs.) and the remaining elements are filtered (cost _O (N)_) and passed to the next level of recursive call. 
+
+> The three examples above all use _pattern matching on the constructor_ of the input data, i.e. if the input is the empty list, the base case is computed, otherwise (list with at least one element `x`) the algorithm takes the induction branch.
+
+We can apply the same reasoning to user-made types (which will be explained in the following Section):
+
+{% highlight haskell %}
+data Pop a = Z | P a
+data Pip a = W | Q a
+
+woop Z = W
+woop (P x) = Q r where
+  r = 2 * x
+{% endhighlight %}
+
+and, after loading the above code in GHCi:
+
+Above we have used two _algebraic, polymorphic types_ `Pop a` and `Pip a` and a function that pattern matches on each constructor of the input data type.
+
+{% highlight haskell%}
+> :t woop
+woop :: Num a => Pop a -> Pip a
+{% endhighlight %}
+
+# Pattern guards 
+
+One form of conditional branching statement is the _pattern guard_:
+
+{% highlight haskell %}
+oddFlag x
+   | odd x = 1
+   | otherwise = 0
+
+buzz x 
+   | (mod x 3) == 0 || not (x == 17)  = True
+   | even x = True 
+   | otherwise = False
+{% endhighlight %}
+
+Pattern guards are convenient syntax for deciding which conditional branch to take according to the _value_ contained in one or more of the input variables. Note that the functions acting as pattern guards (e.g. `odd x`, `(mod x 3) == 0`) have to return a Boolean, and only after the `=` sign do we specify the return value for each branch.
+
+
+## Datatypes
+# Record notation, constructor as a function
+
+We can specify datatypes (which remind of structs in C) with the `data` keyword, as shown in the following examples.
+(Also `newtype` can be used in the same fashion as `data`, for datastructures with a single constuctor, but the difference between the two keywords is a bit technical and will not be discussed here.)
+
+{% highlight haskell %}
+> data TypeA = MakeA { unA :: Int } deriving Show
+
+> :t MakeA
+MakeA :: Int -> TypeA
+
+> :t unA
+unA :: TypeA -> Int
+{% endhighlight %}
+
+The constructor (`MakeA`, in this case) is a function; we build a data "object" by passing the appropriate arguments to it and whenever we need the values stored inside, we just call the appropriate accessor method (`unA`, in this case), using the data object as its argument :
+
+{% highlight haskell %}
+> let test1 = MakeA 597
+
+> test1
+MakeA {unA = 597}
+
+> :t test1
+test1 :: TypeA
+
+> unA test1
+597
+{% endhighlight %}
+
+Within the curly brackets we can specify a number of "records" to hold values; however these are not simple data fields but also declare the accessor functions to retrieve them.
+
+
+
 
 {% highlight haskell %}
 

@@ -442,6 +442,80 @@ The first line is a function, the second a piece of data, and the <code>main</co
 <div class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="nf">foldr</span> <span class="n">f</span> <span class="n">z</span> <span class="kt">[]</span>     <span class="ow">=</span> <span class="n">z</span>
 <span class="nf">foldr</span> <span class="n">f</span> <span class="n">z</span> <span class="p">(</span><span class="n">x</span><span class="kt">:</span><span class="n">xs</span><span class="p">)</span> <span class="ow">=</span> <span class="n">f</span> <span class="n">x</span> <span class="p">(</span><span class="n">foldr</span> <span class="n">f</span> <span class="n">z</span> <span class="n">xs</span><span class="p">)</span></code></pre></div>
 
+<p>One of the most famous examples of Haskell conciseness is this implementation of the QuickSort algorithm:</p>
+
+<div class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="nf">qsort</span> <span class="kt">[]</span> <span class="ow">=</span> <span class="kt">[]</span>
+<span class="nf">qsort</span> <span class="p">(</span><span class="n">x</span><span class="kt">:</span><span class="n">xs</span><span class="p">)</span> <span class="ow">=</span> <span class="n">qsort</span> <span class="n">l</span> <span class="o">++</span> <span class="p">[</span><span class="n">x</span><span class="p">]</span> <span class="o">++</span> <span class="n">qsort</span> <span class="n">r</span> <span class="kr">where</span>
+   <span class="n">l</span> <span class="ow">=</span> <span class="n">filter</span> <span class="p">(</span><span class="o">&lt;</span> <span class="n">x</span><span class="p">)</span> <span class="n">xs</span>
+   <span class="n">r</span> <span class="ow">=</span> <span class="n">filter</span> <span class="p">(</span><span class="o">&gt;</span> <span class="n">x</span><span class="p">)</span> <span class="n">xs</span></code></pre></div>
+
+<p>The first element of the unsorted list is chosen as pivot (This choice of pivoting means that this naive version of QuickSort will be suboptimal for partially sorted inputs.) and the remaining elements are filtered (cost <em>O (N)</em>) and passed to the next level of recursive call. </p>
+
+<blockquote>
+<p>The three examples above all use <em>pattern matching on the constructor</em> of the input data, i.e. if the input is the empty list, the base case is computed, otherwise (list with at least one element <code>x</code>) the algorithm takes the induction branch.</p>
+</blockquote>
+
+<p>We can apply the same reasoning to user-made types (which will be explained in the following Section):</p>
+
+<div class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="kr">data</span> <span class="kt">Pop</span> <span class="n">a</span> <span class="ow">=</span> <span class="kt">Z</span> <span class="o">|</span> <span class="kt">P</span> <span class="n">a</span>
+<span class="kr">data</span> <span class="kt">Pip</span> <span class="n">a</span> <span class="ow">=</span> <span class="kt">W</span> <span class="o">|</span> <span class="kt">Q</span> <span class="n">a</span>
+
+<span class="nf">woop</span> <span class="kt">Z</span> <span class="ow">=</span> <span class="kt">W</span>
+<span class="nf">woop</span> <span class="p">(</span><span class="kt">P</span> <span class="n">x</span><span class="p">)</span> <span class="ow">=</span> <span class="kt">Q</span> <span class="n">r</span> <span class="kr">where</span>
+  <span class="n">r</span> <span class="ow">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">x</span></code></pre></div>
+
+<p>and, after loading the above code in GHCi:</p>
+
+<p>Above we have used two <em>algebraic, polymorphic types</em> <code>Pop a</code> and <code>Pip a</code> and a function that pattern matches on each constructor of the input data type.</p>
+
+<div class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="o">&gt;</span> <span class="kt">:</span><span class="n">t</span> <span class="n">woop</span>
+<span class="nf">woop</span> <span class="ow">::</span> <span class="kt">Num</span> <span class="n">a</span> <span class="ow">=&gt;</span> <span class="kt">Pop</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="kt">Pip</span> <span class="n">a</span></code></pre></div>
+
+<h1>Pattern guards</h1>
+
+<p>One form of conditional branching statement is the <em>pattern guard</em>:</p>
+
+<div class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="nf">oddFlag</span> <span class="n">x</span>
+   <span class="o">|</span> <span class="n">odd</span> <span class="n">x</span> <span class="ow">=</span> <span class="mi">1</span>
+   <span class="o">|</span> <span class="n">otherwise</span> <span class="ow">=</span> <span class="mi">0</span>
+
+<span class="nf">buzz</span> <span class="n">x</span> 
+   <span class="o">|</span> <span class="p">(</span><span class="n">mod</span> <span class="n">x</span> <span class="mi">3</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span> <span class="o">||</span> <span class="n">not</span> <span class="p">(</span><span class="n">x</span> <span class="o">==</span> <span class="mi">17</span><span class="p">)</span>  <span class="ow">=</span> <span class="kt">True</span>
+   <span class="o">|</span> <span class="n">even</span> <span class="n">x</span> <span class="ow">=</span> <span class="kt">True</span> 
+   <span class="o">|</span> <span class="n">otherwise</span> <span class="ow">=</span> <span class="kt">False</span></code></pre></div>
+
+<p>Pattern guards are convenient syntax for deciding which conditional branch to take according to the <em>value</em> contained in one or more of the input variables. Note that the functions acting as pattern guards (e.g. <code>odd x</code>, <code>(mod x 3) == 0</code>) have to return a Boolean, and only after the <code>=</code> sign do we specify the return value for each branch.</p>
+
+<h2>Datatypes</h2>
+
+<h1>Record notation, constructor as a function</h1>
+
+<p>We can specify datatypes (which remind of structs in C) with the <code>data</code> keyword, as shown in the following examples.
+(Also <code>newtype</code> can be used in the same fashion as <code>data</code>, for datastructures with a single constuctor, but the difference between the two keywords is a bit technical and will not be discussed here.)</p>
+
+<div class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="o">&gt;</span> <span class="kr">data</span> <span class="kt">TypeA</span> <span class="ow">=</span> <span class="kt">MakeA</span> <span class="p">{</span> <span class="n">unA</span> <span class="ow">::</span> <span class="kt">Int</span> <span class="p">}</span> <span class="kr">deriving</span> <span class="kt">Show</span>
+
+<span class="o">&gt;</span> <span class="kt">:</span><span class="n">t</span> <span class="kt">MakeA</span>
+<span class="kt">MakeA</span> <span class="ow">::</span> <span class="kt">Int</span> <span class="ow">-&gt;</span> <span class="kt">TypeA</span>
+
+<span class="o">&gt;</span> <span class="kt">:</span><span class="n">t</span> <span class="n">unA</span>
+<span class="nf">unA</span> <span class="ow">::</span> <span class="kt">TypeA</span> <span class="ow">-&gt;</span> <span class="kt">Int</span></code></pre></div>
+
+<p>The constructor (<code>MakeA</code>, in this case) is a function; we build a data &quot;object&quot; by passing the appropriate arguments to it and whenever we need the values stored inside, we just call the appropriate accessor method (<code>unA</code>, in this case), using the data object as its argument :</p>
+
+<div class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="o">&gt;</span> <span class="kr">let</span> <span class="n">test1</span> <span class="ow">=</span> <span class="kt">MakeA</span> <span class="mi">597</span>
+
+<span class="o">&gt;</span> <span class="n">test1</span>
+<span class="kt">MakeA</span> <span class="p">{</span><span class="n">unA</span> <span class="ow">=</span> <span class="mi">597</span><span class="p">}</span>
+
+<span class="o">&gt;</span> <span class="kt">:</span><span class="n">t</span> <span class="n">test1</span>
+<span class="nf">test1</span> <span class="ow">::</span> <span class="kt">TypeA</span>
+
+<span class="o">&gt;</span> <span class="n">unA</span> <span class="n">test1</span>
+<span class="mi">597</span></code></pre></div>
+
+<p>Within the curly brackets we can specify a number of &quot;records&quot; to hold values; however these are not simple data fields but also declare the accessor functions to retrieve them.</p>
+
   </article>
 
 </div>
