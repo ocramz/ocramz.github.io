@@ -166,6 +166,17 @@ The arithmetic sum `(+)` and equality comparison `(==)` functions require two pa
 
 > This fundamental tool has many different uses, for example specializing a general function in a few different ways, by introducing very little additional syntax as we will see in the next sections.
 
+Operator sections are just shorthand for partial application on infix operators; however the usual caveats for non-commutative functions such as arithmetic division `/` apply:
+
+{% highlight haskell %}
+> (/2) 3
+1.5
+
+> (2/) 3
+0.6666666666666666
+{% endhighlight %}
+
+
 
 Other useful higher-order functions that operate on lists are `map` and `foldr`:
 
