@@ -8,10 +8,12 @@ categories: Haskell tutorials
 
 *   [The interactive Haskell interpreter](#overview)
 *   [Notation for functional programs](#lambda)
-*   [The interactive Haskell interpreter](#overview)
-*   [Notation for functional programs](#lambda)
+*   [Defining new symbols, functions and modules](#io)
+*   [Datatypes](#data)
 
-## The interactive Haskell interpreter, GHCi  <a id="overview" />
+<a id="overview" /></a>
+## The interactive Haskell interpreter, GHCi  
+
 
 In the following we show an example interactive session with GHCi, to familiarize the reader with the notation and some fundamental concepts of the language. Only a minimal familiarity with programming concepts and mathematical notation is required.
 
@@ -78,7 +80,6 @@ The exponential `exp` is a function of a single parameter (a real number, here r
 
 
 # Text characters, strings and lists 
-<a id="lists" />
 
 {% highlight haskell %}
 > :t 'a'
@@ -197,8 +198,9 @@ It is very instructive to have a look at the [Haskell Prelude](https://hackage.h
 
 --------
 --------
+<a id="lambda" /></a>
 ## Notation for functional programs
-<a id="lambda" />
+
 
 > Anonymous expressions (often called "lambda" expressions) let us define what a function _does_, and to separate this from what we choose to call it.
 
@@ -407,7 +409,7 @@ A composition of `map`s is equivalent to _lifting_ an `(a -> b)` function to wor
 and, since `map` is a binary function accepting a _function_ and a list, we can identify equal terms. In the line above, if we partially apply `(.) map` on `map`, `x` is identified with a function and `y` has to be a list, resulting in the initial identity.
 
 
-
+<a id="io"> </a>
 ## Defining new symbols, functions and modules
 
 When in the interactive mode (or, equivalently, while we are working within the IO monad, more details in the following), we need the `let` construct, which behaves very much like its mathematical counterpart:
@@ -524,6 +526,7 @@ buzz x
 Pattern guards are convenient syntax for deciding which conditional branch to take according to the _value_ contained in one or more of the input variables. Note that the functions acting as pattern guards (e.g. `odd x`, `(mod x 3) == 0`) have to return a Boolean, and only after the `=` sign do we specify the return value for each branch.
 
 
+<a id="data"/> </a>
 ## Datatypes
 # Record notation, constructor as a function
 

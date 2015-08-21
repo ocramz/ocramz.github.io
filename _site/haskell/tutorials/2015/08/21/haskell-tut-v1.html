@@ -10,7 +10,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <title>Introduction to functional programming with Haskell</title>
-  <meta name="description" content="  The interactive Haskell interpreter  Notation for functional programs  The interactive Haskell interpreter  Notation for functional programs">
+  <meta name="description" content="  The interactive Haskell interpreter  Notation for functional programs  Defining new symbols, functions and modules  Datatypes">
 
   <link rel="stylesheet" href="/css/main.css">
   <link rel="canonical" href="http://yourdomain.com/haskell/tutorials/2015/08/21/haskell-tut-v1.html">
@@ -68,11 +68,13 @@
     <ul>
 <li>  <a href="#overview">The interactive Haskell interpreter</a></li>
 <li>  <a href="#lambda">Notation for functional programs</a></li>
-<li>  <a href="#overview">The interactive Haskell interpreter</a></li>
-<li>  <a href="#lambda">Notation for functional programs</a></li>
+<li>  <a href="#io">Defining new symbols, functions and modules</a></li>
+<li>  <a href="#data">Datatypes</a></li>
 </ul>
 
-<h2>The interactive Haskell interpreter, GHCi  <a id="overview" /></h2>
+<p><a id="overview" /></a></p>
+
+<h2>The interactive Haskell interpreter, GHCi</h2>
 
 <p>In the following we show an example interactive session with GHCi, to familiarize the reader with the notation and some fundamental concepts of the language. Only a minimal familiarity with programming concepts and mathematical notation is required.</p>
 
@@ -130,8 +132,6 @@ Because many things have number-like properties (can be counted, added, subtract
 <p>The exponential <code>exp</code> is a function of a single parameter (a real number, here represented as a <code>Floating</code> point value): $$y(x) = e ^ x,\; x,y \in \mathbb{R}$$ </p>
 
 <h1>Text characters, strings and lists</h1>
-
-<p><a id="lists" /></p>
 
 <div class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="o">&gt;</span> <span class="kt">:</span><span class="n">t</span> <span class="n">&#39;a&#39;</span>
 <span class="n">&#39;a&#39;</span> <span class="ow">::</span> <span class="kt">Char</span>
@@ -230,9 +230,9 @@ The ordering relation <code>(&gt;)</code> is a binary operator (since it compare
 
 <hr>
 
-<h2>Notation for functional programs</h2>
+<p><a id="lambda" /></a></p>
 
-<p><a id="lambda" /></p>
+<h2>Notation for functional programs</h2>
 
 <blockquote>
 <p>Anonymous expressions (often called &quot;lambda&quot; expressions) let us define what a function <em>does</em>, and to separate this from what we choose to call it.</p>
@@ -394,6 +394,8 @@ The following two expressions are identical, in this sense; the latter being the
 
 <p>and, since <code>map</code> is a binary function accepting a <em>function</em> and a list, we can identify equal terms. In the line above, if we partially apply <code>(.) map</code> on <code>map</code>, <code>x</code> is identified with a function and <code>y</code> has to be a list, resulting in the initial identity.</p>
 
+<p><a id="io"> </a></p>
+
 <h2>Defining new symbols, functions and modules</h2>
 
 <p>When in the interactive mode (or, equivalently, while we are working within the IO monad, more details in the following), we need the <code>let</code> construct, which behaves very much like its mathematical counterpart:</p>
@@ -496,6 +498,8 @@ The first line is a function, the second a piece of data, and the <code>main</co
    <span class="o">|</span> <span class="n">otherwise</span> <span class="ow">=</span> <span class="kt">False</span></code></pre></div>
 
 <p>Pattern guards are convenient syntax for deciding which conditional branch to take according to the <em>value</em> contained in one or more of the input variables. Note that the functions acting as pattern guards (e.g. <code>odd x</code>, <code>(mod x 3) == 0</code>) have to return a Boolean, and only after the <code>=</code> sign do we specify the return value for each branch.</p>
+
+<p><a id="data"/> </a></p>
 
 <h2>Datatypes</h2>
 
