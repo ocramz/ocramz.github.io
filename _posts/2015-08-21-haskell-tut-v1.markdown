@@ -532,7 +532,7 @@ MakeA :: Int -> TypeA
 unA :: TypeA -> Int
 {% endhighlight %}
 
-The constructor (`MakeA`, in this case) is a function; we build a data "object" by passing the appropriate arguments to it and whenever we need the values stored inside, we just call the appropriate accessor method (`unA`, in this case), using the data object as its argument :
+The constructor (`MakeA`, in this case) is a function; we build a data "object" by passing the appropriate arguments to it and whenever we need the values stored inside, we just call the appropriate accessor method (`unA`, in the example), using the data object as its argument :
 
 {% highlight haskell %}
 > let test1 = MakeA 597
@@ -549,6 +549,42 @@ test1 :: TypeA
 
 Within the curly brackets we can specify a number of "records" to hold values; however these are not simple data fields but also declare the accessor functions to retrieve them.
 
+> Haskell provides the machinery to augment our datatypes, by making them {\itshape instances} of standard classes such as `Show` above. 
+If a datatype is an instance of one or more classes, it "inherits" the functionality of that class, so in the present example making `TypeA` an instance of `Show` lets us print `TypeA` objects on screen.
+
+N.B.: if we hadn't made `TypeA` an instance of `Show`, the evaluation of `test1` would have returned a "No instance for (Show TypeA) ... " error, instead.
+
+Let's declare a slightly larger datatype constructor and try out its accessor functions:
+
+
+{% highlight haskell %}
+> data Test = Tee { h :: [(Bool, String)], h1 :: Char }
+
+> :t Tee
+Tee :: [(Bool, String)] -> Char -> Test
+
+> let test2 = Tee [(True, "boop")] 'x'
+
+> (snd . head . h) test2
+"boop"
+{% endhighlight %}
+
+In the above example, we have declared a datatype with two records, the first of which is of a composite type, and created a `test2` object of this type.
+
+Next, we access an internal field in a purely functional style, by composition of elementary functions. This idea of functional manipulation of "getter"/"setter" methods for nested datastructure is implemented (and greatly expanded) in the package `lens`, which however is beyond the scope of this tutorial.
+
+> What happens if we supply an integer to the Tee constructor, instead of the expected list of `(Bool, String)` tuples? Our first type error! <3
+
+{% highlight haskell %}
+> :t Tee 2
+
+<interactive>:1:5:
+   No instance for (Num [(Bool, String)]) arising from the literal '2'
+   In the first argument of 'Tee', namely '2'
+   In the expression: Tee 2
+{% endhighlight %}
+
+> The second line, "In the first argument of 'Tee'", is the hint!
 
 
 
