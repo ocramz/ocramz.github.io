@@ -14,7 +14,7 @@ categories: Haskell tutorials
 <a id="overview" /> </a>
 ## The interactive Haskell compiler, GHCi  
 
-In the following we show an example interactive session with GHCi, to familiarize the reader with the notation and some fundamental concepts of the language. Only a minimal familiarity with programming concepts and mathematical notation is required.
+In the following we will see an example interactive session with GHCi, to familiarize the reader with the notation and some fundamental concepts of the language. Some familiarity with programming concepts and mathematical notation is required, but the tutorial is intended to be as self-contained as possible (All feedback is very welcome!).
 
 The `>`character at the start of a line indicates the interpreter prompt, whereas `:t` is the GHCi macro for requesting the type of an expression.
 
