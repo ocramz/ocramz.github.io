@@ -491,7 +491,7 @@ The first line is a function, the second a piece of data, and the <code>main</co
 <h1>Record notation, constructor as a function</h1>
 
 <p>We can specify datatypes (which remind of structs in C) with the <code>data</code> keyword, as shown in the following examples.
-(Also <code>newtype</code> can be used in the same fashion as <code>data</code>, for datastructures with a single constuctor, but the difference between the two keywords is a bit technical and will not be discussed here.)</p>
+(Also <code>newtype</code> can be used in the same fashion as <code>data</code>, for datastructures that have a single constuctor, but the difference between the two keywords is a bit technical and will not be discussed here.)</p>
 
 <div class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="o">&gt;</span> <span class="kr">data</span> <span class="kt">TypeA</span> <span class="ow">=</span> <span class="kt">MakeA</span> <span class="p">{</span> <span class="n">unA</span> <span class="ow">::</span> <span class="kt">Int</span> <span class="p">}</span> <span class="kr">deriving</span> <span class="kt">Show</span>
 

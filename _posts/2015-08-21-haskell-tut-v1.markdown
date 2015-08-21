@@ -520,7 +520,7 @@ Pattern guards are convenient syntax for deciding which conditional branch to ta
 # Record notation, constructor as a function
 
 We can specify datatypes (which remind of structs in C) with the `data` keyword, as shown in the following examples.
-(Also `newtype` can be used in the same fashion as `data`, for datastructures with a single constuctor, but the difference between the two keywords is a bit technical and will not be discussed here.)
+(Also `newtype` can be used in the same fashion as `data`, for datastructures that have a single constuctor, but the difference between the two keywords is a bit technical and will not be discussed here.)
 
 {% highlight haskell %}
 > data TypeA = MakeA { unA :: Int } deriving Show
