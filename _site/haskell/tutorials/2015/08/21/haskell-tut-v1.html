@@ -171,7 +171,9 @@ Because many things have number-like properties (can be counted, added, subtract
 <p>Function application such as <code>exp 1</code> and <code>take 7 [5..]</code> is so fundamental that Haskell uses a space to denote it, i.e. considering <code>f x y z</code>, <code>f</code> is the function and <code>x</code>, <code>y</code> and <code>z</code> are its arguments.</p>
 </blockquote>
 
-<p>Let us now look at <code>filter</code>: </p>
+<h1>Higher order functions, partial application, operator sections</h1>
+
+<p>A versatile list-digesting function is <code>filter</code>: </p>
 
 <div class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="o">&gt;</span> <span class="kt">:</span><span class="n">t</span> <span class="n">filter</span>
 <span class="nf">filter</span> <span class="ow">::</span> <span class="p">(</span><span class="n">a</span> <span class="ow">-&gt;</span> <span class="kt">Bool</span><span class="p">)</span> <span class="ow">-&gt;</span> <span class="p">[</span><span class="n">a</span><span class="p">]</span> <span class="ow">-&gt;</span> <span class="p">[</span><span class="n">a</span><span class="p">]</span>

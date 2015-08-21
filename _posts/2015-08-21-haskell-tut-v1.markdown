@@ -119,7 +119,10 @@ take :: Int -> [a] -> [a]
 
 > Function application such as `exp 1` and `take 7 [5..]` is so fundamental that Haskell uses a space to denote it, i.e. considering `f x y z`, `f` is the function and `x`, `y` and `z` are its arguments.
 
-Let us now look at `filter`: 
+
+# Higher order functions, partial application, operator sections
+
+A versatile list-digesting function is `filter`: 
 
 {% highlight haskell %}
 
