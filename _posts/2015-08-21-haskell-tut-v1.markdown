@@ -217,7 +217,7 @@ Two elementary examples of lambda expressions could be:
 \ x y -> x + y :: Num a => a -> a -> a
 {% endhighlight %}
 
-We should note that, in the snippet above, the Num constraint is introduced by `(*2)` and `(+)`.
+We should note that, in the snippet above, the Num constraint is introduced by `(*)` and `(+)`.
 
 In the following, we will implement a few useful functions using only lambda expressions, to demonstrate their versatility and to introduce some key concepts.
 
