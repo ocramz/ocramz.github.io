@@ -368,8 +368,8 @@ The following two expressions are identical, in this sense; the latter being the
 > :t \ x -> 2 * x
 \ x -> 2 * x :: Num a => a -> a
 
-> :t (*2)
-(*2) :: Num a => a -> a
+> :t (2 *)
+(2 *) :: Num a => a -> a
 {% endhighlight %}
 
 
