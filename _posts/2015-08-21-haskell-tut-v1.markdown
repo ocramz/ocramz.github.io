@@ -133,7 +133,7 @@ filter :: (a -> Bool) -> [a] -> [a]
  
 {% endhighlight %}
 
-`filter` is our first example of {\itshape higher order function}; it requires as arguments a _function_ of type `a -> Bool` and a list of `a`s and returns the subset of the input list that verifies the filtering function.
+`filter` is our first example of _higher order function_; it requires as arguments a _function_ of type `a -> Bool` and a list of `a`s and returns the subset of the input list that verifies the filtering function.
 
 In the previous code block, we also see the first example of _operator section_:
 `(> 2) :: (Ord a, Num a) => a -> Bool`, passed as first argument to `filter`. 

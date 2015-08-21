@@ -178,7 +178,7 @@ Because many things have number-like properties (can be counted, added, subtract
 <span class="o">&gt;</span> <span class="n">filter</span> <span class="p">(</span><span class="o">/=</span> <span class="n">&#39;x&#39;</span><span class="p">)</span> <span class="s">&quot;xxxjgxkjg&quot;</span> 
 <span class="s">&quot;jgkjg&quot;</span></code></pre></div>
 
-<p><code>filter</code> is our first example of {\itshape higher order function}; it requires as arguments a <em>function</em> of type <code>a -&gt; Bool</code> and a list of <code>a</code>s and returns the subset of the input list that verifies the filtering function.</p>
+<p><code>filter</code> is our first example of <em>higher order function</em>; it requires as arguments a <em>function</em> of type <code>a -&gt; Bool</code> and a list of <code>a</code>s and returns the subset of the input list that verifies the filtering function.</p>
 
 <p>In the previous code block, we also see the first example of <em>operator section</em>:
 <code>(&gt; 2) :: (Ord a, Num a) =&gt; a -&gt; Bool</code>, passed as first argument to <code>filter</code>. 
