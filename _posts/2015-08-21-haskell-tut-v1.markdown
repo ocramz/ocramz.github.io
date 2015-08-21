@@ -565,7 +565,7 @@ test1 :: TypeA
 
 Within the curly brackets we can specify a number of "records" to hold values; however these are not simple data fields but also declare the accessor functions to retrieve them.
 
-> Haskell provides the machinery to augment our datatypes, by making them {\itshape instances} of standard classes such as `Show` above. 
+> Haskell provides the machinery to augment our datatypes, by making them "instances" of standard classes such as `Show` above. 
 If a datatype is an instance of one or more classes, it "inherits" the functionality of that class, so in the present example making `TypeA` an instance of `Show` lets us print `TypeA` objects on screen.
 
 N.B.: if we hadn't made `TypeA` an instance of `Show`, the evaluation of `test1` would have returned a "No instance for (Show TypeA) ... " error, instead.
