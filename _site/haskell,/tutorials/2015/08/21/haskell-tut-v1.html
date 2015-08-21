@@ -9,12 +9,11 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>ocramz.github.io</title>
-  <meta name="description" content="lambdas and large linear systems, oh my
-">
+  <title>Introduction to functional programming with Haskell</title>
+  <meta name="description" content="The interactive Haskell interpreter, GHCi">
 
   <link rel="stylesheet" href="/css/main.css">
-  <link rel="canonical" href="http://yourdomain.com/">
+  <link rel="canonical" href="http://yourdomain.com/haskell,/tutorials/2015/08/21/haskell-tut-v1.html">
   <link rel="alternate" type="application/rss+xml" title="ocramz.github.io" href="http://yourdomain.com/feed.xml" />
 </head>
 
@@ -58,31 +57,27 @@
 
     <div class="page-content">
       <div class="wrapper">
-        <div class="home">
+        <div class="post">
 
-  <h1 class="page-heading">Posts</h1>
+  <header class="post-header">
+    <h1 class="post-title">Introduction to functional programming with Haskell</h1>
+    <p class="post-meta">Aug 21, 2015</p>
+  </header>
 
-  <ul class="post-list">
-    
-      <li>
-        <span class="post-meta">Aug 21, 2015</span>
+  <article class="post-content">
+    <h1>The interactive Haskell interpreter, GHCi</h1>
 
-        <h2>
-          <a class="post-link" href="/haskell,/tutorials/2015/08/21/haskell-tut-v1.html">Introduction to functional programming with Haskell</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Aug 20, 2015</span>
+<p>In the following we show an example interactive session with GHCi, to familiarize the reader with the notation and some fundamental concepts of the language.</p>
 
-        <h2>
-          <a class="post-link" href="/tests/2015/08/20/haskell-test.html">Test</a>
-        </h2>
-      </li>
-    
-  </ul>
+<p>The <code>&gt;}</code>character at the start of a line indicates the interpreter prompt, whereas <code>:t</code> is the GHCi macro for requesting the type of an expression.\ If the prompt is not present, we assume we are working in a <code>.hs</code> text file, to be loaded in GHCi.
+The <code>--</code> token at the start of a line specifies a comment: the line is not interpreted as Haskell code.\
+If we input an expression that already has a value associated, GHCi computes and prints the expression value on the next line.\If, on the other hand, we ask for the type of an expression <code>x</code> with <code>:t x</code>, the interpreter outputs this after a double colon. </p>
 
-  <p class="rss-subscribe">subscribe <a href="/feed.xml">via RSS</a></p>
+<div class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="nf">main</span> <span class="ow">::</span> <span class="kt">IO</span> <span class="nb">()</span>
+<span class="nf">main</span> <span class="ow">=</span> 
+  <span class="n">putStrLn</span> <span class="s">&quot;test&quot;</span></code></pre></div>
+
+  </article>
 
 </div>
 
