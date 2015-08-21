@@ -663,7 +663,7 @@ todaysDeliveries :: AddrN -> AddrN -> [Contact] -> [Contact]
 
 > Haskell uses a _decidable_ type system (the Hindley-Milner system) which allows the type-checking algorithm to always terminate without the user having to supply type annotations; in the above example we see the utility of this: using partial application wisely, we can achieve the desired signature function very concisely.
 
-> Concise code has very far-reaching implications than just "looking clever": it greatly simplifies reasoning, correctness checks, refactoring and knowledge propagation. This is one of the many examples in which Haskell's theoretical foundations enable very practical advantages.
+> Concise code has very far-reaching implications, besides just "looking clever": it greatly simplifies reasoning, checking for correctness, refactoring and knowledge propagation. This is one of the many examples in which Haskell's theoretical foundations have very practical advantages.
 
 An example data entry for the delivery example above:
 

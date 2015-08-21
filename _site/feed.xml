@@ -6,8 +6,8 @@
 </description>
     <link>http://yourdomain.com/</link>
     <atom:link href="http://yourdomain.com/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Fri, 21 Aug 2015 16:58:22 +0200</pubDate>
-    <lastBuildDate>Fri, 21 Aug 2015 16:58:22 +0200</lastBuildDate>
+    <pubDate>Fri, 21 Aug 2015 17:04:12 +0200</pubDate>
+    <lastBuildDate>Fri, 21 Aug 2015 17:04:12 +0200</lastBuildDate>
     <generator>Jekyll v2.5.3</generator>
     
       <item>
@@ -574,7 +574,7 @@ If a datatype is an instance of one or more classes, it &amp;quot;inherits&amp;q
 &lt;blockquote&gt;
 &lt;p&gt;Haskell uses a &lt;em&gt;decidable&lt;/em&gt; type system (the Hindley-Milner system) which allows the type-checking algorithm to always terminate without the user having to supply type annotations; in the above example we see the utility of this: using partial application wisely, we can achieve the desired signature function very concisely.&lt;/p&gt;
 
-&lt;p&gt;Concise code has very far-reaching implications than just &amp;quot;looking clever&amp;quot;: it greatly simplifies reasoning, correctness checks, refactoring and knowledge propagation. This is one of the many examples in which Haskell&amp;#39;s theoretical foundations enable very practical advantages.&lt;/p&gt;
+&lt;p&gt;Concise code has very far-reaching implications, besides just &amp;quot;looking clever&amp;quot;: it greatly simplifies reasoning, checking for correctness, refactoring and knowledge propagation. This is one of the many examples in which Haskell&amp;#39;s theoretical foundations have very practical advantages.&lt;/p&gt;
 &lt;/blockquote&gt;
 
 &lt;p&gt;An example data entry for the delivery example above:&lt;/p&gt;
