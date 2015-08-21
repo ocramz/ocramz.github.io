@@ -11,7 +11,7 @@ categories: Haskell tutorials
 *   [The interactive Haskell interpreter](#overview)
 *   [Notation for functional programs](#lambda)
 
-## The interactive Haskell interpreter, GHCi  <a id="overview"/>
+## The interactive Haskell interpreter, GHCi  <a id="overview" />
 
 In the following we show an example interactive session with GHCi, to familiarize the reader with the notation and some fundamental concepts of the language. Only a minimal familiarity with programming concepts and mathematical notation is required.
 
@@ -34,7 +34,7 @@ For those in a hurry, [ghc.io](http://ghc.io) provides a "safe" Haskell prompt t
 
 --------
 # First steps with GHCi 
-<a id="firststeps" />
+
 
 Starting from the very basics : 
 
