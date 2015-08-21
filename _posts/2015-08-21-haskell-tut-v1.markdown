@@ -19,11 +19,6 @@ In the following we will see an example interactive session with GHCi, to famili
 
 The `>`character at the start of a line indicates the interpreter prompt, whereas `:t` is the GHCi macro for requesting the _type_ of an expression.
 
-If the prompt is not present, we assume to be working in a `.hs` text file, to be loaded in GHCi.
-
-The `--` token at the start of a line specifies a comment: the line as a whole is not interpreted as Haskell code. Multiple-line comments are enclosed in a `{-`,  `-}` pair.
-
-
 If we input an expression that already has a value associated, GHCi computes and prints the expression value on the next line.
 If, on the other hand, we ask for the type of an expression `x` with `:t x`, the interpreter outputs this after a double colon. 
 
@@ -441,7 +436,14 @@ f :: Char -> Char
 In bulk code, there is no need for `let` for declaring a new entity; if we write the following in a blank text file named, say, `TestModule.hs` :
 
 {% highlight haskell %}
+-- If the prompt is not present, we assume to be working in a `.hs` text file, 
+-- to be loaded in GHCi.
 
+{- 
+The `--` token at the start of a line specifies a comment: 
+the line as a whole is not interpreted as Haskell code. 
+Multiple-line comments are enclosed in a `{-`,  `-}` pair.
+-}
 module TestModule where
 
 f1 = (^2)
@@ -449,13 +451,17 @@ f1 = (^2)
 v = [2,3,4]
 
 main = do
-  putStrLn $ map f1 v 
+  putStrLn $ map f1 v
 {% endhighlight %}
 
 and load it with GHCi (from command line: `ghci TestModule.hs`), calling `main` will print `[4,9,16]` to screen.
 
 > In the previous code snippet we start to see one of Haskell's strength points: a clean separation of input-output ("IO") and purely functional code. 
 > The first line is a function, the second a piece of data, and the `main` function runs the example (in this case `map`ping the squaring function over the data) and displays on-screen the results as a newline-terminated string with `putStrLn`.
+
+The `main` function effectively "coordinates" the execution of the purely functional parts; its body is a `do` block, to signify that it is to be executed top-to-bottom. However the intermediate results are only effectively computed when requested (this is the _non-strict_, or _lazy_ evaluation logic of Haskell). In the code above, `f1` is `map`ped over `v` only when `putStrLn` is run.
+
+We will return on how to write `do` blocks (the "imperative" part of Haskell) shortly. At this point we still need to see a few general features of the language syntax.
 
 
 <a id="pattern" /></a>

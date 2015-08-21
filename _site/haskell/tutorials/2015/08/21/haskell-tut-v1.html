@@ -81,10 +81,6 @@
 
 <p>The <code>&gt;</code>character at the start of a line indicates the interpreter prompt, whereas <code>:t</code> is the GHCi macro for requesting the <em>type</em> of an expression.</p>
 
-<p>If the prompt is not present, we assume to be working in a <code>.hs</code> text file, to be loaded in GHCi.</p>
-
-<p>The <code>--</code> token at the start of a line specifies a comment: the line as a whole is not interpreted as Haskell code. Multiple-line comments are enclosed in a <code>{-</code>,  <code>-}</code> pair.</p>
-
 <p>If we input an expression that already has a value associated, GHCi computes and prints the expression value on the next line.
 If, on the other hand, we ask for the type of an expression <code>x</code> with <code>:t x</code>, the interpreter outputs this after a double colon. </p>
 
@@ -424,7 +420,15 @@ The following two expressions are identical, in this sense; the latter being the
 
 <p>In bulk code, there is no need for <code>let</code> for declaring a new entity; if we write the following in a blank text file named, say, <code>TestModule.hs</code> :</p>
 
-<div class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="kr">module</span> <span class="nn">TestModule</span> <span class="kr">where</span>
+<div class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="c1">-- If the prompt is not present, we assume to be working in a `.hs` text file, </span>
+<span class="c1">-- to be loaded in GHCi.</span>
+
+<span class="cm">{- </span>
+<span class="cm">The `--` token at the start of a line specifies a comment: </span>
+<span class="cm">the line as a whole is not interpreted as Haskell code. </span>
+<span class="cm">Multiple-line comments are enclosed in a `{-`,  `-}` pair.</span>
+<span class="cm">-}</span>
+<span class="kr">module</span> <span class="nn">TestModule</span> <span class="kr">where</span>
 
 <span class="nf">f1</span> <span class="ow">=</span> <span class="p">(</span><span class="o">^</span><span class="mi">2</span><span class="p">)</span>
 
@@ -439,6 +443,10 @@ The following two expressions are identical, in this sense; the latter being the
 <p>In the previous code snippet we start to see one of Haskell&#39;s strength points: a clean separation of input-output (&quot;IO&quot;) and purely functional code. 
 The first line is a function, the second a piece of data, and the <code>main</code> function runs the example (in this case <code>map</code>ping the squaring function over the data) and displays on-screen the results as a newline-terminated string with <code>putStrLn</code>.</p>
 </blockquote>
+
+<p>The <code>main</code> function effectively &quot;coordinates&quot; the execution of the purely functional parts; its body is a <code>do</code> block, to signify that it is to be executed top-to-bottom. However the intermediate results are only effectively computed when requested (this is the <em>non-strict</em>, or <em>lazy</em> evaluation logic of Haskell). In the code above, <code>f1</code> is <code>map</code>ped over <code>v</code> only when <code>putStrLn</code> is run.</p>
+
+<p>We will return on how to write <code>do</code> blocks (the &quot;imperative&quot; part of Haskell) shortly. At this point we still need to see a few general features of the language syntax.</p>
 
 <p><a id="pattern" /></a></p>
 

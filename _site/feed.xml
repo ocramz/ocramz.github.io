@@ -6,8 +6,8 @@
 </description>
     <link>http://yourdomain.com/</link>
     <atom:link href="http://yourdomain.com/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Fri, 21 Aug 2015 23:24:37 +0200</pubDate>
-    <lastBuildDate>Fri, 21 Aug 2015 23:24:37 +0200</lastBuildDate>
+    <pubDate>Fri, 21 Aug 2015 23:56:07 +0200</pubDate>
+    <lastBuildDate>Fri, 21 Aug 2015 23:56:07 +0200</lastBuildDate>
     <generator>Jekyll v2.5.3</generator>
     
       <item>
@@ -27,10 +27,6 @@
 &lt;p&gt;In the following we will see an example interactive session with GHCi, to familiarize the reader with the notation and some fundamental concepts of the language. Some familiarity with programming concepts and mathematical notation is required, but the tutorial is intended to be as self-contained as possible (All feedback is very welcome!).&lt;/p&gt;
 
 &lt;p&gt;The &lt;code&gt;&amp;gt;&lt;/code&gt;character at the start of a line indicates the interpreter prompt, whereas &lt;code&gt;:t&lt;/code&gt; is the GHCi macro for requesting the &lt;em&gt;type&lt;/em&gt; of an expression.&lt;/p&gt;
-
-&lt;p&gt;If the prompt is not present, we assume to be working in a &lt;code&gt;.hs&lt;/code&gt; text file, to be loaded in GHCi.&lt;/p&gt;
-
-&lt;p&gt;The &lt;code&gt;--&lt;/code&gt; token at the start of a line specifies a comment: the line as a whole is not interpreted as Haskell code. Multiple-line comments are enclosed in a &lt;code&gt;{-&lt;/code&gt;,  &lt;code&gt;-}&lt;/code&gt; pair.&lt;/p&gt;
 
 &lt;p&gt;If we input an expression that already has a value associated, GHCi computes and prints the expression value on the next line.
 If, on the other hand, we ask for the type of an expression &lt;code&gt;x&lt;/code&gt; with &lt;code&gt;:t x&lt;/code&gt;, the interpreter outputs this after a double colon. &lt;/p&gt;
@@ -371,7 +367,15 @@ The following two expressions are identical, in this sense; the latter being the
 
 &lt;p&gt;In bulk code, there is no need for &lt;code&gt;let&lt;/code&gt; for declaring a new entity; if we write the following in a blank text file named, say, &lt;code&gt;TestModule.hs&lt;/code&gt; :&lt;/p&gt;
 
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-haskell&quot; data-lang=&quot;haskell&quot;&gt;&lt;span class=&quot;kr&quot;&gt;module&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;TestModule&lt;/span&gt; &lt;span class=&quot;kr&quot;&gt;where&lt;/span&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-haskell&quot; data-lang=&quot;haskell&quot;&gt;&lt;span class=&quot;c1&quot;&gt;-- If the prompt is not present, we assume to be working in a `.hs` text file, &lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;-- to be loaded in GHCi.&lt;/span&gt;
+
+&lt;span class=&quot;cm&quot;&gt;{- &lt;/span&gt;
+&lt;span class=&quot;cm&quot;&gt;The `--` token at the start of a line specifies a comment: &lt;/span&gt;
+&lt;span class=&quot;cm&quot;&gt;the line as a whole is not interpreted as Haskell code. &lt;/span&gt;
+&lt;span class=&quot;cm&quot;&gt;Multiple-line comments are enclosed in a `{-`,  `-}` pair.&lt;/span&gt;
+&lt;span class=&quot;cm&quot;&gt;-}&lt;/span&gt;
+&lt;span class=&quot;kr&quot;&gt;module&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;TestModule&lt;/span&gt; &lt;span class=&quot;kr&quot;&gt;where&lt;/span&gt;
 
 &lt;span class=&quot;nf&quot;&gt;f1&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;^&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
 
@@ -386,6 +390,10 @@ The following two expressions are identical, in this sense; the latter being the
 &lt;p&gt;In the previous code snippet we start to see one of Haskell&amp;#39;s strength points: a clean separation of input-output (&amp;quot;IO&amp;quot;) and purely functional code. 
 The first line is a function, the second a piece of data, and the &lt;code&gt;main&lt;/code&gt; function runs the example (in this case &lt;code&gt;map&lt;/code&gt;ping the squaring function over the data) and displays on-screen the results as a newline-terminated string with &lt;code&gt;putStrLn&lt;/code&gt;.&lt;/p&gt;
 &lt;/blockquote&gt;
+
+&lt;p&gt;The &lt;code&gt;main&lt;/code&gt; function effectively &amp;quot;coordinates&amp;quot; the execution of the purely functional parts; its body is a &lt;code&gt;do&lt;/code&gt; block, to signify that it is to be executed top-to-bottom. However the intermediate results are only effectively computed when requested (this is the &lt;em&gt;non-strict&lt;/em&gt;, or &lt;em&gt;lazy&lt;/em&gt; evaluation logic of Haskell). In the code above, &lt;code&gt;f1&lt;/code&gt; is &lt;code&gt;map&lt;/code&gt;ped over &lt;code&gt;v&lt;/code&gt; only when &lt;code&gt;putStrLn&lt;/code&gt; is run.&lt;/p&gt;
+
+&lt;p&gt;We will return on how to write &lt;code&gt;do&lt;/code&gt; blocks (the &amp;quot;imperative&amp;quot; part of Haskell) shortly. At this point we still need to see a few general features of the language syntax.&lt;/p&gt;
 
 &lt;p&gt;&lt;a id=&quot;pattern&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
 
