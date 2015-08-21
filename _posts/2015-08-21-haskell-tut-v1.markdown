@@ -5,7 +5,13 @@ date: 2015-08-21
 categories: Haskell tutorials
 ---
 
-## The interactive Haskell interpreter, GHCi
+
+*   [The interactive Haskell interpreter](#overview)
+*   [Notation for functional programs](#lambda)
+*   [The interactive Haskell interpreter](#overview)
+*   [Notation for functional programs](#lambda)
+
+## The interactive Haskell interpreter, GHCi  <a id="overview"/>
 
 In the following we show an example interactive session with GHCi, to familiarize the reader with the notation and some fundamental concepts of the language. Only a minimal familiarity with programming concepts and mathematical notation is required.
 
@@ -27,7 +33,8 @@ the reader is encouraged to install the latest version of the [Glasgow Haskell C
 For those in a hurry, [ghc.io](http://ghc.io) provides a "safe" Haskell prompt to e.g. try out one-liners. Longer code can be developed (after a free signup) on [FPComplete Haskell Center](https://www.fpcomplete.com/business/fp-haskell-center/).
 
 --------
-# First steps with GHCi
+# First steps with GHCi 
+<a id="firststeps" />
 
 Starting from the very basics : 
 
@@ -70,8 +77,8 @@ The exponential `exp` is a function of a single parameter (a real number, here r
 
 
 
-# Text characters, strings and lists
-
+# Text characters, strings and lists 
+<a id="lists" />
 
 {% highlight haskell %}
 > :t 'a'
@@ -191,6 +198,7 @@ It is very instructive to have a look at the [Haskell Prelude](https://hackage.h
 --------
 --------
 ## Notation for functional programs
+<a id="lambda" />
 
 > Anonymous expressions (often called "lambda" expressions) let us define what a function _does_, and to separate this from what we choose to call it.
 

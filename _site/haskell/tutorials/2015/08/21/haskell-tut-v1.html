@@ -10,7 +10,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <title>Introduction to functional programming with Haskell</title>
-  <meta name="description" content="The interactive Haskell interpreter, GHCi">
+  <meta name="description" content="  The interactive Haskell interpreter  Notation for functional programs  The interactive Haskell interpreter  Notation for functional programs">
 
   <link rel="stylesheet" href="/css/main.css">
   <link rel="canonical" href="http://yourdomain.com/haskell/tutorials/2015/08/21/haskell-tut-v1.html">
@@ -65,7 +65,14 @@
   </header>
 
   <article class="post-content">
-    <h2>The interactive Haskell interpreter, GHCi</h2>
+    <ul>
+<li>  <a href="#overview">The interactive Haskell interpreter</a></li>
+<li>  <a href="#lambda">Notation for functional programs</a></li>
+<li>  <a href="#overview">The interactive Haskell interpreter</a></li>
+<li>  <a href="#lambda">Notation for functional programs</a></li>
+</ul>
+
+<h2>The interactive Haskell interpreter, GHCi  <a id="overview"/></h2>
 
 <p>In the following we show an example interactive session with GHCi, to familiarize the reader with the notation and some fundamental concepts of the language. Only a minimal familiarity with programming concepts and mathematical notation is required.</p>
 
@@ -86,6 +93,8 @@ the reader is encouraged to install the latest version of the <a href="http://ww
 <hr>
 
 <h1>First steps with GHCi</h1>
+
+<p><a id="firststeps" /></p>
 
 <p>Starting from the very basics : </p>
 
@@ -123,6 +132,8 @@ Because many things have number-like properties (can be counted, added, subtract
 <p>The exponential <code>exp</code> is a function of a single parameter (a real number, here represented as a <code>Floating</code> point value): $$y(x) = e ^ x,\; x,y \in \mathbb{R}$$ </p>
 
 <h1>Text characters, strings and lists</h1>
+
+<p><a id="lists" /></p>
 
 <div class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="o">&gt;</span> <span class="kt">:</span><span class="n">t</span> <span class="n">&#39;a&#39;</span>
 <span class="n">&#39;a&#39;</span> <span class="ow">::</span> <span class="kt">Char</span>
@@ -222,6 +233,8 @@ The ordering relation <code>(&gt;)</code> is a binary operator (since it compare
 <hr>
 
 <h2>Notation for functional programs</h2>
+
+<p><a id="lambda" /></p>
 
 <blockquote>
 <p>Anonymous expressions (often called &quot;lambda&quot; expressions) let us define what a function <em>does</em>, and to separate this from what we choose to call it.</p>
