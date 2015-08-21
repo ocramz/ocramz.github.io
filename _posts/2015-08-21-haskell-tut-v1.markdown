@@ -271,6 +271,8 @@ As an example, we can apply the ``squared'' function to an arbitrary value:
 
 # Function composition 
 
+What does it mean to "compose functions"? If we think of a function as a machine on a factory floor, feeding the output of one (_g_, say)  into the input of the next (which we can call _f_) is a form of composition. This of course only works if the _f_ is designed to work on the outputs of _g_ (you wouldn't plug a grinder to an Easter egg packaging machine, for example)
+
 Here is a nested function application pattern, and below it the type signature of the corresponding library function:
 
 {% highlight haskell %}

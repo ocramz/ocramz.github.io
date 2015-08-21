@@ -6,8 +6,8 @@
 </description>
     <link>http://yourdomain.com/</link>
     <atom:link href="http://yourdomain.com/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Fri, 21 Aug 2015 18:35:27 +0200</pubDate>
-    <lastBuildDate>Fri, 21 Aug 2015 18:35:27 +0200</lastBuildDate>
+    <pubDate>Fri, 21 Aug 2015 18:44:10 +0200</pubDate>
+    <lastBuildDate>Fri, 21 Aug 2015 18:44:10 +0200</lastBuildDate>
     <generator>Jekyll v2.5.3</generator>
     
       <item>
@@ -239,6 +239,8 @@ The ordering relation &lt;code&gt;(&amp;gt;)&lt;/code&gt; is a binary operator (
 &lt;span class=&quot;mf&quot;&gt;0.9603999999999999&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;h1&gt;Function composition&lt;/h1&gt;
+
+&lt;p&gt;What does it mean to &amp;quot;compose functions&amp;quot;? If we think of a function as a machine on a factory floor, feeding the output of one (&lt;em&gt;g&lt;/em&gt;, say)  into the input of the next (which we can call &lt;em&gt;f&lt;/em&gt;) is a form of composition. This of course only works if the &lt;em&gt;f&lt;/em&gt; is designed to work on the outputs of &lt;em&gt;g&lt;/em&gt; (you wouldn&amp;#39;t plug a grinder to an Easter egg packaging machine, for example)&lt;/p&gt;
 
 &lt;p&gt;Here is a nested function application pattern, and below it the type signature of the corresponding library function:&lt;/p&gt;
 
