@@ -166,7 +166,7 @@ The arithmetic sum `(+)` and equality comparison `(==)` functions require two pa
 
 > This fundamental tool has many different uses, for example specializing a general function in a few different ways, by introducing very little additional syntax as we will see in the next sections.
 
-Operator sections are just shorthand for partial application on infix operators; however the usual caveats for non-commutative functions such as arithmetic division `/` apply:
+Operator sections are just shorthand for partial application of infix operators; however the usual caveats for non-commutative functions such as arithmetic division `/` apply:
 
 {% highlight haskell %}
 > (/2) 3
