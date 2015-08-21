@@ -181,7 +181,7 @@ foldr :: (a -> b -> b) -> b -> [a] -> b
 42
 {% endhighlight %}
 
-We will see the implementation of `map`, `foldr` and other functions in the following
+We will see the implementation of `map`, `foldr` and of a few other essential library functions in the following.
 
 It is very instructive to have a look at the [Haskell Prelude](https://hackage.haskell.org/package/base-4.8.0.0/docs/src/GHC-Base.html), the core library of the language.
 
@@ -397,6 +397,74 @@ A composition of `map`s is equivalent to _lifting_ an `(a -> b)` function to wor
 {% endhighlight %}
 
 and, since `map` is a binary function accepting a _function_ and a list, we can identify equal terms. In the line above, if we partially apply `(.) map` on `map`, `x` is identified with a function and `y` has to be a list, resulting in the initial identity.
+
+
+
+## Defining new symbols, functions and modules
+
+When in the interactive mode (or, equivalently, while we are working within the IO monad, more details in the following), we need the `let` construct, which behaves very much like its mathematical counterpart:
+
+
+{% highlight haskell %}
+
+> let a = pi / 2
+
+> a
+1.5707963267948966
+
+> let f x = if x=='o' then 'i' else x
+
+> :t f
+f :: Char -> Char
+
+> map f "potatoes"
+"pitaties"
+ 
+{% endhighlight %}
+
+In bulk code, there is no need for `let` for declaring a new entity; if we write the following in a blank text file named, say, `TestModule.hs` :
+
+{% highlight haskell %}
+
+module TestModule where
+
+f1 = (^2)
+
+v = [2,3,4]
+
+main = do
+  putStrLn $ map f1 v 
+{% endhighlight %}
+
+and load it with GHCi (from command line: `ghci TestModule.hs`), calling `main` will print `[4,9,16]` to screen.
+
+> In the previous code snippet we start to see one of Haskell's strength points: a clean separation of input-output ("IO") and purely functional code. 
+> The first line is a function, the second a piece of data, and the `main` function runs the example (in this case `map`ping the squaring function over the data) and displays on-screen the results as a newline-terminated string with `putStrLn`.
+
+
+## Pattern matching
+# Recursive functions
+
+> Haskell allows multiple declarations of any function, that are applied according to the arguments; this of course can hold only if the type signatures match and the declarations are mutually exclusive and complementary.
+
+As an example, this is the implementation of `map`:
+
+{% highlight haskell %}
+map f [] = []
+map f (x:xs) = f x : map f xs
+{% endhighlight %}
+
+The above code recursively consumes the list supplied as second argument by applying `f` to its first element and appending the result (with `(:)`) to the output array. The first declaration is used if the supplied list is empty, which also holds at the base case of the recursion.
+
+> A _fold_ operation is to obtain a "summary" value from a set of values.
+
+The right-associative fold (`foldr`) is defined recursively as:
+
+{% highlight haskell %}
+foldr f z []     = z
+foldr f z (x:xs) = f x (foldr f z xs)
+{% endhighlight %}
+
 
 {% highlight haskell %}
 
