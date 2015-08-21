@@ -10,7 +10,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <title>Introduction to functional programming with Haskell</title>
-  <meta name="description" content="  The interactive Haskell compiler  Notation for functional programs  Defining new symbols, functions and modules  Datatypes">
+  <meta name="description" content="  The interactive Haskell compiler  Notation for functional programs  Defining new symbols, functions and modules  Pattern matching  Datatypes">
 
   <link rel="stylesheet" href="/css/main.css">
   <link rel="canonical" href="http://yourdomain.com/haskell/tutorials/2015/08/21/haskell-tut-v1.html">
@@ -69,6 +69,7 @@
 <li>  <a href="#overview">The interactive Haskell compiler</a></li>
 <li>  <a href="#lambda">Notation for functional programs</a></li>
 <li>  <a href="#io">Defining new symbols, functions and modules</a></li>
+<li>  <a href="#pattern">Pattern matching</a></li>
 <li>  <a href="#data">Datatypes</a></li>
 </ul>
 
@@ -241,7 +242,7 @@ The ordering relation <code>(&gt;)</code> is a binary operator (since it compare
 <h2>Notation for functional programs</h2>
 
 <blockquote>
-<p>Anonymous expressions (often called &quot;lambda&quot; expressions) let us define what a function <em>does</em>, and to separate this from what we choose to call it.</p>
+<p>Anonymous expressions (often called &quot;lambda&quot; functions) let us define what a function <em>does</em>, and to separate this from what we choose to call it.</p>
 </blockquote>
 
 <p>They often are used as single-use functions, if a certain functionality is too specific to be given a name; the pattern is <code>\ x -&gt; f x</code>, in which what lies to the left of the arrow is the set of free variables (separated by spaces if more than one), and what lies to the right is an arbitrarily complex function of these and other variables (this might be read &quot;for any given <em>x</em>, give me the result of function <em>f</em> applied on <em>x</em>&quot;, or $$\forall x, f(x)$$</p>
@@ -283,7 +284,7 @@ The ordering relation <code>(&gt;)</code> is a binary operator (since it compare
 <p>The library function <code>($)</code> captures the function application pattern shown in the definition above it.</p>
 
 <blockquote>
-<p>As the first example above shows, some function arguments are <strong>inferred</strong> to be functions_ by how they are used in the body of the lambda expression. </p>
+<p>As the first example above shows, <strong>some function arguments are inferred to be functions_ by how they are used in the body</strong> of the (anonymous) function. </p>
 
 <p>Functions as &quot;first class values&quot; (i.e. that can be used and passed around just like regular values) are one of the defining features of functional programming languages, and it is fundamental to absorb this concept early.</p>
 </blockquote>
@@ -438,6 +439,8 @@ The following two expressions are identical, in this sense; the latter being the
 <p>In the previous code snippet we start to see one of Haskell&#39;s strength points: a clean separation of input-output (&quot;IO&quot;) and purely functional code. 
 The first line is a function, the second a piece of data, and the <code>main</code> function runs the example (in this case <code>map</code>ping the squaring function over the data) and displays on-screen the results as a newline-terminated string with <code>putStrLn</code>.</p>
 </blockquote>
+
+<p><a id="pattern" /></a></p>
 
 <h2>Pattern matching</h2>
 

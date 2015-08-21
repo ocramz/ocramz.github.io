@@ -9,6 +9,7 @@ categories: Haskell tutorials
 *   [The interactive Haskell compiler](#overview)
 *   [Notation for functional programs](#lambda)
 *   [Defining new symbols, functions and modules](#io)
+*   [Pattern matching](#pattern)
 *   [Datatypes](#data)
 
 <a id="overview" /> </a>
@@ -205,7 +206,7 @@ It is very instructive to have a look at the [Haskell Prelude](https://hackage.h
 ## Notation for functional programs
 
 
-> Anonymous expressions (often called "lambda" expressions) let us define what a function _does_, and to separate this from what we choose to call it.
+> Anonymous expressions (often called "lambda" functions) let us define what a function _does_, and to separate this from what we choose to call it.
 
 They often are used as single-use functions, if a certain functionality is too specific to be given a name; the pattern is `\ x -> f x`, in which what lies to the left of the arrow is the set of free variables (separated by spaces if more than one), and what lies to the right is an arbitrarily complex function of these and other variables (this might be read "for any given _x_, give me the result of function _f_ applied on _x_", or $$\forall x, f(x)$$
 
@@ -254,7 +255,7 @@ If the body of the lambda expression contains function application syntax, we ca
 {% endhighlight %}
 The library function `($)` captures the function application pattern shown in the definition above it.
 
-> As the first example above shows, some function arguments are __inferred__ to be functions_ by how they are used in the body of the lambda expression. 
+> As the first example above shows, __some function arguments are inferred to be functions_ by how they are used in the body__ of the (anonymous) function. 
 
 > Functions as "first class values" (i.e. that can be used and passed around just like regular values) are one of the defining features of functional programming languages, and it is fundamental to absorb this concept early.
 
@@ -457,6 +458,7 @@ and load it with GHCi (from command line: `ghci TestModule.hs`), calling `main` 
 > The first line is a function, the second a piece of data, and the `main` function runs the example (in this case `map`ping the squaring function over the data) and displays on-screen the results as a newline-terminated string with `putStrLn`.
 
 
+<a id="pattern" /></a>
 ## Pattern matching
 # Recursive functions
 
