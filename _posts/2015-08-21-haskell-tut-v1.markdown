@@ -140,7 +140,7 @@ filter :: (a -> Bool) -> [a] -> [a]
 `filter` is our first example of _higher order function_; it requires as arguments a _function_ of type `a -> Bool` and a list of `a`s and returns the subset of the input list that verifies the filtering function.
 
 In the previous code block, we also see the first example of _operator section_:
-`(> 2) :: (Ord a, Num a) => a -> Bool`, passed as first argument to `filter`. 
+`(> 2)`, passed as first argument to `filter`. 
 The ordering relation `(>)` is a binary operator (since it compares two values and returns True or False), but `(> 2)` takes only one argument and returns a Boolean.
 
 The following examples should clarify the idea:
