@@ -76,6 +76,7 @@ exp :: Floating a => a -> a
 
 The exponential `exp` is a function of a single parameter (a real number, here represented as a `Floating` point value): $$y(x) = e ^ x,\; x,y \in \mathbb{R}$$ 
 
+> Why `Floating a` and not `Num a`, for instance? Because `Num` is the most general typeclass of numbers (i.e including fractionals, integers etc.), but transcendental numbers such as `pi` and `exp 1` live in a "smaller" set, that is, require a more specialized definition.
 
 
 # Text characters, strings and lists 

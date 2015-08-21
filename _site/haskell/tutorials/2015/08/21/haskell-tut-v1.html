@@ -131,6 +131,10 @@ Because many things have number-like properties (can be counted, added, subtract
 
 <p>The exponential <code>exp</code> is a function of a single parameter (a real number, here represented as a <code>Floating</code> point value): $$y(x) = e ^ x,\; x,y \in \mathbb{R}$$ </p>
 
+<blockquote>
+<p>Why <code>Floating a</code> and not <code>Num a</code>, for instance? Because <code>Num</code> is the most general typeclass of numbers (i.e including fractionals, integers etc.), but transcendental numbers such as <code>pi</code> and <code>exp 1</code> live in a &quot;smaller&quot; set, that is, require a more specialized definition.</p>
+</blockquote>
+
 <h1>Text characters, strings and lists</h1>
 
 <div class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="o">&gt;</span> <span class="kt">:</span><span class="n">t</span> <span class="n">&#39;a&#39;</span>
