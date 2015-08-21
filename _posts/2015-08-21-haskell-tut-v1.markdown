@@ -254,7 +254,7 @@ If the body of the lambda expression contains function application syntax, we ca
 {% endhighlight %}
 The library function `($)` captures the function application pattern shown in the definition above it.
 
-> As the first example above shows, some function arguments are _inferred to be functions_ by how they are used in the body of the lambda expression. 
+> As the first example above shows, some function arguments are __inferred__ to be functions_ by how they are used in the body of the lambda expression. 
 
 > Functions as "first class values" (i.e. that can be used and passed around just like regular values) are one of the defining features of functional programming languages, and it is fundamental to absorb this concept early.
 
