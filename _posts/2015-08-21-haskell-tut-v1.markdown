@@ -2,7 +2,7 @@
 layout: post
 title: Introduction to functional programming with Haskell
 date: 2015-08-21
-categories: Haskell, tutorials
+categories: Haskell tutorials
 ---
 
 ## The interactive Haskell interpreter, GHCi
