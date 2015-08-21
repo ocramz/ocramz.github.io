@@ -714,7 +714,7 @@ safeDiv :: (Eq a, Fractional a) => a -> a -> Maybe a
 
 # Recursive types 
 
-Next, we introduce a handy binary tree type `Tree a`, which can be either a "leaf" `L` carrying a type `a`, i.e. `L a`, or a ``branch'' `B` carrying two `Tree a`'s.
+Next, we introduce a handy binary tree type `Tree a`, which can be either a "leaf" `L` carrying a type `a`, i.e. `L a`, or a "branch" `B` carrying two `Tree a`'s.
 
 {% highlight haskell %}
 > data Tree a = L a | B (Tree a) (Tree a) deriving Show

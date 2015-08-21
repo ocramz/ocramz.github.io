@@ -666,7 +666,7 @@ If a datatype is an instance of one or more classes, it &quot;inherits&quot; the
 
 <h1>Recursive types</h1>
 
-<p>Next, we introduce a handy binary tree type <code>Tree a</code>, which can be either a &quot;leaf&quot; <code>L</code> carrying a type <code>a</code>, i.e. <code>L a</code>, or a `<code>branch&#39;&#39;</code>B<code>carrying two</code>Tree a`&#39;s.</p>
+<p>Next, we introduce a handy binary tree type <code>Tree a</code>, which can be either a &quot;leaf&quot; <code>L</code> carrying a type <code>a</code>, i.e. <code>L a</code>, or a &quot;branch&quot; <code>B</code> carrying two <code>Tree a</code>&#39;s.</p>
 
 <div class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="o">&gt;</span> <span class="kr">data</span> <span class="kt">Tree</span> <span class="n">a</span> <span class="ow">=</span> <span class="kt">L</span> <span class="n">a</span> <span class="o">|</span> <span class="kt">B</span> <span class="p">(</span><span class="kt">Tree</span> <span class="n">a</span><span class="p">)</span> <span class="p">(</span><span class="kt">Tree</span> <span class="n">a</span><span class="p">)</span> <span class="kr">deriving</span> <span class="kt">Show</span>
 
