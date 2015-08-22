@@ -561,14 +561,14 @@ The two following signatures represent exactly this, and in the third line we se
 It seems like `[]` and `(:)` are intimately connected: both are necessary to build a non-trivial list. Having a "neutral element" and an (associative) "appending" operation is the characteristic of a certain algebraic idea called a _Monoid_, but discussing the details would distract us at this point.
 For now, it suffices to say that `[]` and `(:)` are the _constructor_ (methods) of the empty and nontrivial list respectively, and as such, we can "pattern match" on them to decide which branch of a declaration applies to the given inputs.
 
-The notation `(x:xs)` in the calling signature is one such example of "pattern matching on the constructor of the input data". `x` and `xs`, interpreted as an element of type `a` and list containing elements of the same type, `[a]`, respectively, will be used in the body of the function as usual.
+The notation `(x:xs)` in the calling sequence of `map`, `foldr` etc. is one such example of "pattern matching on the constructor of the input data". `x` and `xs`, interpreted as an element of type `a` and list containing elements of the same type, `[a]`, respectively, will be used in the body of the function as usual.
 
 
 -----
 
-A _fold_ operation is to obtain a "summary" value from a set of values.
+Let us now return to recursive functions that take apart their arguments by pattern matching.
 
-The right-associative fold (`foldr`) is defined recursively as:
+A _fold_ operation is to obtain a "summary" value from a set of values. The right-associative fold (`foldr`) is defined recursively as:
 
 {% highlight haskell %}
 foldr f z []     = z
