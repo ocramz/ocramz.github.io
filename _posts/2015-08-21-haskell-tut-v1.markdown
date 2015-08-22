@@ -565,7 +565,7 @@ oddness x
          sx = show x
 
 buzz x 
-   | f || g  = 0
+   | f || g  = 0             -- (||) is the logical OR operation
    | even x = 1
    | otherwise = 2 
        where
@@ -575,7 +575,7 @@ buzz x
 
 The options (expressions after `|`) are evaluated in top-to-bottom order, and the last one is only evaluated if none of the previous ones evaluates to `True`.
 
-Pattern guards are convenient syntax for deciding which conditional branch to take according to the _value_ contained in one or more of the input variables. Note that the functions acting as pattern guards (e.g. `odd x`, `(mod x 3) == 0`) have to return a Boolean, and only after the `=` sign do we specify the return value for each branch.
+Pattern guards are convenient syntax for deciding which conditional branch to take according to the _value_ contained in one or more of the input variables. Note that the functions acting as pattern guards (e.g. `odd x`, `f || g`) have to return a Boolean, and only after the `=` sign do we specify the return value for each branch.
 
 > Quiz: what are the type signatures of `oddness` and `buzz` and why ? 
 

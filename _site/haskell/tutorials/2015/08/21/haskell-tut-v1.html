@@ -546,7 +546,7 @@ The first line is a function, the second a piece of data, and the <code>main</co
          <span class="n">sx</span> <span class="ow">=</span> <span class="n">show</span> <span class="n">x</span>
 
 <span class="nf">buzz</span> <span class="n">x</span> 
-   <span class="o">|</span> <span class="n">f</span> <span class="o">||</span> <span class="n">g</span>  <span class="ow">=</span> <span class="mi">0</span>
+   <span class="o">|</span> <span class="n">f</span> <span class="o">||</span> <span class="n">g</span>  <span class="ow">=</span> <span class="mi">0</span>             <span class="c1">-- (||) is the logical OR operation</span>
    <span class="o">|</span> <span class="n">even</span> <span class="n">x</span> <span class="ow">=</span> <span class="mi">1</span>
    <span class="o">|</span> <span class="n">otherwise</span> <span class="ow">=</span> <span class="mi">2</span> 
        <span class="kr">where</span>
@@ -555,7 +555,7 @@ The first line is a function, the second a piece of data, and the <code>main</co
 
 <p>The options (expressions after <code>|</code>) are evaluated in top-to-bottom order, and the last one is only evaluated if none of the previous ones evaluates to <code>True</code>.</p>
 
-<p>Pattern guards are convenient syntax for deciding which conditional branch to take according to the <em>value</em> contained in one or more of the input variables. Note that the functions acting as pattern guards (e.g. <code>odd x</code>, <code>(mod x 3) == 0</code>) have to return a Boolean, and only after the <code>=</code> sign do we specify the return value for each branch.</p>
+<p>Pattern guards are convenient syntax for deciding which conditional branch to take according to the <em>value</em> contained in one or more of the input variables. Note that the functions acting as pattern guards (e.g. <code>odd x</code>, <code>f || g</code>) have to return a Boolean, and only after the <code>=</code> sign do we specify the return value for each branch.</p>
 
 <blockquote>
 <p>Quiz: what are the type signatures of <code>oddness</code> and <code>buzz</code> and why ? </p>
