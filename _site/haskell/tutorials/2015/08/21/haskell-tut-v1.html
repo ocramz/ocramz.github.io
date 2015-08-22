@@ -696,6 +696,8 @@ If a datatype is an instance of one or more classes, it &quot;inherits&quot; the
 <p>Concise code has very far-reaching implications, besides just &quot;looking clever&quot;: it greatly simplifies reasoning, checking for correctness, refactoring and knowledge propagation. This is one of the many examples in which Haskell&#39;s theoretical foundations have very practical advantages.</p>
 </blockquote>
 
+<p>For instance, imagine having one day to update the matching criterion, i.e. the function <code>deliver</code> in our case; it&#39;s a single line change, and as long as the types match, the whole code will still be correct.</p>
+
 <p>An example data entry for the delivery example above:</p>
 
 <div class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="nf">name1</span> <span class="ow">=</span> <span class="kt">N</span> <span class="s">&quot;John Doe&quot;</span>

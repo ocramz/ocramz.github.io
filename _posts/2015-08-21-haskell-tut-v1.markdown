@@ -721,6 +721,8 @@ todaysDeliveries :: AddrN -> AddrN -> [Contact] -> [Contact]
 
 > Concise code has very far-reaching implications, besides just "looking clever": it greatly simplifies reasoning, checking for correctness, refactoring and knowledge propagation. This is one of the many examples in which Haskell's theoretical foundations have very practical advantages.
 
+For instance, imagine having one day to update the matching criterion, i.e. the function `deliver` in our case; it's a single line change, and as long as the types match, the whole code will still be correct.
+
 An example data entry for the delivery example above:
 
 {% highlight haskell %}
