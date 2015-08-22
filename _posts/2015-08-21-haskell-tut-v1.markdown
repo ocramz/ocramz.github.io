@@ -448,9 +448,12 @@ and, since `map` is a binary function accepting a _function_ and a list, we can 
 Let's recycle `testData` from the example before to try it out:
 
 {% highlight haskell %}
-> (map . map) (> 100) testData
-[[False,False],[True,False,True,False],[True]]
+
+> (map . map) (\s -> if s > 100 then '+' else '-') testData
+["--","+-+-","+"]
 {% endhighlight %}
+
+"Wow, if-then-else like in normal languages !" 
 
 
 ---------
