@@ -410,12 +410,12 @@ The following two expressions are identical, in this sense; the latter being the
 
 # Examples 
 
-Let's try together a few of the things we've see so far: anonymous functions, partial application, the higher order function `map :: (a -> b) -> [a] -> [b]`, and operate on a list-of-lists for the first time:
+Let's try together a few of the things we've see so far: partial application, function composition, the higher order function `map :: (a -> b) -> [a] -> [b]`, and operate on a list-of-lists for the first time:
 
 {% highlight haskell %}
 > let testData = [[1,2],[23452,24,515,0],[2351661]]
 
-> let listShorterThan m = (\x -> length x < m)
+> let listShorterThan m = (m >) . length 
 
 > :t listShorterThan
 f :: Int -> [a] -> Bool

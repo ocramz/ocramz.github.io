@@ -406,11 +406,11 @@ The following two expressions are identical, in this sense; the latter being the
 
 <h1>Examples</h1>
 
-<p>Let&#39;s try together a few of the things we&#39;ve see so far: anonymous functions, partial application, the higher order function <code>map :: (a -&gt; b) -&gt; [a] -&gt; [b]</code>, and operate on a list-of-lists for the first time:</p>
+<p>Let&#39;s try together a few of the things we&#39;ve see so far: partial application, function composition, the higher order function <code>map :: (a -&gt; b) -&gt; [a] -&gt; [b]</code>, and operate on a list-of-lists for the first time:</p>
 
 <div class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="o">&gt;</span> <span class="kr">let</span> <span class="n">testData</span> <span class="ow">=</span> <span class="p">[[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">],[</span><span class="mi">23452</span><span class="p">,</span><span class="mi">24</span><span class="p">,</span><span class="mi">515</span><span class="p">,</span><span class="mi">0</span><span class="p">],[</span><span class="mi">2351661</span><span class="p">]]</span>
 
-<span class="o">&gt;</span> <span class="kr">let</span> <span class="n">listShorterThan</span> <span class="n">m</span> <span class="ow">=</span> <span class="p">(</span><span class="nf">\</span><span class="n">x</span> <span class="ow">-&gt;</span> <span class="n">length</span> <span class="n">x</span> <span class="o">&lt;</span> <span class="n">m</span><span class="p">)</span>
+<span class="o">&gt;</span> <span class="kr">let</span> <span class="n">listShorterThan</span> <span class="n">m</span> <span class="ow">=</span> <span class="p">(</span><span class="n">m</span> <span class="o">&gt;</span><span class="p">)</span> <span class="o">.</span> <span class="n">length</span> 
 
 <span class="o">&gt;</span> <span class="kt">:</span><span class="n">t</span> <span class="n">listShorterThan</span>
 <span class="nf">f</span> <span class="ow">::</span> <span class="kt">Int</span> <span class="ow">-&gt;</span> <span class="p">[</span><span class="n">a</span><span class="p">]</span> <span class="ow">-&gt;</span> <span class="kt">Bool</span>
