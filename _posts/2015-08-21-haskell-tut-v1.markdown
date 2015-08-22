@@ -702,6 +702,8 @@ or, more concisely:
 deliver' nMax nMin c = abs (nMax - nMin) > abs (houseNoContact c - nMin)
 {% endhighlight %}
 
+> Quiz: what is the type signature of `deliver'` and why?
+
 Partial application of both `deliver` and `filter` : 
 
 {% highlight haskell %}
@@ -799,6 +801,7 @@ B :: Tree a -> Tree a -> Tree a
 B (L 15) (L 27)
 {% endhighlight %}
 
+Trees have very convenient asymptotic performance for search and sorting operations, and they are naturally suited to be traversed with recursive logic in Haskell.
 
 {% highlight haskell %}
 {% endhighlight %}
