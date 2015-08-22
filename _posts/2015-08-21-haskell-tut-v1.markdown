@@ -544,11 +544,9 @@ For now, it suffices to say that `[]` and `(:)` are the _constructor_ (methods) 
 The notation `(x:xs)` in the calling signature is one such example of "pattern matching on the constructor of the input data". `x` and `xs`, interpreted as an element of type `a` and list containing elements of the same type, `[a]`, respectively, will be used in the body of the function as usual.
 
 
+-----
 
-
-
-
-> A _fold_ operation is to obtain a "summary" value from a set of values.
+A _fold_ operation is to obtain a "summary" value from a set of values.
 
 The right-associative fold (`foldr`) is defined recursively as:
 
