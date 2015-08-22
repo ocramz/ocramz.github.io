@@ -191,7 +191,8 @@ foldr :: (a -> b -> b) -> b -> [a] -> b
 {% endhighlight %}
 
 
-`map` can be interpreted right from its signature: given a function from `a` to `b`, and a list of `a`s, it returns a list of `b`s, obtained by applying the function to every element of the input array.\\
+`map` can be interpreted right from its signature: given a function from `a` to `b`, and a list of `a`s, it returns a list of `b`s, obtained by applying the function to every element of the input array.
+
 `foldr` is a right-to-left `fold`; it requires a binary function say `f`, an initial element of type `b` (the "accumulator") and a list of `a`s, and recursively applies `f` to the accumulator and the current first element of the remaining list. For example:
 
 {% highlight haskell %}
