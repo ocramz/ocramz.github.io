@@ -206,14 +206,14 @@ The ordering relation <code>(&gt;)</code> is a binary operator (since it compare
 <p>The arithmetic sum <code>(+)</code> and equality comparison <code>(==)</code> functions require two parameters, but fixing the first one to e.g. a constant is equivalent to considering functions of the remaining number of arguments. This is an instance of <em>partial evaluation</em>, ubiquitous in Haskell and very powerful.</p>
 
 <blockquote>
-<p>Haskell functions are &quot;curried&quot; by default. This means that N-ary functions (functions of N arguments) can be considered as taking arguments in sequence.</p>
+<p>Haskell functions are &quot;curried&quot; by default. This means that N-ary functions (functions of N arguments) can be considered as taking arguments in sequence, rather than all at once.</p>
 
 <p>This enables <em>partial evaluation</em>, i.e. creating new functions of fewer arguments by fixing some in the original function.</p>
 
 <p>This fundamental tool has many different uses, for example specializing a general function in a few different ways, by introducing very little additional syntax as we will see in the next sections.</p>
 </blockquote>
 
-<p>Operator sections are just shorthand for partial application of infix operators; however the usual caveats for non-commutative functions such as arithmetic division <code>/</code> apply:</p>
+<p>Operator sections are just shorthand for partial application of infix operators; however the usual caveats for non-commutative functions such as arithmetic division <code>/</code> apply; as the following snippet shows for numbers, &quot;.. over two&quot; and &quot;two over ..&quot; have clearly different meanings.</p>
 
 <div class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="o">&gt;</span> <span class="p">(</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span> <span class="mi">3</span>
 <span class="mf">1.5</span>
@@ -429,7 +429,7 @@ The following two expressions are identical, in this sense; the latter being the
 <div class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="o">&gt;</span> <span class="kt">:</span><span class="n">t</span> <span class="p">(</span><span class="o">.</span><span class="p">)</span> <span class="n">map</span>
 <span class="p">(</span><span class="o">.</span><span class="p">)</span> <span class="n">map</span> <span class="ow">::</span> <span class="p">(</span><span class="n">x</span> <span class="ow">-&gt;</span> <span class="n">y</span> <span class="ow">-&gt;</span> <span class="n">z</span><span class="p">)</span> <span class="ow">-&gt;</span> <span class="n">x</span> <span class="ow">-&gt;</span> <span class="p">[</span><span class="n">y</span><span class="p">]</span> <span class="ow">-&gt;</span> <span class="p">[</span><span class="n">z</span><span class="p">]</span></code></pre></div>
 
-<p>and, since <code>map</code> is a binary function accepting a <em>function</em> and a list, we can identify equal terms. In the line above, if we partially apply <code>(.) map</code> on <code>map</code>, <code>x</code> is identified with a function and <code>y</code> has to be a list, resulting in the initial identity.</p>
+<p>and, since <code>map</code> is a binary function accepting a <em>function</em> and a list, we can identify equal terms. In the line above, if we partially apply <code>(.) map</code> on <code>map</code>, <code>x</code> is identified with a function and <code>y</code> has to be a list, resulting in the initial type identity.</p>
 
 <p><a id="io"> </a></p>
 

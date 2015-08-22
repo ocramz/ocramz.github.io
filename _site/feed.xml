@@ -6,8 +6,8 @@
 </description>
     <link>http://yourdomain.com/</link>
     <atom:link href="http://yourdomain.com/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sat, 22 Aug 2015 13:53:44 +0200</pubDate>
-    <lastBuildDate>Sat, 22 Aug 2015 13:53:44 +0200</lastBuildDate>
+    <pubDate>Sat, 22 Aug 2015 15:22:22 +0200</pubDate>
+    <lastBuildDate>Sat, 22 Aug 2015 15:22:22 +0200</lastBuildDate>
     <generator>Jekyll v2.5.3</generator>
     
       <item>
@@ -153,14 +153,14 @@ The ordering relation &lt;code&gt;(&amp;gt;)&lt;/code&gt; is a binary operator (
 &lt;p&gt;The arithmetic sum &lt;code&gt;(+)&lt;/code&gt; and equality comparison &lt;code&gt;(==)&lt;/code&gt; functions require two parameters, but fixing the first one to e.g. a constant is equivalent to considering functions of the remaining number of arguments. This is an instance of &lt;em&gt;partial evaluation&lt;/em&gt;, ubiquitous in Haskell and very powerful.&lt;/p&gt;
 
 &lt;blockquote&gt;
-&lt;p&gt;Haskell functions are &amp;quot;curried&amp;quot; by default. This means that N-ary functions (functions of N arguments) can be considered as taking arguments in sequence.&lt;/p&gt;
+&lt;p&gt;Haskell functions are &amp;quot;curried&amp;quot; by default. This means that N-ary functions (functions of N arguments) can be considered as taking arguments in sequence, rather than all at once.&lt;/p&gt;
 
 &lt;p&gt;This enables &lt;em&gt;partial evaluation&lt;/em&gt;, i.e. creating new functions of fewer arguments by fixing some in the original function.&lt;/p&gt;
 
 &lt;p&gt;This fundamental tool has many different uses, for example specializing a general function in a few different ways, by introducing very little additional syntax as we will see in the next sections.&lt;/p&gt;
 &lt;/blockquote&gt;
 
-&lt;p&gt;Operator sections are just shorthand for partial application of infix operators; however the usual caveats for non-commutative functions such as arithmetic division &lt;code&gt;/&lt;/code&gt; apply:&lt;/p&gt;
+&lt;p&gt;Operator sections are just shorthand for partial application of infix operators; however the usual caveats for non-commutative functions such as arithmetic division &lt;code&gt;/&lt;/code&gt; apply; as the following snippet shows for numbers, &amp;quot;.. over two&amp;quot; and &amp;quot;two over ..&amp;quot; have clearly different meanings.&lt;/p&gt;
 
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-haskell&quot; data-lang=&quot;haskell&quot;&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;
 &lt;span class=&quot;mf&quot;&gt;1.5&lt;/span&gt;
@@ -376,7 +376,7 @@ The following two expressions are identical, in this sense; the latter being the
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-haskell&quot; data-lang=&quot;haskell&quot;&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;t&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;map&lt;/span&gt;
 &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;map&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;::&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;y&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;z&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;y&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;z&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-&lt;p&gt;and, since &lt;code&gt;map&lt;/code&gt; is a binary function accepting a &lt;em&gt;function&lt;/em&gt; and a list, we can identify equal terms. In the line above, if we partially apply &lt;code&gt;(.) map&lt;/code&gt; on &lt;code&gt;map&lt;/code&gt;, &lt;code&gt;x&lt;/code&gt; is identified with a function and &lt;code&gt;y&lt;/code&gt; has to be a list, resulting in the initial identity.&lt;/p&gt;
+&lt;p&gt;and, since &lt;code&gt;map&lt;/code&gt; is a binary function accepting a &lt;em&gt;function&lt;/em&gt; and a list, we can identify equal terms. In the line above, if we partially apply &lt;code&gt;(.) map&lt;/code&gt; on &lt;code&gt;map&lt;/code&gt;, &lt;code&gt;x&lt;/code&gt; is identified with a function and &lt;code&gt;y&lt;/code&gt; has to be a list, resulting in the initial type identity.&lt;/p&gt;
 
 &lt;p&gt;&lt;a id=&quot;io&quot;&gt; &lt;/a&gt;&lt;/p&gt;
 

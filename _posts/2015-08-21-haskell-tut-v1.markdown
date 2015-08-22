@@ -161,13 +161,13 @@ The following examples should clarify the idea:
 The arithmetic sum `(+)` and equality comparison `(==)` functions require two parameters, but fixing the first one to e.g. a constant is equivalent to considering functions of the remaining number of arguments. This is an instance of _partial evaluation_, ubiquitous in Haskell and very powerful.
 
 
-> Haskell functions are "curried" by default. This means that N-ary functions (functions of N arguments) can be considered as taking arguments in sequence.
+> Haskell functions are "curried" by default. This means that N-ary functions (functions of N arguments) can be considered as taking arguments in sequence, rather than all at once.
 
 > This enables _partial evaluation_, i.e. creating new functions of fewer arguments by fixing some in the original function.
 
 > This fundamental tool has many different uses, for example specializing a general function in a few different ways, by introducing very little additional syntax as we will see in the next sections.
 
-Operator sections are just shorthand for partial application of infix operators; however the usual caveats for non-commutative functions such as arithmetic division `/` apply:
+Operator sections are just shorthand for partial application of infix operators; however the usual caveats for non-commutative functions such as arithmetic division `/` apply; as the following snippet shows for numbers, ".. over two" and "two over .." have clearly different meanings.
 
 {% highlight haskell %}
 > (/2) 3
@@ -438,7 +438,7 @@ A composition of `map`s is equivalent to _lifting_ an `(a -> b)` function to wor
 (.) map :: (x -> y -> z) -> x -> [y] -> [z]
 {% endhighlight %}
 
-and, since `map` is a binary function accepting a _function_ and a list, we can identify equal terms. In the line above, if we partially apply `(.) map` on `map`, `x` is identified with a function and `y` has to be a list, resulting in the initial identity.
+and, since `map` is a binary function accepting a _function_ and a list, we can identify equal terms. In the line above, if we partially apply `(.) map` on `map`, `x` is identified with a function and `y` has to be a list, resulting in the initial type identity.
 
 
 <a id="io"> </a>
