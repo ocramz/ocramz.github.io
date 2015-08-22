@@ -638,7 +638,7 @@ Tee :: [(Bool, String)] -> Char -> Test
 
 In the above example, we have declared a `Test` datatype with constructor `Tee` and two records, the first of which is of a composite type, and created a `test2` object of this type.
 
-Next, we access an internal field in a purely functional style, by composition of elementary functions. This idea of functional manipulation of "getter"/"setter" methods for nested datastructure is called _lensing_, and it is implemented and greatly expanded in a few packages such as [lens](https://hackage.haskell.org/package/lens), which however is beyond the scope of this tutorial.
+Next, we access an internal field in a purely functional style, by composition of elementary functions. This idea of functional manipulation of "getter"/"setter" methods for nested datastructure is called _lensing_, and it is implemented (and greatly expanded) in a few packages such as [lens](https://hackage.haskell.org/package/lens), which however is beyond the scope of this tutorial.
 
 > What happens if we supply an integer to the Tee constructor, instead of the expected list of `(Bool, String)` tuples? Our first type error! <3
 
