@@ -6,8 +6,8 @@
 </description>
     <link>http://yourdomain.com/</link>
     <atom:link href="http://yourdomain.com/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sat, 22 Aug 2015 12:52:18 +0200</pubDate>
-    <lastBuildDate>Sat, 22 Aug 2015 12:52:18 +0200</lastBuildDate>
+    <pubDate>Sat, 22 Aug 2015 13:16:11 +0200</pubDate>
+    <lastBuildDate>Sat, 22 Aug 2015 13:16:11 +0200</lastBuildDate>
     <generator>Jekyll v2.5.3</generator>
     
       <item>
@@ -60,7 +60,7 @@ the reader is encouraged to install the latest version of the &lt;a href=&quot;h
 &lt;p&gt;Why is the type signature of something as simple as a number so verbose? 
 Because many things have number-like properties (can be counted, added, subtracted etc.): potatoes, firemen, structs containing arrays of CSV files, etc. &lt;/p&gt;
 
-&lt;p&gt;If a type is an &amp;quot;instance&amp;quot; of a typeclass such as &lt;code&gt;Num&lt;/code&gt;, the corresponding functions to operate &amp;quot;numerically&amp;quot;, e.g. sum, product, absolute value etc., can be used on data objects belonging to it. Another way of seeing this is that &lt;code&gt;+&lt;/code&gt;, &lt;code&gt;*&lt;/code&gt;, &lt;code&gt;abs&lt;/code&gt; have been &amp;quot;overloaded&amp;quot; to be applicable on the given type as well. &lt;/p&gt;
+&lt;p&gt;If a type is an &amp;quot;instance&amp;quot; of a typeclass such as &lt;code&gt;Num&lt;/code&gt;, the corresponding functions to operate &amp;quot;numerically&amp;quot;, e.g. sum, product, absolute value etc., can be used on data objects belonging to it. Equivalently, by making it an instance of &lt;code&gt;Num&lt;/code&gt;, we have &amp;quot;stapled&amp;quot; additional numerical functionality onto our type. More about this deep idea in the next sections.&lt;/p&gt;
 &lt;/blockquote&gt;
 
 &lt;p&gt;Let&amp;#39;s interact some more with the interpreter and see what happens:&lt;/p&gt;
