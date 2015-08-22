@@ -352,7 +352,7 @@ The higher-order function `f2` accepts three arguments, the first of which is a 
 flip :: (a -> b -> c) -> (b -> a -> c)
 {% endhighlight %}
 
-(my parentheses on the rhs). Both `f2` and the library function `flip` return the input binary function but with exchanged order of arguments:
+(my parentheses on the right hand side). Both `f2` and the library function `flip` return the input binary function but with exchanged order of arguments:
 
 {% highlight haskell %}
 > let pow = (^)
