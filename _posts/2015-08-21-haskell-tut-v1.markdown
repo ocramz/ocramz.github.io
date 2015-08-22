@@ -213,7 +213,6 @@ Whew! In this introductory section we have alread seen quite a few new concepts:
 
 * types
 * classes of types (a.k.a. _typeclasses_ `Num`, `Floating`, `Eq`, `Ord` ...)
-* lists and list functions
 * higher order functions
 * partial application, operator sections
 
