@@ -410,7 +410,23 @@ The following two expressions are identical, in this sense; the latter being the
 
 # Examples 
 
-Let us recall the right-fold function `foldr`, and see it partially applied to the function composition operator `(.)`:
+Let's try together a few of the things we've see so far: anonymous functions, partial application, the higher order function `map :: (a -> b) -> [a] -> [b]`, and operate on a list-of-lists for the first time:
+
+{% highlight haskell %}
+> let testData = [[1,2],[23452,24,515,0],[2351661]]
+
+> let listShorterThan m = (\x -> length x < m)
+
+> :t listShorterThan
+f :: Int -> [a] -> Bool
+
+> map (listShorterThan 4) testData
+[True,False,True]
+{% endhighlight %}
+
+
+
+As an appetizer for more abstract things ,let us recall the right-fold function `foldr`, and see it partially applied to the function composition operator `(.)`:
 
 {% highlight haskell %}
 > :t foldr
@@ -626,6 +642,7 @@ Let's declare a slightly larger datatype constructor and try out its accessor fu
 
 > :t Tee
 Tee :: [(Bool, String)] -> Char -> Test
+
 
 > let test2 = Tee [(True, "boop")] 'x'
 
