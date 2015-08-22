@@ -602,17 +602,20 @@ If a datatype is an instance of one or more classes, it &quot;inherits&quot; the
 
 <p>Let&#39;s declare a slightly larger datatype constructor and try out its accessor functions:</p>
 
-<div class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="o">&gt;</span> <span class="kr">data</span> <span class="kt">Test</span> <span class="ow">=</span> <span class="kt">Tee</span> <span class="p">{</span> <span class="n">h</span> <span class="ow">::</span> <span class="p">[(</span><span class="kt">Bool</span><span class="p">,</span> <span class="kt">String</span><span class="p">)],</span> <span class="n">h1</span> <span class="ow">::</span> <span class="kt">Char</span> <span class="p">}</span>
+<div class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="o">&gt;</span> <span class="kr">data</span> <span class="kt">Test</span> <span class="ow">=</span> <span class="kt">Tee</span> <span class="p">{</span> <span class="n">h1</span> <span class="ow">::</span> <span class="p">[(</span><span class="kt">Bool</span><span class="p">,</span> <span class="kt">String</span><span class="p">)],</span> <span class="n">h2</span> <span class="ow">::</span> <span class="kt">Char</span> <span class="p">}</span>
 
 <span class="o">&gt;</span> <span class="kt">:</span><span class="n">t</span> <span class="kt">Tee</span>
 <span class="kt">Tee</span> <span class="ow">::</span> <span class="p">[(</span><span class="kt">Bool</span><span class="p">,</span> <span class="kt">String</span><span class="p">)]</span> <span class="ow">-&gt;</span> <span class="kt">Char</span> <span class="ow">-&gt;</span> <span class="kt">Test</span>
 
 <span class="o">&gt;</span> <span class="kr">let</span> <span class="n">test2</span> <span class="ow">=</span> <span class="kt">Tee</span> <span class="p">[(</span><span class="kt">True</span><span class="p">,</span> <span class="s">&quot;boop&quot;</span><span class="p">)]</span> <span class="n">&#39;x&#39;</span>
 
-<span class="o">&gt;</span> <span class="p">(</span><span class="n">snd</span> <span class="o">.</span> <span class="n">head</span> <span class="o">.</span> <span class="n">h</span><span class="p">)</span> <span class="n">test2</span>
-<span class="s">&quot;boop&quot;</span></code></pre></div>
+<span class="o">&gt;</span> <span class="p">(</span><span class="n">snd</span> <span class="o">.</span> <span class="n">head</span> <span class="o">.</span> <span class="n">h1</span><span class="p">)</span> <span class="n">test2</span>
+<span class="s">&quot;boop&quot;</span>
 
-<p>In the above example, we have declared a datatype with two records, the first of which is of a composite type, and created a <code>test2</code> object of this type.</p>
+<span class="o">&gt;</span> <span class="n">h2</span> <span class="n">test2</span>
+<span class="n">&#39;x&#39;</span></code></pre></div>
+
+<p>In the above example, we have declared a <code>Test</code> datatype with constructor <code>Tee</code> and two records, the first of which is of a composite type, and created a <code>test2</code> object of this type.</p>
 
 <p>Next, we access an internal field in a purely functional style, by composition of elementary functions. This idea of functional manipulation of &quot;getter&quot;/&quot;setter&quot; methods for nested datastructure is implemented (and greatly expanded) in the package <code>lens</code>, which however is beyond the scope of this tutorial.</p>
 

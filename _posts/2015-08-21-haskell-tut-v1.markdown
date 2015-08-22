@@ -622,18 +622,21 @@ Let's declare a slightly larger datatype constructor and try out its accessor fu
 
 
 {% highlight haskell %}
-> data Test = Tee { h :: [(Bool, String)], h1 :: Char }
+> data Test = Tee { h1 :: [(Bool, String)], h2 :: Char }
 
 > :t Tee
 Tee :: [(Bool, String)] -> Char -> Test
 
 > let test2 = Tee [(True, "boop")] 'x'
 
-> (snd . head . h) test2
+> (snd . head . h1) test2
 "boop"
+
+> h2 test2
+'x'
 {% endhighlight %}
 
-In the above example, we have declared a datatype with two records, the first of which is of a composite type, and created a `test2` object of this type.
+In the above example, we have declared a `Test` datatype with constructor `Tee` and two records, the first of which is of a composite type, and created a `test2` object of this type.
 
 Next, we access an internal field in a purely functional style, by composition of elementary functions. This idea of functional manipulation of "getter"/"setter" methods for nested datastructure is implemented (and greatly expanded) in the package `lens`, which however is beyond the scope of this tutorial.
 
