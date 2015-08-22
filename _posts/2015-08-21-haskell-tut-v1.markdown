@@ -455,6 +455,8 @@ Let's recycle `testData` from the example before to try it out:
 
 "Wow, if-then-else like a normal language !" 
 
+Jokes aside, the above example is meant to reinforce the point that in Haskell whole subprograms can be passed around, either as arguments or as return types to appropriate higher-order functions. Such is the nature of "purely functional" languages.
+
 
 ---------
 ---------
@@ -511,6 +513,9 @@ and load it with GHCi (from command line: `ghci TestModule.hs`), calling `main` 
 The `main` function effectively "coordinates" the execution of the purely functional parts; its body is a `do` block, to signify that it is to be executed top-to-bottom. However the intermediate results are only effectively computed when requested (this is the _non-strict_, or _lazy_ evaluation logic of Haskell). In the code above, `f1` is `map`ped over `v` only when `putStrLn` is run.
 
 We will return on how to write `do` blocks (the "imperative" part of Haskell) shortly. At this point we still need to see a few general features of the language syntax.
+
+
+
 
 
 ---------
