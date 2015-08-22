@@ -84,6 +84,10 @@
 <p>If we input an expression that already has a value associated, GHCi computes and prints the expression value on the next line.
 If, on the other hand, we ask for the type of an expression <code>x</code> with <code>:t x</code>, the interpreter outputs this after a double colon. </p>
 
+<blockquote>
+<p>Parentheses are used to group subexpressions that must be evaluated first.</p>
+</blockquote>
+
 <p>Each example builds on the previous one, starting from self-explanatory concepts; 
 the reader is encouraged to install the latest version of the <a href="http://www.haskell.org/ghc">Glasgow Haskell Compiler suite</a> suite and try/modify the examples, in the given order; it&#39;s much more fun and instructive than just reading through!</p>
 
@@ -238,6 +242,11 @@ The ordering relation <code>(&gt;)</code> is a binary operator (since it compare
 
 <p>It is very instructive to have a look at the <a href="https://hackage.haskell.org/package/base-4.8.0.0/docs/src/GHC-Base.html">Haskell Prelude</a>, the core library of the language.</p>
 
+<h1>Tuples</h1>
+
+<p>Immutable, ordered collections of data are called <em>tuples</em>, following the algebraic convention.
+Tuples are not meant to stream data but only</p>
+
 <hr>
 
 <hr>
@@ -312,8 +321,6 @@ The ordering relation <code>(&gt;)</code> is a binary operator (since it compare
 <span class="p">(</span><span class="o">.</span><span class="p">)</span> <span class="ow">::</span> <span class="p">(</span><span class="n">b</span> <span class="ow">-&gt;</span> <span class="n">c</span><span class="p">)</span> <span class="ow">-&gt;</span> <span class="p">(</span><span class="n">a</span> <span class="ow">-&gt;</span> <span class="n">b</span><span class="p">)</span> <span class="ow">-&gt;</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="n">c</span></code></pre></div>
 
 <blockquote>
-<p>Parentheses are used to group subexpressions that must be evaluated first.</p>
-
 <p>In the example above <code>g x</code> is first evaluated, and its result is passed on to <code>f</code>, which explains the type signature of <code>(.)</code>: its first function argument <code>f</code> takes entities from set <code>b</code> and maps them onto the output set <code>c</code>, whereas <code>g</code> operates on the input domain <code>a</code> and ranges over <code>b</code>.</p>
 
 <p>Lambda expressions allow us to conveniently explore functional manipulation constructs. </p>
@@ -322,6 +329,12 @@ The ordering relation <code>(&gt;)</code> is a binary operator (since it compare
 </blockquote>
 
 <h1>Partial evaluation</h1>
+
+<p>When calling functions in Haskell, you don&#39;t have to &quot;fill all the slots&quot;, i.e. supply all the arguments; this is called <em>partial evaluation</em> (or <em>application</em>).</p>
+
+<p>As explained briefly in the first section, the result of this is a new function, having a smaller number of arguments than the original one.</p>
+
+<p>In the following we will see a few more examples of this from a slightly abstract point of view, in order not to lose sight of the pattern amid the implementation details.</p>
 
 <div class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="o">&gt;</span> <span class="kr">let</span> <span class="n">f1</span> <span class="ow">=</span> <span class="nf">\</span> <span class="n">f</span> <span class="n">g</span> <span class="n">x</span> <span class="n">y</span> <span class="ow">-&gt;</span> <span class="n">f</span> <span class="p">(</span><span class="n">g</span> <span class="n">x</span><span class="p">)</span> <span class="p">(</span><span class="n">g</span> <span class="n">y</span><span class="p">)</span>
 

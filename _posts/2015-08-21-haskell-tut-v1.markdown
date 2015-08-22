@@ -22,6 +22,7 @@ The `>`character at the start of a line indicates the interpreter prompt, wherea
 If we input an expression that already has a value associated, GHCi computes and prints the expression value on the next line.
 If, on the other hand, we ask for the type of an expression `x` with `:t x`, the interpreter outputs this after a double colon. 
 
+> Parentheses are used to group subexpressions that must be evaluated first.
 
 Each example builds on the previous one, starting from self-explanatory concepts; 
 the reader is encouraged to install the latest version of the [Glasgow Haskell Compiler suite](http://www.haskell.org/ghc) suite and try/modify the examples, in the given order; it's much more fun and instructive than just reading through!
@@ -205,6 +206,10 @@ We will see the implementation of `map`, `foldr` and of a few other essential li
 It is very instructive to have a look at the [Haskell Prelude](https://hackage.haskell.org/package/base-4.8.0.0/docs/src/GHC-Base.html), the core library of the language.
 
 
+# Tuples
+
+Immutable, ordered collections of data are called _tuples_, following the algebraic convention.
+Tuples are not meant to stream data but only
 
 
 --------
@@ -294,8 +299,6 @@ Here is a nested function application pattern, and below it the type signature o
 (.) :: (b -> c) -> (a -> b) -> a -> c
 {% endhighlight %}
 
-> Parentheses are used to group subexpressions that must be evaluated first.
-
 > In the example above `g x` is first evaluated, and its result is passed on to `f`, which explains the type signature of `(.)`: its first function argument `f` takes entities from set `b` and maps them onto the output set `c`, whereas `g` operates on the input domain `a` and ranges over `b`.
 
 > Lambda expressions allow us to conveniently explore functional manipulation constructs. 
@@ -309,6 +312,12 @@ Here is a nested function application pattern, and below it the type signature o
 
 
 # Partial evaluation
+
+When calling functions in Haskell, you don't have to "fill all the slots", i.e. supply all the arguments; this is called _partial evaluation_ (or _application_).
+
+As explained briefly in the first section, the result of this is a new function, having a smaller number of arguments than the original one.
+
+In the following we will see a few more examples of this from a slightly abstract point of view, in order not to lose sight of the pattern amid the implementation details.
 
 {% highlight haskell %}
 
