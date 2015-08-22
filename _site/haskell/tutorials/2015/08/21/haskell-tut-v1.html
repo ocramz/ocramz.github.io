@@ -307,7 +307,7 @@ The ordering relation <code>(&gt;)</code> is a binary operator (since it compare
 
 <p>What does it mean to &quot;compose functions&quot;? If we think of a function as a machine on a factory floor, feeding the output of one (<em>g</em>, say)  into the input of the next (which we can call <em>f</em>) is a form of composition. This of course only works if the <em>f</em> is designed to work on the outputs of <em>g</em> (you wouldn&#39;t want to plug a grinder to an Easter egg packaging machine, for example).</p>
 
-<p>Here is a nested function application pattern, and below it the type signature of the corresponding library function:</p>
+<p>Here is a nested function application pattern, and below it the type signature of the corresponding library function <code>(.)</code>:</p>
 
 <div class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="o">&gt;</span> <span class="kt">:</span><span class="n">t</span> <span class="nf">\</span> <span class="n">f</span> <span class="n">g</span> <span class="n">x</span> <span class="ow">-&gt;</span> <span class="n">f</span> <span class="p">(</span><span class="n">g</span> <span class="n">x</span><span class="p">)</span>
 <span class="nf">\</span> <span class="n">f</span> <span class="n">g</span> <span class="n">x</span><span class="ow">-&gt;</span> <span class="n">f</span> <span class="p">(</span><span class="n">g</span> <span class="n">x</span><span class="p">)</span> <span class="ow">::</span> <span class="p">(</span><span class="n">b</span> <span class="ow">-&gt;</span> <span class="n">c</span><span class="p">)</span> <span class="ow">-&gt;</span> <span class="p">(</span><span class="n">a</span> <span class="ow">-&gt;</span> <span class="n">b</span><span class="p">)</span> <span class="ow">-&gt;</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="n">c</span>
@@ -316,7 +316,7 @@ The ordering relation <code>(&gt;)</code> is a binary operator (since it compare
 <span class="p">(</span><span class="o">.</span><span class="p">)</span> <span class="ow">::</span> <span class="p">(</span><span class="n">b</span> <span class="ow">-&gt;</span> <span class="n">c</span><span class="p">)</span> <span class="ow">-&gt;</span> <span class="p">(</span><span class="n">a</span> <span class="ow">-&gt;</span> <span class="n">b</span><span class="p">)</span> <span class="ow">-&gt;</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="n">c</span></code></pre></div>
 
 <blockquote>
-<p>In the example above <code>g x</code> is first evaluated, and its result is passed on to <code>f</code>, which explains the type signature of <code>(.)</code>: its first function argument <code>f</code> takes entities from set <code>b</code> and maps them onto the output set <code>c</code>, whereas <code>g</code> operates on the input domain <code>a</code> and ranges over <code>b</code>.</p>
+<p>In the example above <code>g x</code> is first evaluated, and its result is passed on to <code>f</code>, which explains the type signature: its first function argument <code>f</code> takes entities from set <code>b</code> and maps them onto the output set <code>c</code>, whereas <code>g</code> operates on the input domain <code>a</code> and ranges over <code>b</code>.</p>
 
 <p>Lambda expressions allow us to conveniently explore functional manipulation constructs. </p>
 

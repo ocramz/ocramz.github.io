@@ -285,7 +285,7 @@ As an example, we can apply the ``squared'' function to an arbitrary value:
 
 What does it mean to "compose functions"? If we think of a function as a machine on a factory floor, feeding the output of one (_g_, say)  into the input of the next (which we can call _f_) is a form of composition. This of course only works if the _f_ is designed to work on the outputs of _g_ (you wouldn't want to plug a grinder to an Easter egg packaging machine, for example).
 
-Here is a nested function application pattern, and below it the type signature of the corresponding library function:
+Here is a nested function application pattern, and below it the type signature of the corresponding library function `(.)`:
 
 {% highlight haskell %}
 > :t \ f g x -> f (g x)
@@ -295,7 +295,7 @@ Here is a nested function application pattern, and below it the type signature o
 (.) :: (b -> c) -> (a -> b) -> a -> c
 {% endhighlight %}
 
-> In the example above `g x` is first evaluated, and its result is passed on to `f`, which explains the type signature of `(.)`: its first function argument `f` takes entities from set `b` and maps them onto the output set `c`, whereas `g` operates on the input domain `a` and ranges over `b`.
+> In the example above `g x` is first evaluated, and its result is passed on to `f`, which explains the type signature: its first function argument `f` takes entities from set `b` and maps them onto the output set `c`, whereas `g` operates on the input domain `a` and ranges over `b`.
 
 > Lambda expressions allow us to conveniently explore functional manipulation constructs. 
 
