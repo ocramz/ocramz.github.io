@@ -217,7 +217,10 @@ Whew! In this introductory section we have alread seen quite a few new concepts:
 * higher order functions
 * partial application, operator sections
 
-The aim with this tutorial is to develop a working knowledge of functional programming using Haskell as a vessel language; this (unfortunately) requires one to digest a certain number of new ideas, and to get acquainted with the terminology to describe them.
+The aim with this tutorial is to help develop a working knowledge of functional programming using Haskell as the vessel language; this turns out to require one to digest a certain number of new ideas, and to get acquainted with the terminology to describe them.
+
+Most of these concepts are intertwined, so perhaps they make little sense if considered in isolation. This has traditionally given Haskell a bad reputation for displaying a steep learning curve and being "too abstract". We wish to demistify this, by showing how _programming with functions_ is a natural way of expressing computer programs.
+
 
 In the following sections we will expand on and give examples for all the terms introduced so far (and a few more ..), and in a few pages the reader will be able to produce her first working programs !
 

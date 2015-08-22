@@ -6,8 +6,8 @@
 </description>
     <link>http://yourdomain.com/</link>
     <atom:link href="http://yourdomain.com/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sun, 23 Aug 2015 00:06:14 +0200</pubDate>
-    <lastBuildDate>Sun, 23 Aug 2015 00:06:14 +0200</lastBuildDate>
+    <pubDate>Sun, 23 Aug 2015 00:34:33 +0200</pubDate>
+    <lastBuildDate>Sun, 23 Aug 2015 00:34:33 +0200</lastBuildDate>
     <generator>Jekyll v2.5.3</generator>
     
       <item>
@@ -198,7 +198,9 @@ The ordering relation &lt;code&gt;(&amp;gt;)&lt;/code&gt; is a binary operator (
 &lt;li&gt;partial application, operator sections&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;The aim with this tutorial is to develop a working knowledge of functional programming using Haskell as a vessel language; this (unfortunately) requires one to digest a certain number of new ideas, and to get acquainted with the terminology to describe them.&lt;/p&gt;
+&lt;p&gt;The aim with this tutorial is to help develop a working knowledge of functional programming using Haskell as the vessel language; this turns out to require one to digest a certain number of new ideas, and to get acquainted with the terminology to describe them.&lt;/p&gt;
+
+&lt;p&gt;Most of these concepts are intertwined, so perhaps they make little sense if considered in isolation. This has traditionally given Haskell a bad reputation for displaying a steep learning curve and being &amp;quot;too abstract&amp;quot;. We wish to demistify this, by showing how &lt;em&gt;programming with functions&lt;/em&gt; is a natural way of expressing computer programs.&lt;/p&gt;
 
 &lt;p&gt;In the following sections we will expand on and give examples for all the terms introduced so far (and a few more ..), and in a few pages the reader will be able to produce her first working programs !&lt;/p&gt;
 
