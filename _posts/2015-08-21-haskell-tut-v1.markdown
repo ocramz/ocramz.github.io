@@ -424,24 +424,10 @@ f :: Int -> [a] -> Bool
 [True,False,True]
 {% endhighlight %}
 
+Recall how `(.)` works: from right to left. The rightmost function in the chain is the "innermost", and the first to be applied. Our `listShorterThan` may be a bit contrived, but shows one advantage of this compositional approach: we are not interested in the actual length of the list, but only to know whether it's shorter than _m_.
 
 
-As an appetizer for more abstract things ,let us recall the right-fold function `foldr`, and see it partially applied to the function composition operator `(.)`:
-
-{% highlight haskell %}
-> :t foldr
-foldr :: (a -> b -> b) -> b -> [a] -> b
-
-> :t foldr (.)
-foldr (.) :: (a -> b) -> [b -> b] -> a -> b
-
-> :t foldr (.) id
-foldr (.) id :: [a -> a] -> a -> a
-{% endhighlight %}
-
-The last example above shows a very intuitive way to represent an arbitrary chain of function compositions: starting from the identity function `id` and using `(.)` as cumulating operator, `foldr (.) id` requires an arbitrary _list of functions_ and an initial input value, at which point it can compute the result of the composite function. It is also useful to note that introducing `id` makes the input and output types coincide.
-
-Another interesting little example is the following:
+Another interesting, albeit a bit more abstract, little example is the following:
 
 {% highlight haskell %}
 > :t map . map
@@ -457,6 +443,12 @@ A composition of `map`s is equivalent to _lifting_ an `(a -> b)` function to wor
 
 and, since `map` is a binary function accepting a _function_ and a list, we can identify equal terms. In the line above, if we partially apply `(.) map` on `map`, `x` is identified with a function and `y` has to be a list, resulting in the initial type identity.
 
+Let's recycle `testData` from the example before to try it out:
+
+{% highlight haskell %}
+> (map . map) (> 100) testData
+[[False,False],[True,False,True,False],[True]]
+{% endhighlight %}
 
 <a id="io"> </a>
 ## Defining new symbols, functions and modules

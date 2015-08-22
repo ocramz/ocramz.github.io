@@ -418,20 +418,9 @@ The following two expressions are identical, in this sense; the latter being the
 <span class="o">&gt;</span> <span class="n">map</span> <span class="p">(</span><span class="n">listShorterThan</span> <span class="mi">4</span><span class="p">)</span> <span class="n">testData</span>
 <span class="p">[</span><span class="kt">True</span><span class="p">,</span><span class="kt">False</span><span class="p">,</span><span class="kt">True</span><span class="p">]</span></code></pre></div>
 
-<p>As an appetizer for more abstract things ,let us recall the right-fold function <code>foldr</code>, and see it partially applied to the function composition operator <code>(.)</code>:</p>
+<p>Recall how <code>(.)</code> works: from right to left. The rightmost function in the chain is the &quot;innermost&quot;, and the first to be applied. Our <code>listShorterThan</code> may be a bit contrived, but shows one advantage of this compositional approach: we are not interested in the actual length of the list, but only to know whether it&#39;s shorter than <em>m</em>.</p>
 
-<div class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="o">&gt;</span> <span class="kt">:</span><span class="n">t</span> <span class="n">foldr</span>
-<span class="nf">foldr</span> <span class="ow">::</span> <span class="p">(</span><span class="n">a</span> <span class="ow">-&gt;</span> <span class="n">b</span> <span class="ow">-&gt;</span> <span class="n">b</span><span class="p">)</span> <span class="ow">-&gt;</span> <span class="n">b</span> <span class="ow">-&gt;</span> <span class="p">[</span><span class="n">a</span><span class="p">]</span> <span class="ow">-&gt;</span> <span class="n">b</span>
-
-<span class="o">&gt;</span> <span class="kt">:</span><span class="n">t</span> <span class="n">foldr</span> <span class="p">(</span><span class="o">.</span><span class="p">)</span>
-<span class="nf">foldr</span> <span class="p">(</span><span class="o">.</span><span class="p">)</span> <span class="ow">::</span> <span class="p">(</span><span class="n">a</span> <span class="ow">-&gt;</span> <span class="n">b</span><span class="p">)</span> <span class="ow">-&gt;</span> <span class="p">[</span><span class="n">b</span> <span class="ow">-&gt;</span> <span class="n">b</span><span class="p">]</span> <span class="ow">-&gt;</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="n">b</span>
-
-<span class="o">&gt;</span> <span class="kt">:</span><span class="n">t</span> <span class="n">foldr</span> <span class="p">(</span><span class="o">.</span><span class="p">)</span> <span class="n">id</span>
-<span class="nf">foldr</span> <span class="p">(</span><span class="o">.</span><span class="p">)</span> <span class="n">id</span> <span class="ow">::</span> <span class="p">[</span><span class="n">a</span> <span class="ow">-&gt;</span> <span class="n">a</span><span class="p">]</span> <span class="ow">-&gt;</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="n">a</span></code></pre></div>
-
-<p>The last example above shows a very intuitive way to represent an arbitrary chain of function compositions: starting from the identity function <code>id</code> and using <code>(.)</code> as cumulating operator, <code>foldr (.) id</code> requires an arbitrary <em>list of functions</em> and an initial input value, at which point it can compute the result of the composite function. It is also useful to note that introducing <code>id</code> makes the input and output types coincide.</p>
-
-<p>Another interesting little example is the following:</p>
+<p>Another interesting, albeit a bit more abstract, little example is the following:</p>
 
 <div class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="o">&gt;</span> <span class="kt">:</span><span class="n">t</span> <span class="n">map</span> <span class="o">.</span> <span class="n">map</span>
 <span class="nf">map</span> <span class="o">.</span> <span class="n">map</span> <span class="ow">::</span> <span class="p">(</span><span class="n">a</span> <span class="ow">-&gt;</span> <span class="n">b</span><span class="p">)</span> <span class="ow">-&gt;</span> <span class="p">[[</span><span class="n">a</span><span class="p">]]</span> <span class="ow">-&gt;</span> <span class="p">[[</span><span class="n">b</span><span class="p">]]</span></code></pre></div>
@@ -442,6 +431,11 @@ The following two expressions are identical, in this sense; the latter being the
 <span class="p">(</span><span class="o">.</span><span class="p">)</span> <span class="n">map</span> <span class="ow">::</span> <span class="p">(</span><span class="n">x</span> <span class="ow">-&gt;</span> <span class="n">y</span> <span class="ow">-&gt;</span> <span class="n">z</span><span class="p">)</span> <span class="ow">-&gt;</span> <span class="n">x</span> <span class="ow">-&gt;</span> <span class="p">[</span><span class="n">y</span><span class="p">]</span> <span class="ow">-&gt;</span> <span class="p">[</span><span class="n">z</span><span class="p">]</span></code></pre></div>
 
 <p>and, since <code>map</code> is a binary function accepting a <em>function</em> and a list, we can identify equal terms. In the line above, if we partially apply <code>(.) map</code> on <code>map</code>, <code>x</code> is identified with a function and <code>y</code> has to be a list, resulting in the initial type identity.</p>
+
+<p>Let&#39;s recycle <code>testData</code> from the example before to try it out:</p>
+
+<div class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="o">&gt;</span> <span class="p">(</span><span class="n">map</span> <span class="o">.</span> <span class="n">map</span><span class="p">)</span> <span class="p">(</span><span class="o">&gt;</span> <span class="mi">100</span><span class="p">)</span> <span class="n">testData</span>
+<span class="p">[[</span><span class="kt">False</span><span class="p">,</span><span class="kt">False</span><span class="p">],[</span><span class="kt">True</span><span class="p">,</span><span class="kt">False</span><span class="p">,</span><span class="kt">True</span><span class="p">,</span><span class="kt">False</span><span class="p">],[</span><span class="kt">True</span><span class="p">]]</span></code></pre></div>
 
 <p><a id="io"> </a></p>
 
