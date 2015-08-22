@@ -221,6 +221,8 @@ The aim with this tutorial is to develop a working knowledge of functional progr
 
 In the following sections we will expand on and give examples for all the terms introduced so far (and a few more ..), and in a few pages the reader will be able to produce her first working programs !
 
+
+
 --------
 --------
 <a id="lambda" /></a>
@@ -450,6 +452,10 @@ Let's recycle `testData` from the example before to try it out:
 [[False,False],[True,False,True,False],[True]]
 {% endhighlight %}
 
+
+---------
+---------
+
 <a id="io"> </a>
 ## Defining new symbols, functions and modules
 
@@ -504,6 +510,9 @@ The `main` function effectively "coordinates" the execution of the purely functi
 We will return on how to write `do` blocks (the "imperative" part of Haskell) shortly. At this point we still need to see a few general features of the language syntax.
 
 
+---------
+---------
+
 <a id="pattern" /></a>
 ## Pattern matching
 # Recursive functions
@@ -521,7 +530,7 @@ The above code recursively consumes the list supplied as second argument by appl
 
 
 
-
+------
 # A brief digression on lists 
 
 Lists ("streams") are better thought of in recursive terms: a list can either be the empty list, or a concatenation of an element to a preexisting list (including the empty one).
@@ -613,6 +622,12 @@ The options (expressions after `|`) are evaluated in top-to-bottom order, and th
 Pattern guards are convenient syntax for deciding which conditional branch to take according to the _value_ contained in one or more of the input variables. Note that the functions acting as pattern guards (e.g. `odd x`, `f || g`) have to return a Boolean, and only after the `=` sign do we specify the return value for each branch.
 
 > Quiz: what are the type signatures of `oddness` and `buzz` and why ? 
+
+
+
+
+---------
+---------
 
 <a id="data"/> </a>
 ## Datatypes
