@@ -519,6 +519,35 @@ map f (x:xs) = f x : map f xs
 
 The above code recursively consumes the list supplied as second argument by applying `f` to its first element and appending the result (with `(:)`) to the output array. The first declaration is used if the supplied list is empty, which also holds at the base case of the recursion.
 
+
+
+
+# A brief digression on lists 
+
+Lists ("streams") are better thought of in recursive terms: a list can either be the empty list, or a concatenation of an element to a preexisting list (including the empty one).
+The two following signatures represent exactly this, and in the third line we see the corresponding (tedious) way to declare a list:
+
+{% highlight haskell%}
+> :t []
+[] :: [a]
+
+> :t (:)
+(:) :: a -> [a] -> [a]
+
+> 3 : 2 : []
+[3,2]
+{% endhighlight %}
+
+It seems like `[]` and `(:)` are intimately connected: both are necessary to build a non-trivial list. Having a "neutral element" and an (associative) "appending" operation is the characteristic of a certain algebraic idea called a _Monoid_, but discussing the details would distract us at this point.
+For now, it suffices to say that `[]` and `(:)` are the _constructor_ (methods) of the empty and nontrivial list respectively, and as such, we can "pattern match" on them to decide which branch of a declaration applies to the given inputs.
+
+The notation `(x:xs)` in the calling signature is one such example of "pattern matching on the constructor of the input data". `x` and `xs`, interpreted as an element of type `a` and list containing elements of the same type, `[a]`, respectively, will be used in the body of the function as usual.
+
+
+
+
+
+
 > A _fold_ operation is to obtain a "summary" value from a set of values.
 
 The right-associative fold (`foldr`) is defined recursively as:
@@ -795,6 +824,12 @@ safeDiv :: (Eq a, Fractional a) => a -> a -> Maybe a
 > The `Maybe a` type is a simple way to treat _errors as values_, and to perform further computation on them, rather than letting the program fail and stop. 
 
 # Recursive types 
+
+We have been using a recursive data structure all along, the humble list:
+
+{% highlight haskell%}
+> data [] a = [] | a : [a] 	-- Defined in ‘GHC.Types’
+{% endhighlight %}
 
 Next, we introduce a handy binary tree type `Tree a`, which can be either a "leaf" `L` carrying a type `a`, i.e. `L a`, or a "branch" `B` carrying two `Tree a`'s.
 

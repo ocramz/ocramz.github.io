@@ -503,6 +503,25 @@ The first line is a function, the second a piece of data, and the <code>main</co
 
 <p>The above code recursively consumes the list supplied as second argument by applying <code>f</code> to its first element and appending the result (with <code>(:)</code>) to the output array. The first declaration is used if the supplied list is empty, which also holds at the base case of the recursion.</p>
 
+<h1>A brief digression on lists</h1>
+
+<p>Lists (&quot;streams&quot;) are better thought of in recursive terms: a list can either be the empty list, or a concatenation of an element to a preexisting list (including the empty one).
+The two following signatures represent exactly this, and in the third line we see the corresponding (tedious) way to declare a list:</p>
+
+<div class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="o">&gt;</span> <span class="kt">:</span><span class="n">t</span> <span class="kt">[]</span>
+<span class="kt">[]</span> <span class="ow">::</span> <span class="p">[</span><span class="n">a</span><span class="p">]</span>
+
+<span class="o">&gt;</span> <span class="kt">:</span><span class="n">t</span> <span class="p">(</span><span class="kt">:</span><span class="p">)</span>
+<span class="p">(</span><span class="kt">:</span><span class="p">)</span> <span class="ow">::</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="p">[</span><span class="n">a</span><span class="p">]</span> <span class="ow">-&gt;</span> <span class="p">[</span><span class="n">a</span><span class="p">]</span>
+
+<span class="o">&gt;</span> <span class="mi">3</span> <span class="kt">:</span> <span class="mi">2</span> <span class="kt">:</span> <span class="kt">[]</span>
+<span class="p">[</span><span class="mi">3</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span></code></pre></div>
+
+<p>It seems like <code>[]</code> and <code>(:)</code> are intimately connected: both are necessary to build a non-trivial list. Having a &quot;neutral element&quot; and an (associative) &quot;appending&quot; operation is the characteristic of a certain algebraic idea called a <em>Monoid</em>, but discussing the details would distract us at this point.
+For now, it suffices to say that <code>[]</code> and <code>(:)</code> are the <em>constructor</em> (methods) of the empty and nontrivial list respectively, and as such, we can &quot;pattern match&quot; on them to decide which branch of a declaration applies to the given inputs.</p>
+
+<p>The notation <code>(x:xs)</code> in the calling signature is one such example of &quot;pattern matching on the constructor of the input data&quot;. <code>x</code> and <code>xs</code>, interpreted as an element of type <code>a</code> and list containing elements of the same type, <code>[a]</code>, respectively, will be used in the body of the function as usual.</p>
+
 <blockquote>
 <p>A <em>fold</em> operation is to obtain a &quot;summary&quot; value from a set of values.</p>
 </blockquote>
@@ -760,6 +779,10 @@ If a datatype is an instance of one or more classes, it &quot;inherits&quot; the
 </blockquote>
 
 <h1>Recursive types</h1>
+
+<p>We have been using a recursive data structure all along, the humble list:</p>
+
+<div class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="o">&gt;</span> <span class="kr">data</span> <span class="kt">[]</span> <span class="n">a</span> <span class="ow">=</span> <span class="kt">[]</span> <span class="o">|</span> <span class="n">a</span> <span class="kt">:</span> <span class="p">[</span><span class="n">a</span><span class="p">]</span>   <span class="c1">-- Defined in ‘GHC.Types’</span></code></pre></div>
 
 <p>Next, we introduce a handy binary tree type <code>Tree a</code>, which can be either a &quot;leaf&quot; <code>L</code> carrying a type <code>a</code>, i.e. <code>L a</code>, or a &quot;branch&quot; <code>B</code> carrying two <code>Tree a</code>&#39;s.</p>
 
