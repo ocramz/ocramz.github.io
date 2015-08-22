@@ -242,11 +242,6 @@ The ordering relation <code>(&gt;)</code> is a binary operator (since it compare
 
 <p>It is very instructive to have a look at the <a href="https://hackage.haskell.org/package/base-4.8.0.0/docs/src/GHC-Base.html">Haskell Prelude</a>, the core library of the language.</p>
 
-<h1>Tuples</h1>
-
-<p>Immutable, ordered collections of data are called <em>tuples</em>, following the algebraic convention.
-Tuples are not meant to stream data but only</p>
-
 <hr>
 
 <hr>
@@ -341,7 +336,7 @@ Tuples are not meant to stream data but only</p>
 <span class="o">&gt;</span> <span class="kt">:</span><span class="n">t</span> <span class="n">f1</span>
 <span class="nf">f1</span> <span class="ow">::</span> <span class="p">(</span><span class="n">b</span> <span class="ow">-&gt;</span> <span class="n">b</span> <span class="ow">-&gt;</span> <span class="n">c</span><span class="p">)</span> <span class="ow">-&gt;</span> <span class="p">(</span><span class="n">a</span> <span class="ow">-&gt;</span> <span class="n">b</span><span class="p">)</span> <span class="ow">-&gt;</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="n">c</span></code></pre></div>
 
-<p>In the example above we first define a function <code>f1</code> of four arguments; in the next line we specialize <code>f1</code> to use the sum or ordering relation <code>(&lt;)</code> as &quot;external&quot; functions <code>f</code>. The &quot;internal&quot; function <code>g</code> is instead meant to be separately applied on the operands <code>x</code> and <code>y</code>:</p>
+<p>In the example above we first define a function <code>f1</code> of four arguments; in the next lines we specialize <code>f1</code> to use the sum or ordering relation <code>(&lt;)</code> as &quot;external&quot; functions <code>f</code>. The &quot;internal&quot; function <code>g</code> is instead meant to be separately applied on the operands <code>x</code> and <code>y</code>:</p>
 
 <div class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="o">&gt;</span> <span class="kt">:</span><span class="n">t</span> <span class="n">f1</span> <span class="p">(</span><span class="o">+</span><span class="p">)</span>
 <span class="nf">f1</span> <span class="p">(</span><span class="o">+</span><span class="p">)</span> <span class="ow">::</span> <span class="kt">Num</span> <span class="n">b</span> <span class="ow">=&gt;</span> <span class="p">(</span><span class="n">a</span> <span class="ow">-&gt;</span> <span class="n">b</span><span class="p">)</span> <span class="ow">-&gt;</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="n">b</span>

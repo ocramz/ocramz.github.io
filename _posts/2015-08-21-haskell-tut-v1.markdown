@@ -206,10 +206,6 @@ We will see the implementation of `map`, `foldr` and of a few other essential li
 It is very instructive to have a look at the [Haskell Prelude](https://hackage.haskell.org/package/base-4.8.0.0/docs/src/GHC-Base.html), the core library of the language.
 
 
-# Tuples
-
-Immutable, ordered collections of data are called _tuples_, following the algebraic convention.
-Tuples are not meant to stream data but only
 
 
 --------
@@ -328,7 +324,7 @@ f1 :: (b -> b -> c) -> (a -> b) -> a -> a -> c
 
 {% endhighlight %}
 
-In the example above we first define a function `f1` of four arguments; in the next line we specialize `f1` to use the sum or ordering relation `(<)` as "external" functions `f`. The "internal" function `g` is instead meant to be separately applied on the operands `x` and `y`:
+In the example above we first define a function `f1` of four arguments; in the next lines we specialize `f1` to use the sum or ordering relation `(<)` as "external" functions `f`. The "internal" function `g` is instead meant to be separately applied on the operands `x` and `y`:
 
 {% highlight haskell %}
 > :t f1 (+)
