@@ -453,7 +453,7 @@ Let's recycle `testData` from the example before to try it out:
 ["--","+-+-","+"]
 {% endhighlight %}
 
-"Wow, if-then-else like in normal languages !" 
+"Wow, if-then-else like a normal language !" 
 
 
 ---------
