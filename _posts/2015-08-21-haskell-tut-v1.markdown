@@ -211,7 +211,7 @@ It is very instructive to have a look at the [Haskell Prelude](https://hackage.h
 
 Whew! In this introductory section we have alread seen quite a few new concepts: 
 
-* variable types
+* types
 * classes of types (a.k.a. _typeclasses_ `Num`, `Floating`, `Eq`, `Ord` ...)
 * lists and list functions
 * higher order functions
