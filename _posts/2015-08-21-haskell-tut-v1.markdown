@@ -22,7 +22,7 @@ The `>`character at the start of a line indicates the interpreter prompt, wherea
 If we input an expression that already has a value associated, GHCi computes and prints the expression value on the next line.
 If, on the other hand, we ask for the type of an expression `x` with `:t x`, the interpreter outputs this after a double colon. 
 
-> Parentheses are used to group subexpressions that must be evaluated first.
+N.B.: In function bodies, parentheses are used to group subexpressions that must be evaluated first (as per convention).
 
 Each example builds on the previous one, starting from self-explanatory concepts; 
 the reader is encouraged to install the latest version of the [Glasgow Haskell Compiler suite](http://www.haskell.org/ghc) suite and try/modify the examples, in the given order; it's much more fun and instructive than just reading through!
