@@ -617,7 +617,7 @@ If a datatype is an instance of one or more classes, it &quot;inherits&quot; the
 
 <p>In the above example, we have declared a <code>Test</code> datatype with constructor <code>Tee</code> and two records, the first of which is of a composite type, and created a <code>test2</code> object of this type.</p>
 
-<p>Next, we access an internal field in a purely functional style, by composition of elementary functions. This idea of functional manipulation of &quot;getter&quot;/&quot;setter&quot; methods for nested datastructure is called <em>lensing</em>, and it is implemented and greatly expanded in a few packages such as <a href="lens">https://hackage.haskell.org/package/lens</a>, which however is beyond the scope of this tutorial.</p>
+<p>Next, we access an internal field in a purely functional style, by composition of elementary functions. This idea of functional manipulation of &quot;getter&quot;/&quot;setter&quot; methods for nested datastructure is called <em>lensing</em>, and it is implemented and greatly expanded in a few packages such as <a href="https://hackage.haskell.org/package/lens">lens</a>, which however is beyond the scope of this tutorial.</p>
 
 <blockquote>
 <p>What happens if we supply an integer to the Tee constructor, instead of the expected list of <code>(Bool, String)</code> tuples? Our first type error! &lt;3</p>
