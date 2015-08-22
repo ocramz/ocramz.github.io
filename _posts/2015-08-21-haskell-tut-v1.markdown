@@ -126,7 +126,7 @@ A versatile list-digesting function is `filter`:
 > :t filter
 filter :: (a -> Bool) -> [a] -> [a]
 
-> filter (>2) [-1,3,0,10,9,-4]
+> filter (> 2) [-1,3,0,10,9,-4]
 [3,10,9]
 
 > filter (/= 'x') "xxxjgxkjg" 
@@ -136,9 +136,10 @@ filter :: (a -> Bool) -> [a] -> [a]
 
 `filter` is our first example of _higher order function_; it requires as arguments a _function_ of type `a -> Bool` and a list of `a`s and returns the subset of the input list that verifies the filtering function.
 
-In the previous code block, we also see the first example of _operator section_:
-`(> 2)`, passed as first argument to `filter`. 
-The ordering relation `(>)` is a binary operator (since it compares two values and returns True or False), but `(> 2)` takes only one argument and returns a Boolean.
+In the previous code block, we also see the first examples of _operator section_:
+`(> 2)` and `(/= 'x')`, passed as first argument to `filter`. 
+The ordering relation `(>)` is a binary operator (since it compares two values and returns True or False), but `(> 2)` takes only one argument and returns a Boolean. Instead, `(/= 'x')` compares its only argument to the constant character `'x'`.
+
 
 The following examples should clarify the idea:
 
@@ -150,7 +151,7 @@ The following examples should clarify the idea:
 (==) :: Eq a => a -> a -> Bool
  
 > :t (+ 1)
-(+1) :: Num a => a -> a
+(+ 1) :: Num a => a -> a
 
 > :t (== 2)
 (== 2) :: (Num a, Eq a) => a -> Bool
@@ -557,18 +558,26 @@ woop :: Num a => Pop a -> Pip a
 One form of conditional branching statement is the _pattern guard_:
 
 {% highlight haskell %}
-oddFlag x
-   | odd x = 1
-   | otherwise = 0
+oddness x
+   | odd x = sx ++ " is odd"
+   | otherwise = sx ++ " is even"
+       where
+         sx = show x
 
 buzz x 
-   | (mod x 3) == 0 || not (x == 17)  = True
-   | even x = True 
-   | otherwise = False
+   | f || g  = 0
+   | even x = 1
+   | otherwise = 2 
+       where
+         f = x `mod` 7 == 0
+         g = x < 20
 {% endhighlight %}
+
+The options (expressions after `|`) are evaluated in top-to-bottom order, and the last one is only evaluated if none of the previous ones evaluates to `True`.
 
 Pattern guards are convenient syntax for deciding which conditional branch to take according to the _value_ contained in one or more of the input variables. Note that the functions acting as pattern guards (e.g. `odd x`, `(mod x 3) == 0`) have to return a Boolean, and only after the `=` sign do we specify the return value for each branch.
 
+> Quiz: what are the type signatures of `oddness` and `buzz` and why ? 
 
 <a id="data"/> </a>
 ## Datatypes
@@ -733,7 +742,7 @@ We have already seen an instance of an algebraic datatype (ADT): `Bool` can have
 
 
 # Polymorphic types
-Polymorphic types can be thought of a labeled scaffolding for more elementary types; in the following example we show how the constructor `Pt a a` can be specialized to cater for various needs:
+Polymorphic types can be thought of as a labeled scaffolding for more elementary types; in the following example we show how the constructor `Pt a a` can be specialized to cater for various needs:
 
 {% highlight haskell %}
 > data Point a = Pt a a

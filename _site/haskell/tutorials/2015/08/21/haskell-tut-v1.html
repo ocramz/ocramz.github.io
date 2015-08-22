@@ -177,7 +177,7 @@ Because many things have number-like properties (can be counted, added, subtract
 <div class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="o">&gt;</span> <span class="kt">:</span><span class="n">t</span> <span class="n">filter</span>
 <span class="nf">filter</span> <span class="ow">::</span> <span class="p">(</span><span class="n">a</span> <span class="ow">-&gt;</span> <span class="kt">Bool</span><span class="p">)</span> <span class="ow">-&gt;</span> <span class="p">[</span><span class="n">a</span><span class="p">]</span> <span class="ow">-&gt;</span> <span class="p">[</span><span class="n">a</span><span class="p">]</span>
 
-<span class="o">&gt;</span> <span class="n">filter</span> <span class="p">(</span><span class="o">&gt;</span><span class="mi">2</span><span class="p">)</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mi">9</span><span class="p">,</span><span class="o">-</span><span class="mi">4</span><span class="p">]</span>
+<span class="o">&gt;</span> <span class="n">filter</span> <span class="p">(</span><span class="o">&gt;</span> <span class="mi">2</span><span class="p">)</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mi">9</span><span class="p">,</span><span class="o">-</span><span class="mi">4</span><span class="p">]</span>
 <span class="p">[</span><span class="mi">3</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mi">9</span><span class="p">]</span>
 
 <span class="o">&gt;</span> <span class="n">filter</span> <span class="p">(</span><span class="o">/=</span> <span class="n">&#39;x&#39;</span><span class="p">)</span> <span class="s">&quot;xxxjgxkjg&quot;</span> 
@@ -185,9 +185,9 @@ Because many things have number-like properties (can be counted, added, subtract
 
 <p><code>filter</code> is our first example of <em>higher order function</em>; it requires as arguments a <em>function</em> of type <code>a -&gt; Bool</code> and a list of <code>a</code>s and returns the subset of the input list that verifies the filtering function.</p>
 
-<p>In the previous code block, we also see the first example of <em>operator section</em>:
-<code>(&gt; 2)</code>, passed as first argument to <code>filter</code>. 
-The ordering relation <code>(&gt;)</code> is a binary operator (since it compares two values and returns True or False), but <code>(&gt; 2)</code> takes only one argument and returns a Boolean.</p>
+<p>In the previous code block, we also see the first examples of <em>operator section</em>:
+<code>(&gt; 2)</code> and <code>(/= &#39;x&#39;)</code>, passed as first argument to <code>filter</code>. 
+The ordering relation <code>(&gt;)</code> is a binary operator (since it compares two values and returns True or False), but <code>(&gt; 2)</code> takes only one argument and returns a Boolean. Instead, <code>(/= &#39;x&#39;)</code> compares its only argument to the constant character <code>&#39;x&#39;</code>.</p>
 
 <p>The following examples should clarify the idea:</p>
 
@@ -198,7 +198,7 @@ The ordering relation <code>(&gt;)</code> is a binary operator (since it compare
 <span class="p">(</span><span class="o">==</span><span class="p">)</span> <span class="ow">::</span> <span class="kt">Eq</span> <span class="n">a</span> <span class="ow">=&gt;</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="kt">Bool</span>
  
 <span class="o">&gt;</span> <span class="kt">:</span><span class="n">t</span> <span class="p">(</span><span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
-<span class="p">(</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="ow">::</span> <span class="kt">Num</span> <span class="n">a</span> <span class="ow">=&gt;</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="n">a</span>
+<span class="p">(</span><span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="ow">::</span> <span class="kt">Num</span> <span class="n">a</span> <span class="ow">=&gt;</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="n">a</span>
 
 <span class="o">&gt;</span> <span class="kt">:</span><span class="n">t</span> <span class="p">(</span><span class="o">==</span> <span class="mi">2</span><span class="p">)</span>
 <span class="p">(</span><span class="o">==</span> <span class="mi">2</span><span class="p">)</span> <span class="ow">::</span> <span class="p">(</span><span class="kt">Num</span> <span class="n">a</span><span class="p">,</span> <span class="kt">Eq</span> <span class="n">a</span><span class="p">)</span> <span class="ow">=&gt;</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="kt">Bool</span></code></pre></div>
@@ -539,16 +539,27 @@ The first line is a function, the second a piece of data, and the <code>main</co
 
 <p>One form of conditional branching statement is the <em>pattern guard</em>:</p>
 
-<div class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="nf">oddFlag</span> <span class="n">x</span>
-   <span class="o">|</span> <span class="n">odd</span> <span class="n">x</span> <span class="ow">=</span> <span class="mi">1</span>
-   <span class="o">|</span> <span class="n">otherwise</span> <span class="ow">=</span> <span class="mi">0</span>
+<div class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="nf">oddness</span> <span class="n">x</span>
+   <span class="o">|</span> <span class="n">odd</span> <span class="n">x</span> <span class="ow">=</span> <span class="n">sx</span> <span class="o">++</span> <span class="s">&quot; is odd&quot;</span>
+   <span class="o">|</span> <span class="n">otherwise</span> <span class="ow">=</span> <span class="n">sx</span> <span class="o">++</span> <span class="s">&quot; is even&quot;</span>
+       <span class="kr">where</span>
+         <span class="n">sx</span> <span class="ow">=</span> <span class="n">show</span> <span class="n">x</span>
 
 <span class="nf">buzz</span> <span class="n">x</span> 
-   <span class="o">|</span> <span class="p">(</span><span class="n">mod</span> <span class="n">x</span> <span class="mi">3</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span> <span class="o">||</span> <span class="n">not</span> <span class="p">(</span><span class="n">x</span> <span class="o">==</span> <span class="mi">17</span><span class="p">)</span>  <span class="ow">=</span> <span class="kt">True</span>
-   <span class="o">|</span> <span class="n">even</span> <span class="n">x</span> <span class="ow">=</span> <span class="kt">True</span> 
-   <span class="o">|</span> <span class="n">otherwise</span> <span class="ow">=</span> <span class="kt">False</span></code></pre></div>
+   <span class="o">|</span> <span class="n">f</span> <span class="o">||</span> <span class="n">g</span>  <span class="ow">=</span> <span class="mi">0</span>
+   <span class="o">|</span> <span class="n">even</span> <span class="n">x</span> <span class="ow">=</span> <span class="mi">1</span>
+   <span class="o">|</span> <span class="n">otherwise</span> <span class="ow">=</span> <span class="mi">2</span> 
+       <span class="kr">where</span>
+         <span class="n">f</span> <span class="ow">=</span> <span class="n">x</span> <span class="p">`</span><span class="n">mod</span><span class="p">`</span> <span class="mi">7</span> <span class="o">==</span> <span class="mi">0</span>
+         <span class="n">g</span> <span class="ow">=</span> <span class="n">x</span> <span class="o">&lt;</span> <span class="mi">20</span></code></pre></div>
+
+<p>The options (expressions after <code>|</code>) are evaluated in top-to-bottom order, and the last one is only evaluated if none of the previous ones evaluates to <code>True</code>.</p>
 
 <p>Pattern guards are convenient syntax for deciding which conditional branch to take according to the <em>value</em> contained in one or more of the input variables. Note that the functions acting as pattern guards (e.g. <code>odd x</code>, <code>(mod x 3) == 0</code>) have to return a Boolean, and only after the <code>=</code> sign do we specify the return value for each branch.</p>
+
+<blockquote>
+<p>Quiz: what are the type signatures of <code>oddness</code> and <code>buzz</code> and why ? </p>
+</blockquote>
 
 <p><a id="data"/> </a></p>
 
@@ -700,7 +711,7 @@ If a datatype is an instance of one or more classes, it &quot;inherits&quot; the
 
 <h1>Polymorphic types</h1>
 
-<p>Polymorphic types can be thought of a labeled scaffolding for more elementary types; in the following example we show how the constructor <code>Pt a a</code> can be specialized to cater for various needs:</p>
+<p>Polymorphic types can be thought of as a labeled scaffolding for more elementary types; in the following example we show how the constructor <code>Pt a a</code> can be specialized to cater for various needs:</p>
 
 <div class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="o">&gt;</span> <span class="kr">data</span> <span class="kt">Point</span> <span class="n">a</span> <span class="ow">=</span> <span class="kt">Pt</span> <span class="n">a</span> <span class="n">a</span>
 
