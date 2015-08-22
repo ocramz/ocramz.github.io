@@ -207,7 +207,19 @@ It is very instructive to have a look at the [Haskell Prelude](https://hackage.h
 
 
 
+# Recap
 
+Whew! In this introductory section we have alread seen quite a few new concepts: 
+
+* variable types
+* classes of types (a.k.a. _typeclasses_ `Num`, `Floating`, `Eq`, `Ord` ...)
+* lists and list functions
+* higher order functions
+* partial application, operator sections
+
+The aim with this tutorial is to develop a working knowledge of functional programming using Haskell as a vessel language; this (unfortunately) requires one to digest a certain number of new ideas, and to get acquainted with the terminology to describe them.
+
+In the following sections we will expand on and give examples for all the terms introduced so far (and a few more ..), and in a few pages the reader will be able to produce her first working programs !
 --------
 --------
 <a id="lambda" /></a>
