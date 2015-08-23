@@ -547,7 +547,7 @@ The above code recursively consumes the list supplied as second argument by appl
 # A brief digression on lists 
 
 Lists ("streams") are better thought of in recursive terms: a list can either be the empty list, or a concatenation of an element to a preexisting list (including the empty one).
-The two following signatures represent exactly this, and in the next lines we see their use as "list constructors":
+The signatures of `[]` and `(:)` represent exactly this, and in the following lines we see their use as "list constructors":
 
 {% highlight haskell%}
 > :t []
