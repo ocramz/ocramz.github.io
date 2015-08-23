@@ -539,7 +539,7 @@ map f [] = []
 map f (x:xs) = f x : map f xs
 {% endhighlight %}
 
-The above code recursively consumes the list supplied as second argument by applying `f` to its first element and appending the result (with `(:)`) to the output array. The first declaration is used if the supplied list is empty, which also holds at the base case of the recursion.
+The above code recursively consumes the list supplied as second argument by applying `f` to its first element and appending the result (with `(:)`) to the output array. The first declaration is used if the supplied list is empty (this decision is called _pattern matching_), which also holds at the base case of the recursion.
 
 
 
@@ -564,7 +564,7 @@ The signatures of `[]` and `(:)` represent exactly this, and in the following li
 {% endhighlight %}
 
 It seems like `[]` and `(:)` are intimately connected: both are necessary to build a non-trivial list. Having a "neutral element" and an (associative) "appending" operation is the characteristic of a much more general algebraic class called a _Monoid_ (to which lists naturally belong), but discussing the details would distract us at this point.
-For now, it suffices to say that `[]` and `(:)` are the _constructor_ (methods) of the empty and nontrivial list respectively, and as such can be "pattern matched against" in function declarations, or used (as usual) for constructing a list, as we have seen a few times already.
+For now, it suffices to say that `[]` and `(:)` are the _constructor_ (methods) of the empty and nontrivial list respectively, and as such can be "pattern matched against" in function declarations, or used for constructing a list from its elements.
 
 The notation `(x:xs)` in the calling sequence of `map`, `foldr` etc. is one such example of "pattern matching on the constructor of the input data". `x` and `xs`, interpreted as an element of type `a` and list containing elements of the same type, `[a]`, respectively, will be used in the body of the function as usual.
 
