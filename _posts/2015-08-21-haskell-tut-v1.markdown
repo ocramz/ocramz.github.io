@@ -304,7 +304,7 @@ As an example, we can apply the ``squared'' function to an arbitrary value:
 What does it mean to "compose functions"? If we think of a function as a machine on a factory floor, feeding the output of one (_g_, say)  into the input of the next (which we can call _f_) is a form of composition. This of course only works if the _f_ is designed to work on the outputs of _g_ (you wouldn't want to plug a grinder to an Easter egg packaging machine, for example).
 
 The _composition_ of _f_ and _g_, written `f . g` in Haskell and  $$f \circ g$$ in mathematical literature, is itself a function, taking `g`'s input type and returning `f`'s result type. It's as if we welded the two machines together, and obtained a new, more complex machine as a result. 
-
+    
 Here is a nested function application pattern, and below it the type signature of the corresponding library function `(.)`:
 
 {% highlight haskell %}
@@ -547,7 +547,7 @@ The above code recursively consumes the list supplied as second argument by appl
 # A brief digression on lists 
 
 Lists ("streams") are better thought of in recursive terms: a list can either be the empty list, or a concatenation of an element to a preexisting list (including the empty one).
-The two following signatures represent exactly this, and in the third line we see the "low-level" way to declare a list:
+The two following signatures represent exactly this, and in the next lines we see their use as "list constructors":
 
 {% highlight haskell%}
 > :t []
@@ -556,12 +556,15 @@ The two following signatures represent exactly this, and in the third line we se
 > :t (:)
 (:) :: a -> [a] -> [a]
 
-> 3 : 2 : []
-[3,2]
+> 2 : []
+[2]
+
+> 4 : [3, 2]
+[4,3,2]
 {% endhighlight %}
 
 It seems like `[]` and `(:)` are intimately connected: both are necessary to build a non-trivial list. Having a "neutral element" and an (associative) "appending" operation is the characteristic of a much more general algebraic class called a _Monoid_ (to which lists naturally belong), but discussing the details would distract us at this point.
-For now, it suffices to say that `[]` and `(:)` are the _constructor_ (methods) of the empty and nontrivial list respectively, and as such can be "pattern matched against" in function declarations.
+For now, it suffices to say that `[]` and `(:)` are the _constructor_ (methods) of the empty and nontrivial list respectively, and as such can be "pattern matched against" in function declarations, or used (as usual) for constructing a list, as we have seen a few times already.
 
 The notation `(x:xs)` in the calling sequence of `map`, `foldr` etc. is one such example of "pattern matching on the constructor of the input data". `x` and `xs`, interpreted as an element of type `a` and list containing elements of the same type, `[a]`, respectively, will be used in the body of the function as usual.
 

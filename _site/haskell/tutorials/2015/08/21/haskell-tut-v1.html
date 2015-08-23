@@ -524,7 +524,7 @@ The first line is a function, the second a piece of data, and the <code>main</co
 <h1>A brief digression on lists</h1>
 
 <p>Lists (&quot;streams&quot;) are better thought of in recursive terms: a list can either be the empty list, or a concatenation of an element to a preexisting list (including the empty one).
-The two following signatures represent exactly this, and in the third line we see the &quot;low-level&quot; way to declare a list:</p>
+The two following signatures represent exactly this, and in the next lines we see their use as &quot;list constructors&quot;:</p>
 
 <div class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="o">&gt;</span> <span class="kt">:</span><span class="n">t</span> <span class="kt">[]</span>
 <span class="kt">[]</span> <span class="ow">::</span> <span class="p">[</span><span class="n">a</span><span class="p">]</span>
@@ -532,11 +532,14 @@ The two following signatures represent exactly this, and in the third line we se
 <span class="o">&gt;</span> <span class="kt">:</span><span class="n">t</span> <span class="p">(</span><span class="kt">:</span><span class="p">)</span>
 <span class="p">(</span><span class="kt">:</span><span class="p">)</span> <span class="ow">::</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="p">[</span><span class="n">a</span><span class="p">]</span> <span class="ow">-&gt;</span> <span class="p">[</span><span class="n">a</span><span class="p">]</span>
 
-<span class="o">&gt;</span> <span class="mi">3</span> <span class="kt">:</span> <span class="mi">2</span> <span class="kt">:</span> <span class="kt">[]</span>
-<span class="p">[</span><span class="mi">3</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span></code></pre></div>
+<span class="o">&gt;</span> <span class="mi">2</span> <span class="kt">:</span> <span class="kt">[]</span>
+<span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+
+<span class="o">&gt;</span> <span class="mi">4</span> <span class="kt">:</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
+<span class="p">[</span><span class="mi">4</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span></code></pre></div>
 
 <p>It seems like <code>[]</code> and <code>(:)</code> are intimately connected: both are necessary to build a non-trivial list. Having a &quot;neutral element&quot; and an (associative) &quot;appending&quot; operation is the characteristic of a much more general algebraic class called a <em>Monoid</em> (to which lists naturally belong), but discussing the details would distract us at this point.
-For now, it suffices to say that <code>[]</code> and <code>(:)</code> are the <em>constructor</em> (methods) of the empty and nontrivial list respectively, and as such can be &quot;pattern matched against&quot; in function declarations.</p>
+For now, it suffices to say that <code>[]</code> and <code>(:)</code> are the <em>constructor</em> (methods) of the empty and nontrivial list respectively, and as such can be &quot;pattern matched against&quot; in function declarations, or used (as usual) for constructing a list, as we have seen a few times already.</p>
 
 <p>The notation <code>(x:xs)</code> in the calling sequence of <code>map</code>, <code>foldr</code> etc. is one such example of &quot;pattern matching on the constructor of the input data&quot;. <code>x</code> and <code>xs</code>, interpreted as an element of type <code>a</code> and list containing elements of the same type, <code>[a]</code>, respectively, will be used in the body of the function as usual.</p>
 
