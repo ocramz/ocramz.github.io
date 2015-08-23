@@ -104,6 +104,9 @@ Lists are ordered collections of any one valid type of data, making them a very 
 > [23 .. 28]
 [23,24,25,26,27,28]
 
+> ['b' .. 'm']
+"bcdefghijklm"
+
 > :t [1 ..]
 [1 ..] :: (Num t, Enum t) => [t]
 
@@ -147,7 +150,7 @@ filter :: (a -> Bool) -> [a] -> [a]
  
 {% endhighlight %}
 
-`filter` is our first example of _higher order function_; it requires as arguments a _function_ of type `a -> Bool` and a list of `a`s and returns the subset of the input list that verifies the filtering function.
+`filter` is our first example of _higher order function_; it requires as arguments a _function_ of type `a -> Bool` (a _predicate_) and a list of `a`s and returns the subset of the input list that evaluates to `True`.
 
 In the previous code block, we also see the first examples of _operator section_:
 `(> 2)` and `(/= 'x')`, passed as first argument to `filter`. 
@@ -208,7 +211,7 @@ foldr :: (a -> b -> b) -> b -> [a] -> b
 
 `map` can be interpreted right from its signature: given a function from `a` to `b`, and a list of `a`s, it returns a list of `b`s, obtained by applying the function to every element of the input array.
 
-`foldr` is a right-to-left `fold`; it requires a binary function say `f`, an initial element of type `b` (the "accumulator") and a list of `a`s, and recursively applies `f` to the accumulator and the current first element of the remaining list. For example:
+`foldr` is a type of _fold_ that is, an operator which reduces a set of things to a single summary value with a certain policy, i.e. function; it requires a binary function say `f`, an initial element of type `b` and a list of `a`s, and recursively applies `f` to the current first element of the remaining list and an accumulator value, which is returned as result. For example:
 
 {% highlight haskell %}
 > foldr (+) 3 [1,4,10,24]
