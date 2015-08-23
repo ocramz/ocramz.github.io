@@ -443,7 +443,7 @@ Let's try together a few of the things we've see so far: partial application, fu
 > let listShorterThan m = (m >) . length 
 
 > :t listShorterThan
-f :: Int -> [a] -> Bool
+listShorterThan :: Int -> [a] -> Bool
 
 > map (listShorterThan 4) testData
 [True,False,True]
