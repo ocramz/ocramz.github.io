@@ -6,8 +6,8 @@
 </description>
     <link>http://yourdomain.com/</link>
     <atom:link href="http://yourdomain.com/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sun, 23 Aug 2015 03:08:36 +0200</pubDate>
-    <lastBuildDate>Sun, 23 Aug 2015 03:08:36 +0200</lastBuildDate>
+    <pubDate>Sun, 23 Aug 2015 03:10:09 +0200</pubDate>
+    <lastBuildDate>Sun, 23 Aug 2015 03:10:09 +0200</lastBuildDate>
     <generator>Jekyll v2.5.3</generator>
     
       <item>
@@ -483,7 +483,7 @@ The two following signatures represent exactly this, and in the third line we se
 &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;It seems like &lt;code&gt;[]&lt;/code&gt; and &lt;code&gt;(:)&lt;/code&gt; are intimately connected: both are necessary to build a non-trivial list. Having a &amp;quot;neutral element&amp;quot; and an (associative) &amp;quot;appending&amp;quot; operation is the characteristic of a much more general algebraic class called a &lt;em&gt;Monoid&lt;/em&gt; (to which lists naturally belong), but discussing the details would distract us at this point.
-For now, it suffices to say that &lt;code&gt;[]&lt;/code&gt; and &lt;code&gt;(:)&lt;/code&gt; are the &lt;em&gt;constructor&lt;/em&gt; (methods) of the empty and nontrivial list respectively, and list-digesting functions &lt;/p&gt;
+For now, it suffices to say that &lt;code&gt;[]&lt;/code&gt; and &lt;code&gt;(:)&lt;/code&gt; are the &lt;em&gt;constructor&lt;/em&gt; (methods) of the empty and nontrivial list respectively, and as such can be &amp;quot;pattern matched against&amp;quot; in function declarations.&lt;/p&gt;
 
 &lt;p&gt;The notation &lt;code&gt;(x:xs)&lt;/code&gt; in the calling sequence of &lt;code&gt;map&lt;/code&gt;, &lt;code&gt;foldr&lt;/code&gt; etc. is one such example of &amp;quot;pattern matching on the constructor of the input data&amp;quot;. &lt;code&gt;x&lt;/code&gt; and &lt;code&gt;xs&lt;/code&gt;, interpreted as an element of type &lt;code&gt;a&lt;/code&gt; and list containing elements of the same type, &lt;code&gt;[a]&lt;/code&gt;, respectively, will be used in the body of the function as usual.&lt;/p&gt;
 
