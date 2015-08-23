@@ -560,7 +560,7 @@ The two following signatures represent exactly this, and in the third line we se
 [3,2]
 {% endhighlight %}
 
-It seems like `[]` and `(:)` are intimately connected: both are necessary to build a non-trivial list. Having a "neutral element" and an (associative) "appending" operation is the characteristic of a certain algebraic idea called a _Monoid_, but discussing the details would distract us at this point.
+It seems like `[]` and `(:)` are intimately connected: both are necessary to build a non-trivial list. Having a "neutral element" and an (associative) "appending" operation is the characteristic of a much more general algebraic class called a _Monoid_ (to which lists naturally belong), but discussing the details would distract us at this point.
 For now, it suffices to say that `[]` and `(:)` are the _constructor_ (methods) of the empty and nontrivial list respectively, and list-digesting functions 
 
 The notation `(x:xs)` in the calling sequence of `map`, `foldr` etc. is one such example of "pattern matching on the constructor of the input data". `x` and `xs`, interpreted as an element of type `a` and list containing elements of the same type, `[a]`, respectively, will be used in the body of the function as usual.
