@@ -6,8 +6,8 @@
 </description>
     <link>http://yourdomain.com/</link>
     <atom:link href="http://yourdomain.com/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sun, 23 Aug 2015 02:50:08 +0200</pubDate>
-    <lastBuildDate>Sun, 23 Aug 2015 02:50:08 +0200</lastBuildDate>
+    <pubDate>Sun, 23 Aug 2015 03:03:38 +0200</pubDate>
+    <lastBuildDate>Sun, 23 Aug 2015 03:03:38 +0200</lastBuildDate>
     <generator>Jekyll v2.5.3</generator>
     
       <item>
@@ -471,7 +471,7 @@ The first line is a function, the second a piece of data, and the &lt;code&gt;ma
 &lt;h1&gt;A brief digression on lists&lt;/h1&gt;
 
 &lt;p&gt;Lists (&amp;quot;streams&amp;quot;) are better thought of in recursive terms: a list can either be the empty list, or a concatenation of an element to a preexisting list (including the empty one).
-The two following signatures represent exactly this, and in the third line we see the corresponding (tedious) way to declare a list:&lt;/p&gt;
+The two following signatures represent exactly this, and in the third line we see the &amp;quot;low-level&amp;quot; way to declare a list:&lt;/p&gt;
 
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-haskell&quot; data-lang=&quot;haskell&quot;&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;t&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;[]&lt;/span&gt;
 &lt;span class=&quot;kt&quot;&gt;[]&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;::&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
