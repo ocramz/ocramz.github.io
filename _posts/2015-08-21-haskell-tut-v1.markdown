@@ -24,6 +24,8 @@ If, on the other hand, we ask for the type of an expression `x` with `:t x`, the
 
 N.B.: In function bodies, parentheses are used to group subexpressions that must be evaluated first (as per convention).
 
+Haskell is case sensitive and often indentation-sensitive too, so watch out :)
+
 Each example builds on the previous one, starting from self-explanatory concepts; 
 the reader is encouraged to install the latest version of the [Glasgow Haskell Compiler suite](http://www.haskell.org/ghc) suite and try/modify the examples, in the given order; it's much more fun and instructive than just reading through!
 
@@ -150,7 +152,7 @@ filter :: (a -> Bool) -> [a] -> [a]
  
 {% endhighlight %}
 
-`filter` is our first example of _higher order function_; it requires as arguments a _function_ of type `a -> Bool` (a _predicate_) and a list of `a`s and returns the subset of the input list that evaluates to `True`.
+`filter` is our first example of _higher order function_; it requires as arguments a _function_ of type `a -> Bool` (a _predicate_, that is, a function that evaluates to `True` or `False`) and a list of `a`s and returns the subset of the input list that evaluates to `True`.
 
 In the previous code block, we also see the first examples of _operator section_:
 `(> 2)` and `(/= 'x')`, passed as first argument to `filter`. 

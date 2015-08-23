@@ -86,6 +86,8 @@ If, on the other hand, we ask for the type of an expression <code>x</code> with 
 
 <p>N.B.: In function bodies, parentheses are used to group subexpressions that must be evaluated first (as per convention).</p>
 
+<p>Haskell is case sensitive and often indentation-sensitive too, so watch out :)</p>
+
 <p>Each example builds on the previous one, starting from self-explanatory concepts; 
 the reader is encouraged to install the latest version of the <a href="http://www.haskell.org/ghc">Glasgow Haskell Compiler suite</a> suite and try/modify the examples, in the given order; it&#39;s much more fun and instructive than just reading through!</p>
 
@@ -197,7 +199,7 @@ Because many things have number-like properties (can be counted, added, subtract
 <span class="o">&gt;</span> <span class="n">filter</span> <span class="p">(</span><span class="o">/=</span> <span class="n">&#39;x&#39;</span><span class="p">)</span> <span class="s">&quot;xxxjgxkjg&quot;</span> 
 <span class="s">&quot;jgkjg&quot;</span></code></pre></div>
 
-<p><code>filter</code> is our first example of <em>higher order function</em>; it requires as arguments a <em>function</em> of type <code>a -&gt; Bool</code> (a <em>predicate</em>) and a list of <code>a</code>s and returns the subset of the input list that evaluates to <code>True</code>.</p>
+<p><code>filter</code> is our first example of <em>higher order function</em>; it requires as arguments a <em>function</em> of type <code>a -&gt; Bool</code> (a <em>predicate</em>, that is, a function that evaluates to <code>True</code> or <code>False</code>) and a list of <code>a</code>s and returns the subset of the input list that evaluates to <code>True</code>.</p>
 
 <p>In the previous code block, we also see the first examples of <em>operator section</em>:
 <code>(&gt; 2)</code> and <code>(/= &#39;x&#39;)</code>, passed as first argument to <code>filter</code>. 
