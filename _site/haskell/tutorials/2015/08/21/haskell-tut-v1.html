@@ -144,7 +144,10 @@ Because many things have number-like properties (can be counted, added, subtract
 
 <p>Single characters are to be enclosed in single forward quotes whereas text strings require double quotes. Internally, strings are represented as lists of characters, so the above example is rendered internally as <code>[&#39;p&#39;,&#39;o&#39;,&#39;t&#39;,&#39;a&#39;,&#39;t&#39;,&#39;o&#39;]</code>.</p>
 
-<p>Tuples are constant-size collections of data, not necessarily of the same type and separated by <code>,</code> as in <code>(1,&quot;one&quot;) :: Num t =&gt; (t, [Char])</code>.</p>
+<p>Tuples are constant-size collections of data, not necessarily of the same type and separated by <code>,</code> and enclosed in <code>(</code> .. <code>)</code> as in </p>
+
+<div class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="o">&gt;</span> <span class="kt">:</span><span class="n">t</span> <span class="p">(</span><span class="mi">132</span><span class="p">,</span> <span class="s">&quot;potato&quot;</span><span class="p">)</span>
+<span class="p">(</span><span class="mi">132</span><span class="p">,</span> <span class="s">&quot;potato&quot;</span><span class="p">)</span> <span class="ow">::</span> <span class="kt">Num</span> <span class="n">t</span> <span class="ow">=&gt;</span> <span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="p">[</span><span class="kt">Char</span><span class="p">])</span></code></pre></div>
 
 <p>Lists are ordered collections of any one valid type of data, making them a very versatile tool:</p>
 
