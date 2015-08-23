@@ -88,7 +88,7 @@ The exponential `exp` is a function of a single parameter (a real number, here r
 
 Single characters are to be enclosed in single forward quotes whereas text strings require double quotes. Internally, strings are represented as lists of characters, so the above example is rendered internally as `['p','o','t','a','t','o']`.
 
-Tuples are constant-size collections of data, not necessarily of the same type: `(1,"one") :: Num t => (t, [Char])`.
+Tuples are constant-size collections of data, not necessarily of the same type and separated by `,` as in `(1,"one") :: Num t => (t, [Char])`.
 
 Lists are ordered collections of any one valid type of data, making them a very versatile tool:
 
