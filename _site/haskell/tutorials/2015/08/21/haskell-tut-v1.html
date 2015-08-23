@@ -134,7 +134,7 @@ Because many things have number-like properties (can be counted, added, subtract
 <p>Why <code>Floating a</code> and not <code>Num a</code>, for instance? Because <code>Num</code> is the most general typeclass of numbers (i.e including fractionals, integers, floats etc.), but transcendental numbers (i.e. having infinite decimal digits) such as <code>pi</code> and <code>exp 1</code> live in a &quot;smaller&quot; set, that is, require a more specialized definition.</p>
 </blockquote>
 
-<h1>Text characters, strings and lists</h1>
+<h1>Text characters, tuples, strings and lists</h1>
 
 <div class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="o">&gt;</span> <span class="kt">:</span><span class="n">t</span> <span class="n">&#39;a&#39;</span>
 <span class="n">&#39;a&#39;</span> <span class="ow">::</span> <span class="kt">Char</span>
@@ -142,15 +142,23 @@ Because many things have number-like properties (can be counted, added, subtract
 <span class="o">&gt;</span> <span class="kt">:</span><span class="n">t</span> <span class="s">&quot;potato&quot;</span>
 <span class="s">&quot;potato&quot;</span> <span class="ow">::</span> <span class="p">[</span><span class="kt">Char</span><span class="p">]</span></code></pre></div>
 
-<p>Single characters are to be enclosed in single forward quotes whereas text strings require double quotes. Internally, strings are represented as arrays of characters, so the above example becomes <code>[&#39;p&#39;,&#39;o&#39;,&#39;t&#39;,&#39;a&#39;,&#39;t&#39;,&#39;o&#39;]</code>.</p>
+<p>Single characters are to be enclosed in single forward quotes whereas text strings require double quotes. Internally, strings are represented as lists of characters, so the above example is rendered internally as <code>[&#39;p&#39;,&#39;o&#39;,&#39;t&#39;,&#39;a&#39;,&#39;t&#39;,&#39;o&#39;]</code>.</p>
 
-<p>Lists can contain any valid type of data, making them a very versatile tool:</p>
+<p>Tuples are constant-size collections of data, not necessarily of the same type: <code>(1,&quot;one&quot;) :: Num t =&gt; (t, [Char])</code>.</p>
+
+<p>Lists are ordered collections of any one valid type of data, making them a very versatile tool:</p>
 
 <div class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="o">&gt;</span> <span class="kt">:</span><span class="n">t</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span>
 <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span> <span class="ow">::</span> <span class="kt">Num</span> <span class="n">t</span> <span class="ow">=&gt;</span> <span class="p">[</span><span class="n">t</span><span class="p">]</span>
 
+<span class="o">&gt;</span> <span class="p">[</span><span class="mi">23</span> <span class="o">..</span> <span class="mi">28</span><span class="p">]</span>
+<span class="p">[</span><span class="mi">23</span><span class="p">,</span><span class="mi">24</span><span class="p">,</span><span class="mi">25</span><span class="p">,</span><span class="mi">26</span><span class="p">,</span><span class="mi">27</span><span class="p">,</span><span class="mi">28</span><span class="p">]</span>
+
 <span class="o">&gt;</span> <span class="kt">:</span><span class="n">t</span> <span class="p">[</span><span class="mi">1</span> <span class="o">..</span><span class="p">]</span>
-<span class="p">[</span><span class="mi">1</span> <span class="o">..</span><span class="p">]</span> <span class="ow">::</span> <span class="p">(</span><span class="kt">Num</span> <span class="n">t</span><span class="p">,</span> <span class="kt">Enum</span> <span class="n">t</span><span class="p">)</span> <span class="ow">=&gt;</span> <span class="p">[</span><span class="n">t</span><span class="p">]</span></code></pre></div>
+<span class="p">[</span><span class="mi">1</span> <span class="o">..</span><span class="p">]</span> <span class="ow">::</span> <span class="p">(</span><span class="kt">Num</span> <span class="n">t</span><span class="p">,</span> <span class="kt">Enum</span> <span class="n">t</span><span class="p">)</span> <span class="ow">=&gt;</span> <span class="p">[</span><span class="n">t</span><span class="p">]</span>
+
+<span class="o">&gt;</span> <span class="kt">:</span><span class="n">t</span> <span class="p">[(</span><span class="mi">1</span><span class="p">,</span> <span class="s">&quot;one&quot;</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="s">&quot;two&quot;</span><span class="p">)]</span>
+<span class="p">[(</span><span class="mi">1</span><span class="p">,</span> <span class="s">&quot;one&quot;</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="s">&quot;two&quot;</span><span class="p">)]</span> <span class="ow">::</span> <span class="kt">Num</span> <span class="n">t</span> <span class="ow">=&gt;</span> <span class="p">[(</span><span class="n">t</span><span class="p">,</span> <span class="p">[</span><span class="kt">Char</span><span class="p">])]</span></code></pre></div>
 
 <blockquote>
 <p>Lists can be infinite in length (thus it is more appropriate to describe them as <em>streams</em>). Among the many other library functions, e.g. <code>take</code>, <code>drop</code> and <code>filter</code> let us query or pick out elements from streams.</p>
@@ -584,7 +592,15 @@ The signatures of <code>[]</code> and <code>(:)</code> represent exactly this, a
 
 <h1>Pattern guards</h1>
 
-<p>One form of conditional branching statement is the <em>pattern guard</em>:</p>
+<p>One form of conditional branching statement is the <em>pattern guard</em> <code>|</code>. Let&#39;s see a posible implementation of <code>filter</code>:</p>
+
+<div class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="nf">filter&#39;</span> <span class="kr">_</span> <span class="kt">[]</span> <span class="ow">=</span> <span class="kt">[]</span>
+<span class="nf">filter&#39;</span> <span class="n">p</span> <span class="p">(</span><span class="n">x</span><span class="kt">:</span><span class="n">xs</span><span class="p">)</span> <span class="o">|</span> <span class="n">p</span> <span class="n">x</span>       <span class="ow">=</span> <span class="n">x</span> <span class="kt">:</span> <span class="n">filter&#39;</span> <span class="n">p</span> <span class="n">xs</span>
+                 <span class="o">|</span> <span class="n">otherwise</span> <span class="ow">=</span> <span class="n">filter&#39;</span> <span class="n">p</span> <span class="n">xs</span></code></pre></div>
+
+<p>If <code>p x</code> evaluates to <code>True</code>, the first branch is taken; </p>
+
+<p>The options (expressions after <code>|</code>) are evaluated in top-to-bottom order, and the last one is only evaluated if none of the previous ones evaluates to <code>True</code>.</p>
 
 <div class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="nf">oddness</span> <span class="n">x</span>
    <span class="o">|</span> <span class="n">odd</span> <span class="n">x</span> <span class="ow">=</span> <span class="n">sx</span> <span class="o">++</span> <span class="s">&quot; is odd&quot;</span>
@@ -600,9 +616,7 @@ The signatures of <code>[]</code> and <code>(:)</code> represent exactly this, a
          <span class="n">f</span> <span class="ow">=</span> <span class="n">x</span> <span class="p">`</span><span class="n">mod</span><span class="p">`</span> <span class="mi">7</span> <span class="o">==</span> <span class="mi">0</span>
          <span class="n">g</span> <span class="ow">=</span> <span class="n">x</span> <span class="o">&lt;</span> <span class="mi">20</span></code></pre></div>
 
-<p>The options (expressions after <code>|</code>) are evaluated in top-to-bottom order, and the last one is only evaluated if none of the previous ones evaluates to <code>True</code>.</p>
-
-<p>Pattern guards are convenient syntax for deciding which conditional branch to take according to the <em>value</em> contained in one or more of the input variables. Note that the functions acting as pattern guards (e.g. <code>odd x</code>, <code>f || g</code>) have to return a Boolean, and only after the <code>=</code> sign do we specify the return value for each branch.</p>
+<p>Pattern guards are convenient syntax for deciding which conditional branch to take according to the <em>truth value</em> computed from one or more of the input variables. Note that the functions acting as pattern guards (e.g. <code>odd x</code>, <code>f || g</code>) have to return a Boolean, and only after the <code>=</code> sign do we specify the return value for each branch.</p>
 
 <blockquote>
 <p>Quiz: what are the type signatures of <code>oddness</code> and <code>buzz</code> and why ? </p>

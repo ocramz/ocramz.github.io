@@ -76,7 +76,7 @@ The exponential `exp` is a function of a single parameter (a real number, here r
 > Why `Floating a` and not `Num a`, for instance? Because `Num` is the most general typeclass of numbers (i.e including fractionals, integers, floats etc.), but transcendental numbers (i.e. having infinite decimal digits) such as `pi` and `exp 1` live in a "smaller" set, that is, require a more specialized definition.
 
 
-# Text characters, strings and lists 
+# Text characters, tuples, strings and lists 
 
 {% highlight haskell %}
 > :t 'a'
@@ -86,16 +86,24 @@ The exponential `exp` is a function of a single parameter (a real number, here r
 "potato" :: [Char]
 {% endhighlight %}
 
-Single characters are to be enclosed in single forward quotes whereas text strings require double quotes. Internally, strings are represented as arrays of characters, so the above example becomes `['p','o','t','a','t','o']`.
+Single characters are to be enclosed in single forward quotes whereas text strings require double quotes. Internally, strings are represented as lists of characters, so the above example is rendered internally as `['p','o','t','a','t','o']`.
 
-Lists can contain any valid type of data, making them a very versatile tool:
+Tuples are constant-size collections of data, not necessarily of the same type: `(1,"one") :: Num t => (t, [Char])`.
+
+Lists are ordered collections of any one valid type of data, making them a very versatile tool:
 
 {% highlight haskell %}
 > :t [1,2,3]
 [1,2,3] :: Num t => [t]
 
+> [23 .. 28]
+[23,24,25,26,27,28]
+
 > :t [1 ..]
 [1 ..] :: (Num t, Enum t) => [t]
+
+> :t [(1, "one"), (2, "two")]
+[(1, "one"), (2, "two")] :: Num t => [(t, [Char])]
 
 {% endhighlight %}
 
@@ -616,7 +624,16 @@ woop :: Num a => Pop a -> Pip a
 
 # Pattern guards 
 
-One form of conditional branching statement is the _pattern guard_:
+One form of conditional branching statement is the _pattern guard_ `|`. Let's see a posible implementation of `filter`:
+
+{% highlight haskell %}
+filter' _ [] = []
+filter' p (x:xs) | p x       = x : filter' p xs
+                 | otherwise = filter' p xs
+{% endhighlight %}
+If `p x` evaluates to `True`, the first branch is taken; 
+
+The options (expressions after `|`) are evaluated in top-to-bottom order, and the last one is only evaluated if none of the previous ones evaluates to `True`.
 
 {% highlight haskell %}
 oddness x
@@ -634,9 +651,7 @@ buzz x
          g = x < 20
 {% endhighlight %}
 
-The options (expressions after `|`) are evaluated in top-to-bottom order, and the last one is only evaluated if none of the previous ones evaluates to `True`.
-
-Pattern guards are convenient syntax for deciding which conditional branch to take according to the _value_ contained in one or more of the input variables. Note that the functions acting as pattern guards (e.g. `odd x`, `f || g`) have to return a Boolean, and only after the `=` sign do we specify the return value for each branch.
+Pattern guards are convenient syntax for deciding which conditional branch to take according to the _truth value_ computed from one or more of the input variables. Note that the functions acting as pattern guards (e.g. `odd x`, `f || g`) have to return a Boolean, and only after the `=` sign do we specify the return value for each branch.
 
 > Quiz: what are the type signatures of `oddness` and `buzz` and why ? 
 
