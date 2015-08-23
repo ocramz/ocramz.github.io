@@ -362,17 +362,19 @@ f1 (<) exp :: (Ord a, Floating a) => a -> a -> Bool
 
 The expressions `f1 (+)`, `f1 (<)` and `f1 (<) exp` are examples of _partial application_; the resulting expression is itself a function with a reduced number of arguments than the original one.
 
-The higher-order function `f2` accepts three arguments, the first of which is a binary function; however if we just supply one argument, the result will be itself a binary function: 
+The higher-order function `f2` accepts three arguments, the first of which is a binary function; if we only supply this, the result will itself be a binary function: 
 
 {% highlight haskell %}
-> :t \f2 x y -> f2 y x
-\f2 x y -> f2 y x :: (a -> b -> c) -> b -> a -> c
+> let f2 g x y = g y x 
+
+> :t f2
+f2 :: (a -> b -> c) -> b -> a -> c
  
 > :t flip
 flip :: (a -> b -> c) -> (b -> a -> c)
 {% endhighlight %}
 
-(my parentheses on the right hand side). Both `f2` and the library function `flip` return the input binary function but with exchanged order of arguments:
+(my parentheses on the right hand side of `flip`). Both `f2` and the library function `flip` return the input binary function but with exchanged order of arguments:
 
 {% highlight haskell %}
 > let pow = (^)
@@ -559,7 +561,7 @@ The two following signatures represent exactly this, and in the third line we se
 {% endhighlight %}
 
 It seems like `[]` and `(:)` are intimately connected: both are necessary to build a non-trivial list. Having a "neutral element" and an (associative) "appending" operation is the characteristic of a certain algebraic idea called a _Monoid_, but discussing the details would distract us at this point.
-For now, it suffices to say that `[]` and `(:)` are the _constructor_ (methods) of the empty and nontrivial list respectively, and as such, we can "pattern match" on them to decide which branch of a declaration applies to the given inputs.
+For now, it suffices to say that `[]` and `(:)` are the _constructor_ (methods) of the empty and nontrivial list respectively, and list-digesting functions 
 
 The notation `(x:xs)` in the calling sequence of `map`, `foldr` etc. is one such example of "pattern matching on the constructor of the input data". `x` and `xs`, interpreted as an element of type `a` and list containing elements of the same type, `[a]`, respectively, will be used in the body of the function as usual.
 
