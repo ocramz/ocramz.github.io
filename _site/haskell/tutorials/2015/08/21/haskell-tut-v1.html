@@ -809,6 +809,10 @@ If a datatype is an instance of one or more classes, it &quot;inherits&quot; the
 <span class="o">&gt;</span> <span class="kt">:</span><span class="n">t</span> <span class="n">inside</span>
 <span class="nf">inside</span> <span class="ow">::</span> <span class="p">(</span><span class="kt">Ord</span> <span class="n">a</span><span class="p">,</span> <span class="kt">Num</span> <span class="n">a</span><span class="p">)</span> <span class="ow">=&gt;</span> <span class="kt">Point</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="kt">Point</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="kt">Bool</span></code></pre></div>
 
+<blockquote>
+<p>Quiz: why do the<code>Ord</code> and <code>Num</code> constraints arise, in the definition of <code>inside</code> ?</p>
+</blockquote>
+
 <p>A simple polymorphic datatype to represent a computation that can fail is <code>Maybe a</code>:</p>
 
 <div class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="o">&gt;</span> <span class="kr">data</span> <span class="kt">Maybe</span> <span class="n">a</span> <span class="ow">=</span> <span class="kt">Nothing</span> <span class="o">|</span> <span class="kt">Just</span> <span class="n">a</span></code></pre></div>
@@ -847,7 +851,12 @@ If a datatype is an instance of one or more classes, it &quot;inherits&quot; the
 <span class="o">&gt;</span> <span class="kr">let</span> <span class="n">leaf2</span> <span class="ow">=</span> <span class="kt">L</span> <span class="mi">27</span>
  
 <span class="o">&gt;</span> <span class="kt">B</span> <span class="n">leaf1</span> <span class="n">leaf2</span>
-<span class="kt">B</span> <span class="p">(</span><span class="kt">L</span> <span class="mi">15</span><span class="p">)</span> <span class="p">(</span><span class="kt">L</span> <span class="mi">27</span><span class="p">)</span></code></pre></div>
+<span class="kt">B</span> <span class="p">(</span><span class="kt">L</span> <span class="mi">15</span><span class="p">)</span> <span class="p">(</span><span class="kt">L</span> <span class="mi">27</span><span class="p">)</span>
+
+<span class="o">&gt;</span> <span class="kr">let</span> <span class="n">b0</span> <span class="ow">=</span> <span class="kt">B</span> <span class="n">leaf1</span> <span class="n">leaf2</span>
+
+<span class="o">&gt;</span> <span class="kt">:</span><span class="n">t</span> <span class="n">b0</span>
+<span class="nf">b0</span> <span class="ow">::</span> <span class="kt">Num</span> <span class="n">a</span> <span class="ow">=&gt;</span> <span class="kt">Tree</span> <span class="n">a</span></code></pre></div>
 
 <p>Trees have very convenient asymptotic performance for search and sorting operations, and they are naturally suited to be traversed with recursive logic in Haskell.</p>
 

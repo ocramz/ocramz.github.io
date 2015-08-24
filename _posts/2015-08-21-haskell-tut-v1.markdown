@@ -859,6 +859,8 @@ Pt 'c' 'd' :: Point Char
 inside :: (Ord a, Num a) => Point a -> Point a -> Bool
 {% endhighlight %}
 
+> Quiz: why do the`Ord` and `Num` constraints arise, in the definition of `inside` ?
+
 A simple polymorphic datatype to represent a computation that can fail is `Maybe a`:
 
 {% highlight haskell %}
@@ -903,6 +905,12 @@ B :: Tree a -> Tree a -> Tree a
  
 > B leaf1 leaf2
 B (L 15) (L 27)
+
+> let b0 = B leaf1 leaf2
+
+> :t b0
+b0 :: Num a => Tree a         
+
 {% endhighlight %}
 
 Trees have very convenient asymptotic performance for search and sorting operations, and they are naturally suited to be traversed with recursive logic in Haskell.
