@@ -213,6 +213,14 @@ foldr :: (a -> b -> b) -> b -> [a] -> b
 
 `map` can be interpreted right from its signature: given a function from `a` to `b`, and a list of `a`s, it returns a list of `b`s, obtained by applying the function to every element of the input array.
 
+{% highlight haskell%}
+> map (=='r') "chirp"
+[False,False,False,True,False]
+
+> map (* 2) [0,2 .. 8]
+[0,4,8,12,16]
+{% endhighlight%}
+
 `foldr` is a type of _fold_ that is, an operator which reduces a set of things to a single summary value with a certain policy, i.e. function; it requires a binary function say `f`, an initial element of type `b` and a list of `a`s, and recursively applies `f` to the current first element of the remaining list and an accumulator value, which is returned as result. For example:
 
 {% highlight haskell %}

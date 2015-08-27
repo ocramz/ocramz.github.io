@@ -247,6 +247,12 @@ The ordering relation <code>(&gt;)</code> is a binary operator (since it compare
 
 <p><code>map</code> can be interpreted right from its signature: given a function from <code>a</code> to <code>b</code>, and a list of <code>a</code>s, it returns a list of <code>b</code>s, obtained by applying the function to every element of the input array.</p>
 
+<div class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="o">&gt;</span> <span class="n">map</span> <span class="p">(</span><span class="o">==</span><span class="n">&#39;r&#39;</span><span class="p">)</span> <span class="s">&quot;chirp&quot;</span>
+<span class="p">[</span><span class="kt">False</span><span class="p">,</span><span class="kt">False</span><span class="p">,</span><span class="kt">False</span><span class="p">,</span><span class="kt">True</span><span class="p">,</span><span class="kt">False</span><span class="p">]</span>
+
+<span class="o">&gt;</span> <span class="n">map</span> <span class="p">(</span><span class="o">*</span> <span class="mi">2</span><span class="p">)</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span> <span class="o">..</span> <span class="mi">8</span><span class="p">]</span>
+<span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">8</span><span class="p">,</span><span class="mi">12</span><span class="p">,</span><span class="mi">16</span><span class="p">]</span></code></pre></div>
+
 <p><code>foldr</code> is a type of <em>fold</em> that is, an operator which reduces a set of things to a single summary value with a certain policy, i.e. function; it requires a binary function say <code>f</code>, an initial element of type <code>b</code> and a list of <code>a</code>s, and recursively applies <code>f</code> to the current first element of the remaining list and an accumulator value, which is returned as result. For example:</p>
 
 <div class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="o">&gt;</span> <span class="n">foldr</span> <span class="p">(</span><span class="o">+</span><span class="p">)</span> <span class="mi">3</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mi">24</span><span class="p">]</span>
