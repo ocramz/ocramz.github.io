@@ -344,7 +344,7 @@ The ordering relation <code>(&gt;)</code> is a binary operator (since it compare
 
 <p>What does it mean to &quot;compose functions&quot;? If we think of a function as a machine on a factory floor, feeding the output of one (<em>g</em>, say)  into the input of the next (which we can call <em>f</em>) is a form of composition. This of course only works if the <em>f</em> is designed to work on the outputs of <em>g</em> (you wouldn&#39;t want to plug a grinder to an Easter egg packaging machine, for example).</p>
 
-<p>The <em>composition</em> of <em>f</em> and <em>g</em>, written <code>f . g</code> in Haskell and  $$f \circ g$$ in mathematical literature, is itself a function, taking <code>g</code>&#39;s input type and returning <code>f</code>&#39;s result type. It&#39;s as if we welded the two machines together, and obtained a new, more complex machine as a result. </p>
+<p>The <em>composition</em> of <em>f</em> and <em>g</em>, written <code>f . g</code> in Haskell and  $$f \circ g$$ in mathematical literature, is itself a function, taking <code>g</code>&#39;s input type and returning <code>f</code>&#39;s result type. It&#39;s as if we welded the two machines together, and obtained a new, more complex machine as a result. (However the Haskell compiler, when types are aligned, does a great job of simplifying out the &quot;seam&quot;).</p>
 
 <p>Here is a nested function application pattern, and below it the type signature of the corresponding library function <code>(.)</code>:</p>
 
@@ -354,11 +354,9 @@ The ordering relation <code>(&gt;)</code> is a binary operator (since it compare
 <span class="o">&gt;</span> <span class="kt">:</span><span class="n">t</span> <span class="p">(</span><span class="o">.</span><span class="p">)</span>
 <span class="p">(</span><span class="o">.</span><span class="p">)</span> <span class="ow">::</span> <span class="p">(</span><span class="n">b</span> <span class="ow">-&gt;</span> <span class="n">c</span><span class="p">)</span> <span class="ow">-&gt;</span> <span class="p">(</span><span class="n">a</span> <span class="ow">-&gt;</span> <span class="n">b</span><span class="p">)</span> <span class="ow">-&gt;</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="n">c</span></code></pre></div>
 
+<p>When given two single-argument functions of the right types as inputs, as in <code>f . g</code> or <code>(.) f g</code> (the <em>infix</em> and <em>prefix</em> ways to write application of a binary operator, respectively), the result will be a new unary function of type <code>a -&gt; c</code> obtained by chaining the outputs of <code>g</code> to <code>f</code>: seamless.  </p>
+
 <blockquote>
-<p>In the example above <code>g x</code> is first evaluated, and its result is passed on to <code>f</code>, which explains the type signature: its first function argument <code>f</code> takes entities from set <code>b</code> and maps them onto the output set <code>c</code>, whereas <code>g</code> operates on the input domain <code>a</code> and ranges over <code>b</code>.</p>
-
-<p>Lambda expressions allow us to conveniently explore functional manipulation constructs. </p>
-
 <p>The Haskell Prelude and the other built-in libraries come with a rich library of synonyms, such as <code>(.)</code> and <code>($)</code> shown above, and lets us define and use our own, as soon as the need for abstraction arises.</p>
 </blockquote>
 

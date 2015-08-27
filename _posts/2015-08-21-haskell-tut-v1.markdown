@@ -329,7 +329,7 @@ As an example, we can apply the ``squared'' function to an arbitrary value:
 
 What does it mean to "compose functions"? If we think of a function as a machine on a factory floor, feeding the output of one (_g_, say)  into the input of the next (which we can call _f_) is a form of composition. This of course only works if the _f_ is designed to work on the outputs of _g_ (you wouldn't want to plug a grinder to an Easter egg packaging machine, for example).
 
-The _composition_ of _f_ and _g_, written `f . g` in Haskell and  $$f \circ g$$ in mathematical literature, is itself a function, taking `g`'s input type and returning `f`'s result type. It's as if we welded the two machines together, and obtained a new, more complex machine as a result. 
+The _composition_ of _f_ and _g_, written `f . g` in Haskell and  $$f \circ g$$ in mathematical literature, is itself a function, taking `g`'s input type and returning `f`'s result type. It's as if we welded the two machines together, and obtained a new, more complex machine as a result. (However the Haskell compiler, when types are aligned, does a great job of simplifying out the "seam").
     
 Here is a nested function application pattern, and below it the type signature of the corresponding library function `(.)`:
 
@@ -341,9 +341,7 @@ Here is a nested function application pattern, and below it the type signature o
 (.) :: (b -> c) -> (a -> b) -> a -> c
 {% endhighlight %}
 
-> In the example above `g x` is first evaluated, and its result is passed on to `f`, which explains the type signature: its first function argument `f` takes entities from set `b` and maps them onto the output set `c`, whereas `g` operates on the input domain `a` and ranges over `b`.
-
-> Lambda expressions allow us to conveniently explore functional manipulation constructs. 
+When given two single-argument functions of the right types as inputs, as in `f . g` or `(.) f g` (the _infix_ and _prefix_ ways to write application of a binary operator, respectively), the result will be a new unary function of type `a -> c` obtained by chaining the outputs of `g` to `f`: seamless.  
 
 > The Haskell Prelude and the other built-in libraries come with a rich library of synonyms, such as `(.)` and `($)` shown above, and lets us define and use our own, as soon as the need for abstraction arises.
 
