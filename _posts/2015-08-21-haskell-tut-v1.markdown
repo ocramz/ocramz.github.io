@@ -5,12 +5,22 @@ date: 2015-08-21
 categories: Haskell tutorials
 ---
 
-
+*   [Introduction](#intro)
 *   [The interactive Haskell compiler](#overview)
 *   [Notation for functional programs](#lambda)
 *   [Defining new symbols, functions and modules](#io)
 *   [Pattern matching](#pattern)
 *   [Datatypes](#data)
+
+
+<a id="intro" /> </a>
+## Introduction
+
+The aim of this tutorial is to help develop a working knowledge of functional programming using Haskell as the vessel language; this turns out to require one to digest a certain number of new ideas, and to get acquainted with the terminology to describe them.
+
+Most of these concepts are intertwined, so perhaps they make little sense if considered in isolation. This has traditionally given Haskell a bad reputation for displaying a steep learning curve and being "too abstract". We wish to demistify this, by showing how _programming with functions_ is a natural way of expressing computer programs.
+
+Luckily, Haskell comes with an interactive compiler as well (GHCi), and this lets us explore more or less separately the various features of the language.
 
 <a id="overview" /> </a>
 ## The interactive Haskell compiler, GHCi  
@@ -243,10 +253,6 @@ Whew! In this introductory section we have alread seen quite a few new concepts:
 * higher order functions
 * partial application, operator sections
 
-The aim with this tutorial is to help develop a working knowledge of functional programming using Haskell as the vessel language; this turns out to require one to digest a certain number of new ideas, and to get acquainted with the terminology to describe them.
-
-Most of these concepts are intertwined, so perhaps they make little sense if considered in isolation. This has traditionally given Haskell a bad reputation for displaying a steep learning curve and being "too abstract". We wish to demistify this, by showing how _programming with functions_ is a natural way of expressing computer programs.
-
 
 In the following sections we will expand on and give examples for all the terms introduced so far (and a few more ..), and in a few pages the reader will be able to produce her first working programs !
 
@@ -380,8 +386,8 @@ f1 (+) (^2) :: Num a => a -> a -> a
 > :t f1 (<)
 f1 (<) :: Ord b => (a -> b) -> a -> a -> Bool
 
-> :t f1 (<) exp
-f1 (<) exp :: (Ord a, Floating a) => a -> a -> Bool
+> :t f1 (<) cos
+f1 (<) cos :: (Ord t1, Floating t1) => t1 -> t1 -> Bool
 {% endhighlight %}
 
 The expressions `f1 (+)`, `f1 (<)` and `f1 (<) exp` are examples of _partial application_; the resulting expression is itself a function with a reduced number of arguments than the original one.

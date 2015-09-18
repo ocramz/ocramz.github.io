@@ -10,7 +10,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <title>Introduction to functional programming with Haskell</title>
-  <meta name="description" content="  The interactive Haskell compiler  Notation for functional programs  Defining new symbols, functions and modules  Pattern matching  Datatypes">
+  <meta name="description" content="  Introduction  The interactive Haskell compiler  Notation for functional programs  Defining new symbols, functions and modules  Pattern matching  Datatypes">
 
   <link rel="stylesheet" href="/css/main.css">
   <link rel="canonical" href="http://yourdomain.com/haskell/tutorials/2015/08/21/haskell-tut-v1.html">
@@ -66,12 +66,23 @@
 
   <article class="post-content">
     <ul>
+<li>  <a href="#intro">Introduction</a></li>
 <li>  <a href="#overview">The interactive Haskell compiler</a></li>
 <li>  <a href="#lambda">Notation for functional programs</a></li>
 <li>  <a href="#io">Defining new symbols, functions and modules</a></li>
 <li>  <a href="#pattern">Pattern matching</a></li>
 <li>  <a href="#data">Datatypes</a></li>
 </ul>
+
+<p><a id="intro" /> </a></p>
+
+<h2>Introduction</h2>
+
+<p>The aim of this tutorial is to help develop a working knowledge of functional programming using Haskell as the vessel language; this turns out to require one to digest a certain number of new ideas, and to get acquainted with the terminology to describe them.</p>
+
+<p>Most of these concepts are intertwined, so perhaps they make little sense if considered in isolation. This has traditionally given Haskell a bad reputation for displaying a steep learning curve and being &quot;too abstract&quot;. We wish to demistify this, by showing how <em>programming with functions</em> is a natural way of expressing computer programs.</p>
+
+<p>Luckily, Haskell comes with an interactive compiler as well (GHCi), and this lets us explore more or less separately the various features of the language.</p>
 
 <p><a id="overview" /> </a></p>
 
@@ -273,10 +284,6 @@ The ordering relation <code>(&gt;)</code> is a binary operator (since it compare
 <li>partial application, operator sections</li>
 </ul>
 
-<p>The aim with this tutorial is to help develop a working knowledge of functional programming using Haskell as the vessel language; this turns out to require one to digest a certain number of new ideas, and to get acquainted with the terminology to describe them.</p>
-
-<p>Most of these concepts are intertwined, so perhaps they make little sense if considered in isolation. This has traditionally given Haskell a bad reputation for displaying a steep learning curve and being &quot;too abstract&quot;. We wish to demistify this, by showing how <em>programming with functions</em> is a natural way of expressing computer programs.</p>
-
 <p>In the following sections we will expand on and give examples for all the terms introduced so far (and a few more ..), and in a few pages the reader will be able to produce her first working programs !</p>
 
 <hr>
@@ -384,8 +391,8 @@ The ordering relation <code>(&gt;)</code> is a binary operator (since it compare
 <span class="o">&gt;</span> <span class="kt">:</span><span class="n">t</span> <span class="n">f1</span> <span class="p">(</span><span class="o">&lt;</span><span class="p">)</span>
 <span class="nf">f1</span> <span class="p">(</span><span class="o">&lt;</span><span class="p">)</span> <span class="ow">::</span> <span class="kt">Ord</span> <span class="n">b</span> <span class="ow">=&gt;</span> <span class="p">(</span><span class="n">a</span> <span class="ow">-&gt;</span> <span class="n">b</span><span class="p">)</span> <span class="ow">-&gt;</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="kt">Bool</span>
 
-<span class="o">&gt;</span> <span class="kt">:</span><span class="n">t</span> <span class="n">f1</span> <span class="p">(</span><span class="o">&lt;</span><span class="p">)</span> <span class="n">exp</span>
-<span class="nf">f1</span> <span class="p">(</span><span class="o">&lt;</span><span class="p">)</span> <span class="n">exp</span> <span class="ow">::</span> <span class="p">(</span><span class="kt">Ord</span> <span class="n">a</span><span class="p">,</span> <span class="kt">Floating</span> <span class="n">a</span><span class="p">)</span> <span class="ow">=&gt;</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="kt">Bool</span></code></pre></div>
+<span class="o">&gt;</span> <span class="kt">:</span><span class="n">t</span> <span class="n">f1</span> <span class="p">(</span><span class="o">&lt;</span><span class="p">)</span> <span class="n">cos</span>
+<span class="nf">f1</span> <span class="p">(</span><span class="o">&lt;</span><span class="p">)</span> <span class="n">cos</span> <span class="ow">::</span> <span class="p">(</span><span class="kt">Ord</span> <span class="n">t1</span><span class="p">,</span> <span class="kt">Floating</span> <span class="n">t1</span><span class="p">)</span> <span class="ow">=&gt;</span> <span class="n">t1</span> <span class="ow">-&gt;</span> <span class="n">t1</span> <span class="ow">-&gt;</span> <span class="kt">Bool</span></code></pre></div>
 
 <p>The expressions <code>f1 (+)</code>, <code>f1 (&lt;)</code> and <code>f1 (&lt;) exp</code> are examples of <em>partial application</em>; the resulting expression is itself a function with a reduced number of arguments than the original one.</p>
 
