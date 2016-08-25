@@ -5,6 +5,11 @@ date: 2016-08-25
 categories: Haskell tutorials
 ---
 
+
+<p align="center">
+    <img src="viz.png" />
+</p>
+
 ## Introduction
 
 The annual ICFP contest ran between August 5 and August 8, 2016 and, even though I couldn't fully commit to solving it due to an otherwise busy weekend, I resolved to tackling it in my spare time, using Haskell exclusively, in the course of the subsequent days. In this page I will document my solution process and tools, since the resulting application features quite a few techniques that are seldom documented together (parsing, plotting, geometric processing and combinatorial optimization).
@@ -16,25 +21,25 @@ The [task description](https://icfpc2016.blogspot.se/2016/08/task-description.ht
 
 In short: fold an origami.
 
-The origami is defined as a list of coordinates defining the "silhouette" (contour of the folded origami) and segments joining them (folds or sheet edges). The problem is: given an origami, and starting from a square sheet, find the list of folding moves (simple, or "valley-type" folds only are considered) to approximate the given origami silhouette.
+The origami is defined as a list of coordinates defining the "silhouette" (contour of the folded origami) and segments joining them (folds or sheet edges, the "skeleton" of the origami). The problem is: given an origami, and starting from a square sheet, find the list of folding moves (simple, or "valley-type" folds only are considered) to approximate the given origami silhouette.
 
 
 ## Parsing the problem specifications
 
-The following is a typical example (Problem 26):
+The problems come as plain text files, of which the following is a typical example (Problem 26). I've added some comments to clarify what the sections mean :
 
 {% highlight haskell %}
 
 2               -- # of silhouettes
-6               -- # of points of 1st silhouette
-1/4,0           -- list of point coordinates of 1st silhouette
+6               -- # of points of first silhouette
+1/4,0           -- list of point coordinates of first silhouette
 3/8,1/8         -- ..      
 3/8,1/4 
 1/4,3/8
 1/8,3/8
 0,1/4           -- .. until here
-4               -- # of points of 2nd silhouette
-1/8,1/8         -- list of point coordinates of 2nd silhouette 
+4               -- # of points of second silhouette
+1/8,1/8         -- list of point coordinates of second silhouette 
 1/8,1/4         -- ..
 1/4,1/4
 1/4,1/8
@@ -57,7 +62,7 @@ All coordinates are specified as integers or ratios of integers, and should be m
 We immediately notice the need for some sort of conditional parsing: the first line specifies an integer `n`, which determines how many "Silhouette" stanzas will follow. The last section is the "Skeleton", i.e. the complete set of segments that form the "x-ray" picture of the folded origami.
 
 
-
+If you want to reproduce, create a new project e.g. with `stack new` and put the following in the `Lib` module.
 
 First, the requisite boilerplate:
 
@@ -66,7 +71,7 @@ First, the requisite boilerplate:
 import Data.Attoparsec.Internal.Types (Parser)
 import qualified Data.Attoparsec.ByteString as PB
 import Data.Attoparsec.ByteString.Char8 (decimal, signed, scientific, digit, number, rational, char, char8, endOfLine, endOfInput, isDigit, isDigit_w8, isEndOfLine, isHorizontalSpace)
-import qualified Data.ByteString as B (ByteString, hGet, readFile)
+import qualified Data.ByteString as B (ByteString, readFile)
 
 import System.FilePath
 
@@ -119,7 +124,7 @@ For parsing the specification, we rely on the amazing `attoparsec` package. I im
 
 We switch alternatively between applicative and `do`-based notation. Anyway, since GHC 8, `Monad`s are indeed `Applicative`s, so whatever logic one writes in the latter form automatically applies to the former.
 
-Small reminder about the operators: `(<$>) :: Functor f => (a -> b) -> f a -> f b` is a synonym for `fmap`, whereas `(*>) :: Applicative f => f a -> f b -> f b` and `(<*) :: Applicative f => f a -> f b -> f a` can be read as "sequence", i.e. they perform both actions that appear as their arguments and retain the second and first results, respectively.
+Small reminder about the operators: `(<$>) :: Functor f => (a -> b) -> f a -> f b` is a synonym for `fmap`, `(<*>) :: Applicative f => f (a -> b) -> f a -> f b` (read "apply") is the function defining the Applicative class ("evaluate a function with a value if both are wrapped in a context"), whereas `(*>) :: Applicative f => f a -> f b -> f b` and `(<*) :: Applicative f => f a -> f b -> f a` can be read as "sequence", i.e. they perform both actions that appear as their arguments and retain the second and first results, respectively.
 
 The following declarations establish the rules for parsing signed fractional values (optionally integers, i.e. fractionals with 1 at the denominator, using the `option` modifier), then `Point`s and `Segment`s based on those.
 
@@ -176,6 +181,9 @@ parseProblem0 n = do
 
 There is probably a more concise way to say this, but the idea is simple: we must first parse and acquire an integer appearing at the beginning of the file, and with that decide how many times to apply the `Silhouette` parser (using the `count :: Monad m => Int -> m a -> m [a]` modifier).
 
+If parsing succeeds (i.e. our parsers match the structure of the file), the resulting `Problem` datastructure will be returned (wrapped in a `Right` constructor).
+
+N.B. the [`Monad` instance of `Either`](https://hackage.haskell.org/package/base-4.9.0.0/docs/src/Data.Either.html#line-136) returns the first `Left a` value it encounters, in this case a `String` with the error message.
 
 {% highlight haskell %}
 loadProblem :: Int -> IO (Either String Problem)
@@ -189,15 +197,97 @@ loadProblem n = do
   where
      dir = "problems/"
      fname = dir </> show n
-
 {% endhighlight %}
 
 
 
+## Drawing origami
 
+Next, we'll see how to plot our data; for this I'll use the equally amazing `diagrams` package. It is pretty extensive however it also comes with an excellent set of [tutorials](http://projects.haskell.org/diagrams/tutorials.html).
+
+The following goes in a `Diag` module that imports our `Lib`.
 
 
 {% highlight haskell %}
 
+import Diagrams.Prelude hiding (P, (<>))
+import Diagrams.Backend.SVG.CmdLine
+import Diagrams.Backend.CmdLine
 
+import Data.Monoid ((<>))
+import System.Environment (getArgs)
+
+import Lib hiding (p2)
 {% endhighlight %}
+
+
+
+
+
+
+
+
+
+First, some helper functions to convert between our `Problem` record fields and the `diagrams` types:
+
+{% highlight haskell %}
+pointToP2 :: Lib.Point -> P2 Double
+pointToP2 (Lib.P x y) = p2 (f2d x, f2d y)
+
+pointsToTrail :: [Lib.Point] -> Trail V2 Double
+pointsToTrail =  closeTrail . trailFromVertices . map pointToP2
+
+segmentToPath :: Lib.Segment -> Path V2 Double
+segmentToPath (S x y)  = pointToP2 x ~~ pointToP2 y :: Path V2 Double
+
+silhouetteToDiagram :: Foldable t => t [Lib.Point] -> Diagram B
+silhouetteToDiagram = strokeTrail . foldMap pointsToTrail 
+
+skeletonToDiagram :: Foldable t => t Lib.Segment -> Diagram B
+skeletonToDiagram = stroke . foldMap segmentToPath
+{% endhighlight %}
+
+Both the `Trail` and `Path` types are instances of the internal `ToPath` class (which later will let us convert them to a `Diagram` in order to be drawn). Most importantly, a `Path` is not necessarily a closed line, whereas a `Trail` is taken to be contiguous.
+
+We use the `closeTrail` function to render all the sides of the Silhouette polygon since in the dataset the last point in an array doesn't usually coincide with the starting one.
+
+
+### Diagrams are `Monoid`s
+
+Diagrams are instances of `Monoid`, so `mappend`ing them will yield another Diagram. NB: `mconcat :: Monoid a => [a] -> a` is equivalent to `mappend`ing a list of monoidal values together into a single one.
+
+The next function demonstrates this and also applies some graphical styles to the diagrams (line and filling colors):
+
+{% highlight haskell %}
+diagTot :: Problem -> Diagram B
+diagTot p =
+  centerXY $ mconcat [
+      (dashingG [0.01,0.005] 0 . lc red) skeletonToDiagram $ problemSegments p
+    , (lc black # fc yellow) (silhouetteToDiagram $ problemPoints p)
+    ]
+{% endhighlight %}
+
+
+
+The only `IO` required by this program : the Diagrams `mainWith` function is very versatile and we can't document all of its possible use cases.
+
+One possibility is using it to wrap an arbitrary Kleisli arrow that returns in the `IO` monad, to supply the problem number from command line, once this program is run.
+ 
+{% highlight haskell %}
+main :: IO ()
+main = mainWith loadProblemN
+
+loadProblemN :: Int -> IO (Diagram B)
+loadProblemN n = do
+  r <- loadProblem n
+  case r of Left e -> error e
+            Right p -> return $ diagTot p
+{% endhighlight %}
+
+And that's it really!
+
+At this point we can `stack build` and, if the Cabal file defines an executable called `viz` that points to the `Diag` module it its `main-is`, calling `stack exec viz -- -o viz.svg -w 600 101` will render an SVG file of the given width (600 pixels) using the problem specification # 101 (the figure at the top of the page).
+
+This post is already long enough so I'll close it here, though there are still a couple of kinks to iron in the data preprocessing.
+
+Stay tuned for Part 2, with the solver logic !
