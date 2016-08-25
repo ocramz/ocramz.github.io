@@ -55,3 +55,43 @@ The following is a typical example (Problem 26):
 All coordinates are specified as integers or ratios of integers, and should be manipulated as such (which is sensible because there will be no loss of numerical precision, as opposed to manipulating floats).
 
 We immediately notice the need for some sort of conditional parsing: the first line specifies an integer `n`, which determines how many "Silhouette" stanzas will follow. The last section is the "Skeleton", i.e. the complete set of segments that form the "x-ray" picture of the folded origami.
+
+
+Let's encode the problem semantics in some types :
+
+{% highlight haskell %}
+
+data Fract = Fract !Int !Int
+instance Eq Fract where
+  f1 == f2 = ratSimp f1 == ratSimp f2
+
+ratSimp :: Fractional a => Fract -> a
+ratSimp (Fract n d) = fromIntegral n / fromIntegral d
+
+{% endhighlight %}
+
+Equality of rationals is established by reducing the fraction; the result is in general not an integer. This method is faster than relying on `gcd` and simplifying, and is the only place where we use `Double`s. 
+
+{% highlight haskell%}
+
+data Point = P Fract Fract deriving Eq
+
+data Segment = S Point Point deriving (Eq, Show)
+
+-- The silhouette is the union set of all its facets at the destination position.
+
+type NumPolys = Int
+
+data Silhouette =
+  Silhouette { numVerticesPoly :: Int,
+               points :: [Point]  } deriving Eq
+
+-- The skeleton of a solution is the union set of all the facet edges at the destination positions.
+
+data Skeleton =
+  Skeleton { numSegments :: Int,
+             segments :: [Segment]} deriving Eq
+
+data Problem = Problem [Silhouette] Skeleton deriving Eq
+
+{% endhighlight %}
