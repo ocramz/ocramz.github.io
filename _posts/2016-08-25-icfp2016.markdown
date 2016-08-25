@@ -172,10 +172,17 @@ parseProblem0 n = do
   sils <- PB.count n parseSilhouette
   skels <- parseSkeleton <* endOfInput
   return $ Problem sils skels
-
 {% endhighlight %}
 
+or, equivalently,
 
+{% highlight haskell %}
+parseProblem0' :: Int -> Parser B.ByteString Problem
+parseProblem0' n =
+  Problem <$>
+     (decimal *> endOfLine *> PB.count n parseSilhouette) <*>
+     (parseSkeleton <* endOfInput)
+{% endhighlight %}
 
 Next: the implementation of conditional parsing: there is probably a more concise way to say this, but the idea is simple: we must first parse and acquire an integer appearing at the beginning of the file, and with that decide how many times to apply the `Silhouette` parser (using the `count :: Monad m => Int -> m a -> m [a]` modifier).
 
