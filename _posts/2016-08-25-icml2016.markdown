@@ -21,7 +21,7 @@ The origami is defined as a list of coordinates defining the "silhouette" (conto
 
 ## Parsing the problem specifications
 
-A typical example is the following (Problem 26):
+The following is a typical example (Problem 26):
 
 {% highlight haskell %}
 
@@ -51,3 +51,7 @@ A typical example is the following (Problem 26):
 1/8,3/8 1/4,3/8
 
 {% endhighlight %}
+
+All coordinates are specified as integers or ratios of integers, and should be manipulated as such (which is sensible because there will be no loss of numerical precision, as opposed to manipulating floats).
+
+We immediately notice the need for some sort of conditional parsing: the first line specifies an integer `n`, which determines how many "Silhouette" stanzas will follow. The last section is the "Skeleton", i.e. the complete set of segments that form the "x-ray" picture of the folded origami.
