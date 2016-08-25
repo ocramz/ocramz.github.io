@@ -90,7 +90,7 @@ ratSimp (Fract n d) = fromIntegral n / fromIntegral d
 
 {% endhighlight %}
 
-Equality of rationals is established by reducing the fraction; the result is in general not an integer. This method is faster than relying on `gcd` and simplifying, and is the only place where we use `Double`s. 
+Equality of rationals is established by reducing the fraction; the result is in general not an integer. This method is faster than relying on `gcd` and simplifying, it seems, but we'll use it only here and in for producing plots (not in the solver logic).
 
 {% highlight haskell%}
 
