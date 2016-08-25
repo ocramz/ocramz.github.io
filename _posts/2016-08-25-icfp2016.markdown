@@ -231,7 +231,7 @@ import Lib hiding (p2)
 
 
 
-
+### From parsing to plotting
 
 First, some helper functions to convert between our `Problem` record fields and the `diagrams` types:
 
@@ -244,7 +244,14 @@ pointsToTrail =  closeTrail . trailFromVertices . map pointToP2
 
 segmentToPath :: Lib.Segment -> Path V2 Double
 segmentToPath (S x y)  = pointToP2 x ~~ pointToP2 y :: Path V2 Double
+{% endhighlight %}
 
+Both the `Trail` and `Path` types are instances of the internal `ToPath` class (which later will let us convert them to a `Diagram` in order to be drawn). Most importantly, a `Path` is not necessarily a closed line, whereas a `Trail` is taken to be contiguous.
+
+We use the `closeTrail` function to render all the sides of the Silhouette polygon since in the dataset the last point in an array doesn't usually coincide with the starting one.
+
+
+{% highlight haskell %}
 silhouetteToDiagram :: Foldable t => t [Lib.Point] -> Diagram B
 silhouetteToDiagram = strokeTrail . foldMap pointsToTrail 
 
@@ -252,9 +259,8 @@ skeletonToDiagram :: Foldable t => t Lib.Segment -> Diagram B
 skeletonToDiagram = stroke . foldMap segmentToPath
 {% endhighlight %}
 
-Both the `Trail` and `Path` types are instances of the internal `ToPath` class (which later will let us convert them to a `Diagram` in order to be drawn). Most importantly, a `Path` is not necessarily a closed line, whereas a `Trail` is taken to be contiguous.
+The two functions above subsume summarize all the conversion work between `Lib` and `diagrams`.
 
-We use the `closeTrail` function to render all the sides of the Silhouette polygon since in the dataset the last point in an array doesn't usually coincide with the starting one.
 
 
 ### Diagrams are `Monoid`s
