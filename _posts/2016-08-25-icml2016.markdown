@@ -6,7 +6,7 @@ categories: Haskell tutorials
 ---
 
 
-![Problem 101](https://raw.github.com/ocramz/ocramz.github.io/tree/master/_posts/viz.png)
+[[https://raw.github.com/ocramz/ocramz.github.io/tree/master/_posts/viz.png]]
 
 [[https://github.com/username/repository/blob/master/img/octocat.png|alt=octocat]]
 
