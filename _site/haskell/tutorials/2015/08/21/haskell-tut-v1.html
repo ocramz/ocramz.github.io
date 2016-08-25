@@ -66,49 +66,46 @@
 
   <article class="post-content">
     <ul>
-<li>  <a href="#intro">Introduction</a></li>
-<li>  <a href="#overview">The interactive Haskell compiler</a></li>
-<li>  <a href="#lambda">Notation for functional programs</a></li>
-<li>  <a href="#io">Defining new symbols, functions and modules</a></li>
-<li>  <a href="#pattern">Pattern matching</a></li>
-<li>  <a href="#data">Datatypes</a></li>
+  <li><a href="#intro">Introduction</a></li>
+  <li><a href="#overview">The interactive Haskell compiler</a></li>
+  <li><a href="#lambda">Notation for functional programs</a></li>
+  <li><a href="#io">Defining new symbols, functions and modules</a></li>
+  <li><a href="#pattern">Pattern matching</a></li>
+  <li><a href="#data">Datatypes</a></li>
 </ul>
 
-<p><a id="intro" /> </a></p>
-
-<h2>Introduction</h2>
+<p><a id="intro"></a> &lt;/a&gt;
+## Introduction</p>
 
 <p>The aim of this tutorial is to help develop a working knowledge of functional programming using Haskell as the vessel language; this turns out to require one to digest a certain number of new ideas, and to get acquainted with the terminology to describe them.</p>
 
-<p>Most of these concepts are intertwined, so perhaps they make little sense if considered in isolation. This has traditionally given Haskell a bad reputation for displaying a steep learning curve and being &quot;too abstract&quot;. We wish to demistify this, by showing how <em>programming with functions</em> is a natural way of expressing computer programs.</p>
+<p>Most of these concepts are intertwined, so perhaps they make little sense if considered in isolation. This has traditionally given Haskell a bad reputation for displaying a steep learning curve and being “too abstract”. We wish to demistify this, by showing how <em>programming with functions</em> is a natural way of expressing computer programs.</p>
 
 <p>Luckily, Haskell comes with an interactive compiler as well (GHCi), and this lets us explore more or less separately the various features of the language.</p>
 
-<p><a id="overview" /> </a></p>
-
-<h2>The interactive Haskell compiler, GHCi</h2>
+<p><a id="overview"></a> &lt;/a&gt;
+## The interactive Haskell compiler, GHCi</p>
 
 <p>In the following we will see an example interactive session with GHCi, to familiarize the reader with the notation and some fundamental concepts of the language. Some familiarity with programming concepts and mathematical notation is required, but the tutorial is intended to be as self-contained as possible (All feedback is very welcome!).</p>
 
 <p>The <code>&gt;</code>character at the start of a line indicates the interpreter prompt, whereas <code>:t</code> is the GHCi macro for requesting the <em>type</em> of an expression.</p>
 
 <p>If we input an expression that already has a value associated, GHCi computes and prints the expression value on the next line.
-If, on the other hand, we ask for the type of an expression <code>x</code> with <code>:t x</code>, the interpreter outputs this after a double colon. </p>
+If, on the other hand, we ask for the type of an expression <code>x</code> with <code>:t x</code>, the interpreter outputs this after a double colon.</p>
 
 <p>N.B.: In function bodies, parentheses are used to group subexpressions that must be evaluated first (as per convention).</p>
 
 <p>Haskell is case sensitive and often indentation-sensitive too, so watch out :)</p>
 
 <p>Each example builds on the previous one, starting from self-explanatory concepts; 
-the reader is encouraged to install the latest version of the <a href="http://www.haskell.org/ghc">Glasgow Haskell Compiler suite</a> suite and try/modify the examples, in the given order; it&#39;s much more fun and instructive than just reading through!</p>
+the reader is encouraged to install the latest version of the <a href="http://www.haskell.org/ghc">Glasgow Haskell Compiler suite</a> suite and try/modify the examples, in the given order; it’s much more fun and instructive than just reading through!</p>
 
-<p>For those in a hurry, <a href="http://ghc.io">ghc.io</a> provides a &quot;safe&quot; Haskell prompt to e.g. try out one-liners. Longer code can be developed (after a free signup) on <a href="https://www.fpcomplete.com/business/fp-haskell-center/">FPComplete Haskell Center</a>.</p>
+<p>For those in a hurry, <a href="http://ghc.io">ghc.io</a> provides a “safe” Haskell prompt to e.g. try out one-liners. Longer code can be developed (after a free signup) on <a href="https://www.fpcomplete.com/business/fp-haskell-center/">FPComplete Haskell Center</a>.</p>
 
-<hr>
+<hr />
+<p># First steps with GHCi</p>
 
-<h1>First steps with GHCi</h1>
-
-<p>Starting from the very basics : </p>
+<p>Starting from the very basics :</p>
 
 <div class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="o">&gt;</span> <span class="mi">1</span> <span class="o">+</span> <span class="mi">2</span>
 <span class="mi">3</span>
@@ -116,18 +113,20 @@ the reader is encouraged to install the latest version of the <a href="http://ww
 <span class="o">&gt;</span> <span class="kt">:</span><span class="n">t</span> <span class="mi">1</span>
 <span class="mi">1</span> <span class="ow">::</span> <span class="kt">Num</span> <span class="n">a</span> <span class="ow">=&gt;</span> <span class="n">a</span></code></pre></div>
 
-<p>The two interactions above show an <em>evaluation</em> and a <em>type query</em>, respectively. The former, being a constant expression, evaluates directly to its result (no surprises here), whereas the latter could be understood as &quot;What is the type of <code>1</code>?&quot; &quot;The type of <code>1</code> is <code>a</code>, such that <code>a</code> is an instance of a numerical type (i.e. a number).&quot;</p>
+<p>The two interactions above show an <em>evaluation</em> and a <em>type query</em>, respectively. The former, being a constant expression, evaluates directly to its result (no surprises here), whereas the latter could be understood as “What is the type of <code>1</code>?” “The type of <code>1</code> is <code>a</code>, such that <code>a</code> is an instance of a numerical type (i.e. a number).”</p>
 
-<p>The actual letter indicating a type in a signature, like <code>a</code> in the previous example, does not matter; distinct letters correspond to different types. </p>
+<p>The actual letter indicating a type in a signature, like <code>a</code> in the previous example, does not matter; distinct letters correspond to different types.</p>
 
 <blockquote>
-<p>Why is the type signature of something as simple as a number so verbose? 
-Because many things have number-like properties (can be counted, added, subtracted etc.): potatoes, firemen, structs containing arrays of CSV files, etc. </p>
-
-<p>If a type is an &quot;instance&quot; of a typeclass such as <code>Num</code>, the corresponding functions to operate &quot;numerically&quot;, e.g. sum, product, absolute value etc., can be used on data objects belonging to it. Equivalently, by making it an instance of <code>Num</code>, we have &quot;stapled&quot; additional numerical functionality onto our type. More about this deep idea in the next sections.</p>
+  <p>Why is the type signature of something as simple as a number so verbose? 
+Because many things have number-like properties (can be counted, added, subtracted etc.): potatoes, firemen, structs containing arrays of CSV files, etc.</p>
 </blockquote>
 
-<p>Let&#39;s interact some more with the interpreter and see what happens:</p>
+<blockquote>
+  <p>If a type is an “instance” of a typeclass such as <code>Num</code>, the corresponding functions to operate “numerically”, e.g. sum, product, absolute value etc., can be used on data objects belonging to it. Equivalently, by making it an instance of <code>Num</code>, we have “stapled” additional numerical functionality onto our type. More about this deep idea in the next sections.</p>
+</blockquote>
+
+<p>Let’s interact some more with the interpreter and see what happens:</p>
 
 <div class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="o">&gt;</span> <span class="kt">:</span><span class="n">t</span> <span class="n">pi</span>
 <span class="nf">pi</span> <span class="ow">::</span> <span class="kt">Floating</span> <span class="n">a</span> <span class="ow">=&gt;</span> <span class="n">a</span>
@@ -141,13 +140,13 @@ Because many things have number-like properties (can be counted, added, subtract
 <span class="o">&gt;</span> <span class="kt">:</span><span class="n">t</span> <span class="n">exp</span>
 <span class="nf">exp</span> <span class="ow">::</span> <span class="kt">Floating</span> <span class="n">a</span> <span class="ow">=&gt;</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="n">a</span></code></pre></div>
 
-<p>The exponential <code>exp</code> is a function of a single parameter (a real number, here represented as a <code>Floating</code> point value): $$y(x) = e ^ x,\; x,y \in \mathbb{R}$$ </p>
+<p>The exponential <code>exp</code> is a function of a single parameter (a real number, here represented as a <code>Floating</code> point value): <script type="math/tex">y(x) = e ^ x,\; x,y \in \mathbb{R}</script></p>
 
 <blockquote>
-<p>Why <code>Floating a</code> and not <code>Num a</code>, for instance? Because <code>Num</code> is the most general typeclass of numbers (i.e including fractionals, integers, floats etc.), but transcendental numbers (i.e. having infinite decimal digits) such as <code>pi</code> and <code>exp 1</code> live in a &quot;smaller&quot; set, that is, require a more specialized definition.</p>
+  <p>Why <code>Floating a</code> and not <code>Num a</code>, for instance? Because <code>Num</code> is the most general typeclass of numbers (i.e including fractionals, integers, floats etc.), but transcendental numbers (i.e. having infinite decimal digits) such as <code>pi</code> and <code>exp 1</code> live in a “smaller” set, that is, require a more specialized definition.</p>
 </blockquote>
 
-<h1>Text characters, tuples, strings and lists</h1>
+<h1 id="text-characters-tuples-strings-and-lists">Text characters, tuples, strings and lists</h1>
 
 <div class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="o">&gt;</span> <span class="kt">:</span><span class="n">t</span> <span class="n">&#39;a&#39;</span>
 <span class="n">&#39;a&#39;</span> <span class="ow">::</span> <span class="kt">Char</span>
@@ -155,9 +154,9 @@ Because many things have number-like properties (can be counted, added, subtract
 <span class="o">&gt;</span> <span class="kt">:</span><span class="n">t</span> <span class="s">&quot;potato&quot;</span>
 <span class="s">&quot;potato&quot;</span> <span class="ow">::</span> <span class="p">[</span><span class="kt">Char</span><span class="p">]</span></code></pre></div>
 
-<p>Single characters are to be enclosed in single forward quotes whereas text strings require double quotes. Internally, strings are represented as lists of characters, so the above example is rendered internally as <code>[&#39;p&#39;,&#39;o&#39;,&#39;t&#39;,&#39;a&#39;,&#39;t&#39;,&#39;o&#39;]</code>.</p>
+<p>Single characters are to be enclosed in single forward quotes whereas text strings require double quotes. Internally, strings are represented as lists of characters, so the above example is rendered internally as <code>['p','o','t','a','t','o']</code>.</p>
 
-<p><em>Tuples</em> are <em>constant-size</em> ordered collections of data, not necessarily of the same type, separated by <code>,</code> and enclosed in <code>(</code> .. <code>)</code> as in </p>
+<p><em>Tuples</em> are <em>constant-size</em> ordered collections of data, not necessarily of the same type, separated by <code>,</code> and enclosed in <code>(</code> .. <code>)</code> as in</p>
 
 <div class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="o">&gt;</span> <span class="kt">:</span><span class="n">t</span> <span class="p">(</span><span class="mi">132</span><span class="p">,</span> <span class="s">&quot;potato&quot;</span><span class="p">)</span>
 <span class="p">(</span><span class="mi">132</span><span class="p">,</span> <span class="s">&quot;potato&quot;</span><span class="p">)</span> <span class="ow">::</span> <span class="kt">Num</span> <span class="n">t</span> <span class="ow">=&gt;</span> <span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="p">[</span><span class="kt">Char</span><span class="p">])</span></code></pre></div>
@@ -180,7 +179,7 @@ Because many things have number-like properties (can be counted, added, subtract
 <span class="p">[(</span><span class="mi">1</span><span class="p">,</span> <span class="s">&quot;one&quot;</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="s">&quot;two&quot;</span><span class="p">)]</span> <span class="ow">::</span> <span class="kt">Num</span> <span class="n">t</span> <span class="ow">=&gt;</span> <span class="p">[(</span><span class="n">t</span><span class="p">,</span> <span class="p">[</span><span class="kt">Char</span><span class="p">])]</span></code></pre></div>
 
 <blockquote>
-<p>Lists can be infinite in length (thus it is more appropriate to describe them as <em>streams</em>). Among the many other library functions, e.g. <code>take</code>, <code>drop</code> and <code>filter</code> let us query or pick out elements from streams.</p>
+  <p>Lists can be infinite in length (thus it is more appropriate to describe them as <em>streams</em>). Among the many other library functions, e.g. <code>take</code>, <code>drop</code> and <code>filter</code> let us query or pick out elements from streams.</p>
 </blockquote>
 
 <p>N.B.: if you actually decide to evaluate an infinite stream such as <code>[1 ..]</code>, be prepared to interrupt it! (Control-C terminates the execution of a command in Unix-like systems).</p>
@@ -194,12 +193,12 @@ Because many things have number-like properties (can be counted, added, subtract
 <span class="p">[</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">8</span><span class="p">,</span><span class="mi">9</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mi">11</span><span class="p">]</span></code></pre></div>
 
 <blockquote>
-<p>Function application such as <code>exp 1</code> and <code>take 7 [5..]</code> is so fundamental that Haskell uses a space to denote it, i.e. considering <code>f x y z</code>, <code>f</code> is the function and <code>x</code>, <code>y</code> and <code>z</code> are its arguments.</p>
+  <p>Function application such as <code>exp 1</code> and <code>take 7 [5..]</code> is so fundamental that Haskell uses a space to denote it, i.e. considering <code>f x y z</code>, <code>f</code> is the function and <code>x</code>, <code>y</code> and <code>z</code> are its arguments.</p>
 </blockquote>
 
-<h1>Higher order functions, partial application, operator sections</h1>
+<h1 id="higher-order-functions-partial-application-operator-sections">Higher order functions, partial application, operator sections</h1>
 
-<p>A versatile list-digesting function is <code>filter</code>: </p>
+<p>A versatile list-digesting function is <code>filter</code>:</p>
 
 <div class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="o">&gt;</span> <span class="kt">:</span><span class="n">t</span> <span class="n">filter</span>
 <span class="nf">filter</span> <span class="ow">::</span> <span class="p">(</span><span class="n">a</span> <span class="ow">-&gt;</span> <span class="kt">Bool</span><span class="p">)</span> <span class="ow">-&gt;</span> <span class="p">[</span><span class="n">a</span><span class="p">]</span> <span class="ow">-&gt;</span> <span class="p">[</span><span class="n">a</span><span class="p">]</span>
@@ -213,8 +212,8 @@ Because many things have number-like properties (can be counted, added, subtract
 <p><code>filter</code> is our first example of <em>higher order function</em>; it requires as arguments a <em>function</em> of type <code>a -&gt; Bool</code> (a <em>predicate</em>, that is, a function that evaluates to <code>True</code> or <code>False</code>) and a list of <code>a</code>s and returns the subset of the input list that evaluates to <code>True</code>.</p>
 
 <p>In the previous code block, we also see the first examples of <em>operator section</em>:
-<code>(&gt; 2)</code> and <code>(/= &#39;x&#39;)</code>, passed as first argument to <code>filter</code>. 
-The ordering relation <code>(&gt;)</code> is a binary operator (since it compares two values and returns True or False), but <code>(&gt; 2)</code> takes only one argument and returns a Boolean. Instead, <code>(/= &#39;x&#39;)</code> compares its only argument to the constant character <code>&#39;x&#39;</code>.</p>
+<code>(&gt; 2)</code> and <code>(/= 'x')</code>, passed as first argument to <code>filter</code>. 
+The ordering relation <code>(&gt;)</code> is a binary operator (since it compares two values and returns True or False), but <code>(&gt; 2)</code> takes only one argument and returns a Boolean. Instead, <code>(/= 'x')</code> compares its only argument to the constant character <code>'x'</code>.</p>
 
 <p>The following examples should clarify the idea:</p>
 
@@ -233,14 +232,18 @@ The ordering relation <code>(&gt;)</code> is a binary operator (since it compare
 <p>The arithmetic sum <code>(+)</code> and equality comparison <code>(==)</code> functions require two parameters, but fixing the first one to e.g. a constant is equivalent to considering functions of the remaining number of arguments. This is an instance of <em>partial evaluation</em>, ubiquitous in Haskell and very powerful.</p>
 
 <blockquote>
-<p>Haskell functions are &quot;curried&quot; by default. This means that N-ary functions (functions of N arguments) can be considered as taking arguments in sequence, rather than all at once.</p>
-
-<p>This enables <em>partial evaluation</em>, i.e. creating new functions of fewer arguments by fixing some in the original function.</p>
-
-<p>This fundamental tool has many different uses, for example specializing a general function in a few different ways, by introducing very little additional syntax as we will see in the next sections.</p>
+  <p>Haskell functions are “curried” by default. This means that N-ary functions (functions of N arguments) can be considered as taking arguments in sequence, rather than all at once.</p>
 </blockquote>
 
-<p>Operator sections are just shorthand for partial application of infix operators; however the usual caveats for non-commutative functions such as arithmetic division <code>/</code> apply; as the following snippet shows for numbers, &quot;.. over two&quot; and &quot;two over ..&quot; have clearly different meanings.</p>
+<blockquote>
+  <p>This enables <em>partial evaluation</em>, i.e. creating new functions of fewer arguments by fixing some in the original function.</p>
+</blockquote>
+
+<blockquote>
+  <p>This fundamental tool has many different uses, for example specializing a general function in a few different ways, by introducing very little additional syntax as we will see in the next sections.</p>
+</blockquote>
+
+<p>Operator sections are just shorthand for partial application of infix operators; however the usual caveats for non-commutative functions such as arithmetic division <code>/</code> apply; as the following snippet shows for numbers, “.. over two” and “two over ..” have clearly different meanings.</p>
 
 <div class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="o">&gt;</span> <span class="p">(</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span> <span class="mi">3</span>
 <span class="mf">1.5</span>
@@ -273,34 +276,31 @@ The ordering relation <code>(&gt;)</code> is a binary operator (since it compare
 
 <p>It is very instructive to have a look at the <a href="https://hackage.haskell.org/package/base-4.8.0.0/docs/src/GHC-Base.html">Haskell Prelude</a>, the core library of the language.</p>
 
-<h1>Recap</h1>
+<h1 id="recap">Recap</h1>
 
-<p>Whew! In this introductory section we have alread seen quite a few new concepts: </p>
+<p>Whew! In this introductory section we have alread seen quite a few new concepts:</p>
 
 <ul>
-<li>types</li>
-<li>classes of types (a.k.a. <em>typeclasses</em> <code>Num</code>, <code>Floating</code>, <code>Eq</code>, <code>Ord</code> ...)</li>
-<li>higher order functions</li>
-<li>partial application, operator sections</li>
+  <li>types</li>
+  <li>classes of types (a.k.a. <em>typeclasses</em> <code>Num</code>, <code>Floating</code>, <code>Eq</code>, <code>Ord</code> …)</li>
+  <li>higher order functions</li>
+  <li>partial application, operator sections</li>
 </ul>
 
 <p>In the following sections we will expand on and give examples for all the terms introduced so far (and a few more ..), and in a few pages the reader will be able to produce her first working programs !</p>
 
-<hr>
-
-<hr>
-
-<p><a id="lambda" /></a></p>
-
-<h2>Notation for functional programs</h2>
+<hr />
+<hr />
+<p><a id="lambda"></a>&lt;/a&gt;
+## Notation for functional programs</p>
 
 <blockquote>
-<p>Anonymous expressions (often called &quot;lambda&quot; functions) let us define what a function <em>does</em>, and to separate this from what we choose to call it.</p>
+  <p>Anonymous expressions (often called “lambda” functions) let us define what a function <em>does</em>, and to separate this from what we choose to call it.</p>
 </blockquote>
 
-<p>They often are used as single-use functions, if a certain functionality is too specific to be given a name; the pattern is <code>\ x -&gt; f x</code>, in which what lies to the left of the arrow is the set of free variables (separated by spaces if more than one), and what lies to the right is an arbitrarily complex function of these and other variables (this might be read &quot;for any given <em>x</em>, give me the result of function <em>f</em> applied on <em>x</em>&quot;, or $$\forall x, f(x)$$</p>
+<p>They often are used as single-use functions, if a certain functionality is too specific to be given a name; the pattern is <code>\ x -&gt; f x</code>, in which what lies to the left of the arrow is the set of free variables (separated by spaces if more than one), and what lies to the right is an arbitrarily complex function of these and other variables (this might be read “for any given <em>x</em>, give me the result of function <em>f</em> applied on <em>x</em>”, or <script type="math/tex">\forall x, f(x)</script></p>
 
-<p>The actual syntax to be used in the free variable declaration is a backslash, but it is often pretty-printed (e.g. in Computer Science and Logic textbooks) as a Greek lambda character, as a reminder of its origins in Church&#39;s Lambda Calculus.</p>
+<p>The actual syntax to be used in the free variable declaration is a backslash, but it is often pretty-printed (e.g. in Computer Science and Logic textbooks) as a Greek lambda character, as a reminder of its origins in Church’s Lambda Calculus.</p>
 
 <p>Two elementary examples of lambda expressions could be:</p>
 
@@ -314,7 +314,7 @@ The ordering relation <code>(&gt;)</code> is a binary operator (since it compare
 
 <p>In the following, we will implement a few useful functions using only lambda expressions, to demonstrate their versatility and to introduce some key concepts.</p>
 
-<h1>The Identity function</h1>
+<h1 id="the-identity-function">The Identity function</h1>
 
 <p>This one is pretty self explanatory:</p>
 
@@ -324,8 +324,7 @@ The ordering relation <code>(&gt;)</code> is a binary operator (since it compare
 <span class="o">&gt;</span> <span class="kt">:</span><span class="n">t</span> <span class="n">id</span>
 <span class="nf">id</span> <span class="ow">::</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="n">a</span></code></pre></div>
 
-<h1>Function application</h1>
-
+<h1 id="function-application">Function application</h1>
 <p>If the body of the lambda expression contains function application syntax, we can easily re-create <em>higher order functions</em>, as shown below:</p>
 
 <div class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="o">&gt;</span> <span class="kt">:</span><span class="n">t</span> <span class="nf">\</span> <span class="n">f</span> <span class="n">x</span> <span class="ow">-&gt;</span> <span class="n">f</span> <span class="n">x</span>
@@ -337,21 +336,23 @@ The ordering relation <code>(&gt;)</code> is a binary operator (since it compare
 <p>The library function <code>($)</code> captures the function application pattern shown in the definition above it.</p>
 
 <blockquote>
-<p>As the first example above shows, <strong>some function arguments are inferred to be functions by how they are used in the body</strong> of the (anonymous) function. </p>
-
-<p>Functions as &quot;first class values&quot; (i.e. that can be used and passed around just like regular values) are one of the defining features of functional programming languages, and it is fundamental to absorb this concept early.</p>
+  <p>As the first example above shows, <strong>some function arguments are inferred to be functions by how they are used in the body</strong> of the (anonymous) function.</p>
 </blockquote>
 
-<p>As an example, we can apply the ``squared&#39;&#39; function to an arbitrary value:</p>
+<blockquote>
+  <p>Functions as “first class values” (i.e. that can be used and passed around just like regular values) are one of the defining features of functional programming languages, and it is fundamental to absorb this concept early.</p>
+</blockquote>
+
+<p>As an example, we can apply the ``squared’’ function to an arbitrary value:</p>
 
 <div class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="o">&gt;</span> <span class="p">(</span><span class="o">$</span><span class="p">)</span> <span class="p">(</span><span class="nf">\</span> <span class="n">x</span> <span class="ow">-&gt;</span> <span class="n">x</span><span class="o">^</span><span class="mi">2</span><span class="p">)</span> <span class="mf">0.98</span>
 <span class="mf">0.9603999999999999</span></code></pre></div>
 
-<h1>Function composition</h1>
+<h1 id="function-composition">Function composition</h1>
 
-<p>What does it mean to &quot;compose functions&quot;? If we think of a function as a machine on a factory floor, feeding the output of one (<em>g</em>, say)  into the input of the next (which we can call <em>f</em>) is a form of composition. This of course only works if the <em>f</em> is designed to work on the outputs of <em>g</em> (you wouldn&#39;t want to plug a grinder to an Easter egg packaging machine, for example).</p>
+<p>What does it mean to “compose functions”? If we think of a function as a machine on a factory floor, feeding the output of one (<em>g</em>, say)  into the input of the next (which we can call <em>f</em>) is a form of composition. This of course only works if the <em>f</em> is designed to work on the outputs of <em>g</em> (you wouldn’t want to plug a grinder to an Easter egg packaging machine, for example).</p>
 
-<p>The <em>composition</em> of <em>f</em> and <em>g</em>, written <code>f . g</code> in Haskell and  $$f \circ g$$ in mathematical literature, is itself a function, taking <code>g</code>&#39;s input type and returning <code>f</code>&#39;s result type. It&#39;s as if we welded the two machines together, and obtained a new, more complex machine as a result. (However the Haskell compiler, when types are aligned, does a great job of simplifying out the &quot;seam&quot;).</p>
+<p>The <em>composition</em> of <em>f</em> and <em>g</em>, written <code>f . g</code> in Haskell and  <script type="math/tex">f \circ g</script> in mathematical literature, is itself a function, taking <code>g</code>’s input type and returning <code>f</code>’s result type. It’s as if we welded the two machines together, and obtained a new, more complex machine as a result. (However the Haskell compiler, when types are aligned, does a great job of simplifying out the “seam”).</p>
 
 <p>Here is a nested function application pattern, and below it the type signature of the corresponding library function <code>(.)</code>:</p>
 
@@ -361,15 +362,15 @@ The ordering relation <code>(&gt;)</code> is a binary operator (since it compare
 <span class="o">&gt;</span> <span class="kt">:</span><span class="n">t</span> <span class="p">(</span><span class="o">.</span><span class="p">)</span>
 <span class="p">(</span><span class="o">.</span><span class="p">)</span> <span class="ow">::</span> <span class="p">(</span><span class="n">b</span> <span class="ow">-&gt;</span> <span class="n">c</span><span class="p">)</span> <span class="ow">-&gt;</span> <span class="p">(</span><span class="n">a</span> <span class="ow">-&gt;</span> <span class="n">b</span><span class="p">)</span> <span class="ow">-&gt;</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="n">c</span></code></pre></div>
 
-<p>When given two single-argument functions of the right types as inputs, as in <code>f . g</code> or <code>(.) f g</code> (the <em>infix</em> and <em>prefix</em> ways to write application of a binary operator, respectively), the result will be a new unary function of type <code>a -&gt; c</code> obtained by chaining the outputs of <code>g</code> to <code>f</code>: seamless.  </p>
+<p>When given two single-argument functions of the right types as inputs, as in <code>f . g</code> or <code>(.) f g</code> (the <em>infix</em> and <em>prefix</em> ways to write application of a binary operator, respectively), the result will be a new unary function of type <code>a -&gt; c</code> obtained by chaining the outputs of <code>g</code> to <code>f</code>: seamless.</p>
 
 <blockquote>
-<p>The Haskell Prelude and the other built-in libraries come with a rich library of synonyms, such as <code>(.)</code> and <code>($)</code> shown above, and lets us define and use our own, as soon as the need for abstraction arises.</p>
+  <p>The Haskell Prelude and the other built-in libraries come with a rich library of synonyms, such as <code>(.)</code> and <code>($)</code> shown above, and lets us define and use our own, as soon as the need for abstraction arises.</p>
 </blockquote>
 
-<h1>Partial evaluation</h1>
+<h1 id="partial-evaluation">Partial evaluation</h1>
 
-<p>When calling functions in Haskell, you don&#39;t have to &quot;fill all the slots&quot;, i.e. supply all the arguments; this is called <em>partial evaluation</em> (or <em>application</em>).</p>
+<p>When calling functions in Haskell, you don’t have to “fill all the slots”, i.e. supply all the arguments; this is called <em>partial evaluation</em> (or <em>application</em>).</p>
 
 <p>As explained briefly in the first section, the result of this is a new function, having a smaller number of arguments than the original one.</p>
 
@@ -380,7 +381,7 @@ The ordering relation <code>(&gt;)</code> is a binary operator (since it compare
 <span class="o">&gt;</span> <span class="kt">:</span><span class="n">t</span> <span class="n">f1</span>
 <span class="nf">f1</span> <span class="ow">::</span> <span class="p">(</span><span class="n">b</span> <span class="ow">-&gt;</span> <span class="n">b</span> <span class="ow">-&gt;</span> <span class="n">c</span><span class="p">)</span> <span class="ow">-&gt;</span> <span class="p">(</span><span class="n">a</span> <span class="ow">-&gt;</span> <span class="n">b</span><span class="p">)</span> <span class="ow">-&gt;</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="n">c</span></code></pre></div>
 
-<p>In the example above we first define a function <code>f1</code> of four arguments; in the next lines we specialize <code>f1</code> to use the sum or ordering relation <code>(&lt;)</code> as &quot;external&quot; functions <code>f</code>. The &quot;internal&quot; function <code>g</code> is instead meant to be separately applied on the operands <code>x</code> and <code>y</code>:</p>
+<p>In the example above we first define a function <code>f1</code> of four arguments; in the next lines we specialize <code>f1</code> to use the sum or ordering relation <code>(&lt;)</code> as “external” functions <code>f</code>. The “internal” function <code>g</code> is instead meant to be separately applied on the operands <code>x</code> and <code>y</code>:</p>
 
 <div class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="o">&gt;</span> <span class="kt">:</span><span class="n">t</span> <span class="n">f1</span> <span class="p">(</span><span class="o">+</span><span class="p">)</span>
 <span class="nf">f1</span> <span class="p">(</span><span class="o">+</span><span class="p">)</span> <span class="ow">::</span> <span class="kt">Num</span> <span class="n">b</span> <span class="ow">=&gt;</span> <span class="p">(</span><span class="n">a</span> <span class="ow">-&gt;</span> <span class="n">b</span><span class="p">)</span> <span class="ow">-&gt;</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="n">b</span>
@@ -396,7 +397,7 @@ The ordering relation <code>(&gt;)</code> is a binary operator (since it compare
 
 <p>The expressions <code>f1 (+)</code>, <code>f1 (&lt;)</code> and <code>f1 (&lt;) exp</code> are examples of <em>partial application</em>; the resulting expression is itself a function with a reduced number of arguments than the original one.</p>
 
-<p>The higher-order function <code>f2</code> accepts three arguments, the first of which is a binary function; if we only supply this, the result will itself be a binary function: </p>
+<p>The higher-order function <code>f2</code> accepts three arguments, the first of which is a binary function; if we only supply this, the result will itself be a binary function:</p>
 
 <div class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="o">&gt;</span> <span class="kr">let</span> <span class="n">f2</span> <span class="n">g</span> <span class="n">x</span> <span class="n">y</span> <span class="ow">=</span> <span class="n">g</span> <span class="n">y</span> <span class="n">x</span> 
 
@@ -424,9 +425,9 @@ The ordering relation <code>(&gt;)</code> is a binary operator (since it compare
 <span class="o">&gt;</span> <span class="n">wop</span> <span class="mi">2</span> <span class="mi">3</span>
 <span class="mi">8</span></code></pre></div>
 
-<h1>Eta-conversion</h1>
+<h1 id="eta-conversion">Eta-conversion</h1>
 
-<p>Dropping or adding an abstraction over a variable to an expression are termed &quot;eta-reduction&quot; and &quot;eta-abstraction&quot;, respectively.
+<p>Dropping or adding an abstraction over a variable to an expression are termed “eta-reduction” and “eta-abstraction”, respectively.
 The following two expressions are identical, in this sense; the latter being the eta-reduced version of the former.</p>
 
 <div class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="o">&gt;</span> <span class="kt">:</span><span class="n">t</span> <span class="nf">\</span> <span class="n">x</span> <span class="ow">-&gt;</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">x</span>
@@ -435,9 +436,9 @@ The following two expressions are identical, in this sense; the latter being the
 <span class="o">&gt;</span> <span class="kt">:</span><span class="n">t</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span><span class="p">)</span>
 <span class="p">(</span><span class="mi">2</span> <span class="o">*</span><span class="p">)</span> <span class="ow">::</span> <span class="kt">Num</span> <span class="n">a</span> <span class="ow">=&gt;</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="n">a</span></code></pre></div>
 
-<h1>Examples</h1>
+<h1 id="examples">Examples</h1>
 
-<p>Let&#39;s try together a few of the things we&#39;ve see so far: partial application, function composition, the higher order function <code>map :: (a -&gt; b) -&gt; [a] -&gt; [b]</code>, and operate on a list-of-lists for the first time:</p>
+<p>Let’s try together a few of the things we’ve see so far: partial application, function composition, the higher order function <code>map :: (a -&gt; b) -&gt; [a] -&gt; [b]</code>, and operate on a list-of-lists for the first time:</p>
 
 <div class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="o">&gt;</span> <span class="kr">let</span> <span class="n">testData</span> <span class="ow">=</span> <span class="p">[[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">],[</span><span class="mi">23452</span><span class="p">,</span><span class="mi">24</span><span class="p">,</span><span class="mi">515</span><span class="p">,</span><span class="mi">0</span><span class="p">],[</span><span class="mi">2351661</span><span class="p">]]</span>
 
@@ -449,7 +450,7 @@ The following two expressions are identical, in this sense; the latter being the
 <span class="o">&gt;</span> <span class="n">map</span> <span class="p">(</span><span class="n">listShorterThan</span> <span class="mi">4</span><span class="p">)</span> <span class="n">testData</span>
 <span class="p">[</span><span class="kt">True</span><span class="p">,</span><span class="kt">False</span><span class="p">,</span><span class="kt">True</span><span class="p">]</span></code></pre></div>
 
-<p>Recall how <code>(.)</code> works: from right to left. The rightmost function in the chain is the &quot;innermost&quot;, and the first to be applied. Our <code>listShorterThan</code> may be a bit contrived, but shows one advantage of this compositional approach: we are not interested in the actual length of the list, but only to know whether it&#39;s shorter than <em>m</em>.</p>
+<p>Recall how <code>(.)</code> works: from right to left. The rightmost function in the chain is the “innermost”, and the first to be applied. Our <code>listShorterThan</code> may be a bit contrived, but shows one advantage of this compositional approach: we are not interested in the actual length of the list, but only to know whether it’s shorter than <em>m</em>.</p>
 
 <p>Another interesting, albeit a bit more abstract, little example is the following:</p>
 
@@ -463,22 +464,20 @@ The following two expressions are identical, in this sense; the latter being the
 
 <p>and, since <code>map</code> is a binary function accepting a <em>function</em> and a list, we can identify equal terms. In the line above, if we partially apply <code>(.) map</code> on <code>map</code>, <code>x</code> is identified with a function and <code>y</code> has to be a list, resulting in the initial type identity.</p>
 
-<p>Let&#39;s recycle <code>testData</code> from the example before to try it out:</p>
+<p>Let’s recycle <code>testData</code> from the example before to try it out:</p>
 
 <div class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="o">&gt;</span> <span class="p">(</span><span class="n">map</span> <span class="o">.</span> <span class="n">map</span><span class="p">)</span> <span class="p">(</span><span class="nf">\</span><span class="n">s</span> <span class="ow">-&gt;</span> <span class="kr">if</span> <span class="n">s</span> <span class="o">&gt;</span> <span class="mi">100</span> <span class="kr">then</span> <span class="n">&#39;</span><span class="o">+</span><span class="n">&#39;</span> <span class="kr">else</span> <span class="n">&#39;</span><span class="o">-</span><span class="n">&#39;</span><span class="p">)</span> <span class="n">testData</span>
 <span class="p">[</span><span class="s">&quot;--&quot;</span><span class="p">,</span><span class="s">&quot;+-+-&quot;</span><span class="p">,</span><span class="s">&quot;+&quot;</span><span class="p">]</span></code></pre></div>
 
-<p>&quot;Wow, if-then-else like a normal language !&quot; </p>
+<p>“Wow, if-then-else like a normal language !”</p>
 
-<p>Jokes aside, the above example is meant to reinforce the point that in Haskell whole subprograms can be passed around, either as arguments or as return types to appropriate higher-order functions. Such is the nature of &quot;purely functional&quot; languages.</p>
+<p>Jokes aside, the above example is meant to reinforce the point that in Haskell whole subprograms can be passed around, either as arguments or as return types to appropriate higher-order functions. Such is the nature of “purely functional” languages.</p>
 
-<hr>
+<hr />
+<hr />
 
-<hr>
-
-<p><a id="io"> </a></p>
-
-<h2>Defining new symbols, functions and modules</h2>
+<p><a id="io"> </a>
+## Defining new symbols, functions and modules</p>
 
 <p>When in the interactive mode (or, equivalently, while we are working within the IO monad, more details in the following), we need the <code>let</code> construct, which behaves very much like its mathematical counterpart:</p>
 
@@ -517,26 +516,23 @@ The following two expressions are identical, in this sense; the latter being the
 <p>and load it with GHCi (from command line: <code>ghci TestModule.hs</code>), calling <code>main</code> will print <code>[4,9,16]</code> to screen.</p>
 
 <blockquote>
-<p>In the previous code snippet we start to see one of Haskell&#39;s strength points: a clean separation of input-output (&quot;IO&quot;) and purely functional code. 
+  <p>In the previous code snippet we start to see one of Haskell’s strength points: a clean separation of input-output (“IO”) and purely functional code. 
 The first line is a function, the second a piece of data, and the <code>main</code> function runs the example (in this case <code>map</code>ping the squaring function over the data) and displays on-screen the results as a newline-terminated string with <code>putStrLn</code>.</p>
 </blockquote>
 
-<p>The <code>main</code> function effectively &quot;coordinates&quot; the execution of the purely functional parts; its body is a <code>do</code> block, to signify that it is to be executed top-to-bottom. However the intermediate results are only effectively computed when requested (this is the <em>non-strict</em>, or <em>lazy</em> evaluation logic of Haskell). In the code above, <code>f1</code> is <code>map</code>ped over <code>v</code> only when <code>putStrLn</code> is run.</p>
+<p>The <code>main</code> function effectively “coordinates” the execution of the purely functional parts; its body is a <code>do</code> block, to signify that it is to be executed top-to-bottom. However the intermediate results are only effectively computed when requested (this is the <em>non-strict</em>, or <em>lazy</em> evaluation logic of Haskell). In the code above, <code>f1</code> is <code>map</code>ped over <code>v</code> only when <code>putStrLn</code> is run.</p>
 
-<p>We will return on how to write <code>do</code> blocks (the &quot;imperative&quot; part of Haskell) shortly. At this point we still need to see a few general features of the language syntax.</p>
+<p>We will return on how to write <code>do</code> blocks (the “imperative” part of Haskell) shortly. At this point we still need to see a few general features of the language syntax.</p>
 
-<hr>
+<hr />
+<hr />
 
-<hr>
-
-<p><a id="pattern" /></a></p>
-
-<h2>Pattern matching</h2>
-
-<h1>Recursive functions</h1>
+<p><a id="pattern"></a>&lt;/a&gt;
+## Pattern matching
+# Recursive functions</p>
 
 <blockquote>
-<p>Haskell allows multiple declarations of any function, that are applied according to the arguments; this of course can hold only if the type signatures match and the declarations are mutually exclusive and complementary.</p>
+  <p>Haskell allows multiple declarations of any function, that are applied according to the arguments; this of course can hold only if the type signatures match and the declarations are mutually exclusive and complementary.</p>
 </blockquote>
 
 <p>As an example, this is the implementation of <code>map</code>:</p>
@@ -546,12 +542,11 @@ The first line is a function, the second a piece of data, and the <code>main</co
 
 <p>The above code recursively consumes the list supplied as second argument by applying <code>f</code> to its first element and appending the result (with <code>(:)</code>) to the output array. The first declaration is used if the supplied list is empty (this decision is called <em>pattern matching</em>), which also holds at the base case of the recursion.</p>
 
-<hr>
+<hr />
+<p># A brief digression on lists</p>
 
-<h1>A brief digression on lists</h1>
-
-<p>Lists (&quot;streams&quot;) are better thought of in recursive terms: a list can either be the empty list, or a concatenation of an element to a preexisting list (including the empty one).
-The signatures of <code>[]</code> and <code>(:)</code> represent exactly this, and in the following lines we see their use as &quot;list constructors&quot;:</p>
+<p>Lists (“streams”) are better thought of in recursive terms: a list can either be the empty list, or a concatenation of an element to a preexisting list (including the empty one).
+The signatures of <code>[]</code> and <code>(:)</code> represent exactly this, and in the following lines we see their use as “list constructors”:</p>
 
 <div class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="o">&gt;</span> <span class="kt">:</span><span class="n">t</span> <span class="kt">[]</span>
 <span class="kt">[]</span> <span class="ow">::</span> <span class="p">[</span><span class="n">a</span><span class="p">]</span>
@@ -565,17 +560,17 @@ The signatures of <code>[]</code> and <code>(:)</code> represent exactly this, a
 <span class="o">&gt;</span> <span class="mi">4</span> <span class="kt">:</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
 <span class="p">[</span><span class="mi">4</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span></code></pre></div>
 
-<p>It seems like <code>[]</code> and <code>(:)</code> are intimately connected: both are necessary to build a non-trivial list. Having a &quot;neutral element&quot; and an (associative) &quot;appending&quot; operation is the characteristic of a much more general algebraic class called a <em>Monoid</em> (to which lists naturally belong), but discussing the details would distract us at this point.</p>
+<p>It seems like <code>[]</code> and <code>(:)</code> are intimately connected: both are necessary to build a non-trivial list. Having a “neutral element” and an (associative) “appending” operation is the characteristic of a much more general algebraic class called a <em>Monoid</em> (to which lists naturally belong), but discussing the details would distract us at this point.</p>
 
-<p>For now, it suffices to say that <code>[]</code> and <code>(:)</code> are the <em>constructor</em> (methods) of the empty and nontrivial list respectively, and as such can be &quot;pattern matched against&quot; in function declarations (left hand side of the <code>=</code>), or used for constructing a list from its elements in a function body (right hand side).</p>
+<p>For now, it suffices to say that <code>[]</code> and <code>(:)</code> are the <em>constructor</em> (methods) of the empty and nontrivial list respectively, and as such can be “pattern matched against” in function declarations (left hand side of the <code>=</code>), or used for constructing a list from its elements in a function body (right hand side).</p>
 
-<p>The notation <code>(x:xs)</code> in the calling sequence of <code>map</code>, <code>foldr</code> etc. is one such example of &quot;pattern matching on the constructor of the input data&quot;. <code>x</code> and <code>xs</code>, interpreted as an element of type <code>a</code> and list containing elements of the same type, <code>[a]</code>, respectively, will be used in the body of the function as usual.</p>
+<p>The notation <code>(x:xs)</code> in the calling sequence of <code>map</code>, <code>foldr</code> etc. is one such example of “pattern matching on the constructor of the input data”. <code>x</code> and <code>xs</code>, interpreted as an element of type <code>a</code> and list containing elements of the same type, <code>[a]</code>, respectively, will be used in the body of the function as usual.</p>
 
-<hr>
+<hr />
 
 <p>Let us now return to recursive functions that take apart their arguments by pattern matching.</p>
 
-<p>A <em>fold</em> operation is to obtain a &quot;summary&quot; value from a set of values. The right-associative fold (<code>foldr</code>) is defined recursively as:</p>
+<p>A <em>fold</em> operation is to obtain a “summary” value from a set of values. The right-associative fold (<code>foldr</code>) is defined recursively as:</p>
 
 <div class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="nf">foldr</span> <span class="n">f</span> <span class="n">z</span> <span class="kt">[]</span>     <span class="ow">=</span> <span class="n">z</span>
 <span class="nf">foldr</span> <span class="n">f</span> <span class="n">z</span> <span class="p">(</span><span class="n">x</span><span class="kt">:</span><span class="n">xs</span><span class="p">)</span> <span class="ow">=</span> <span class="n">f</span> <span class="n">x</span> <span class="p">(</span><span class="n">foldr</span> <span class="n">f</span> <span class="n">z</span> <span class="n">xs</span><span class="p">)</span></code></pre></div>
@@ -587,10 +582,10 @@ The signatures of <code>[]</code> and <code>(:)</code> represent exactly this, a
    <span class="n">l</span> <span class="ow">=</span> <span class="n">filter</span> <span class="p">(</span><span class="o">&lt;</span> <span class="n">x</span><span class="p">)</span> <span class="n">xs</span>
    <span class="n">r</span> <span class="ow">=</span> <span class="n">filter</span> <span class="p">(</span><span class="o">&gt;</span> <span class="n">x</span><span class="p">)</span> <span class="n">xs</span></code></pre></div>
 
-<p>The first element of the unsorted list is chosen as pivot (This choice of pivoting means that this naive version of QuickSort will be suboptimal for partially sorted inputs.) and the remaining elements are filtered (cost <em>O (N)</em>) and passed to the next level of recursive call. </p>
+<p>The first element of the unsorted list is chosen as pivot (This choice of pivoting means that this naive version of QuickSort will be suboptimal for partially sorted inputs.) and the remaining elements are filtered (cost <em>O (N)</em>) and passed to the next level of recursive call.</p>
 
 <blockquote>
-<p>The three examples above all use <em>pattern matching on the constructor</em> of the input data, i.e. if the input is the empty list, the base case is computed, otherwise (list with at least one element <code>x</code>) the algorithm takes the induction branch.</p>
+  <p>The three examples above all use <em>pattern matching on the constructor</em> of the input data, i.e. if the input is the empty list, the base case is computed, otherwise (list with at least one element <code>x</code>) the algorithm takes the induction branch.</p>
 </blockquote>
 
 <p>We can apply the same reasoning to user-made types (which will be explained in the following Section):</p>
@@ -609,15 +604,15 @@ The signatures of <code>[]</code> and <code>(:)</code> represent exactly this, a
 <div class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="o">&gt;</span> <span class="kt">:</span><span class="n">t</span> <span class="n">woop</span>
 <span class="nf">woop</span> <span class="ow">::</span> <span class="kt">Num</span> <span class="n">a</span> <span class="ow">=&gt;</span> <span class="kt">Pop</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="kt">Pip</span> <span class="n">a</span></code></pre></div>
 
-<h1>Pattern guards</h1>
+<h1 id="pattern-guards">Pattern guards</h1>
 
-<p>One form of conditional branching statement is the <em>pattern guard</em> <code>|</code>. Let&#39;s see a posible implementation of <code>filter</code>:</p>
+<p>One form of conditional branching statement is the <em>pattern guard</em> <code>|</code>. Let’s see a posible implementation of <code>filter</code>:</p>
 
 <div class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="nf">filter&#39;</span> <span class="kr">_</span> <span class="kt">[]</span> <span class="ow">=</span> <span class="kt">[]</span>
 <span class="nf">filter&#39;</span> <span class="n">p</span> <span class="p">(</span><span class="n">x</span><span class="kt">:</span><span class="n">xs</span><span class="p">)</span> <span class="o">|</span> <span class="n">p</span> <span class="n">x</span>       <span class="ow">=</span> <span class="n">x</span> <span class="kt">:</span> <span class="n">filter&#39;</span> <span class="n">p</span> <span class="n">xs</span>
                  <span class="o">|</span> <span class="n">otherwise</span> <span class="ow">=</span> <span class="n">filter&#39;</span> <span class="n">p</span> <span class="n">xs</span></code></pre></div>
 
-<p>If <code>p x</code> evaluates to <code>True</code>, the first branch is taken; </p>
+<p>If <code>p x</code> evaluates to <code>True</code>, the first branch is taken;</p>
 
 <p>The options (expressions after <code>|</code>) are evaluated in top-to-bottom order, and the last one is only evaluated if none of the previous ones evaluates to <code>True</code>.</p>
 
@@ -638,18 +633,15 @@ The signatures of <code>[]</code> and <code>(:)</code> represent exactly this, a
 <p>Pattern guards are convenient syntax for deciding which conditional branch to take according to the <em>truth value</em> computed from one or more of the input variables. Note that the functions acting as pattern guards (e.g. <code>odd x</code>, <code>f || g</code>) have to return a Boolean, and only after the <code>=</code> sign do we specify the return value for each branch.</p>
 
 <blockquote>
-<p>Quiz: what are the type signatures of <code>oddness</code> and <code>buzz</code> and why ? </p>
+  <p>Quiz: what are the type signatures of <code>oddness</code> and <code>buzz</code> and why ?</p>
 </blockquote>
 
-<hr>
+<hr />
+<hr />
 
-<hr>
-
-<p><a id="data"/> </a></p>
-
-<h2>Datatypes</h2>
-
-<h1>Record notation, constructor as a function</h1>
+<p><a id="data"></a> &lt;/a&gt;
+## Datatypes
+# Record notation, constructor as a function</p>
 
 <p>We can specify datatypes (which remind of structs in C) with the <code>data</code> keyword, as shown in the following examples.
 (Also <code>newtype</code> can be used in the same fashion as <code>data</code>, for datastructures that have a single constuctor, but the difference between the two keywords is a bit technical and will not be discussed here.)</p>
@@ -662,7 +654,7 @@ The signatures of <code>[]</code> and <code>(:)</code> represent exactly this, a
 <span class="o">&gt;</span> <span class="kt">:</span><span class="n">t</span> <span class="n">unA</span>
 <span class="nf">unA</span> <span class="ow">::</span> <span class="kt">TypeA</span> <span class="ow">-&gt;</span> <span class="kt">Int</span></code></pre></div>
 
-<p>The constructor (<code>MakeA</code>, in this case) is a function; we build a data &quot;object&quot; by passing the appropriate arguments to it and whenever we need the values stored inside, we just call the appropriate accessor method (<code>unA</code>, in the example), using the data object as its argument :</p>
+<p>The constructor (<code>MakeA</code>, in this case) is a function; we build a data “object” by passing the appropriate arguments to it and whenever we need the values stored inside, we just call the appropriate accessor method (<code>unA</code>, in the example), using the data object as its argument :</p>
 
 <div class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="o">&gt;</span> <span class="kr">let</span> <span class="n">test1</span> <span class="ow">=</span> <span class="kt">MakeA</span> <span class="mi">597</span>
 
@@ -675,16 +667,16 @@ The signatures of <code>[]</code> and <code>(:)</code> represent exactly this, a
 <span class="o">&gt;</span> <span class="n">unA</span> <span class="n">test1</span>
 <span class="mi">597</span></code></pre></div>
 
-<p>Within the curly brackets we can specify a number of &quot;records&quot; to hold values; however these are not simple data fields but also declare the accessor functions to retrieve them.</p>
+<p>Within the curly brackets we can specify a number of “records” to hold values; however these are not simple data fields but also declare the accessor functions to retrieve them.</p>
 
 <blockquote>
-<p>Haskell provides the machinery to augment our datatypes, by making them &quot;instances&quot; of standard classes such as <code>Show</code> above. 
-If a datatype is an instance of one or more classes, it &quot;inherits&quot; the functionality of that class, so in the present example making <code>TypeA</code> an instance of <code>Show</code> lets us print <code>TypeA</code> objects on screen.</p>
+  <p>Haskell provides the machinery to augment our datatypes, by making them “instances” of standard classes such as <code>Show</code> above. 
+If a datatype is an instance of one or more classes, it “inherits” the functionality of that class, so in the present example making <code>TypeA</code> an instance of <code>Show</code> lets us print <code>TypeA</code> objects on screen.</p>
 </blockquote>
 
-<p>N.B.: if we hadn&#39;t made <code>TypeA</code> an instance of <code>Show</code>, the evaluation of <code>test1</code> would have returned a &quot;No instance for (Show TypeA) ... &quot; error, instead.</p>
+<p>N.B.: if we hadn’t made <code>TypeA</code> an instance of <code>Show</code>, the evaluation of <code>test1</code> would have returned a “No instance for (Show TypeA) … “ error, instead.</p>
 
-<p>Let&#39;s declare a slightly larger datatype constructor and try out its accessor functions:</p>
+<p>Let’s declare a slightly larger datatype constructor and try out its accessor functions:</p>
 
 <div class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="o">&gt;</span> <span class="kr">data</span> <span class="kt">Test</span> <span class="ow">=</span> <span class="kt">Tee</span> <span class="p">{</span> <span class="n">h1</span> <span class="ow">::</span> <span class="p">[(</span><span class="kt">Bool</span><span class="p">,</span> <span class="kt">String</span><span class="p">)],</span> <span class="n">h2</span> <span class="ow">::</span> <span class="kt">Char</span> <span class="p">}</span>
 
@@ -702,10 +694,10 @@ If a datatype is an instance of one or more classes, it &quot;inherits&quot; the
 
 <p>In the above example, we have declared a <code>Test</code> datatype with constructor <code>Tee</code> and two records, the first of which is of a composite type, and created a <code>test2</code> object of this type.</p>
 
-<p>Next, we access an internal field in a purely functional style, by composition of elementary functions. This idea of functional manipulation of &quot;getter&quot;/&quot;setter&quot; methods for nested datastructure is called <em>lensing</em>, and it is implemented (and greatly expanded) in a few packages such as <a href="https://hackage.haskell.org/package/lens">lens</a>, which however is beyond the scope of this tutorial.</p>
+<p>Next, we access an internal field in a purely functional style, by composition of elementary functions. This idea of functional manipulation of “getter”/”setter” methods for nested datastructure is called <em>lensing</em>, and it is implemented (and greatly expanded) in a few packages such as <a href="https://hackage.haskell.org/package/lens">lens</a>, which however is beyond the scope of this tutorial.</p>
 
 <blockquote>
-<p>What happens if we supply an integer to the Tee constructor, instead of the expected list of <code>(Bool, String)</code> tuples? Our first type error! &lt;3</p>
+  <p>What happens if we supply an integer to the Tee constructor, instead of the expected list of <code>(Bool, String)</code> tuples? Our first type error! &lt;3</p>
 </blockquote>
 
 <div class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="o">&gt;</span> <span class="kt">:</span><span class="n">t</span> <span class="kt">Tee</span> <span class="mi">2</span>
@@ -716,12 +708,12 @@ If a datatype is an instance of one or more classes, it &quot;inherits&quot; the
    <span class="kt">In</span> <span class="n">the</span> <span class="n">expression</span><span class="kt">:</span> <span class="kt">Tee</span> <span class="mi">2</span></code></pre></div>
 
 <blockquote>
-<p>The second line, &quot;In the first argument of &#39;Tee&#39;&quot;, is the hint!</p>
+  <p>The second line, “In the first argument of ‘Tee’”, is the hint!</p>
 </blockquote>
 
-<h1>Type synonyms</h1>
+<h1 id="type-synonyms">Type synonyms</h1>
 
-<p>The keyword <code>type</code> is reserved to declare transparent type synonyms (i.e. that are internally re-written into their elementary types at compile time). Let&#39;s see a few examples: </p>
+<p>The keyword <code>type</code> is reserved to declare transparent type synonyms (i.e. that are internally re-written into their elementary types at compile time). Let’s see a few examples:</p>
 
 <div class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="o">&gt;</span> <span class="kr">type</span> <span class="kt">Name</span> <span class="ow">=</span> <span class="kt">String</span>
 
@@ -732,10 +724,10 @@ If a datatype is an instance of one or more classes, it &quot;inherits&quot; the
 <span class="o">&gt;</span> <span class="kr">type</span> <span class="kt">Directory</span> <span class="ow">=</span> <span class="p">[</span><span class="kt">Contact</span><span class="p">]</span></code></pre></div>
 
 <blockquote>
-<p>Type synonyms let us describe the problem domain more accurately, and enforce consistency among the functions using them.</p>
+  <p>Type synonyms let us describe the problem domain more accurately, and enforce consistency among the functions using them.</p>
 </blockquote>
 
-<h1>A worked example</h1>
+<h1 id="a-worked-example">A worked example</h1>
 
 <p>We now show a slightly longer example, a sketch of customer database application with query functions. The code captures the situation of having an array of structured data and having to take a decision based on some computation performed on each entry. Here we aim to display together a few of the syntactic elements shown so far, in a not-too-contrived setting.</p>
 
@@ -761,30 +753,32 @@ If a datatype is an instance of one or more classes, it &quot;inherits&quot; the
   <span class="o">|</span> <span class="n">otherwise</span> <span class="ow">=</span> <span class="kt">False</span> <span class="kr">where</span>
        <span class="n">inRange</span> <span class="n">m</span> <span class="ow">=</span> <span class="n">abs</span> <span class="p">(</span><span class="n">nMax</span> <span class="o">-</span> <span class="n">nMin</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">abs</span> <span class="p">(</span><span class="n">m</span> <span class="o">-</span> <span class="n">nMin</span><span class="p">)</span></code></pre></div>
 
-<p>or, more concisely: </p>
+<p>or, more concisely:</p>
 
 <div class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="nf">deliver&#39;</span> <span class="n">nMax</span> <span class="n">nMin</span> <span class="n">c</span> <span class="ow">=</span> <span class="n">abs</span> <span class="p">(</span><span class="n">nMax</span> <span class="o">-</span> <span class="n">nMin</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">abs</span> <span class="p">(</span><span class="n">houseNoContact</span> <span class="n">c</span> <span class="o">-</span> <span class="n">nMin</span><span class="p">)</span></code></pre></div>
 
 <blockquote>
-<p>Quiz: what is the type signature of <code>deliver&#39;</code> and why?</p>
+  <p>Quiz: what is the type signature of <code>deliver'</code> and why?</p>
 </blockquote>
 
-<p>Partial application of both <code>deliver</code> and <code>filter</code> : </p>
+<p>Partial application of both <code>deliver</code> and <code>filter</code> :</p>
 
 <div class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="nf">todaysDeliveries</span> <span class="n">n1</span> <span class="n">n2</span> <span class="ow">=</span> <span class="n">filter</span> <span class="p">(</span><span class="n">deliver</span> <span class="n">n1</span> <span class="n">n2</span><span class="p">)</span></code></pre></div>
 
-<p>We can now load the previous code snippet in GHCi and see the signature of today&#39;s delivery list, mapping from two house numbers and a list of contacts to the subset of the original contact list whose house number lies within the range.</p>
+<p>We can now load the previous code snippet in GHCi and see the signature of today’s delivery list, mapping from two house numbers and a list of contacts to the subset of the original contact list whose house number lies within the range.</p>
 
 <div class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="o">&gt;</span> <span class="kt">:</span><span class="n">t</span> <span class="n">todaysDeliveries</span>
 <span class="nf">todaysDeliveries</span> <span class="ow">::</span> <span class="kt">AddrN</span> <span class="ow">-&gt;</span> <span class="kt">AddrN</span> <span class="ow">-&gt;</span> <span class="p">[</span><span class="kt">Contact</span><span class="p">]</span> <span class="ow">-&gt;</span> <span class="p">[</span><span class="kt">Contact</span><span class="p">]</span></code></pre></div>
 
 <blockquote>
-<p>Haskell uses a <em>decidable</em> type system (the Hindley-Milner system) which allows the type-checking algorithm to always terminate without the user having to supply type annotations; in the above example we see the utility of this: using partial application wisely, we can achieve the desired signature function very concisely.</p>
-
-<p>Concise code has very far-reaching implications, besides just &quot;looking clever&quot;: it greatly simplifies reasoning, checking for correctness, refactoring and knowledge propagation. This is one of the many examples in which Haskell&#39;s theoretical foundations have very practical advantages.</p>
+  <p>Haskell uses a <em>decidable</em> type system (the Hindley-Milner system) which allows the type-checking algorithm to always terminate without the user having to supply type annotations; in the above example we see the utility of this: using partial application wisely, we can achieve the desired signature function very concisely.</p>
 </blockquote>
 
-<p>For instance, imagine having one day to update the matching criterion, i.e. the function <code>deliver</code> in our case; it&#39;s a single line change, and as long as the types match, the whole code will still be correct.</p>
+<blockquote>
+  <p>Concise code has very far-reaching implications, besides just “looking clever”: it greatly simplifies reasoning, checking for correctness, refactoring and knowledge propagation. This is one of the many examples in which Haskell’s theoretical foundations have very practical advantages.</p>
+</blockquote>
+
+<p>For instance, imagine having one day to update the matching criterion, i.e. the function <code>deliver</code> in our case; it’s a single line change, and as long as the types match, the whole code will still be correct.</p>
 
 <p>An example data entry for the delivery example above:</p>
 
@@ -795,7 +789,7 @@ If a datatype is an instance of one or more classes, it &quot;inherits&quot; the
 <span class="o">&gt;</span> <span class="kt">:</span><span class="n">t</span> <span class="n">contact1</span>
 <span class="nf">contact1</span> <span class="ow">::</span> <span class="kt">Contact</span></code></pre></div>
 
-<h1>Algebraic types</h1>
+<h1 id="algebraic-types">Algebraic types</h1>
 
 <p>We have already seen an instance of an algebraic datatype (ADT): <code>Bool</code> can have two mutually exclusive values.</p>
 
@@ -803,8 +797,7 @@ If a datatype is an instance of one or more classes, it &quot;inherits&quot; the
 
 <span class="o">&gt;</span> <span class="kr">data</span> <span class="kt">PS</span> <span class="ow">=</span> <span class="kt">Tri</span> <span class="o">|</span> <span class="kt">Cir</span> <span class="o">|</span> <span class="kt">Sqr</span> <span class="o">|</span> <span class="kt">Crs</span></code></pre></div>
 
-<h1>Polymorphic types</h1>
-
+<h1 id="polymorphic-types">Polymorphic types</h1>
 <p>Polymorphic types can be thought of as a labeled scaffolding for more elementary types; in the following example we show how the constructor <code>Pt a a</code> can be specialized to cater for various needs:</p>
 
 <div class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="o">&gt;</span> <span class="kr">data</span> <span class="kt">Point</span> <span class="n">a</span> <span class="ow">=</span> <span class="kt">Pt</span> <span class="n">a</span> <span class="n">a</span>
@@ -821,14 +814,14 @@ If a datatype is an instance of one or more classes, it &quot;inherits&quot; the
 <span class="nf">inside</span> <span class="ow">::</span> <span class="p">(</span><span class="kt">Ord</span> <span class="n">a</span><span class="p">,</span> <span class="kt">Num</span> <span class="n">a</span><span class="p">)</span> <span class="ow">=&gt;</span> <span class="kt">Point</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="kt">Point</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="kt">Bool</span></code></pre></div>
 
 <blockquote>
-<p>Quiz: why do the<code>Ord</code> and <code>Num</code> constraints arise, in the definition of <code>inside</code> ?</p>
+  <p>Quiz: why do the<code>Ord</code> and <code>Num</code> constraints arise, in the definition of <code>inside</code> ?</p>
 </blockquote>
 
 <p>A simple polymorphic datatype to represent a computation that can fail is <code>Maybe a</code>:</p>
 
 <div class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="o">&gt;</span> <span class="kr">data</span> <span class="kt">Maybe</span> <span class="n">a</span> <span class="ow">=</span> <span class="kt">Nothing</span> <span class="o">|</span> <span class="kt">Just</span> <span class="n">a</span></code></pre></div>
 
-<p>For example, we can implement a simple &quot;safe division&quot;, as follows</p>
+<p>For example, we can implement a simple “safe division”, as follows</p>
 
 <div class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="nf">safeDiv</span> <span class="n">a</span> <span class="n">b</span>
   <span class="o">|</span> <span class="n">b</span> <span class="o">/=</span> <span class="mi">0</span> <span class="ow">=</span> <span class="kt">Just</span> <span class="p">(</span> <span class="n">a</span><span class="o">/</span><span class="n">b</span> <span class="p">)</span>
@@ -838,16 +831,16 @@ If a datatype is an instance of one or more classes, it &quot;inherits&quot; the
 <span class="nf">safeDiv</span> <span class="ow">::</span> <span class="p">(</span><span class="kt">Eq</span> <span class="n">a</span><span class="p">,</span> <span class="kt">Fractional</span> <span class="n">a</span><span class="p">)</span> <span class="ow">=&gt;</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="kt">Maybe</span> <span class="n">a</span></code></pre></div>
 
 <blockquote>
-<p>The <code>Maybe a</code> type is a simple way to treat <em>errors as values</em>, and to perform further computation on them, rather than letting the program fail and stop. </p>
+  <p>The <code>Maybe a</code> type is a simple way to treat <em>errors as values</em>, and to perform further computation on them, rather than letting the program fail and stop.</p>
 </blockquote>
 
-<h1>Recursive types</h1>
+<h1 id="recursive-types">Recursive types</h1>
 
 <p>We have been using a recursive data structure all along, the humble list:</p>
 
-<div class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="o">&gt;</span> <span class="kr">data</span> <span class="kt">[]</span> <span class="n">a</span> <span class="ow">=</span> <span class="kt">[]</span> <span class="o">|</span> <span class="n">a</span> <span class="kt">:</span> <span class="p">[</span><span class="n">a</span><span class="p">]</span>   <span class="c1">-- Defined in ‘GHC.Types’</span></code></pre></div>
+<div class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="o">&gt;</span> <span class="kr">data</span> <span class="kt">[]</span> <span class="n">a</span> <span class="ow">=</span> <span class="kt">[]</span> <span class="o">|</span> <span class="n">a</span> <span class="kt">:</span> <span class="p">[</span><span class="n">a</span><span class="p">]</span> 	<span class="c1">-- Defined in ‘GHC.Types’</span></code></pre></div>
 
-<p>Next, we introduce a handy binary tree type <code>Tree a</code>, which can be either a &quot;leaf&quot; <code>L</code> carrying a type <code>a</code>, i.e. <code>L a</code>, or a &quot;branch&quot; <code>B</code> carrying two <code>Tree a</code>&#39;s.</p>
+<p>Next, we introduce a handy binary tree type <code>Tree a</code>, which can be either a “leaf” <code>L</code> carrying a type <code>a</code>, i.e. <code>L a</code>, or a “branch” <code>B</code> carrying two <code>Tree a</code>’s.</p>
 
 <div class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="o">&gt;</span> <span class="kr">data</span> <span class="kt">Tree</span> <span class="n">a</span> <span class="ow">=</span> <span class="kt">L</span> <span class="n">a</span> <span class="o">|</span> <span class="kt">B</span> <span class="p">(</span><span class="kt">Tree</span> <span class="n">a</span><span class="p">)</span> <span class="p">(</span><span class="kt">Tree</span> <span class="n">a</span><span class="p">)</span> <span class="kr">deriving</span> <span class="kt">Show</span>
 
@@ -870,6 +863,7 @@ If a datatype is an instance of one or more classes, it &quot;inherits&quot; the
 <span class="nf">b0</span> <span class="ow">::</span> <span class="kt">Num</span> <span class="n">a</span> <span class="ow">=&gt;</span> <span class="kt">Tree</span> <span class="n">a</span></code></pre></div>
 
 <p>Trees have very convenient asymptotic performance for search and sorting operations, and they are naturally suited to be traversed with recursive logic in Haskell.</p>
+
 
   </article>
 
