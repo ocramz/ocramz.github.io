@@ -5,9 +5,9 @@ date: 2016-08-25
 categories: Haskell tutorials
 ---
 
-
-[[http://oi65.tinypic.com/jzjf3a.jpg]]
-
+<p align="center">
+<img src="http://oi65.tinypic.com/jzjf3a.jpg" />
+</p>
 
 ## Introduction
 
