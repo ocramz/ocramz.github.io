@@ -68,6 +68,8 @@ import qualified Data.Attoparsec.ByteString as PB
 import Data.Attoparsec.ByteString.Char8 (decimal, signed, scientific, digit, number, rational, char, char8, endOfLine, endOfInput, isDigit, isDigit_w8, isEndOfLine, isHorizontalSpace)
 import qualified Data.ByteString as B (ByteString, hGet, readFile)
 
+import System.FilePath
+
 {% endhighlight %}
 
 
@@ -113,11 +115,13 @@ data Problem = Problem [Silhouette] Skeleton deriving Eq
 
 
 
-For parsing the specification, we rely on the amazing `attoparsec` package.
+For parsing the specification, we rely on the amazing `attoparsec` package. I import its ByteString module in qualified form as `PB` to make it easier to follow.
 
-We switch alternatively between applicative and `do`-based notation. Small reminder on the operators: `(<$>) :: Functor f => (a -> b) -> f a -> f b` is a synonym for `fmap`, whereas `(*>) :: Applicative f => f a -> f b -> f b` and `(<*) :: Applicative f => f a -> f b -> f a` can be read as "sequence", i.e. they perform the both actions that appear as their arguments and retain the second and first results, respectively.
+We switch alternatively between applicative and `do`-based notation. Anyway, since GHC 8, `Monad`s are indeed `Applicative`s, so whatever logic one writes in the latter form automatically applies to the former.
 
-The following declarations establish the rules for parsing signed fractional values (optionally integers, i.e. fractionals with 1 at the denominator), then `Point`s and `Segment`s based on those.
+Small reminder about the operators: `(<$>) :: Functor f => (a -> b) -> f a -> f b` is a synonym for `fmap`, whereas `(*>) :: Applicative f => f a -> f b -> f b` and `(<*) :: Applicative f => f a -> f b -> f a` can be read as "sequence", i.e. they perform both actions that appear as their arguments and retain the second and first results, respectively.
+
+The following declarations establish the rules for parsing signed fractional values (optionally integers, i.e. fractionals with 1 at the denominator, using the `option` modifier), then `Point`s and `Segment`s based on those.
 
 {% highlight haskell %}
 
