@@ -165,8 +165,12 @@ parseSkeleton = do
   ns <- decimal <* endOfLine
   segs <- PB.many1 (parseSegment <* endOfLine)
   return $ Skeleton ns segs
-  
+{% endhighlight %}
 
+
+Notice how easily we can compose elementary parsers into more complex ones. The `parseProblem0` function reflects the problem specification structure 1:1. Neat!
+
+{% highlight haskell %}
 parseProblem0 :: Int -> Parser B.ByteString Problem
 parseProblem0 n = do
   _ <- decimal *> endOfLine
@@ -178,7 +182,7 @@ parseProblem0 n = do
 
 
 
-There is probably a more concise way to say this, but the idea is simple: we must first parse and acquire an integer appearing at the beginning of the file, and with that decide how many times to apply the `Silhouette` parser (using the `count :: Monad m => Int -> m a -> m [a]` modifier).
+Next: the implementation of conditional parsing: there is probably a more concise way to say this, but the idea is simple: we must first parse and acquire an integer appearing at the beginning of the file, and with that decide how many times to apply the `Silhouette` parser (using the `count :: Monad m => Int -> m a -> m [a]` modifier).
 
 If parsing succeeds (i.e. our parsers match the structure of the file), the resulting `Problem` datastructure will be returned (wrapped in a `Right` constructor).
 
@@ -231,7 +235,7 @@ First, some helper functions to convert between our `Problem` record fields and 
 
 {% highlight haskell %}
 pointToP2 :: Lib.Point -> P2 Double
-pointToP2 (Lib.P x y) = p2 (f2d x, f2d y)
+pointToP2 (Lib.P x y) = p2 (ratSimp x, ratSimp y)
 
 pointsToTrail :: [Lib.Point] -> Trail V2 Double
 pointsToTrail =  closeTrail . trailFromVertices . map pointToP2
