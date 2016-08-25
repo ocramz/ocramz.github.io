@@ -23,28 +23,31 @@ The origami is defined as a list of coordinates defining the "silhouette" (conto
 
 A typical example is the following (Problem 26):
 
-    2               -- # of silhouettes
-    6               -- # of points of 1st silhouette
-    1/4,0           -- list of point coordinates of 1st silhouette
-    3/8,1/8         -- ..      
-    3/8,1/4 
-    1/4,3/8
-    1/8,3/8
-    0,1/4           -- .. until here
-    4               -- # of points of 2nd silhouette
-    1/8,1/8         -- list of point coordinates of 2nd silhouette 
-    1/8,1/4
-    1/4,1/4
-    1/4,1/8
-    10              -- # of segments
-    1/4,0 3/8,1/8   -- list of segment endpoint coordinates
-    1/8,1/8 1/8,3/8 -- ..
-    1/4,0 1/4,3/8
-    3/8,1/8 3/8,1/4
-    0,1/4 1/8,3/8
-    1/8,1/8 3/8,1/8
-    1/4,0 0,1/4
-    0,1/4 3/8,1/4
-    3/8,1/4 1/4,3/8
-    1/8,3/8 1/4,3/8
+{% highlight haskell %}
 
+2               -- # of silhouettes
+6               -- # of points of 1st silhouette
+1/4,0           -- list of point coordinates of 1st silhouette
+3/8,1/8         -- ..      
+3/8,1/4 
+1/4,3/8
+1/8,3/8
+0,1/4           -- .. until here
+4               -- # of points of 2nd silhouette
+1/8,1/8         -- list of point coordinates of 2nd silhouette 
+1/8,1/4
+1/4,1/4
+1/4,1/8
+10              -- # of segments
+1/4,0 3/8,1/8   -- list of segment endpoint coordinates
+1/8,1/8 1/8,3/8 -- ..
+1/4,0 1/4,3/8
+3/8,1/8 3/8,1/4
+0,1/4 1/8,3/8
+1/8,1/8 3/8,1/8
+1/4,0 0,1/4
+0,1/4 3/8,1/4
+3/8,1/4 1/4,3/8
+1/8,3/8 1/4,3/8
+
+{% endhighlight %}
