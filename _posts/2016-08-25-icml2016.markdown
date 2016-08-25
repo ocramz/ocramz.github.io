@@ -6,7 +6,7 @@ categories: Haskell tutorials
 ---
 
 
-[[viz.png]]
+[[https://github.com/ocramz/ocramz.github.io/tree/master/_posts/viz.png]]
 
 ## Introduction
 
