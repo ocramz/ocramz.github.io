@@ -13,6 +13,8 @@ categories: Haskell tutorials
 
 The annual ICFP contest ran between August 5 and August 8, 2016 and, even though I couldn't fully commit to solving it due to an otherwise busy weekend, I resolved to tackling it in my spare time, using Haskell exclusively, in the course of the subsequent days. In this page I will document my solution process and tools, since the resulting application features quite a few techniques that are seldom documented together (parsing, plotting, geometric processing and combinatorial optimization).
 
+Part 1 of this post will be concerned with parsing with `attoparsec` and plotting with `diagrams`.
+
 The [task description](https://icfpc2016.blogspot.se/2016/08/task-description.html) can be found on the official blog, along with a few updates and the [problem list](http://130.211.240.134/problem/list) (for which a free, anonymous registration is required).
 
 
