@@ -57,7 +57,21 @@ All coordinates are specified as integers or ratios of integers, and should be m
 We immediately notice the need for some sort of conditional parsing: the first line specifies an integer `n`, which determines how many "Silhouette" stanzas will follow. The last section is the "Skeleton", i.e. the complete set of segments that form the "x-ray" picture of the folded origami.
 
 
-Let's encode the problem semantics in some types :
+
+
+First, the requisite boilerplate:
+
+{% highlight haskell %}
+
+import Data.Attoparsec.Internal.Types (Parser)
+import qualified Data.Attoparsec.ByteString as PB
+import Data.Attoparsec.ByteString.Char8 (decimal, signed, scientific, digit, number, rational, char, char8, endOfLine, endOfInput, isDigit, isDigit_w8, isEndOfLine, isHorizontalSpace)
+import qualified Data.ByteString as B (ByteString, hGet, readFile)
+
+{% endhighlight %}
+
+
+Now, let's encode the problem specification semantics in some types :
 
 {% highlight haskell %}
 
@@ -93,5 +107,93 @@ data Skeleton =
              segments :: [Segment]} deriving Eq
 
 data Problem = Problem [Silhouette] Skeleton deriving Eq
+
+{% endhighlight %}
+
+
+
+
+For parsing the specification, we rely on the amazing `attoparsec` package.
+
+We switch alternatively between applicative and `do`-based notation. Small reminder on the operators: `(<$>) :: Functor f => (a -> b) -> f a -> f b` is a synonym for `fmap`, whereas `(*>) :: Applicative f => f a -> f b -> f b` and `(<*) :: Applicative f => f a -> f b -> f a` can be read as "sequence", i.e. they perform the both actions that appear as their arguments and retain the second and first results, respectively.
+
+The following declarations establish the rules for parsing signed fractional values (optionally integers, i.e. fractionals with 1 at the denominator), then `Point`s and `Segment`s based on those.
+
+{% highlight haskell %}
+
+parseFractional :: Parser B.ByteString Fract
+parseFractional =
+  Fract <$> PB.option 1 (signed decimal) <*> PB.option 1 (char8 '/' *> decimal)
+
+parsePoint :: Parser B.ByteString Point
+parsePoint = P <$> (parseFractional <* comma) <*> parseFractional
+
+parseSegment :: Parser B.ByteString Segment
+parseSegment = S <$> (parsePoint <* space) <*> parsePoint
+
+comma = char8 ','
+space = char8 ' '
+
+{% endhighlight%}
+
+
+
+Next, we'll need some parsing logic for the various sections of the specification file:
+
+
+{% highlight haskell %}
+
+parseNumPolys :: Parser B.ByteString Int
+parseNumPolys = decimal <* endOfLine
+
+parseSilhouette :: Parser B.ByteString Silhouette
+parseSilhouette = do
+  nvp <- decimal <* endOfLine
+  pp <- PB.many1 (parsePoint <* endOfLine)
+  return $ Silhouette nvp pp
+
+parseSkeleton :: Parser B.ByteString Skeleton
+parseSkeleton = do
+  ns <- decimal <* endOfLine
+  segs <- PB.many1 (parseSegment <* endOfLine)
+  return $ Skeleton ns segs
+  
+
+parseProblem0 :: Int -> Parser B.ByteString Problem
+parseProblem0 n = do
+  _ <- decimal *> endOfLine
+  sils <- PB.count n parseSilhouette
+  skels <- parseSkeleton <* endOfInput
+  return $ Problem sils skels
+
+{% endhighlight %}
+
+
+
+There is probably a more concise way to say this, but the idea is simple: we must first parse and acquire an integer appearing at the beginning of the file, and with that decide how many times to apply the `Silhouette` parser (using the `count :: Monad m => Int -> m a -> m [a]` modifier).
+
+
+{% highlight haskell %}
+loadProblem :: Int -> IO (Either String Problem)
+loadProblem n = do
+  c <- B.readFile fname
+  let r = PB.parseOnly parseNumPolys c
+  case r of
+    Left e -> error e
+    Right numpolys -> 
+      return $ PB.parseOnly (parseProblem0 numpolys) c
+  where
+     dir = "problems/"
+     fname = dir </> show n
+
+{% endhighlight %}
+
+
+
+
+
+
+{% highlight haskell %}
+
 
 {% endhighlight %}
