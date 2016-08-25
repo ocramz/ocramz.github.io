@@ -7,7 +7,7 @@ categories: Haskell tutorials
 
 
 <p align="center">
-    <img src="https://rawgithub.com/ocramz/ocramz.github.io/blob/master/_posts/viz.png" width="600">
+    <img src="https://raw.github.com/ocramz/ocramz.github.io/blob/master/_posts/viz.png" width="600">
 </p>
 
 ## Introduction
