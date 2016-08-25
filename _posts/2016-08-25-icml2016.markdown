@@ -6,7 +6,7 @@ categories: Haskell tutorials
 ---
 
 
-<img src="https://raw.github.com/ocramz/ocramz.github.io/tree/master/_posts/viz.png">
+![](https://raw.github.com/ocramz/ocramz.github.io/tree/master/_posts/viz.png)
 
 ## Introduction
 
