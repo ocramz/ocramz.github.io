@@ -7,7 +7,7 @@ categories: Haskell tutorials
 
 
 <p align="center">
-    <object data="https://rawgithub.com/ocramz/ocramz.github.io/blob/master/_posts/viz.svg" type="image/svg+xml" width="600"> </object>
+    <object data="https://rawgithub.com/ocramz/ocramz.github.io/blob/master/_posts/viz.svg" type="image/svg" width="600"> </object>
 </p>
 
 ## Introduction
