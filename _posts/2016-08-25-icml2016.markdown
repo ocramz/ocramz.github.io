@@ -1,13 +1,50 @@
 ---
 layout: post
-title: Folding a paper crane; an end-to-end solution to the ICFP 2016 programming contest
+title: Folding a paper crane; an solution to the ICFP 2016 programming contest
 date: 2016-08-25
 categories: Haskell tutorials
 ---
 
 ## Introduction
 
-The annual ICFP contest ran between August 5 and August 8, 2016 and, even though I couldn't fully commit to solving it due to an otherwise busy weekend, I resolved to tackling it in my spare time, using Haskell exclusively, in the course of the subsequent days. In this page I will document my solution process and tools, since the resulting application features quite a few techniques that are seldom documented together (parsing, plotting, geometric processing/combinatorial optimization).
+The annual ICFP contest ran between August 5 and August 8, 2016 and, even though I couldn't fully commit to solving it due to an otherwise busy weekend, I resolved to tackling it in my spare time, using Haskell exclusively, in the course of the subsequent days. In this page I will document my solution process and tools, since the resulting application features quite a few techniques that are seldom documented together (parsing, plotting, geometric processing and combinatorial optimization).
 
 The [task description](https://icfpc2016.blogspot.se/2016/08/task-description.html) can be found on the official blog, along with a few updates and the [problem list](http://130.211.240.134/problem/list) (for which a free, anonymous registration is required).
+
+
+## The Challenge
+
+In short: fold an origami.
+
+The origami is defined as a list of coordinates defining the "silhouette" (contour of the folded origami) and segments joining them (folds or sheet edges). The problem is: given an origami, and starting from a square sheet, find the list of folding moves (simple, or "valley-type" folds only are considered) to approximate the given origami silhouette.
+
+
+## Parsing the problem specifications
+
+A typical example is the following (Problem 26):
+
+2               -- # of silhouettes
+6               -- # of points of 1st silhouette
+1/4,0           -- list of point coordinates of 1st silhouette
+3/8,1/8         -- ..      
+3/8,1/4 
+1/4,3/8
+1/8,3/8
+0,1/4           -- .. until here
+4               -- # of points of 2nd silhouette
+1/8,1/8         -- list of point coordinates of 2nd silhouette 
+1/8,1/4
+1/4,1/4
+1/4,1/8
+10              -- # of segments
+1/4,0 3/8,1/8   -- list of segment endpoint coordinates
+1/8,1/8 1/8,3/8 -- ..
+1/4,0 1/4,3/8
+3/8,1/8 3/8,1/4
+0,1/4 1/8,3/8
+1/8,1/8 3/8,1/8
+1/4,0 0,1/4
+0,1/4 3/8,1/4
+3/8,1/4 1/4,3/8
+1/8,3/8 1/4,3/8
 
