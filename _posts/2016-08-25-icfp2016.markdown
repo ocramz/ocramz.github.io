@@ -11,7 +11,7 @@ categories: Haskell tutorials
 
 ## Introduction
 
-The annual ICFP contest ran between August 5 and August 8, 2016 and, even though I couldn't fully commit to it due to an otherwise busy weekend, I resolved to tackling it in my spare time, using Haskell exclusively, in the course of the subsequent days. In this page I will document my solution process and tools, since the resulting application features quite a few techniques that are seldom documented together (parsing, plotting, geometric processing and combinatorial optimization).
+The annual ICFP contest ran between August 5 and August 8, 2016 and, even though I couldn't fully commit to it due to an otherwise busy weekend, I resolved to tackling it in my spare time, using Haskell exclusively, in the course of the subsequent days. In this page I will document my solution process and tools, since the resulting application features quite a few techniques that are seldom explained together (parsing, plotting, geometric processing and combinatorial optimization).
 
 Part 1 of this post will be concerned with representing the problem semantics, parsing with `attoparsec` and plotting with `diagrams`.
 
@@ -246,7 +246,7 @@ segmentToPath :: Lib.Segment -> Path V2 Double
 segmentToPath (S x y)  = pointToP2 x ~~ pointToP2 y :: Path V2 Double
 {% endhighlight %}
 
-Both the `Trail` and `Path` types are instances of the internal `ToPath` class (which later will let us convert them to a `Diagram` in order to be drawn). Most importantly, a `Path` is not necessarily a closed line, whereas a `Trail` is taken to be contiguous.
+Both the `Trail` and `Path` types are instances of the internal `ToPath` class (which later will let us convert them to a `Diagram` in order to be drawn). Most importantly, a `Path` is not necessarily continuous, whereas a `Trail` is assumed to connect the dots.
 
 We use the `closeTrail` function to render all the sides of the Silhouette polygon since in the dataset the last point in an array doesn't usually coincide with the starting one.
 
