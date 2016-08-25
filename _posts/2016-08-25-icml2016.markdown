@@ -7,7 +7,7 @@ categories: Haskell tutorials
 
 
 <p align="center">
-    <img src="viz.png" />
+    <img src="https://ocramz.github.io/viz.png" />
 </p>
 
 ## Introduction
