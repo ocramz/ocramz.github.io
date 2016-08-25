@@ -11,9 +11,9 @@ categories: Haskell tutorials
 
 ## Introduction
 
-The annual ICFP contest ran between August 5 and August 8, 2016 and, even though I couldn't fully commit to solving it due to an otherwise busy weekend, I resolved to tackling it in my spare time, using Haskell exclusively, in the course of the subsequent days. In this page I will document my solution process and tools, since the resulting application features quite a few techniques that are seldom documented together (parsing, plotting, geometric processing and combinatorial optimization).
+The annual ICFP contest ran between August 5 and August 8, 2016 and, even though I couldn't fully commit to it due to an otherwise busy weekend, I resolved to tackling it in my spare time, using Haskell exclusively, in the course of the subsequent days. In this page I will document my solution process and tools, since the resulting application features quite a few techniques that are seldom documented together (parsing, plotting, geometric processing and combinatorial optimization).
 
-Part 1 of this post will be concerned with parsing with `attoparsec` and plotting with `diagrams`.
+Part 1 of this post will be concerned with representing the problem semantics, parsing with `attoparsec` and plotting with `diagrams`.
 
 The [task description](https://icfpc2016.blogspot.se/2016/08/task-description.html) can be found on the official blog, along with a few updates and the [problem list](http://130.211.240.134/problem/list) (for which a free, anonymous registration is required).
 
@@ -58,10 +58,9 @@ The problems come as plain text files, of which the following is a typical examp
 
 {% endhighlight %}
 
-All coordinates are specified as integers or ratios of integers, and should be manipulated as such (which is sensible because there will be no loss of numerical precision, as opposed to manipulating floats).
+All coordinates are specified as integers or ratios of integers, and should be manipulated as such (which is sensible because we can operate on them without loss of numerical precision, as opposed to manipulating floats).
 
 We immediately notice the need for some sort of conditional parsing: the first line specifies an integer `n`, which determines how many "Silhouette" stanzas will follow. The last section is the "Skeleton", i.e. the complete set of segments that form the "x-ray" picture of the folded origami.
-
 
 If you want to reproduce, create a new project e.g. with `stack new` and put the following in the `Lib` module.
 
