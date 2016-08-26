@@ -126,7 +126,7 @@ The following declarations establish the rules for parsing signed fractional val
 
 parseFractional :: Parser B.ByteString Fract
 parseFractional =
-  Fract <$> PB.option 1 (signed decimal) <*> PB.option 1 (char8 '/' *> decimal)
+  Fract <$> signed decimal <*> PB.option 1 (char8 '/' *> decimal)
 
 parsePoint :: Parser B.ByteString Point
 parsePoint = P <$> (parseFractional <* comma) <*> parseFractional
