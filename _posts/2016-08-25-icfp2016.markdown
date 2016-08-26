@@ -116,7 +116,7 @@ data Problem = Problem [Silhouette] Skeleton deriving Eq
 
 For parsing the specification, we rely on the amazing `attoparsec` package. I import its ByteString module in qualified form as `PB` to make it easier to follow.
 
-We switch alternatively between applicative and `do`-based notation. Anyway, since GHC 8, `Monad`s are indeed `Applicative`s, so whatever logic one writes in the latter form automatically applies to the former.
+We switch alternatively between applicative and `do`-based notation. Anyway, [since GHC 8, `Monad`s are indeed `Applicative`s](https://hackage.haskell.org/package/base-4.9.0.0/docs/src/GHC.Base.html#Monad), so whatever logic one writes in the latter form automatically applies to the former.
 
 Small reminder about the operators: `(<$>) :: Functor f => (a -> b) -> f a -> f b` is a synonym for `fmap`, `(<*>) :: Applicative f => f (a -> b) -> f a -> f b` (read "apply") is the function defining the Applicative class ("evaluate a function with a value if both are wrapped in a context"), whereas `(*>) :: Applicative f => f a -> f b -> f b` and `(<*) :: Applicative f => f a -> f b -> f a` can be read as "sequence", i.e. they perform both actions that appear as their arguments and retain the second and first results, respectively.
 
@@ -280,9 +280,9 @@ diagTot p =
 
 
 
-The only `IO` required by this program : the Diagrams `mainWith` function is very versatile and we can't document all of its possible use cases.
+The only `IO` required by this program : the Diagrams `mainWith` function is [very versatile](http://projects.haskell.org/diagrams/doc/cmdline.html) but here we simply use it to wrap the file loading `IO`, to supply the problem number from command line when the program is run.
 
-One possibility is using it to wrap an arbitrary Kleisli arrow that returns in the `IO` monad, to supply the problem number from command line, once this program is run.
+There are many possibilities for extending the command line input with structured options processing via `optparse-applicative`, but we don't need all of that complexity here.
  
 {% highlight haskell %}
 main :: IO ()
