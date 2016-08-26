@@ -274,7 +274,7 @@ diagTot :: Problem -> Diagram B
 diagTot p =
   centerXY $ mconcat [
       (dashingG [0.01,0.005] 0 . lc red) skeletonToDiagram $ problemSegments p
-    , (lc black # fc yellow) (silhouetteToDiagram $ problemPoints p)
+    , (lc black # fc yellow) silhouetteToDiagram $ problemPoints p
     ]
 {% endhighlight %}
 
