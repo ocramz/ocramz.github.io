@@ -5,7 +5,7 @@ permalink: /about/
 ---
 
 ## Marco Zocca
-Applied mathematician / Computer scientist
+_Applied mathematician / Computer scientist_
 
 
 -------
@@ -16,5 +16,5 @@ The road is narrow, fraught with perils and seldom traveled, but the view is bre
 
 
 
-Blog made with [Jekyll](http://jekyllrb.com/), using [Jekyll new](https://github.com/jglovier/jekyll-new) theme
+
 
