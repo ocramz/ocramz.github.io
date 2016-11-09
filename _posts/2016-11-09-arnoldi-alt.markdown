@@ -25,7 +25,6 @@ $$
    \vdots  &         & 0       & h_{n,n-1} & h_{n,n} \\
    0       & \cdots  & \cdots  & 0       & h_{n+1,n}
 \end{bmatrix}
-\caption{Matrix $$H$$ at iteration $$n$$}
 $$
 
 $$ 
