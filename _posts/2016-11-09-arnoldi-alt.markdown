@@ -18,12 +18,19 @@ Focusing for example on the second iteration, we have
 
 $$
 A
+\left[
 \begin{array}{c|c}
   q_1 & q_2
-\end{array} =
+\end{array}
+\right]
+=
+\left[
 \begin{array}{c|c|c}
   q_1 & q_2 & q_3
 \end{array}
+\right]
+
+\begin{}
 
 \tilde{H}_n = \begin{bmatrix}
    h_{1,1} & h_{1,2} & h_{1,3} & \cdots  & h_{1,n} \\
