@@ -26,12 +26,12 @@ A
 =
 \left[
 \begin{array}{c|c|c}
-  q_1 & q_2 & q_3
+  \mathbf{q}_1 & \mathbf{q}_2 & \mathbf{q}_3
 \end{array}
 \right]
 
 \left[
-\begin{array}{c|c|c}
+\begin{array}{c c c}
  h_{11} & h_{12} & h_{13} \\
  0 & h_{22} & h_{23}
 \end{array}
