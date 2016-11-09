@@ -46,12 +46,17 @@ $$
 
 In the previous equation the entries of the $$H$$ matrix are obtained by exploting the orthonormality of the $$\mathbf{q}$$ vectors, i.e. 
 
-$$\langle \mathbf{q}_i, \mathbf{q}_j \rangle = \delta_{i, j} = \begin{cases} 1 & i = j\\ 0 & \mathrm{otherwise}\end{cases}$$.
+$$
+\langle \mathbf{q}_i, \mathbf{q}_j \rangle = \delta_{i, j} =
+     \begin{cases} 1 & i = j\\
+                   0 & \mathrm{otherwise}
+     \end{cases}
+$$.
 
 We project the last equation above onto the basis vectors obtained so far:
 
 $$
-\langle \mathbf{q}_1, \mathbf{q}_3 \rangle = \frac{\langle \mathbf{q}_1, A \mathbf{q}_2 \rangle - \left[ h_{1, 2} \langle \mathbf{q}_1, \mathbf{q}_1 \rangle  + h_{2, 2} \langle \mathbf{q}_1, \mathbf{q}_2 \rangle \right] }{h_{3, 2}}
+\cancel{ \langle \mathbf{q}_1, \mathbf{q}_3 \rangle } = \frac{\langle \mathbf{q}_1, A \mathbf{q}_2 \rangle - \left[ h_{1, 2} \langle \mathbf{q}_1, \mathbf{q}_1 \rangle  + h_{2, 2} \langle \mathbf{q}_1, \mathbf{q}_2 \rangle \right] }{h_{3, 2}}
 $$
 
 which after simplifying yields $$h_{1,2} = \langle \mathbf{q}_1, A \mathbf{q}_2 \rangle $$ (and analogously for $$h_{2, 2}$$), whereas $$h_{3, 2}$$ is obtained by the normalization condition $$\| \mathbf{q_3} \| = 1$$.
