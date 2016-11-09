@@ -13,7 +13,7 @@ The Arnoldi method starts from a normalized vector $$\mathbf{q}_1$$ and iterativ
 The objective is to produce an upper Hessenberg matrix $$H_n$$ (i.e. that is zero below the first subdiagonal) and a matrix $$Q$$ having orthogonal columns such that $$A Q_{i - 1} = Q_i H_i$$.
 With the subscripts we mean that at iteration $$i$$ there are $$i$$ columns of $$Q$$ available (we denote this as $$Q_{i}$$) and we must find the $$i+1$$th; 
 
-Focusing for example on the second iteration, we have
+If we consider for example on the second iteration, we have
 
 $$
 A
@@ -44,7 +44,7 @@ $$
 \mathbf{q}_3 = \frac{A \mathbf{q}_2 - \sum\limits_{i=1}^2 h_{i, 2} \mathbf{q}_i}{h_{3, 2}}.
 $$
 
-In the previous equation the entries of the $$H$$ matrix are obtained by exploting the orthonormality of the $$\mathbf{q}$$ vectors, i.e. 
+In the previous equation the entries of the $$H$$ matrix are obtained by exploiting the orthonormality of the $$\mathbf{q}$$ vectors, i.e. 
 
 $$
 \langle \mathbf{q}_i, \mathbf{q}_j \rangle = \delta_{i, j} =
@@ -53,10 +53,10 @@ $$
      \end{cases}
 $$.
 
-We project the last equation above onto the basis vectors obtained so far:
+that is, we project the last equation above onto the basis vectors obtained so far:
 
 $$
-\cancel{ \langle \mathbf{q}_1, \mathbf{q}_3 \rangle } = \frac{\langle \mathbf{q}_1, A \mathbf{q}_2 \rangle - \left[ h_{1, 2} \langle \mathbf{q}_1, \mathbf{q}_1 \rangle  + h_{2, 2} \langle \mathbf{q}_1, \mathbf{q}_2 \rangle \right] }{h_{3, 2}}
+\langle \mathbf{q}_1, \mathbf{q}_3 \rangle = \frac{\langle \mathbf{q}_1, A \mathbf{q}_2 \rangle - \left[ h_{1, 2} \langle \mathbf{q}_1, \mathbf{q}_1 \rangle  + h_{2, 2} \langle \mathbf{q}_1, \mathbf{q}_2 \rangle \right] }{h_{3, 2}}
 $$
 
-which after simplifying yields $$h_{1,2} = \langle \mathbf{q}_1, A \mathbf{q}_2 \rangle $$ (and analogously for $$h_{2, 2}$$), whereas $$h_{3, 2}$$ is obtained by the normalization condition $$\| \mathbf{q_3} \| = 1$$.
+thus obtaining $$h_{1,2} = \langle \mathbf{q}_1, A \mathbf{q}_2 \rangle $$ (and analogously for $$h_{2, 2}$$), whereas $$h_{3, 2}$$ is obtained by the normalization condition $$\| \mathbf{q_3} \| = 1$$.
