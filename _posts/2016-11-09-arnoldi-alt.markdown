@@ -30,7 +30,14 @@ A
 \end{array}
 \right]
 
-\begin{}
+\left[
+\begin{array}{c|c|c}
+ h_{11} & h_{12} & h_{13} &&
+ 0 & h_{22} & h_{23}
+\end{array}
+\right]
+
+
 
 \tilde{H}_n = \begin{bmatrix}
    h_{1,1} & h_{1,2} & h_{1,3} & \cdots  & h_{1,n} \\
