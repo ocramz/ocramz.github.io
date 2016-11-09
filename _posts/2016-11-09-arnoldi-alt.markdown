@@ -30,20 +30,28 @@ A
 \right]
 
 \left[
-\begin{array}{c c c}
- h_{1, 1} & h_{1, 2} & h_{1, 3} \\
- 0 & h_{2, 2} & h_{2, 3}
+\begin{array}{c c}
+ h_{1, 1} & h_{1, 2} \\
+ h_{2, 1} & h_{2, 2}  \\
+ 0 & h_{3, 2} 
 \end{array}
-\right].
+\right]
 $$
 
-By equating the last column of the two sides one can deduce the recursion:
+which yields the recursion:
 
 $$
-\mathbf{q}_3 = \frac{A \mathbf{q}_2 - \sum\limits_{i=1}^2 h_{i, 2} \mathbf{q}_i}{h_{3, 2}}
+\mathbf{q}_3 = \frac{A \mathbf{q}_2 - \sum\limits_{i=1}^2 h_{i, 2} \mathbf{q}_i}{h_{3, 2}}.
 $$
 
-in which the entries of the $$H$$ matrix are obtained by exploting the orthonormality of the $$\mathbf{q}$$ vectors : $$\langle \mathbf{q}_i, \mathbf{q}_j \rangle = \delta_{i, j} = \begin{cases} 1 & i = j\\ 0 & \mathrm{otherwise}\end{cases}$$.
+In the previous equation the entries of the $$H$$ matrix are obtained by exploting the orthonormality of the $$\mathbf{q}$$ vectors, i.e. 
 
-Namely, we project the last equation above onto the basis vectors obtained so far
+$$\langle \mathbf{q}_i, \mathbf{q}_j \rangle = \delta_{i, j} = \begin{cases} 1 & i = j\\ 0 & \mathrm{otherwise}\end{cases}$$.
 
+We project the last equation above onto the basis vectors obtained so far:
+
+$$
+\langle \mathbf{q}_1, \mathbf{q}_3 \rangle = \frac{\langle \mathbf{q}_1, A \mathbf{q}_2 \rangle - \left[ h_{1, 2} \langle \mathbf{q}_1, \mathbf{q}_1 \rangle  h_{2, 2} \langle \mathbf{q}_1, \mathbf{q}_2 \rangle \right] }{h_{3, 2}}
+$$
+
+which yields $$h_{1,2} = \langle \mathbf{q}_1, A \mathbf{q}_2 \rangle $$
