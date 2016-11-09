@@ -20,7 +20,7 @@ $$
 A
 \left[
 \begin{array}{c|c}
-  q_1 & q_2
+  \mathbf{q}_1 & \mathbf{q}_2
 \end{array}
 \right]
 =
@@ -32,23 +32,8 @@ A
 
 \left[
 \begin{array}{c|c|c}
- h_{11} & h_{12} & h_{13} &&
+ h_{11} & h_{12} & h_{13} \\
  0 & h_{22} & h_{23}
 \end{array}
 \right]
-
-
-
-\tilde{H}_n = \begin{bmatrix}
-   h_{1,1} & h_{1,2} & h_{1,3} & \cdots  & h_{1,n} \\
-   h_{2,1} & h_{2,2} & h_{2,3} & \cdots  & h_{2,n} \\
-   0       & h_{3,2} & h_{3,3} & \cdots  & h_{3,n} \\
-   \vdots  & \ddots  & \ddots  & \ddots  & \vdots  \\
-   \vdots  &         & 0       & h_{n,n-1} & h_{n,n} \\
-   0       & \cdots  & \cdots  & 0       & h_{n+1,n}
-\end{bmatrix}
-$$
-
-$$ 
-f(a) = \frac{1}{2\pi\iota} \oint_\gamma \frac{f(z)}{z-a} dz
 $$
