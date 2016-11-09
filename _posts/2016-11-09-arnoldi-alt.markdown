@@ -10,7 +10,8 @@ The Krylov subspace of order $$r \leq m$$ associated with $$A$$ and $$b$$ is def
 
 The Arnoldi method starts from a normalized vector $$q_0$$ and iteratively produces the next basis vectors. This process eventually "breaks down" since the norm of the iterates $$q_i$$ decreases, at which point the algorithm is said to have converged.
 
-The objective is to produce an upper Hessenberg matrix $$H_i$$ (i.e. being zero below the first subdiagonal) and a matrix $$Q$$ having orthogonal columns such that $$A Q_{i - 1} = Q_i H_i$$. With the subscripts we mean that at iteration $$i$$ there are $$i$$ columns of $$Q$$ available (we denote this as $$Q_{i}$$) and we must find the $$i+1$$th; 
+The objective is to produce an upper Hessenberg matrix $$H_n$$ (i.e. that is zero below the first subdiagonal) and a matrix $$Q$$ having orthogonal columns such that $$A Q_{i - 1} = Q_i H_i$$.
+With the subscripts we mean that at iteration $$i$$ there are $$i$$ columns of $$Q$$ available (we denote this as $$Q_{i}$$) and we must find the $$i+1$$th; 
 
 Focusing for instance o
 
@@ -23,7 +24,8 @@ $$
    \vdots  & \ddots  & \ddots  & \ddots  & \vdots  \\
    \vdots  &         & 0       & h_{n,n-1} & h_{n,n} \\
    0       & \cdots  & \cdots  & 0       & h_{n+1,n}
-\end{bmatrix} 
+\end{bmatrix}
+\caption{Matrix $$H$$ at iteration $$n$$}
 $$
 
 $$ 
