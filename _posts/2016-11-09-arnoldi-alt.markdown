@@ -13,7 +13,7 @@ The Arnoldi method starts from a normalized vector $$\mathbf{q}_1$$ and iterativ
 The objective is to produce an upper Hessenberg matrix $$H_n$$ (i.e. that is zero below the first subdiagonal) and a matrix $$Q$$ having orthonormal columns such that $$A Q_{i - 1} = Q_i H_i$$.
 With the subscripts we mean that at iteration $$i$$ there are $$i$$ columns of $$Q$$ available (we denote this as $$Q_{i}$$) and we must find the $$i+1$$th; 
 
-If we consider for example on the second iteration, we have
+If we consider for example the second iteration, we have
 
 $$
 A
