@@ -55,7 +55,7 @@ $$
      \begin{cases} 1 & i = j\\
                    0 & \mathrm{otherwise}
      \end{cases}
-$$.
+$$
 
 that is, we project the last equation above onto the basis vectors obtained so far, in order:
 
