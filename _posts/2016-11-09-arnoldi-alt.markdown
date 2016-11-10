@@ -45,8 +45,8 @@ A
 
 \left[
 \begin{array}{c | c}
- h_{1, 1} \mathbf{q}_1 + h_{2, 1} \mathbf{q}_1 &
- h_{1, 2} \mathbf{q}_1 + h_{2, 2} \mathbf{q}_1 + h_{3, 2} \mathbf{q}_1
+ h_{1, 1} \mathbf{q}_1 + h_{2, 1} \mathbf{q}_2 &
+ h_{1, 2} \mathbf{q}_1 + h_{2, 2} \mathbf{q}_2 + h_{3, 2} \mathbf{q}_3
 \end{array}
 \right]
 
