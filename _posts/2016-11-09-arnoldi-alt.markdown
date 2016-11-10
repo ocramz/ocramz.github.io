@@ -60,7 +60,7 @@ $$
 that is, we project the last equation above onto the basis vectors obtained so far, in order:
 
 $$
-\langle \mathbf{q}_1, \mathbf{q}_3 \rangle = \frac{\langle \mathbf{q}_1, A \mathbf{q}_2 \rangle - \left[ h_{1, 2} \langle \mathbf{q}_1, \mathbf{q}_1 \rangle  + h_{2, 2} \langle \mathbf{q}_1, \mathbf{q}_2 \rangle \right] }{h_{3, 2}}
+0 = \langle \mathbf{q}_1, \mathbf{q}_3 \rangle = \frac{\langle \mathbf{q}_1, A \mathbf{q}_2 \rangle - \left[ h_{1, 2} \langle \mathbf{q}_1, \mathbf{q}_1 \rangle  + h_{2, 2} \langle \mathbf{q}_1, \mathbf{q}_2 \rangle \right] }{h_{3, 2}}
 $$
 
 thus obtaining $$h_{1,2} = \langle \mathbf{q}_1, A \mathbf{q}_2 \rangle $$ (and analogously for $$h_{2, 2}$$), whereas $$h_{3, 2}$$ is obtained by the normalization condition $$\| \mathbf{q_3} \| = 1$$.
