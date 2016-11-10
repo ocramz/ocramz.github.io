@@ -73,5 +73,7 @@ $$
 \langle \mathbf{q}_1, \mathbf{q}_3 \rangle = \frac{\langle \mathbf{q}_1, A \mathbf{q}_2 \rangle - \left[ h_{1, 2} \langle \mathbf{q}_1, \mathbf{q}_1 \rangle  + h_{2, 2} \langle \mathbf{q}_1, \mathbf{q}_2 \rangle \right] }{h_{3, 2}}
 $$
 
-thus obtaining $$h_{1,2} = \langle \mathbf{q}_1, A \mathbf{q}_2 \rangle $$ (and analogously for $$h_{2, 2}$$), whereas $$h_{3, 2}$$ is obtained by the normalization condition $$\| \mathbf{q_3} \| = 1$$. The normalizing coefficient is also used as a breakdown test, i.e. when $$h_{i+1, i} \leq \epsilon$$ e.g. $$10^{-12}$$ in double precision floating point arithmetic, the algorithm terminates.
+thus obtaining $$h_{1,2} = \langle \mathbf{q}_1, A \mathbf{q}_2 \rangle $$ (and analogously for $$h_{2, 2}$$), whereas $$h_{3, 2}$$ is obtained by the normalization condition $$\| \mathbf{q_3} \| = 1$$.
+At this point, it is straightforward to justify the usual [nested-loop representation of the algorithm](https://en.wikipedia.org/wiki/Arnoldi_iteration#The_Arnoldi_iteration).
+The normalizing coefficient is also used as a breakdown test, i.e. when $$h_{i+1, i} \leq \epsilon$$ e.g. $$10^{-12}$$ in double precision floating point arithmetic, the algorithm terminates.
 
