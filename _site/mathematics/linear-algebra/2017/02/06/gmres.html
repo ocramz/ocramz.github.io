@@ -108,7 +108,7 @@ In the following, I will restrict the notation to the special case in which all 
 
 <p>2) factorizing the Hessenberg matrix obtained at step 1) in its QR factors</p>
 
-<p>3) solving for the residual using a triangular solver (i.e. back-substitution).</p>
+<p>3) solving for the minimal-residual vector using a triangular solver (i.e. back-substitution).</p>
 
 <p>The version of GMRES I have implemented in <a href="https://hackage.haskell.org/package/sparse-linear-algebra">sparse-linear-algebra</a> does not carry out steps 1-3 repeatedly, but simply finds the “largest” Krylov subspace (i.e. carries out Arnoldi until it breaks down, that is, until the norm of the <script type="math/tex">i</script>th orthogonal vector is found to be almost 0) and then proceeds with step 2 and 3. I found this simpler solution to work quite well in practice.</p>
 

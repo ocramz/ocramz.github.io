@@ -56,7 +56,7 @@ To recap, at step $$i$$ the GMRES algorithm requires:
 
 2) factorizing the Hessenberg matrix obtained at step 1) in its QR factors
 
-3) solving for the residual using a triangular solver (i.e. back-substitution).
+3) solving for the minimal-residual vector using a triangular solver (i.e. back-substitution).
 
 The version of GMRES I have implemented in [sparse-linear-algebra](https://hackage.haskell.org/package/sparse-linear-algebra) does not carry out steps 1-3 repeatedly, but simply finds the "largest" Krylov subspace (i.e. carries out Arnoldi until it breaks down, that is, until the norm of the $$i$$th orthogonal vector is found to be almost 0) and then proceeds with step 2 and 3. I found this simpler solution to work quite well in practice.
 
