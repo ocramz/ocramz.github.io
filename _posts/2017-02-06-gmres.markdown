@@ -46,19 +46,21 @@ $$
 \|A x - b\| = \|U_i y - O_i^\dagger \|b\|e_1\| \underset{y}{\rightarrow} min
 $$
 
-which can be solved by back-substitution in $$\mathit{O}(m)$$ since $$U_i$$ is upper triangular.
+which can be efficiently solved by back-substitution since $$U_i$$ is upper triangular.
 
 ## Conclusions and some optimizations
 
 To recap, at step $$i$$ the GMRES algorithm requires:
 
-1) applying the Arnoldi process to obtain a Krylov base for $$\{A, b\}$$ in $$\mathbb{R}^i$$
+1) applying the Arnoldi process to obtain a Krylov base for $$\{A, b\}$$ in $$\mathbb{R}^i$$,
 
-2) factorizing the Hessenberg matrix obtained at step 1) in its QR factors
+2) factorizing the Hessenberg matrix obtained at step 1) in its QR factors,
 
-3) solving for the minimal-residual vector using a triangular solver (i.e. back-substitution).
+3) solving for the minimal-residual vector $y$ using a triangular solver (i.e. back-substitution),
 
-The version of GMRES I have implemented in [sparse-linear-algebra](https://hackage.haskell.org/package/sparse-linear-algebra) does not carry out steps 1-3 repeatedly, but simply finds the "largest" Krylov subspace (i.e. carries out Arnoldi until it breaks down, that is, until the norm of the $$i$$th orthogonal vector is found to be almost 0) and then proceeds with step 2 and 3. I found this simpler solution to work quite well in practice.
+4) retrieving the full-space solution using the Krylov relation $$\tilde{x} = Q_i y$$.
+
+The version of GMRES I have implemented in [sparse-linear-algebra](https://hackage.haskell.org/package/sparse-linear-algebra) does not carry out steps 1-3 repeatedly, but simply finds the "largest" Krylov subspace (i.e. carries out Arnoldi until it breaks down, that is, until the norm of the $$i$$th orthogonal vector is found to be almost 0) and then proceeds to steps 2 and 3. I found this simpler solution to work quite well in practice.
 
 A popular optimization is to interleave the Arnoldi process with the QR factorization; in particular, the first $$i$$ columns of $$H_{i+1}$$ are exactly $$H_i$$, so computing the QR factorization of $$H_{i+1}$$ only requires applying one additional Givens' rotation, and can recycle the QR factors of $$H_i$$ (appropriately padded).
 
