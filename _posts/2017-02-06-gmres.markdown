@@ -28,7 +28,7 @@ $$
 \|A x - b\| = \|A Q_i y - b\| = \|Q_{i+1} H_i y -b\|
 $$
 
-Since the columns of the $$Q_i$$ matrices are orthogonal, if $$Q_i u = v$$ then $$u = Q_i^\dagger v$$; this lets us rewrite the right-hand side residual above as follows:
+Since the columns of the $$Q_i$$ matrices are orthogonal, if $$Q_i u = v$$ then $$u = Q_i^\dagger v$$; this lets us rewrite the residual as follows:
 
 $$
 \|H_i y - Q_{i+1}^\dagger b\|
@@ -40,11 +40,23 @@ At this point we focus on the Hessenberg matrix $$H_i$$: this is a $$m \times i 
 
 Let us denote the QR factorization of $$H_i$$ as $$O_i U_i$$ (where $$O_i \in \mathbb{R}^{i+1 \times i+1}$$ is orthonormal and $$U_i \in \mathbb{R}^{i+1 \times i}$$ is upper triangular). Since the QR factorization operates on the sub-diagonal nonzero elements of its input matrix, applying it to a Hessenberg matrix means that only at most $$i-2$$ rotations will be required in order to produce its answer.
 
-At this point we are ready to write the GMRES problem in its final form:
+At this point we are ready to write the GMRES problem in its final form
 
 $$
 \|A x - b\| = \|U_i y - O_i^\dagger \|b\|e_1\| \underset{y}{\rightarrow} min
 $$
+
+which can be solved by back-substitution in $$\mathit{O}(m)$$ since $$U_i$$ is upper triangular.
+
+To recap, the GMRES algorithm requires:
+
+1) applying the Arnoldi process to obtain a set of Krylov bases for $$\{A, b\}$$
+
+2) for each Krylov subspace, factorizing the Hessenberg matrix obtained at step 1) in its QR factors
+
+3) solving for the residual using a triangular solver (i.e. back-substitution).
+
+
 
 ## References
 

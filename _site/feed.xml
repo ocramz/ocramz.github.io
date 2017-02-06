@@ -6,8 +6,8 @@
 </description>
     <link>http://yourdomain.com/</link>
     <atom:link href="http://yourdomain.com/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Mon, 06 Feb 2017 17:19:43 +0100</pubDate>
-    <lastBuildDate>Mon, 06 Feb 2017 17:19:43 +0100</lastBuildDate>
+    <pubDate>Mon, 06 Feb 2017 17:30:03 +0100</pubDate>
+    <lastBuildDate>Mon, 06 Feb 2017 17:30:03 +0100</lastBuildDate>
     <generator>Jekyll v2.5.3</generator>
     
       <item>
@@ -31,7 +31,7 @@ In the following, I will restrict the notation to the special case in which all 
 
 &lt;script type=&quot;math/tex; mode=display&quot;&gt;\|A x - b\| = \|A Q_i y - b\| = \|Q_{i+1} H_i y -b\|&lt;/script&gt;
 
-&lt;p&gt;Since the columns of the &lt;script type=&quot;math/tex&quot;&gt;Q_i&lt;/script&gt; matrices are orthogonal, if &lt;script type=&quot;math/tex&quot;&gt;Q_i u = v&lt;/script&gt; then &lt;script type=&quot;math/tex&quot;&gt;u = Q_i^\dagger v&lt;/script&gt;; this lets us rewrite the right-hand side residual above as follows:&lt;/p&gt;
+&lt;p&gt;Since the columns of the &lt;script type=&quot;math/tex&quot;&gt;Q_i&lt;/script&gt; matrices are orthogonal, if &lt;script type=&quot;math/tex&quot;&gt;Q_i u = v&lt;/script&gt; then &lt;script type=&quot;math/tex&quot;&gt;u = Q_i^\dagger v&lt;/script&gt;; this lets us rewrite the residual as follows:&lt;/p&gt;
 
 &lt;script type=&quot;math/tex; mode=display&quot;&gt;\|H_i y - Q_{i+1}^\dagger b\|&lt;/script&gt;
 
@@ -41,9 +41,19 @@ In the following, I will restrict the notation to the special case in which all 
 
 &lt;p&gt;Let us denote the QR factorization of &lt;script type=&quot;math/tex&quot;&gt;H_i&lt;/script&gt; as &lt;script type=&quot;math/tex&quot;&gt;O_i U_i&lt;/script&gt; (where &lt;script type=&quot;math/tex&quot;&gt;O_i \in \mathbb{R}^{i+1 \times i+1}&lt;/script&gt; is orthonormal and &lt;script type=&quot;math/tex&quot;&gt;U_i \in \mathbb{R}^{i+1 \times i}&lt;/script&gt; is upper triangular). Since the QR factorization operates on the sub-diagonal nonzero elements of its input matrix, applying it to a Hessenberg matrix means that only at most &lt;script type=&quot;math/tex&quot;&gt;i-2&lt;/script&gt; rotations will be required in order to produce its answer.&lt;/p&gt;
 
-&lt;p&gt;At this point we are ready to write the GMRES problem in its final form:&lt;/p&gt;
+&lt;p&gt;At this point we are ready to write the GMRES problem in its final form&lt;/p&gt;
 
 &lt;script type=&quot;math/tex; mode=display&quot;&gt;\|A x - b\| = \|U_i y - O_i^\dagger \|b\|e_1\| \underset{y}{\rightarrow} min&lt;/script&gt;
+
+&lt;p&gt;which can be solved by back-substitution in &lt;script type=&quot;math/tex&quot;&gt;\mathit{O}(m)&lt;/script&gt; since &lt;script type=&quot;math/tex&quot;&gt;U_i&lt;/script&gt; is upper triangular.&lt;/p&gt;
+
+&lt;p&gt;To recap, the GMRES algorithm requires:&lt;/p&gt;
+
+&lt;p&gt;1) applying the Arnoldi process to obtain a set of Krylov bases for &lt;script type=&quot;math/tex&quot;&gt;\{A, b\}&lt;/script&gt;&lt;/p&gt;
+
+&lt;p&gt;2) for each Krylov subspace, factorizing the Hessenberg matrix obtained at step 1) in its QR factors&lt;/p&gt;
+
+&lt;p&gt;3) solving for the residual using a triangular solver (i.e. back-substitution).&lt;/p&gt;
 
 &lt;h2 id=&quot;references&quot;&gt;References&lt;/h2&gt;
 
