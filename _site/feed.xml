@@ -6,8 +6,8 @@
 </description>
     <link>http://yourdomain.com/</link>
     <atom:link href="http://yourdomain.com/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Mon, 06 Feb 2017 17:48:50 +0100</pubDate>
-    <lastBuildDate>Mon, 06 Feb 2017 17:48:50 +0100</lastBuildDate>
+    <pubDate>Mon, 06 Feb 2017 17:49:17 +0100</pubDate>
+    <lastBuildDate>Mon, 06 Feb 2017 17:49:17 +0100</lastBuildDate>
     <generator>Jekyll v2.5.3</generator>
     
       <item>
@@ -51,7 +51,7 @@ In the following, I will restrict the notation to the special case in which all 
 
 &lt;p&gt;To recap, at step &lt;script type=&quot;math/tex&quot;&gt;i&lt;/script&gt; the GMRES algorithm requires:&lt;/p&gt;
 
-&lt;p&gt;1) applying the Arnoldi process to obtain a Krylov base for &lt;script type=&quot;math/tex&quot;&gt;\{A, b\}&lt;/script&gt; for &lt;script type=&quot;math/tex&quot;&gt;\mathbb{R}^i&lt;/script&gt;&lt;/p&gt;
+&lt;p&gt;1) applying the Arnoldi process to obtain a Krylov base for &lt;script type=&quot;math/tex&quot;&gt;\{A, b\}&lt;/script&gt; in &lt;script type=&quot;math/tex&quot;&gt;\mathbb{R}^i&lt;/script&gt;&lt;/p&gt;
 
 &lt;p&gt;2) factorizing the Hessenberg matrix obtained at step 1) in its QR factors&lt;/p&gt;
 

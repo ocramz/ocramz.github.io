@@ -52,7 +52,7 @@ which can be solved by back-substitution in $$\mathit{O}(m)$$ since $$U_i$$ is u
 
 To recap, at step $$i$$ the GMRES algorithm requires:
 
-1) applying the Arnoldi process to obtain a Krylov base for $$\{A, b\}$$ for $$\mathbb{R}^i$$
+1) applying the Arnoldi process to obtain a Krylov base for $$\{A, b\}$$ in $$\mathbb{R}^i$$
 
 2) factorizing the Hessenberg matrix obtained at step 1) in its QR factors
 
