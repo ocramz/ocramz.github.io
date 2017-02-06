@@ -1,0 +1,21 @@
+---
+layout: post
+title: The GMRES algorithm
+date: 2017-02-06
+categories: mathematics linear-algebra
+---
+
+The generalized minimal-residual method (GMRES) was introduced by Saad and Schultz in 1986 and to this day is one of the most popular iterative algorithms for solving large linear systems; it is very versatile (works on general, i.e. non-Hermitian systems) and has a relatively simple derivation, which I will try to explain in simple terms in this post.
+
+At each iteration, GMRES provides an increasingly more accurate approximation to the solution of a linear system $$A x = b$$, in the sense of the $$L_2$$ norm:
+
+$$
+\tilde 
+$$
+
+
+
+
+## References
+
+Y. Saad and M.H. Schultz, "GMRES: A generalized minimal residual algorithm for solving nonsymmetric linear systems", SIAM J. Sci. Stat. Comput., 7:856-869, 1986. 

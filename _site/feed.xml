@@ -6,9 +6,111 @@
 </description>
     <link>http://yourdomain.com/</link>
     <atom:link href="http://yourdomain.com/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sun, 28 Aug 2016 11:48:05 +0200</pubDate>
-    <lastBuildDate>Sun, 28 Aug 2016 11:48:05 +0200</lastBuildDate>
+    <pubDate>Mon, 06 Feb 2017 15:49:04 +0100</pubDate>
+    <lastBuildDate>Mon, 06 Feb 2017 15:49:04 +0100</lastBuildDate>
     <generator>Jekyll v2.5.3</generator>
+    
+      <item>
+        <title>The GMRES algorithm</title>
+        <description>&lt;p&gt;The generalized minimal-residual method (GMRES) was introduced by Saad and Schultz in 1986 and to this day is one of the most popular iterative algorithms for solving large linear systems; it is very versatile (works on general, i.e. non-Hermitian systems) and has a relatively simple derivation, which I will try to explain in simple terms in this post.&lt;/p&gt;
+
+&lt;p&gt;At each iteration, GMRES provides an increasingly more accurate approximation to the solution of a linear system &lt;script type=&quot;math/tex&quot;&gt;A x = b&lt;/script&gt;, in the sense of the &lt;script type=&quot;math/tex&quot;&gt;L_2&lt;/script&gt; norm:&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\tilde&lt;/script&gt;
+
+&lt;h2 id=&quot;references&quot;&gt;References&lt;/h2&gt;
+
+&lt;p&gt;Y. Saad and M.H. Schultz, “GMRES: A generalized minimal residual algorithm for solving nonsymmetric linear systems”, SIAM J. Sci. Stat. Comput., 7:856-869, 1986.&lt;/p&gt;
+</description>
+        <pubDate>Mon, 06 Feb 2017 00:00:00 +0100</pubDate>
+        <link>http://yourdomain.com/mathematics/linear-algebra/2017/02/06/gmres.html</link>
+        <guid isPermaLink="true">http://yourdomain.com/mathematics/linear-algebra/2017/02/06/gmres.html</guid>
+        
+        
+        <category>mathematics</category>
+        
+        <category>linear-algebra</category>
+        
+      </item>
+    
+      <item>
+        <title>A simple derivation of the Arnoldi algorithm</title>
+        <description>&lt;p&gt;The Arnoldi iteration is a numerically stable algorithm to produce an orthonormal basis for the Krylov subspace associated with a matrix &lt;script type=&quot;math/tex&quot;&gt;A \in \mathbb{R}^{m \times m}&lt;/script&gt; and a vector as &lt;script type=&quot;math/tex&quot;&gt;b \in \mathbb{R}^m&lt;/script&gt;.
+The Krylov subspace of order &lt;script type=&quot;math/tex&quot;&gt;r \leq m&lt;/script&gt; associated with &lt;script type=&quot;math/tex&quot;&gt;A&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;b&lt;/script&gt; is defined as &lt;script type=&quot;math/tex&quot;&gt;K_r := span \lbrace b, Ab, A^b \cdots A^{r-1}b \rbrace&lt;/script&gt;. The spanning vectors of &lt;script type=&quot;math/tex&quot;&gt;K_r&lt;/script&gt; are not orthogonal.&lt;/p&gt;
+
+&lt;p&gt;The algorithm is related to the Gram-Schmidt orthogonalization procedure and it produces an upper Hessenberg matrix &lt;script type=&quot;math/tex&quot;&gt;H_n&lt;/script&gt; (i.e. that is zero below the first subdiagonal) and a matrix &lt;script type=&quot;math/tex&quot;&gt;Q&lt;/script&gt; having orthonormal columns such that &lt;script type=&quot;math/tex&quot;&gt;A Q_{i - 1} = Q_i H_i&lt;/script&gt;.
+With the subscripts we signify that at iteration &lt;script type=&quot;math/tex&quot;&gt;i&lt;/script&gt; there are &lt;script type=&quot;math/tex&quot;&gt;i&lt;/script&gt; columns of &lt;script type=&quot;math/tex&quot;&gt;Q&lt;/script&gt; available (we denote this as &lt;script type=&quot;math/tex&quot;&gt;Q_{i-1}&lt;/script&gt;) and we must find the &lt;script type=&quot;math/tex&quot;&gt;i+1&lt;/script&gt;th.&lt;/p&gt;
+
+&lt;p&gt;The method starts from a normalized vector &lt;script type=&quot;math/tex&quot;&gt;\mathbf{q}_1&lt;/script&gt; and iteratively produces the next basis vectors. This process eventually “breaks down” since the norm of the iterates &lt;script type=&quot;math/tex&quot;&gt;\mathbf{q}_i&lt;/script&gt; decreases, at which point the algorithm is said to have converged.&lt;/p&gt;
+
+&lt;p&gt;If we consider for example the second iteration, we have&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
+A
+\underbrace{
+\left[
+\begin{array}{c|c}
+  \mathbf{q}_1 &amp; \mathbf{q}_2
+\end{array}
+\right]
+}_{Q_1}
+=
+\underbrace{
+\left[
+\begin{array}{c|c|c}
+  \mathbf{q}_1 &amp; \mathbf{q}_2 &amp; \mathbf{q}_3
+\end{array}
+\right]
+}_{Q_2}
+
+\left[
+\begin{array}{c c}
+ h_{1, 1} &amp; h_{1, 2} \\
+ h_{2, 1} &amp; h_{2, 2}  \\
+ 0 &amp; h_{3, 2} 
+\end{array}
+\right]
+
+=
+
+\left[
+\begin{array}{c | c}
+ h_{1, 1} \mathbf{q}_1 + h_{2, 1} \mathbf{q}_2 &amp;
+ h_{1, 2} \mathbf{q}_1 + h_{2, 2} \mathbf{q}_2 + h_{3, 2} \mathbf{q}_3
+\end{array}
+\right] %]]&gt;&lt;/script&gt;
+
+&lt;p&gt;which yields the recursion:&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\mathbf{q}_3 = \frac{A \mathbf{q}_2 - \sum\limits_{i=1}^2 h_{i, 2} \mathbf{q}_i}{h_{3, 2}}.&lt;/script&gt;
+
+&lt;p&gt;In the previous equation the entries of the &lt;script type=&quot;math/tex&quot;&gt;H&lt;/script&gt; matrix are obtained by exploiting the orthonormality of the &lt;script type=&quot;math/tex&quot;&gt;\mathbf{q}&lt;/script&gt; vectors, i.e.&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
+\langle \mathbf{q}_i, \mathbf{q}_j \rangle = \delta_{i, j} =
+     \begin{cases} 1 &amp; i = j\\
+                   0 &amp; \mathrm{otherwise}
+     \end{cases} %]]&gt;&lt;/script&gt;
+
+&lt;p&gt;that is, we project the last equation above onto the basis vectors obtained so far, in order:&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\langle \mathbf{q}_1, \mathbf{q}_3 \rangle = \frac{\langle \mathbf{q}_1, A \mathbf{q}_2 \rangle - \left[ h_{1, 2} \langle \mathbf{q}_1, \mathbf{q}_1 \rangle  + h_{2, 2} \langle \mathbf{q}_1, \mathbf{q}_2 \rangle \right] }{h_{3, 2}}&lt;/script&gt;
+
+&lt;p&gt;thus obtaining &lt;script type=&quot;math/tex&quot;&gt;h_{1,2} = \langle \mathbf{q}_1, A \mathbf{q}_2 \rangle&lt;/script&gt; (and analogously for &lt;script type=&quot;math/tex&quot;&gt;h_{2, 2}&lt;/script&gt;), whereas &lt;script type=&quot;math/tex&quot;&gt;h_{3, 2}&lt;/script&gt; is obtained by the normalization condition &lt;script type=&quot;math/tex&quot;&gt;\| \mathbf{q_3} \| = 1&lt;/script&gt;.
+At this point, it is straightforward to justify the usual &lt;a href=&quot;https://en.wikipedia.org/wiki/Arnoldi_iteration#The_Arnoldi_iteration&quot;&gt;nested-loop representation of the algorithm&lt;/a&gt;.
+The normalizing coefficient is also used as a breakdown test, i.e. when &lt;script type=&quot;math/tex&quot;&gt;h_{i+1, i} \leq \epsilon&lt;/script&gt; e.g. &lt;script type=&quot;math/tex&quot;&gt;10^{-12}&lt;/script&gt; in double precision floating point arithmetic, the algorithm terminates.&lt;/p&gt;
+
+</description>
+        <pubDate>Wed, 09 Nov 2016 00:00:00 +0100</pubDate>
+        <link>http://yourdomain.com/mathematics/tutorials/2016/11/09/arnoldi-alt.html</link>
+        <guid isPermaLink="true">http://yourdomain.com/mathematics/tutorials/2016/11/09/arnoldi-alt.html</guid>
+        
+        
+        <category>mathematics</category>
+        
+        <category>tutorials</category>
+        
+      </item>
     
       <item>
         <title>Folding a paper crane - a solution to the ICFP 2016 programming contest - part 1</title>
