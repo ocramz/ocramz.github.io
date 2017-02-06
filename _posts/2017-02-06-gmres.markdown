@@ -56,7 +56,7 @@ To recap, at step $$i$$ the GMRES algorithm requires:
 
 2) factorizing the Hessenberg matrix obtained at step 1) in its QR factors,
 
-3) solving for the minimal-residual vector $y$ using a triangular solver (i.e. back-substitution),
+3) solving for the minimal-residual vector $$y$$ using a triangular solver (i.e. back-substitution),
 
 4) retrieving the full-space solution using the Krylov relation $$\tilde{x} = Q_i y$$.
 
