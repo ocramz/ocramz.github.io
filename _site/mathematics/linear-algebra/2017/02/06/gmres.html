@@ -9,7 +9,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>The GMRES algorithm</title>
+  <title>The generalized minimal-residual method for linear systems</title>
   <meta name="description" content="The generalized minimal-residual method (GMRES) was introduced by Saad and Schultz in 1986 and to this day it is one of the more popular iterative algorithms...">
 
   <link rel="stylesheet" href="/css/main.css">
@@ -60,7 +60,7 @@
         <div class="post">
 
   <header class="post-header">
-    <h1 class="post-title">The GMRES algorithm</h1>
+    <h1 class="post-title">The generalized minimal-residual method for linear systems</h1>
     <p class="post-meta">Feb 6, 2017</p>
   </header>
 
@@ -78,7 +78,11 @@ In the following, I will restrict the notation to the special case in which all 
 
 <p>This means that we need a series of vector bases (“Krylov subspaces”) that map from <script type="math/tex">\mathbb{R}^i</script> to <script type="math/tex">\mathbb{R}^m</script>; the <a href="https://ocramz.github.io/mathematics/tutorials/2016/11/09/arnoldi-alt.html">Arnoldi process</a> provides these as by-products.</p>
 
-<p>At iteration <script type="math/tex">i</script>, the Krylov subspace approximation to a vector in <script type="math/tex">\mathbb{R}^m</script> can be written as <script type="math/tex">x = Q_i y</script></p>
+<p>At iteration <script type="math/tex">i</script>, the Krylov subspace approximation to a vector in <script type="math/tex">\mathbb{R}^m</script> can be written as <script type="math/tex">x = Q_i y</script>, in which the <script type="math/tex">Q</script> matrices satisfy the Arnoldi recursion <script type="math/tex">A Q_i = Q_{i+1} H_i</script>. Recall that <script type="math/tex">Q_i</script> is shorthand for a set of <script type="math/tex">i</script> orthonormal vectors in <script type="math/tex">\mathbb{R}^m</script> (i.e. that appear as the matrix columns).</p>
+
+<p>We can now plug in the Krylov approximation and the Arnoldi identity into the residual equation to re-formulate the minimal residual problem:</p>
+
+<script type="math/tex; mode=display">\|A x - b\| = \|A Q_i y - b\| = \|Q_{i+1} H_i y -b\|</script>
 
 <h2 id="references">References</h2>
 

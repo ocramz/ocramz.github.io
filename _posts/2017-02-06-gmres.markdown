@@ -1,6 +1,6 @@
 ---
 layout: post
-title: The GMRES algorithm
+title: The generalized minimal-residual method for linear systems
 date: 2017-02-06
 categories: mathematics linear-algebra
 ---
@@ -20,7 +20,13 @@ The approximate solution is sought in spaces of increasing dimensionality; in ot
 
 This means that we need a series of vector bases ("Krylov subspaces") that map from $$\mathbb{R}^i$$ to $$\mathbb{R}^m$$; the [Arnoldi process](https://ocramz.github.io/mathematics/tutorials/2016/11/09/arnoldi-alt.html) provides these as by-products.
 
-At iteration $$i$$, the Krylov subspace approximation to a vector in $$\mathbb{R}^m$$ can be written as $$x = Q_i y$$
+At iteration $$i$$, the Krylov subspace approximation to a vector in $$\mathbb{R}^m$$ can be written as $$x = Q_i y$$, in which the $$Q$$ matrices satisfy the Arnoldi recursion $$A Q_i = Q_{i+1} H_i$$. Recall that $$Q_i$$ is shorthand for a set of $$i$$ orthonormal vectors in $$\mathbb{R}^m$$ (i.e. that appear as the matrix columns).
+
+We can now plug in the Krylov approximation and the Arnoldi identity into the residual equation to re-formulate the minimal residual problem:
+
+$$
+\|A x - b\| = \|A Q_i y - b\| = \|Q_{i+1} H_i y -b\|
+$$
 
 
 

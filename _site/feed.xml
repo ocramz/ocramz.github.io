@@ -6,12 +6,12 @@
 </description>
     <link>http://yourdomain.com/</link>
     <atom:link href="http://yourdomain.com/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Mon, 06 Feb 2017 16:33:51 +0100</pubDate>
-    <lastBuildDate>Mon, 06 Feb 2017 16:33:51 +0100</lastBuildDate>
+    <pubDate>Mon, 06 Feb 2017 16:42:03 +0100</pubDate>
+    <lastBuildDate>Mon, 06 Feb 2017 16:42:03 +0100</lastBuildDate>
     <generator>Jekyll v2.5.3</generator>
     
       <item>
-        <title>The GMRES algorithm</title>
+        <title>The generalized minimal-residual method for linear systems</title>
         <description>&lt;p&gt;The generalized minimal-residual method (GMRES) was introduced by Saad and Schultz in 1986 and to this day it is one of the more popular iterative algorithms for solving large linear systems; it is very versatile (works on general, i.e. non-Hermitian systems) and has a relatively simple derivation, which I will try to convey in simple terms in this post.
 In the following, I will restrict the notation to the special case in which all vectors have real components, because the complex-valued case just involves exchanging &lt;script type=&quot;math/tex&quot;&gt;\mathbb{R}&lt;/script&gt; with &lt;script type=&quot;math/tex&quot;&gt;\mathbb{C}&lt;/script&gt;.&lt;/p&gt;
 
@@ -25,7 +25,11 @@ In the following, I will restrict the notation to the special case in which all 
 
 &lt;p&gt;This means that we need a series of vector bases (“Krylov subspaces”) that map from &lt;script type=&quot;math/tex&quot;&gt;\mathbb{R}^i&lt;/script&gt; to &lt;script type=&quot;math/tex&quot;&gt;\mathbb{R}^m&lt;/script&gt;; the &lt;a href=&quot;https://ocramz.github.io/mathematics/tutorials/2016/11/09/arnoldi-alt.html&quot;&gt;Arnoldi process&lt;/a&gt; provides these as by-products.&lt;/p&gt;
 
-&lt;p&gt;At iteration &lt;script type=&quot;math/tex&quot;&gt;i&lt;/script&gt;, the Krylov subspace approximation to a vector in &lt;script type=&quot;math/tex&quot;&gt;\mathbb{R}^m&lt;/script&gt; can be written as &lt;script type=&quot;math/tex&quot;&gt;x = Q_i y&lt;/script&gt;&lt;/p&gt;
+&lt;p&gt;At iteration &lt;script type=&quot;math/tex&quot;&gt;i&lt;/script&gt;, the Krylov subspace approximation to a vector in &lt;script type=&quot;math/tex&quot;&gt;\mathbb{R}^m&lt;/script&gt; can be written as &lt;script type=&quot;math/tex&quot;&gt;x = Q_i y&lt;/script&gt;, in which the &lt;script type=&quot;math/tex&quot;&gt;Q&lt;/script&gt; matrices satisfy the Arnoldi recursion &lt;script type=&quot;math/tex&quot;&gt;A Q_i = Q_{i+1} H_i&lt;/script&gt;. Recall that &lt;script type=&quot;math/tex&quot;&gt;Q_i&lt;/script&gt; is shorthand for a set of &lt;script type=&quot;math/tex&quot;&gt;i&lt;/script&gt; orthonormal vectors in &lt;script type=&quot;math/tex&quot;&gt;\mathbb{R}^m&lt;/script&gt; (i.e. that appear as the matrix columns).&lt;/p&gt;
+
+&lt;p&gt;We can now plug in the Krylov approximation and the Arnoldi identity into the residual equation to re-formulate the minimal residual problem:&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\|A x - b\| = \|A Q_i y - b\| = \|Q_{i+1} H_i y -b\|&lt;/script&gt;
 
 &lt;h2 id=&quot;references&quot;&gt;References&lt;/h2&gt;
 
