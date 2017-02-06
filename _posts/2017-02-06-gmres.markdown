@@ -5,7 +5,7 @@ date: 2017-02-06
 categories: mathematics linear-algebra
 ---
 
-The generalized minimal-residual method (GMRES) was introduced by Saad and Schultz in 1986 and to this day it is one of the more popular iterative algorithms for solving large linear systems; it is very versatile (works on general, i.e. non-Hermitian systems) and has a relatively simple derivation, which I will try to convey in simple terms in this post.
+The generalized minimal-residual method (GMRES) was introduced by Saad and Schultz in 1986 and to this day it is one of the more popular iterative algorithms for solving large linear systems; it is very versatile (works on general, i.e. non-Hermitian systems) and has a relatively simple derivation, which I will try to convey in this post.
 In the following, I will restrict the notation to the special case in which all vectors have real components, because the complex-valued case just involves exchanging $$\mathbb{R}$$ with $$\mathbb{C}$$.
 
 At each iteration, GMRES provides an increasingly more accurate approximation $$\tilde{x}$$ to the solution of a linear system $$A x = b$$, in the sense of the $$L_2$$ norm (i.e. a "minimal-residual" solution):
