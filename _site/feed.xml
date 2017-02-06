@@ -6,8 +6,8 @@
 </description>
     <link>http://yourdomain.com/</link>
     <atom:link href="http://yourdomain.com/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Mon, 06 Feb 2017 17:30:03 +0100</pubDate>
-    <lastBuildDate>Mon, 06 Feb 2017 17:30:03 +0100</lastBuildDate>
+    <pubDate>Mon, 06 Feb 2017 17:45:09 +0100</pubDate>
+    <lastBuildDate>Mon, 06 Feb 2017 17:45:09 +0100</lastBuildDate>
     <generator>Jekyll v2.5.3</generator>
     
       <item>
@@ -31,7 +31,7 @@ In the following, I will restrict the notation to the special case in which all 
 
 &lt;script type=&quot;math/tex; mode=display&quot;&gt;\|A x - b\| = \|A Q_i y - b\| = \|Q_{i+1} H_i y -b\|&lt;/script&gt;
 
-&lt;p&gt;Since the columns of the &lt;script type=&quot;math/tex&quot;&gt;Q_i&lt;/script&gt; matrices are orthogonal, if &lt;script type=&quot;math/tex&quot;&gt;Q_i u = v&lt;/script&gt; then &lt;script type=&quot;math/tex&quot;&gt;u = Q_i^\dagger v&lt;/script&gt;; this lets us rewrite the residual as follows:&lt;/p&gt;
+&lt;p&gt;Since the columns of the &lt;script type=&quot;math/tex&quot;&gt;Q_i&lt;/script&gt; matrices are orthogonal, if &lt;script type=&quot;math/tex&quot;&gt;Q_i v = w&lt;/script&gt; then &lt;script type=&quot;math/tex&quot;&gt;v = Q_i^\dagger w&lt;/script&gt;; this lets us rewrite the residual as follows:&lt;/p&gt;
 
 &lt;script type=&quot;math/tex; mode=display&quot;&gt;\|H_i y - Q_{i+1}^\dagger b\|&lt;/script&gt;
 
@@ -47,13 +47,19 @@ In the following, I will restrict the notation to the special case in which all 
 
 &lt;p&gt;which can be solved by back-substitution in &lt;script type=&quot;math/tex&quot;&gt;\mathit{O}(m)&lt;/script&gt; since &lt;script type=&quot;math/tex&quot;&gt;U_i&lt;/script&gt; is upper triangular.&lt;/p&gt;
 
-&lt;p&gt;To recap, the GMRES algorithm requires:&lt;/p&gt;
+&lt;h2 id=&quot;conclusions-and-some-optimizations&quot;&gt;Conclusions and some optimizations&lt;/h2&gt;
 
-&lt;p&gt;1) applying the Arnoldi process to obtain a set of Krylov bases for &lt;script type=&quot;math/tex&quot;&gt;\{A, b\}&lt;/script&gt;&lt;/p&gt;
+&lt;p&gt;To recap, at step &lt;script type=&quot;math/tex&quot;&gt;i&lt;/script&gt; the GMRES algorithm requires:&lt;/p&gt;
 
-&lt;p&gt;2) for each Krylov subspace, factorizing the Hessenberg matrix obtained at step 1) in its QR factors&lt;/p&gt;
+&lt;p&gt;1) applying the Arnoldi process to obtain a Krylov base for &lt;script type=&quot;math/tex&quot;&gt;\{A, b\}&lt;/script&gt; for &lt;script type=&quot;math/tex&quot;&gt;\mathbb{R}^i&lt;/script&gt;&lt;/p&gt;
+
+&lt;p&gt;2) factorizing the Hessenberg matrix obtained at step 1) in its QR factors&lt;/p&gt;
 
 &lt;p&gt;3) solving for the residual using a triangular solver (i.e. back-substitution).&lt;/p&gt;
+
+&lt;p&gt;The version of GMRES I have implemented in &lt;a href=&quot;https://hackage.haskell.org/package/sparse-linear-algebra&quot;&gt;sparse-linear-algebra&lt;/a&gt; does not carry out steps 1-3 repeatedly, but simply finds the “largest” Krylov subspace (i.e. carries out Arnoldi until it breaks down, that is, until the norm of the &lt;script type=&quot;math/tex&quot;&gt;i&lt;/script&gt;th orthogonal vector is found to be almost 0) and then proceeds with step 2 and 3. I found this simpler solution to work quite well in practice.&lt;/p&gt;
+
+&lt;p&gt;A popular optimization is to interleave the Arnoldi process with the QR factorization; in particular, the first &lt;script type=&quot;math/tex&quot;&gt;i&lt;/script&gt; columns of &lt;script type=&quot;math/tex&quot;&gt;H_{i+1}&lt;/script&gt; are exactly &lt;script type=&quot;math/tex&quot;&gt;H_i&lt;/script&gt;, so computing the QR factorization of &lt;script type=&quot;math/tex&quot;&gt;H_{i+1}&lt;/script&gt; only requires computing one additional Givens’ rotation.&lt;/p&gt;
 
 &lt;h2 id=&quot;references&quot;&gt;References&lt;/h2&gt;
 

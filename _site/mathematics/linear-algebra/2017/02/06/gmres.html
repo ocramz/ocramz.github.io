@@ -84,7 +84,7 @@ In the following, I will restrict the notation to the special case in which all 
 
 <script type="math/tex; mode=display">\|A x - b\| = \|A Q_i y - b\| = \|Q_{i+1} H_i y -b\|</script>
 
-<p>Since the columns of the <script type="math/tex">Q_i</script> matrices are orthogonal, if <script type="math/tex">Q_i u = v</script> then <script type="math/tex">u = Q_i^\dagger v</script>; this lets us rewrite the residual as follows:</p>
+<p>Since the columns of the <script type="math/tex">Q_i</script> matrices are orthogonal, if <script type="math/tex">Q_i v = w</script> then <script type="math/tex">v = Q_i^\dagger w</script>; this lets us rewrite the residual as follows:</p>
 
 <script type="math/tex; mode=display">\|H_i y - Q_{i+1}^\dagger b\|</script>
 
@@ -100,13 +100,19 @@ In the following, I will restrict the notation to the special case in which all 
 
 <p>which can be solved by back-substitution in <script type="math/tex">\mathit{O}(m)</script> since <script type="math/tex">U_i</script> is upper triangular.</p>
 
-<p>To recap, the GMRES algorithm requires:</p>
+<h2 id="conclusions-and-some-optimizations">Conclusions and some optimizations</h2>
 
-<p>1) applying the Arnoldi process to obtain a set of Krylov bases for <script type="math/tex">\{A, b\}</script></p>
+<p>To recap, at step <script type="math/tex">i</script> the GMRES algorithm requires:</p>
 
-<p>2) for each Krylov subspace, factorizing the Hessenberg matrix obtained at step 1) in its QR factors</p>
+<p>1) applying the Arnoldi process to obtain a Krylov base for <script type="math/tex">\{A, b\}</script> for <script type="math/tex">\mathbb{R}^i</script></p>
+
+<p>2) factorizing the Hessenberg matrix obtained at step 1) in its QR factors</p>
 
 <p>3) solving for the residual using a triangular solver (i.e. back-substitution).</p>
+
+<p>The version of GMRES I have implemented in <a href="https://hackage.haskell.org/package/sparse-linear-algebra">sparse-linear-algebra</a> does not carry out steps 1-3 repeatedly, but simply finds the “largest” Krylov subspace (i.e. carries out Arnoldi until it breaks down, that is, until the norm of the <script type="math/tex">i</script>th orthogonal vector is found to be almost 0) and then proceeds with step 2 and 3. I found this simpler solution to work quite well in practice.</p>
+
+<p>A popular optimization is to interleave the Arnoldi process with the QR factorization; in particular, the first <script type="math/tex">i</script> columns of <script type="math/tex">H_{i+1}</script> are exactly <script type="math/tex">H_i</script>, so computing the QR factorization of <script type="math/tex">H_{i+1}</script> only requires computing one additional Givens’ rotation.</p>
 
 <h2 id="references">References</h2>
 
