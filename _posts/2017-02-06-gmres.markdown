@@ -43,7 +43,7 @@ Let us denote the QR factorization of $$H_i$$ as $$O_i U_i$$ (where $$O_i \in \m
 At this point we are ready to write the GMRES problem in its final form
 
 $$
-\|A x - b\| = \|U_i y - O_i^\dagger \|b\|e_1\| \underset{y}{\rightarrow} min
+\|A x - b\| = \left\|U_i y - O_i^\dagger \|b\|e_1 \right\| \underset{y}{\rightarrow} min
 $$
 
 which can be efficiently solved by back-substitution since $$U_i$$ is upper triangular.
