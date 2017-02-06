@@ -69,13 +69,13 @@
 
 <p>At each iteration, GMRES provides an increasingly more accurate approximation to the solution of a linear system <script type="math/tex">A x = b</script>, in the sense of the <script type="math/tex">L_2</script> norm:</p>
 
-<script type="math/tex; mode=display">\tilde{x} = \underbrace{\arg \min}_{x} \| A x - b \|_2,</script>
+<script type="math/tex; mode=display">\tilde{x} = \underset{x}{\arg \min} \| A x - b \|_2,</script>
 
 <p>where <script type="math/tex">A \in \mathbb{C}^{m \times n}</script> is (assumed to be) of full rank (i.e. invertible), <script type="math/tex">x \in \mathbb{C}^m</script> and <script type="math/tex">b \in \mathbb{C}^m</script>.</p>
 
-<p>The approximate solution is sought in spaces of increasing dimensionality; in other words, at iteration <script type="math/tex">i</script> the solution <script type="math/tex">\tilde{x}_i</script> will be a vector in <script type="math/tex">\mathbb{C}^i</script>.</p>
+<p>The approximate solution is sought in spaces of increasing dimensionality; in other words, at iteration <script type="math/tex">i \in {1 .. m}</script> the solution <script type="math/tex">\tilde{x}_i</script> will be a vector in <script type="math/tex">\mathbb{C}^i</script>.</p>
 
-<p>This means that we need a projection matrix</p>
+<p>This means that we need a series of projection matrices that map <script type="math/tex">\mathbb{R}^i</script> to <script type="math/tex">\mathbb{R}^m</script>; the <a href="">Arnoldi process</a> does precisely this</p>
 
 <h2 id="references">References</h2>
 
