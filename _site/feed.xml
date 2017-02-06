@@ -6,17 +6,17 @@
 </description>
     <link>http://yourdomain.com/</link>
     <atom:link href="http://yourdomain.com/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Mon, 06 Feb 2017 15:49:04 +0100</pubDate>
-    <lastBuildDate>Mon, 06 Feb 2017 15:49:04 +0100</lastBuildDate>
+    <pubDate>Mon, 06 Feb 2017 15:53:37 +0100</pubDate>
+    <lastBuildDate>Mon, 06 Feb 2017 15:53:37 +0100</lastBuildDate>
     <generator>Jekyll v2.5.3</generator>
     
       <item>
         <title>The GMRES algorithm</title>
-        <description>&lt;p&gt;The generalized minimal-residual method (GMRES) was introduced by Saad and Schultz in 1986 and to this day is one of the most popular iterative algorithms for solving large linear systems; it is very versatile (works on general, i.e. non-Hermitian systems) and has a relatively simple derivation, which I will try to explain in simple terms in this post.&lt;/p&gt;
+        <description>&lt;p&gt;The generalized minimal-residual method (GMRES) was introduced by Saad and Schultz in 1986 and to this day it is one of the more popular iterative algorithms for solving large linear systems; it is very versatile (works on general, i.e. non-Hermitian systems) and has a relatively simple derivation, which I will try to convey in simple terms in this post.&lt;/p&gt;
 
 &lt;p&gt;At each iteration, GMRES provides an increasingly more accurate approximation to the solution of a linear system &lt;script type=&quot;math/tex&quot;&gt;A x = b&lt;/script&gt;, in the sense of the &lt;script type=&quot;math/tex&quot;&gt;L_2&lt;/script&gt; norm:&lt;/p&gt;
 
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;\tilde&lt;/script&gt;
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\tilde{x} = \underbrace{\arg \min}{x} \| A x - b \|_2&lt;/script&gt;
 
 &lt;h2 id=&quot;references&quot;&gt;References&lt;/h2&gt;
 
