@@ -60,7 +60,7 @@ To recap, at step $$i$$ the GMRES algorithm requires:
 
 The version of GMRES I have implemented in [sparse-linear-algebra](https://hackage.haskell.org/package/sparse-linear-algebra) does not carry out steps 1-3 repeatedly, but simply finds the "largest" Krylov subspace (i.e. carries out Arnoldi until it breaks down, that is, until the norm of the $$i$$th orthogonal vector is found to be almost 0) and then proceeds with step 2 and 3. I found this simpler solution to work quite well in practice.
 
-A popular optimization is to interleave the Arnoldi process with the QR factorization; in particular, the first $$i$$ columns of $$H_{i+1}$$ are exactly $$H_i$$, so computing the QR factorization of $$H_{i+1}$$ only requires computing one additional Givens' rotation.
+A popular optimization is to interleave the Arnoldi process with the QR factorization; in particular, the first $$i$$ columns of $$H_{i+1}$$ are exactly $$H_i$$, so computing the QR factorization of $$H_{i+1}$$ only requires applying one additional Givens' rotation, and can recycle the QR factors of $$H_i$$ (appropriately padded).
 
 
 
