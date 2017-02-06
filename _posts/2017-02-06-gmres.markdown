@@ -10,9 +10,14 @@ The generalized minimal-residual method (GMRES) was introduced by Saad and Schul
 At each iteration, GMRES provides an increasingly more accurate approximation to the solution of a linear system $$A x = b$$, in the sense of the $$L_2$$ norm:
 
 $$
-\tilde{x} = \underbrace{\arg \min}{x} \| A x - b \|_2
+\tilde{x} = \underbrace{\arg \min}_{x} \| A x - b \|_2,
 $$
 
+where $$A \in \mathbb{C}^{m \times n}$$ is (assumed to be) of full rank (i.e. invertible), $$x \in \mathbb{C}^m$$ and $$b \in \mathbb{C}^m$$.
+
+The approximate solution is sought in spaces of increasing dimensionality; in other words, at iteration $$i$$ the solution $$\tilde{x}_i$$ will be a vector in $$\mathbb{C}^i$$.
+
+This means that we need a projection matrix  
 
 
 
