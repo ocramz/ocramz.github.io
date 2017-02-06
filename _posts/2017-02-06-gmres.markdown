@@ -8,10 +8,10 @@ categories: mathematics linear-algebra
 The generalized minimal-residual method (GMRES) was introduced by Saad and Schultz in 1986 and to this day it is one of the more popular iterative algorithms for solving large linear systems; it is very versatile (works on general, i.e. non-Hermitian systems) and has a relatively simple derivation, which I will try to convey in simple terms in this post.
 In the following, I will restrict the notation to the special case in which all vectors have real components, because the complex-valued case just involves exchanging $$\mathbb{R}$$ with $$\mathbb{C}$$.
 
-At each iteration, GMRES provides an increasingly more accurate approximation to the solution of a linear system $$A x = b$$, in the sense of the $$L_2$$ norm (i.e. a "minimal-residual" solution):
+At each iteration, GMRES provides an increasingly more accurate approximation $$\tilde{x}$$ to the solution of a linear system $$A x = b$$, in the sense of the $$L_2$$ norm (i.e. a "minimal-residual" solution):
 
 $$
-\tilde{x} = \underset{x}{\arg \min} \| A x - b \|_2,
+\tilde{x} = \underset{x}{\arg \min} \| A x - b \|,
 $$
 
 where $$A \in \mathbb{R}^{m \times n}$$ is (assumed to be) of full rank (i.e. invertible), $$x \in \mathbb{R}^m$$ and $$b \in \mathbb{R}^m$$.
@@ -28,7 +28,11 @@ $$
 \|A x - b\| = \|A Q_i y - b\| = \|Q_{i+1} H_i y -b\|
 $$
 
+Since the columns of the $$Q_i$$ matrices are orthogonal, the action of the Hermitian conjugate of $$Q_i$$ on a vector is equal to that of its transpose: $$Q_i^{-1} v = Q_i^\dagger v$$; this lets us rewrite the right-hand side residual above as follows:
 
+$$
+\|H_i y - Q_{i+1}^\dagger b\|
+$$
 
 ## References
 

@@ -6,8 +6,8 @@
 </description>
     <link>http://yourdomain.com/</link>
     <atom:link href="http://yourdomain.com/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Mon, 06 Feb 2017 16:42:03 +0100</pubDate>
-    <lastBuildDate>Mon, 06 Feb 2017 16:42:03 +0100</lastBuildDate>
+    <pubDate>Mon, 06 Feb 2017 17:02:31 +0100</pubDate>
+    <lastBuildDate>Mon, 06 Feb 2017 17:02:31 +0100</lastBuildDate>
     <generator>Jekyll v2.5.3</generator>
     
       <item>
@@ -15,9 +15,9 @@
         <description>&lt;p&gt;The generalized minimal-residual method (GMRES) was introduced by Saad and Schultz in 1986 and to this day it is one of the more popular iterative algorithms for solving large linear systems; it is very versatile (works on general, i.e. non-Hermitian systems) and has a relatively simple derivation, which I will try to convey in simple terms in this post.
 In the following, I will restrict the notation to the special case in which all vectors have real components, because the complex-valued case just involves exchanging &lt;script type=&quot;math/tex&quot;&gt;\mathbb{R}&lt;/script&gt; with &lt;script type=&quot;math/tex&quot;&gt;\mathbb{C}&lt;/script&gt;.&lt;/p&gt;
 
-&lt;p&gt;At each iteration, GMRES provides an increasingly more accurate approximation to the solution of a linear system &lt;script type=&quot;math/tex&quot;&gt;A x = b&lt;/script&gt;, in the sense of the &lt;script type=&quot;math/tex&quot;&gt;L_2&lt;/script&gt; norm (i.e. a “minimal-residual” solution):&lt;/p&gt;
+&lt;p&gt;At each iteration, GMRES provides an increasingly more accurate approximation &lt;script type=&quot;math/tex&quot;&gt;\tilde{x}&lt;/script&gt; to the solution of a linear system &lt;script type=&quot;math/tex&quot;&gt;A x = b&lt;/script&gt;, in the sense of the &lt;script type=&quot;math/tex&quot;&gt;L_2&lt;/script&gt; norm (i.e. a “minimal-residual” solution):&lt;/p&gt;
 
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;\tilde{x} = \underset{x}{\arg \min} \| A x - b \|_2,&lt;/script&gt;
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\tilde{x} = \underset{x}{\arg \min} \| A x - b \|,&lt;/script&gt;
 
 &lt;p&gt;where &lt;script type=&quot;math/tex&quot;&gt;A \in \mathbb{R}^{m \times n}&lt;/script&gt; is (assumed to be) of full rank (i.e. invertible), &lt;script type=&quot;math/tex&quot;&gt;x \in \mathbb{R}^m&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;b \in \mathbb{R}^m&lt;/script&gt;.&lt;/p&gt;
 
@@ -30,6 +30,10 @@ In the following, I will restrict the notation to the special case in which all 
 &lt;p&gt;We can now plug in the Krylov approximation and the Arnoldi identity into the residual equation to re-formulate the minimal residual problem:&lt;/p&gt;
 
 &lt;script type=&quot;math/tex; mode=display&quot;&gt;\|A x - b\| = \|A Q_i y - b\| = \|Q_{i+1} H_i y -b\|&lt;/script&gt;
+
+&lt;p&gt;Since the columns of the &lt;script type=&quot;math/tex&quot;&gt;Q_i&lt;/script&gt; matrices are orthogonal, the action of the Hermitian conjugate of &lt;script type=&quot;math/tex&quot;&gt;Q_i&lt;/script&gt; on a vector is equal to that of its transpose: &lt;script type=&quot;math/tex&quot;&gt;Q_i^{-1} v = Q_i^\dagger v&lt;/script&gt;; this lets us rewrite the right-hand side residual above as follows:&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\|H_i y - Q_{i+1}^\dagger b\|&lt;/script&gt;
 
 &lt;h2 id=&quot;references&quot;&gt;References&lt;/h2&gt;
 
