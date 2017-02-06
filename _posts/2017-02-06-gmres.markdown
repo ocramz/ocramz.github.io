@@ -28,7 +28,7 @@ $$
 \|A x - b\| = \|A Q_i y - b\| = \|Q_{i+1} H_i y -b\|
 $$
 
-Since the columns of the $$Q_i$$ matrices are orthogonal, the action of the Hermitian conjugate of $$Q_i$$ on a vector is equal to that of its transpose: $$Q_i^{-1} v = Q_i^\dagger v$$; this lets us rewrite the right-hand side residual above as follows:
+Since the columns of the $$Q_i$$ matrices are orthogonal, if $$Q_i u = v$$ then $$u = Q_i^\dagger v$$; this lets us rewrite the right-hand side residual above as follows:
 
 $$
 \|H_i y - Q_{i+1}^\dagger b\|
@@ -36,9 +36,15 @@ $$
 
 We can notice that $$Q_{i+1}^\dagger b$$ simply rotates back the $$b$$ vector to the canonical basis, i.e. $$Q_{i+1}^\dagger b = \|b\| e_1$$.
 
-At this point we focus on the Hessenberg matrix $$H_{i+1}$$: this is a $$m \times i + 1$$ matrix in which all the elements below the first sub-diagonal are identically zero. This is convenient from a computational point of view, as we will see shortly.
+At this point we focus on the Hessenberg matrix $$H_i$$: this is a $$m \times i + 1$$ matrix in which all the elements below the first sub-diagonal are identically zero. This is convenient from a computational point of view, as we will see shortly.
 
+Let us denote the QR factorization of $$H_i$$ as $$O_i U_i$$ (where $$O_i \in \mathbb{R}^{i+1 \times i+1}$$ is orthonormal and $$U_i \in \mathbb{R}^{i+1 \times i}$$ is upper triangular). Since the QR factorization operates on the sub-diagonal nonzero elements of its input matrix, applying it to a Hessenberg matrix means that only at most $$i-2$$ rotations will be required in order to produce its answer.
 
+At this point we are ready to write the GMRES problem in its final form:
+
+$$
+\|A x - b\| = \|U_i y - O_i^\dagger \|b\|e_1\| \underset{y}{\rightarrow} min
+$$
 
 ## References
 
