@@ -88,6 +88,10 @@ In the following, I will restrict the notation to the special case in which all 
 
 <script type="math/tex; mode=display">\|H_i y - Q_{i+1}^\dagger b\|</script>
 
+<p>We can notice that <script type="math/tex">Q_{i+1}^\dagger b</script> simply rotates back the <script type="math/tex">b</script> vector to the canonical basis, i.e. <script type="math/tex">Q_{i+1}^\dagger b = \|b\| e_1</script>.</p>
+
+<p>At this point we focus on the Hessenberg matrix <script type="math/tex">H_{i+1}</script>: this is a <script type="math/tex">m \times i + 1</script> matrix in which all the elements below the first sub-diagonal are identically zero. This is convenient from a computational point of view, as we will see shortly.</p>
+
 <h2 id="references">References</h2>
 
 <p>Y. Saad and M.H. Schultz, “GMRES: A generalized minimal residual algorithm for solving nonsymmetric linear systems”, SIAM J. Sci. Stat. Comput., 7:856-869, 1986.</p>

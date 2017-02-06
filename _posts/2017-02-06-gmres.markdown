@@ -34,6 +34,12 @@ $$
 \|H_i y - Q_{i+1}^\dagger b\|
 $$
 
+We can notice that $$Q_{i+1}^\dagger b$$ simply rotates back the $$b$$ vector to the canonical basis, i.e. $$Q_{i+1}^\dagger b = \|b\| e_1$$.
+
+At this point we focus on the Hessenberg matrix $$H_{i+1}$$: this is a $$m \times i + 1$$ matrix in which all the elements below the first sub-diagonal are identically zero. This is convenient from a computational point of view, as we will see shortly.
+
+
+
 ## References
 
 Y. Saad and M.H. Schultz, "GMRES: A generalized minimal residual algorithm for solving nonsymmetric linear systems", SIAM J. Sci. Stat. Comput., 7:856-869, 1986. 
