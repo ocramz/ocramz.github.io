@@ -39,7 +39,7 @@ As first step we must choose an arbitrary vector of unit norm and appropriate di
 $$
 \begin{array}{l l l}
 A \mathbf{q}_1 &= \alpha_1 \mathbf{p}_1 &, \alpha_1 = \|A \mathbf{q}_1 \|\\
-A^\dagger \mathbf{p}_1 &= \alpha_1 \mathbf{q}_1 + \beta_1 \mathbf{q}_2 &, \beta_1 = \|A^\dagger \mathbf{p}_1 - \alpha_1 \mathbf{q}_1 \|
+A^\dagger \mathbf{p}_1 &= \alpha_1 \mathbf{q}_1 + \beta_1 \mathbf{q}_2 &, \beta_1 = \|A^\dagger \mathbf{p}_1 - \alpha_1 \mathbf{q}_1 \| 
 \end{array}
 $$
 
