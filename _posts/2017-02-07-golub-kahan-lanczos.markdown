@@ -22,7 +22,7 @@ P^\dagger A Q = B =: \left[
 \label{eqn1}
 $$
 
-In the equation above we must find _two_ sets of orthonormal vectors, i.e. the columns of $$P$$ and $$Q$$. This means that there are effectively two sets of equations which we must solve iteratively to retrieve the factorization; these are obtained by applying $$P$$ to Eq.1 and respectively transposing it and applying $$Q$$ (and using the fact that $$(U V)^\dagger = V^\dagger U^\dagger$$):
+In the equation above we must find _two_ sets of orthonormal vectors in order to fulfill it, i.e. the columns of $$P$$ and $$Q$$. This means that there are effectively two sets of equations which we must solve iteratively to retrieve the factorization; these are obtained by applying $$P$$ to Eq.1 and respectively transposing it and applying $$Q$$ (and using the fact that $$(U V)^\dagger = V^\dagger U^\dagger$$):
 
 
 $$
@@ -33,7 +33,7 @@ A^\dagger P = Q B^\dagger
 $$
 
 
-The first step requires choosing an arbitrary vector of unit norm and appropriate dimensions, $$\mathbf{q}_1$$, which is used to obtain $$\mathbf{p}_1$$, $$\mathbf{p}_2$$ and $$\mathbf{q}_2$$:
+The first step requires choosing an arbitrary vector of unit norm and appropriate dimensions, $$\mathbf{q}_1$$, which is used to obtain $$\mathbf{p}_1$$, $$\mathbf{p}_2$$, $$\mathbf{q}_2$$ and $$\beta_1$$:
 
 $$
 \begin{array}{l l}
@@ -42,7 +42,7 @@ A^\dagger \mathbf{p}_1 &= \alpha_1 \mathbf{q}_1 + \beta_1 \mathbf{q}_2
 \end{array}
 $$
 
-Subsequent steps are only minimally different; at step $$j$$ :
+Subsequent steps are only minimally different; at step $$j \in {2 .. n-1}$$ :
 
 $$
 \begin{array}{l l}
