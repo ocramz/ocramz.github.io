@@ -37,11 +37,13 @@ The algorithm directly follows by inspecting the two systems of equations writte
 As first step we must choose an arbitrary vector of unit norm and appropriate dimensions, $$\mathbf{q}_1$$, which is used to obtain $$\mathbf{p}_1$$, $$\mathbf{p}_2$$, $$\mathbf{q}_2$$, $$\alpha_1$$ and $$\beta_1$$:
 
 $$
-\begin{array}{l l l}
-A \mathbf{q}_1 &= \alpha_1 \mathbf{p}_1 &, \alpha_1 = \|A \mathbf{q}_1 \|\\
-A^\dagger \mathbf{p}_1 &= \alpha_1 \mathbf{q}_1 + \beta_1 \mathbf{q}_2 &, \beta_1 = \|A^\dagger \mathbf{p}_1 - \alpha_1 \mathbf{q}_1 \| 
+\begin{array}{l l}
+A \mathbf{q}_1 &= \alpha_1 \mathbf{p}_1\\
+A^\dagger \mathbf{p}_1 &= \alpha_1 \mathbf{q}_1 + \beta_1 \mathbf{q}_2 
 \end{array}
 $$
+
+(NB: the $$\alpha$$ and $$\beta$$ coefficients are obtained in turn by prescribing the $$\mathbf{p}$$ and $$\mathbf{q}$$ vectors to have unit norm).
 
 Subsequent steps are only minimally different; at step $$j \in {2 .. n-1}$$ :
 
