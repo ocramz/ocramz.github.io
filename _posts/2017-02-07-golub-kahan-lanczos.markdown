@@ -7,7 +7,7 @@ categories: mathematics tutorials
 
 Many reference implementations of the singular value decomposition (SVD) use bidiagonalization as a fundamental preprocessing step. Like the [Arnoldi algorithm](https://ocramz.github.io/mathematics/tutorials/2016/11/09/arnoldi-alt.html), it is very closely related to the Gram-Schmidt orthogonalization process, since it multiplies the operand matrix with a series of projection matrices that zero out one or more of its components at each application.
 
-In this blog post I will explain the Golub-Kahan-Lanczos bidiagonalization, which applies two projections, $$P \in \mathbb{R}^{m \times n}$$ and $$Q \mathbb{R}^{n \times n}$$, to the operand matrix $$A \in \mathbb{R}^{m \times n}$$ to produce a matrix $$B \mathbb{R}^{n \times n}$$ that is non-zero only on its main diagonal and first super-diagonal.
+In this blog post I will explain the Golub-Kahan-Lanczos bidiagonalization, which applies two projections, $$P \in \mathbb{R}^{m \times n}$$ and $$Q \in \mathbb{R}^{n \times n}$$, to the operand matrix $$A \in \mathbb{R}^{m \times n}$$ to produce a matrix $$B \mathbb{R}^{n \times n}$$ that is non-zero only on its main diagonal and first super-diagonal.
 
 $$
 P^\dagger A Q = B =: \left[
@@ -22,7 +22,7 @@ P^\dagger A Q = B =: \left[
 \label{eqn1}
 $$
 
-In the equation above we must find _two_ sets of orthonormal vectors, i.e. the columns of $$P$$ and $$Q$$. This means that there are effectively two sets of equations which we must solve iteratively to retrieve the factorization; these are obtained by premultiplying Eqn $$\ref{eqn1}$$ by $$P$$ and respectively transposing Eqn $$\ref{eqn1}$$ and premultiplying by $$Q$$:
+In the equation above we must find _two_ sets of orthonormal vectors, i.e. the columns of $$P$$ and $$Q$$. This means that there are effectively two sets of equations which we must solve iteratively to retrieve the factorization; these are obtained by applying $$P$$ to Eq.1 and respectively transposing it and applying $$Q$$:
 
 
 $$
@@ -30,6 +30,14 @@ $$
 A Q = P B \\
 A^\dagger P = Q B^\dagger
 \end{cases}
+$$
+
+
+The first step requires choosing an arbitrary vector of unit norm and appropriate dimensions, $$\mathbf{q}_1$$, which is used to obtain $$\mathbf{p}_1$$, $$\mathbf{p}_2$$ and $$\mathbf{q}_2$$:
+
+$$
+A \mathbf{q}_1 = \alpha_1 \mathbf{p}_1
+A^\dagger \mathbf{p}_1 = \alpha_1 \mathbf{q}_1 + \beta_1 \mathbf{q}_2
 $$
 
 
