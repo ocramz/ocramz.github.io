@@ -6,9 +6,31 @@
 </description>
     <link>http://yourdomain.com/</link>
     <atom:link href="http://yourdomain.com/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Tue, 07 Feb 2017 04:59:56 +0100</pubDate>
-    <lastBuildDate>Tue, 07 Feb 2017 04:59:56 +0100</lastBuildDate>
+    <pubDate>Tue, 07 Feb 2017 05:47:07 +0100</pubDate>
+    <lastBuildDate>Tue, 07 Feb 2017 05:47:07 +0100</lastBuildDate>
     <generator>Jekyll v2.5.3</generator>
+    
+      <item>
+        <title>The singular value decomposition, part 1 - Golub-Kahan-Lanczos bidiagonalization</title>
+        <description>&lt;p&gt;In&lt;/p&gt;
+
+&lt;h2 id=&quot;references&quot;&gt;References&lt;/h2&gt;
+
+&lt;p&gt;Dongarra, Jack, et al. (eds.), Templates for the Solution of Algebraic Eigenvalue Problems: a Practical Guide (http://www.netlib.org/utk/people/JackDongarra/etemplates/node198.html)&lt;/p&gt;
+
+&lt;p&gt;Golub, Gene H.; Van Loan, Charles F. (1996), Matrix Computations (3rd ed.), Johns Hopkins&lt;/p&gt;
+
+</description>
+        <pubDate>Tue, 07 Feb 2017 00:00:00 +0100</pubDate>
+        <link>http://yourdomain.com/mathematics/tutorials/2017/02/07/golub-kahan-lanczos.html</link>
+        <guid isPermaLink="true">http://yourdomain.com/mathematics/tutorials/2017/02/07/golub-kahan-lanczos.html</guid>
+        
+        
+        <category>mathematics</category>
+        
+        <category>tutorials</category>
+        
+      </item>
     
       <item>
         <title>The generalized minimal-residual method for linear systems</title>
@@ -35,15 +57,15 @@ In the following, I will restrict the notation to the special case in which all 
 
 &lt;script type=&quot;math/tex; mode=display&quot;&gt;\|H_i y - Q_{i+1}^\dagger b\|&lt;/script&gt;
 
-&lt;p&gt;We notice that &lt;script type=&quot;math/tex&quot;&gt;Q_{i+1}^\dagger b&lt;/script&gt; rotates back the &lt;script type=&quot;math/tex&quot;&gt;b&lt;/script&gt; vector to the canonical basis, which can be written as &lt;script type=&quot;math/tex&quot;&gt;Q_{i+1}^\dagger b = \|b\| e_1&lt;/script&gt;.&lt;/p&gt;
+&lt;p&gt;We notice that &lt;script type=&quot;math/tex&quot;&gt;Q_{i+1}^\dagger b&lt;/script&gt; rotates back the &lt;script type=&quot;math/tex&quot;&gt;b&lt;/script&gt; vector to the canonical basis, which can be written as &lt;script type=&quot;math/tex&quot;&gt;\|b\| e_1 =: b_0&lt;/script&gt;.&lt;/p&gt;
 
-&lt;p&gt;At this point we focus on the Hessenberg matrix &lt;script type=&quot;math/tex&quot;&gt;H_i&lt;/script&gt;: this is a &lt;script type=&quot;math/tex&quot;&gt;m \times i + 1&lt;/script&gt; matrix in which all the elements below the first sub-diagonal are identically zero. This is convenient from a computational point of view, as we will see shortly.&lt;/p&gt;
+&lt;p&gt;At this point we focus on the Hessenberg matrix &lt;script type=&quot;math/tex&quot;&gt;H_i&lt;/script&gt; (specifically this is an upper-Hessenberg matrix, because all the elements &lt;em&gt;below&lt;/em&gt; the first sub-diagonal are identically zero). This is convenient from a computational point of view, as we will see shortly.&lt;/p&gt;
 
-&lt;p&gt;Let us denote the QR factorization of &lt;script type=&quot;math/tex&quot;&gt;H_i&lt;/script&gt; as &lt;script type=&quot;math/tex&quot;&gt;O_i U_i&lt;/script&gt; (where &lt;script type=&quot;math/tex&quot;&gt;O_i \in \mathbb{R}^{i+1 \times i+1}&lt;/script&gt; is orthonormal and &lt;script type=&quot;math/tex&quot;&gt;U_i \in \mathbb{R}^{i+1 \times i}&lt;/script&gt; is upper triangular). Since the QR factorization operates on the sub-diagonal nonzero elements of its input matrix, applying it to a Hessenberg matrix means that only at most &lt;script type=&quot;math/tex&quot;&gt;i-2&lt;/script&gt; rotations will be required in order to produce its answer.&lt;/p&gt;
+&lt;p&gt;Let us denote the QR factorization of &lt;script type=&quot;math/tex&quot;&gt;H_i&lt;/script&gt; as &lt;script type=&quot;math/tex&quot;&gt;O_i U_i&lt;/script&gt; (where &lt;script type=&quot;math/tex&quot;&gt;O_i&lt;/script&gt; is orthonormal and &lt;script type=&quot;math/tex&quot;&gt;U_i&lt;/script&gt; is upper triangular). Since the QR factorization operates on the sub-diagonal nonzero elements of its input matrix, applying it to a Hessenberg matrix means that only at most &lt;script type=&quot;math/tex&quot;&gt;i-2&lt;/script&gt; rotations will be required in order to produce its answer.&lt;/p&gt;
 
 &lt;p&gt;At this point we are ready to write the GMRES problem in its final form&lt;/p&gt;
 
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;\|A x - b\| = \left\|U_i y - O_i^\dagger \|b\|e_1 \right\| \underset{y}{\rightarrow} min&lt;/script&gt;
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\|A x - b\| = \left\|U_i y - O_i^\dagger b_0 \right\| \underset{y}{\rightarrow} min&lt;/script&gt;
 
 &lt;p&gt;which can be efficiently solved by back-substitution since &lt;script type=&quot;math/tex&quot;&gt;U_i&lt;/script&gt; is upper triangular.&lt;/p&gt;
 

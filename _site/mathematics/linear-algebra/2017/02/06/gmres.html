@@ -88,15 +88,15 @@ In the following, I will restrict the notation to the special case in which all 
 
 <script type="math/tex; mode=display">\|H_i y - Q_{i+1}^\dagger b\|</script>
 
-<p>We notice that <script type="math/tex">Q_{i+1}^\dagger b</script> rotates back the <script type="math/tex">b</script> vector to the canonical basis, which can be written as <script type="math/tex">Q_{i+1}^\dagger b = \|b\| e_1</script>.</p>
+<p>We notice that <script type="math/tex">Q_{i+1}^\dagger b</script> rotates back the <script type="math/tex">b</script> vector to the canonical basis, which can be written as <script type="math/tex">\|b\| e_1 =: b_0</script>.</p>
 
-<p>At this point we focus on the Hessenberg matrix <script type="math/tex">H_i</script>: this is a <script type="math/tex">m \times i + 1</script> matrix in which all the elements below the first sub-diagonal are identically zero. This is convenient from a computational point of view, as we will see shortly.</p>
+<p>At this point we focus on the Hessenberg matrix <script type="math/tex">H_i</script> (specifically this is an upper-Hessenberg matrix, because all the elements <em>below</em> the first sub-diagonal are identically zero). This is convenient from a computational point of view, as we will see shortly.</p>
 
-<p>Let us denote the QR factorization of <script type="math/tex">H_i</script> as <script type="math/tex">O_i U_i</script> (where <script type="math/tex">O_i \in \mathbb{R}^{i+1 \times i+1}</script> is orthonormal and <script type="math/tex">U_i \in \mathbb{R}^{i+1 \times i}</script> is upper triangular). Since the QR factorization operates on the sub-diagonal nonzero elements of its input matrix, applying it to a Hessenberg matrix means that only at most <script type="math/tex">i-2</script> rotations will be required in order to produce its answer.</p>
+<p>Let us denote the QR factorization of <script type="math/tex">H_i</script> as <script type="math/tex">O_i U_i</script> (where <script type="math/tex">O_i</script> is orthonormal and <script type="math/tex">U_i</script> is upper triangular). Since the QR factorization operates on the sub-diagonal nonzero elements of its input matrix, applying it to a Hessenberg matrix means that only at most <script type="math/tex">i-2</script> rotations will be required in order to produce its answer.</p>
 
 <p>At this point we are ready to write the GMRES problem in its final form</p>
 
-<script type="math/tex; mode=display">\|A x - b\| = \left\|U_i y - O_i^\dagger \|b\|e_1 \right\| \underset{y}{\rightarrow} min</script>
+<script type="math/tex; mode=display">\|A x - b\| = \left\|U_i y - O_i^\dagger b_0 \right\| \underset{y}{\rightarrow} min</script>
 
 <p>which can be efficiently solved by back-substitution since <script type="math/tex">U_i</script> is upper triangular.</p>
 

@@ -34,16 +34,16 @@ $$
 \|H_i y - Q_{i+1}^\dagger b\|
 $$
 
-We notice that $$Q_{i+1}^\dagger b$$ rotates back the $$b$$ vector to the canonical basis, which can be written as $$Q_{i+1}^\dagger b = \|b\| e_1$$.
+We notice that $$Q_{i+1}^\dagger b$$ rotates back the $$b$$ vector to the canonical basis, which can be written as $$\|b\| e_1 =: b_0$$.
 
-At this point we focus on the Hessenberg matrix $$H_i$$: this is a $$m \times i + 1$$ matrix in which all the elements below the first sub-diagonal are identically zero. This is convenient from a computational point of view, as we will see shortly.
+At this point we focus on the Hessenberg matrix $$H_i$$ (specifically this is an upper-Hessenberg matrix, because all the elements _below_ the first sub-diagonal are identically zero). This is convenient from a computational point of view, as we will see shortly.
 
-Let us denote the QR factorization of $$H_i$$ as $$O_i U_i$$ (where $$O_i \in \mathbb{R}^{i+1 \times i+1}$$ is orthonormal and $$U_i \in \mathbb{R}^{i+1 \times i}$$ is upper triangular). Since the QR factorization operates on the sub-diagonal nonzero elements of its input matrix, applying it to a Hessenberg matrix means that only at most $$i-2$$ rotations will be required in order to produce its answer.
+Let us denote the QR factorization of $$H_i$$ as $$O_i U_i$$ (where $$O_i$$ is orthonormal and $$U_i$$ is upper triangular). Since the QR factorization operates on the sub-diagonal nonzero elements of its input matrix, applying it to a Hessenberg matrix means that only at most $$i-2$$ rotations will be required in order to produce its answer.
 
 At this point we are ready to write the GMRES problem in its final form
 
 $$
-\|A x - b\| = \left\|U_i y - O_i^\dagger \|b\|e_1 \right\| \underset{y}{\rightarrow} min
+\|A x - b\| = \left\|U_i y - O_i^\dagger b_0 \right\| \underset{y}{\rightarrow} min
 $$
 
 which can be efficiently solved by back-substitution since $$U_i$$ is upper triangular.
