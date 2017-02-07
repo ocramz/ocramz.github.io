@@ -34,7 +34,7 @@ $$
 \|H_i y - Q_{i+1}^\dagger b\|
 $$
 
-We can notice that $$Q_{i+1}^\dagger b$$ simply rotates back the $$b$$ vector to the canonical basis, i.e. $$Q_{i+1}^\dagger b = \|b\| e_1$$.
+We notice that $$Q_{i+1}^\dagger b$$ rotates back the $$b$$ vector to the canonical basis, which can be written as $$Q_{i+1}^\dagger b = \|b\| e_1$$.
 
 At this point we focus on the Hessenberg matrix $$H_i$$: this is a $$m \times i + 1$$ matrix in which all the elements below the first sub-diagonal are identically zero. This is convenient from a computational point of view, as we will see shortly.
 
@@ -60,7 +60,7 @@ To recap, at step $$i$$ the GMRES algorithm requires:
 
 4) retrieving the full-space solution using the Krylov relation $$\tilde{x} = Q_i y$$.
 
-The version of GMRES I have implemented in [sparse-linear-algebra](https://hackage.haskell.org/package/sparse-linear-algebra) does not carry out steps 1-3 repeatedly, but simply finds the "largest" Krylov subspace (i.e. carries out Arnoldi until it breaks down, that is, until the norm of the $$i$$th orthogonal vector is found to be almost 0) and then proceeds to steps 2 and 3. I found this simpler solution to work quite well in practice.
+The version of GMRES I have implemented in [sparse-linear-algebra](https://hackage.haskell.org/package/sparse-linear-algebra) does not carry out steps 1-4 repeatedly, but simply finds the "largest" Krylov subspace (i.e. carries out Arnoldi until it breaks down, that is, until the norm of the $$i$$th orthogonal vector is found to be almost 0) and then proceeds with steps 2-4. I found this simpler solution to work quite well in practice.
 
 A popular optimization is to interleave the Arnoldi process with the QR factorization; in particular, the first $$i$$ columns of $$H_{i+1}$$ are exactly $$H_i$$, so computing the QR factorization of $$H_{i+1}$$ only requires applying one additional Givens' rotation, and can recycle the QR factors of $$H_i$$ (appropriately padded).
 
