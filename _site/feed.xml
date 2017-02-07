@@ -4,15 +4,15 @@
     <title>ocramz.github.io</title>
     <description>lambdas and large linear systems, oh my
 </description>
-    <link>http://yourdomain.com/</link>
-    <atom:link href="http://yourdomain.com/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Tue, 07 Feb 2017 05:47:07 +0100</pubDate>
-    <lastBuildDate>Tue, 07 Feb 2017 05:47:07 +0100</lastBuildDate>
+    <link>https://ocramz.github.io/</link>
+    <atom:link href="https://ocramz.github.io/feed.xml" rel="self" type="application/rss+xml"/>
+    <pubDate>Tue, 07 Feb 2017 12:06:00 +0100</pubDate>
+    <lastBuildDate>Tue, 07 Feb 2017 12:06:00 +0100</lastBuildDate>
     <generator>Jekyll v2.5.3</generator>
     
       <item>
         <title>The singular value decomposition, part 1 - Golub-Kahan-Lanczos bidiagonalization</title>
-        <description>&lt;p&gt;In&lt;/p&gt;
+        <description>&lt;p&gt;Many reference implementations of the singular value decomposition (SVD) use bidiagonalizaiton as a fundamental preprocessing step. It is very closely related&lt;/p&gt;
 
 &lt;h2 id=&quot;references&quot;&gt;References&lt;/h2&gt;
 
@@ -22,8 +22,8 @@
 
 </description>
         <pubDate>Tue, 07 Feb 2017 00:00:00 +0100</pubDate>
-        <link>http://yourdomain.com/mathematics/tutorials/2017/02/07/golub-kahan-lanczos.html</link>
-        <guid isPermaLink="true">http://yourdomain.com/mathematics/tutorials/2017/02/07/golub-kahan-lanczos.html</guid>
+        <link>https://ocramz.github.io/mathematics/tutorials/2017/02/07/golub-kahan-lanczos.html</link>
+        <guid isPermaLink="true">https://ocramz.github.io/mathematics/tutorials/2017/02/07/golub-kahan-lanczos.html</guid>
         
         
         <category>mathematics</category>
@@ -90,8 +90,8 @@ In the following, I will restrict the notation to the special case in which all 
 &lt;p&gt;Y. Saad and M.H. Schultz, “GMRES: A generalized minimal residual algorithm for solving nonsymmetric linear systems”, SIAM J. Sci. Stat. Comput., 7:856-869, 1986.&lt;/p&gt;
 </description>
         <pubDate>Mon, 06 Feb 2017 00:00:00 +0100</pubDate>
-        <link>http://yourdomain.com/mathematics/linear-algebra/2017/02/06/gmres.html</link>
-        <guid isPermaLink="true">http://yourdomain.com/mathematics/linear-algebra/2017/02/06/gmres.html</guid>
+        <link>https://ocramz.github.io/mathematics/linear-algebra/2017/02/06/gmres.html</link>
+        <guid isPermaLink="true">https://ocramz.github.io/mathematics/linear-algebra/2017/02/06/gmres.html</guid>
         
         
         <category>mathematics</category>
@@ -169,8 +169,8 @@ The normalizing coefficient is also used as a breakdown test, i.e. when &lt;scri
 
 </description>
         <pubDate>Wed, 09 Nov 2016 00:00:00 +0100</pubDate>
-        <link>http://yourdomain.com/mathematics/tutorials/2016/11/09/arnoldi-alt.html</link>
-        <guid isPermaLink="true">http://yourdomain.com/mathematics/tutorials/2016/11/09/arnoldi-alt.html</guid>
+        <link>https://ocramz.github.io/mathematics/tutorials/2016/11/09/arnoldi-alt.html</link>
+        <guid isPermaLink="true">https://ocramz.github.io/mathematics/tutorials/2016/11/09/arnoldi-alt.html</guid>
         
         
         <category>mathematics</category>
@@ -416,8 +416,8 @@ The normalizing coefficient is also used as a breakdown test, i.e. when &lt;scri
 &lt;p&gt;Stay tuned for Part 2, with the solver logic !&lt;/p&gt;
 </description>
         <pubDate>Thu, 25 Aug 2016 00:00:00 +0200</pubDate>
-        <link>http://yourdomain.com/haskell/tutorials/2016/08/25/icfp2016.html</link>
-        <guid isPermaLink="true">http://yourdomain.com/haskell/tutorials/2016/08/25/icfp2016.html</guid>
+        <link>https://ocramz.github.io/haskell/tutorials/2016/08/25/icfp2016.html</link>
+        <guid isPermaLink="true">https://ocramz.github.io/haskell/tutorials/2016/08/25/icfp2016.html</guid>
         
         
         <category>haskell</category>
@@ -1229,8 +1229,8 @@ If a datatype is an instance of one or more classes, it “inherits” the funct
 
 </description>
         <pubDate>Fri, 21 Aug 2015 00:00:00 +0200</pubDate>
-        <link>http://yourdomain.com/haskell/tutorials/2015/08/21/haskell-tut-v1.html</link>
-        <guid isPermaLink="true">http://yourdomain.com/haskell/tutorials/2015/08/21/haskell-tut-v1.html</guid>
+        <link>https://ocramz.github.io/haskell/tutorials/2015/08/21/haskell-tut-v1.html</link>
+        <guid isPermaLink="true">https://ocramz.github.io/haskell/tutorials/2015/08/21/haskell-tut-v1.html</guid>
         
         
         <category>haskell</category>
@@ -1254,8 +1254,8 @@ If a datatype is an instance of one or more classes, it “inherits” the funct
 &lt;p&gt;Yay interwebs 2.0 !&lt;/p&gt;
 </description>
         <pubDate>Thu, 20 Aug 2015 15:23:00 +0200</pubDate>
-        <link>http://yourdomain.com/tests/2015/08/20/haskell-test.html</link>
-        <guid isPermaLink="true">http://yourdomain.com/tests/2015/08/20/haskell-test.html</guid>
+        <link>https://ocramz.github.io/tests/2015/08/20/haskell-test.html</link>
+        <guid isPermaLink="true">https://ocramz.github.io/tests/2015/08/20/haskell-test.html</guid>
         
         
         <category>tests</category>

@@ -4,10 +4,15 @@ title: ocramz.github.io
 description: > # this means to ignore newlines until "baseurl:"
   lambdas and large linear systems, oh my
 baseurl: "" # the subpath of your site, e.g. /blog/
-url: "http://yourdomain.com" # the base hostname & protocol for your site
+url: "https://ocramz.github.io" # the base hostname & protocol for your site
 twitter_username: ocramz_yo
 github_username:  ocramz
 
 # Build settings
 markdown: kramdown
 # markdown: redcarpet
+
+disqus:
+    # Leave shortname blank to disable comments site-wide.
+    # Disable comments for any post by adding `comments: false` to that post's YAML Front Matter.
+    shortname: ocramz
