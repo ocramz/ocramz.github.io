@@ -1,6 +1,6 @@
 ---
 layout: post
-title: The singular value decomposition, part 1 - Golub-Kahan-Lanczos bidiagonalization
+title: The singular value decomposition, pt.1 - Golub-Kahan-Lanczos bidiagonalization
 date: 2017-02-07
 categories: mathematics tutorials
 ---
