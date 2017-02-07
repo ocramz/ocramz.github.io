@@ -7,7 +7,7 @@ categories: mathematics tutorials
 
 Many reference implementations of the singular value decomposition (SVD) use bidiagonalization as a fundamental preprocessing step. Like the [Arnoldi algorithm](https://ocramz.github.io/mathematics/tutorials/2016/11/09/arnoldi-alt.html), it is very closely related to the Gram-Schmidt orthogonalization process, since it multiplies the operand matrix with a series of projection matrices that zero out one or more of its components at each application.
 
-In this blog post I will explain the Golub-Kahan-Lanczos bidiagonalization, which applies two projections, $$P$$ and $$Q$$, to the operand matrix $$A$$ to produce a matrix $$B$$ that is non-zero only on its main diagonal and first super-diagonal.
+In this blog post I will explain the Golub-Kahan-Lanczos bidiagonalization, which applies two projections, $$P \in \mathbb{R}^{m \times n}$$ and $$Q \mathbb{R}^{n \times n}$$, to the operand matrix $$A \in \mathbb{R}^{m \times n}$$ to produce a matrix $$B \mathbb{R}^{n \times n}$$ that is non-zero only on its main diagonal and first super-diagonal.
 
 $$
 P^\dagger A Q = B =: \left[
@@ -21,11 +21,22 @@ P^\dagger A Q = B =: \left[
 \right]
 $$
 
+In the equation above we must find _two_ sets of orthonormal vectors, i.e. the columns of $$P$$ and $$Q$$. This means that there are effectively two sets of equations which we must solve iteratively to retrieve the factorization.
+
+$$
+\begin{cases}
+A Q = P B \\
+A^\dagget P = Q B^\dagger
+\end{cases}
+$$
+
+
+
 
 
 ## References
 
-Dongarra, Jack, et al. (eds.), Templates for the Solution of Algebraic Eigenvalue Problems: a Practical Guide (http://www.netlib.org/utk/people/JackDongarra/etemplates/node198.html)
+Dongarra, Jack, et al. (eds.), [Templates for the Solution of Algebraic Eigenvalue Problems: a Practical Guide](http://www.netlib.org/utk/people/JackDongarra/etemplates/node198.html)
 
 Golub, Gene H.; Van Loan, Charles F. (1996), Matrix Computations (3rd ed.), Johns Hopkins
 
