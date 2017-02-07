@@ -38,7 +38,7 @@ The first step requires choosing an arbitrary vector of unit norm and appropriat
 $$
 \begin{array}{l l}
 A \mathbf{q}_1 &= \alpha_1 \mathbf{p}_1 \\
-A^\dagger \mathbf{p}_1 = \alpha_1 \mathbf{q}_1 + \beta_1 \mathbf{q}_2
+A^\dagger \mathbf{p}_1 &= \alpha_1 \mathbf{q}_1 + \beta_1 \mathbf{q}_2
 \end{array}
 $$
 
@@ -64,7 +64,7 @@ The final step will be slightly different, again due to the structure of $$B$$:
 $$
 \begin{array}{l l}
 A \mathbf{q}_n &= \alpha_n \mathbf{p}_n + \beta_{n-1} \mathbf{p}_{n-1} \\
-A^\dagger \mathbf{p}_n = \alpha_n \mathbf{q}_n
+A^\dagger \mathbf{p}_n &= \alpha_n \mathbf{q}_n
 \end{array}
 $$
 
