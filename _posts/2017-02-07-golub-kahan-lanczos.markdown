@@ -68,7 +68,7 @@ A^\dagger \mathbf{p}_n &= \alpha_n \mathbf{q}_n
 \end{array}
 $$
 
-After this, the $$alpha$$ and $$beta$$ coefficients can be packed into a matrix structure $$B$$ and used in subsequent computations.
+After this, the $$\alpha$$ and $$\beta$$ coefficients can be packed into a matrix structure $$B$$ and used in subsequent computations.
 
 As a functional programmer, I found this explanation of the algorithm to be easier to follow than Golub and Van Loan's pseudocode, which employs in-place mutation (i.e. matrices are overwritten at each iteration).
 
