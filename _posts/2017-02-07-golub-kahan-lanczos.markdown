@@ -36,7 +36,7 @@ $$
 The first step requires choosing an arbitrary vector of unit norm and appropriate dimensions, $$\mathbf{q}_1$$, which is used to obtain $$\mathbf{p}_1$$, $$\mathbf{p}_2$$ and $$\mathbf{q}_2$$:
 
 $$
-A \mathbf{q}_1 = \alpha_1 \mathbf{p}_1
+A \mathbf{q}_1 = \alpha_1 \mathbf{p}_1 \\
 A^\dagger \mathbf{p}_1 = \alpha_1 \mathbf{q}_1 + \beta_1 \mathbf{q}_2
 $$
 
@@ -44,7 +44,10 @@ Subsequent steps are only minimally different; at step $$j$$ :
 
 $$
 \begin{array}{c c}
-\mathbf{q}_j, \beta_{j-1}, \mathbf{p}_{j-1} & \mathrm{Input} 
+\mathbf{q}_j, \beta_{j-1}, \mathbf{p}_{j-1} & \mathrm{Input}
+\mathbf{p}_{j} = (A \mathbf{q}_{j} - \beta_{j-1} \mathbf{p}_{j-1})/\alpha_j & \alpha_j =  \|A \mathbf{q}_{j} - \beta_{j-1} \mathbf{p}_{j-1}\|
+
+\mathbf{q}_{j+1}, \beta_{j}, \mathbf{p}_{j} & \mathrm{Output}
 \end{array}
 $$
 
