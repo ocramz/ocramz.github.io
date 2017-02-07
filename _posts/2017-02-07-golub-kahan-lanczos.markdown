@@ -33,7 +33,7 @@ A^\dagger P = Q B^\dagger
 $$
 
 
-The first step requires choosing an arbitrary vector of unit norm and appropriate dimensions, $$\mathbf{q}_1$$, which is used to obtain $$\mathbf{p}_1$$, $$\mathbf{p}_2$$, $$\mathbf{q}_2$$ and $$\beta_1$$:
+As first step we must choose an arbitrary vector of unit norm and appropriate dimensions, $$\mathbf{q}_1$$, which is used to obtain $$\mathbf{p}_1$$, $$\mathbf{p}_2$$, $$\mathbf{q}_2$$ and $$\beta_1$$:
 
 $$
 \begin{array}{l l}
@@ -57,7 +57,7 @@ $$
 $$
 
 Note : of course also the coefficients $$\alpha_i$$ are "outputs" to the iteration, but of the elements of $$B$$ only $$\beta_i$$ is required to compute the results of iteration $$i+1$$.
-In [sparse-linear-algebra](https://hackage.haskell.org/package/sparse-linear-algebra) I implemented this control flow using the [State monad](https://hackage.haskell.org/package/mtl-2.2.1/docs/Control-Monad-State-Strict.html), which makes the partial datastructures produced during iteration invisible to the rest of the program, by construction.
+
 
 The final step will be slightly different, again due to the structure of $$B$$:
 
@@ -70,7 +70,9 @@ $$
 
 After this, the $$\alpha$$ and $$\beta$$ coefficients and the $$\mathbf{p}_i$$ and $$\mathbf{q}_i$$ vectors can be packed into matrices and used in subsequent computations.
 
-As a functional programmer, I found this explanation of the algorithm to be easier to follow and implement than Golub and Van Loan's, which employs in-place mutation (i.e. matrices are overwritten at each iteration).
+In [sparse-linear-algebra](https://hackage.haskell.org/package/sparse-linear-algebra) I implemented this control flow using the [State monad](https://hackage.haskell.org/package/mtl-2.2.1/docs/Control-Monad-State-Strict.html), which makes the partial datastructures produced during iteration invisible to the rest of the program, by construction.
+
+As a functional programmer, I found this explanation of the Golub-Kahan-Lanczos algorithm to be easier to follow and implement than that found in Golub and Van Loan's textbook, which employs in-place mutation (i.e. matrices are overwritten at each iteration).
 
 Stay tuned for part 2, in which we will complete the explanation of the singular value decomposition algorithm.
 
