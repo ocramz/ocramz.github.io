@@ -68,9 +68,9 @@ A^\dagger \mathbf{p}_n &= \alpha_n \mathbf{q}_n
 \end{array}
 $$
 
-After this, the $$\alpha$$ and $$\beta$$ coefficients can be packed into a matrix structure $$B$$ and used in subsequent computations.
+After this, the $$\alpha$$ and $$\beta$$ coefficients and the $$\mathbf{p}_i$$ and $$\mathbf{q}_i$$ vectors can be packed into matrices and used in subsequent computations.
 
-As a functional programmer, I found this explanation of the algorithm to be easier to follow than Golub and Van Loan's pseudocode, which employs in-place mutation (i.e. matrices are overwritten at each iteration).
+As a functional programmer, I found this explanation of the algorithm to be easier to follow and implement than Golub and Van Loan's, which employs in-place mutation (i.e. matrices are overwritten at each iteration).
 
 Stay tuned for part 2, in which we will complete the explanation of the singular value decomposition algorithm.
 
