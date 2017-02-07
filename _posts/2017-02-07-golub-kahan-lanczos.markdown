@@ -7,7 +7,7 @@ categories: mathematics tutorials
 
 Many reference implementations of the singular value decomposition (SVD) use bidiagonalization as a fundamental preprocessing step. Like the [Arnoldi algorithm](https://ocramz.github.io/mathematics/tutorials/2016/11/09/arnoldi-alt.html), it is very closely related to the Gram-Schmidt orthogonalization process, since it multiplies the operand matrix with a series of projection matrices that zero out one or more of its components at each application.
 
-In this blog post I will explain the Golub-Kahan-Lanczos bidiagonalization, which applies two projections, $$P \in \mathbb{R}^{m \times n}$$ and $$Q \in \mathbb{R}^{n \times n}$$, to the operand matrix $$A \in \mathbb{R}^{m \times n}$$ to produce a matrix $$B \mathbb{R}^{n \times n}$$ that is non-zero only on its main diagonal and first super-diagonal.
+In this blog post I will explain the Golub-Kahan-Lanczos bidiagonalization, which applies two projections, $$P \in \mathbb{R}^{m \times n}$$ and $$Q \in \mathbb{R}^{n \times n}$$, to the operand matrix $$A \in \mathbb{R}^{m \times n}$$ to produce a matrix $$B \in \mathbb{R}^{n \times n}$$ that is non-zero only on its main diagonal and first super-diagonal.
 
 $$
 P^\dagger A Q = B =: \left[
