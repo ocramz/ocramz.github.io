@@ -22,7 +22,7 @@ P^\dagger A Q = B =: \left[
 \label{eqn1}
 $$
 
-In the equation above we must find _two_ sets of orthonormal vectors, i.e. the columns of $$P$$ and $$Q$$. This means that there are effectively two sets of equations which we must solve iteratively to retrieve the factorization; these are obtained by applying $$P$$ to Eq.1 and respectively transposing it and applying $$Q$$:
+In the equation above we must find _two_ sets of orthonormal vectors, i.e. the columns of $$P$$ and $$Q$$. This means that there are effectively two sets of equations which we must solve iteratively to retrieve the factorization; these are obtained by applying $$P$$ to Eq.1 and respectively transposing it and applying $$Q$$ (and using the fact that $$(U V)^\dagger = V^\dagger U^\dagger$$):
 
 
 $$
@@ -59,7 +59,6 @@ $$
 Note : of course also the coefficients $$\alpha_i$$ are "outputs" to the iteration, but of the elements of $$B$$ only $$beta_i$$ is required to compute the results of iteration $$i+1$$.
 In [sparse-linear-algebra](https://hackage.haskell.org/package/sparse-linear-algebra) I implemented this control flow using the [State monad](https://hackage.haskell.org/package/mtl-2.2.1/docs/Control-Monad-State-Strict.html), which makes the partial datastructures produced during iteration invisible to the rest of the program, by construction.
 
-
 The final step will be slightly different, again due to the structure of $$B$$:
 
 $$
@@ -68,6 +67,12 @@ A \mathbf{q}_n &= \alpha_n \mathbf{p}_n + \beta_{n-1} \mathbf{p}_{n-1} \\
 A^\dagger \mathbf{p}_n = \alpha_n \mathbf{q}_n
 \end{array}
 $$
+
+After this, the $$alpha$$ and $$beta$$ coefficients can be packed into a matrix structure $$B$$ and used in subsequent computations.
+
+As a functional programmer, I found this explanation of the algorithm to be easier to follow than Golub and Van Loan's pseudocode, which employs in-place mutation (i.e. matrices are overwritten at each iteration).
+
+Stay tuned for part 2, in which we will complete the explanation of the singular value decomposition algorithm.
 
 
 
