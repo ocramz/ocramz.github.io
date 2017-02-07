@@ -22,7 +22,7 @@ P^\dagger A Q = B =: \left[
 \label{eqn1}
 $$
 
-In the equation above we must find _two_ sets of orthonormal vectors in order to fulfill it, i.e. the columns of $$P$$ and $$Q$$. This means that there are effectively two sets of equations which we must solve iteratively to retrieve the factorization; these are obtained by applying $$P$$ to Eq.1 and respectively transposing it and applying $$Q$$ (and using the fact that $$(U V)^\dagger = V^\dagger U^\dagger$$):
+The equation above requires us to find _two_ sets of orthonormal vectors in order be fulfilled, i.e. the columns of $$P$$ and $$Q$$. This means that there are effectively two sets of equations which we must solve iteratively to retrieve the factorization; these are obtained by applying $$P$$ to Eq.1 and respectively transposing it and applying $$Q$$ (and using the fact that $$(U V)^\dagger = V^\dagger U^\dagger$$):
 
 
 $$
