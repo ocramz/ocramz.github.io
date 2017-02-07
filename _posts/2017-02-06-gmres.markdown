@@ -14,7 +14,7 @@ $$
 \tilde{x} = \underset{x}{\arg \min} \| A x - b \|,
 $$
 
-where $$A \in \mathbb{R}^{m \times n}$$ is (assumed to be) of full rank (i.e. invertible), $$x \in \mathbb{R}^m$$ and $$b \in \mathbb{R}^m$$.
+where $$A \in \mathbb{R}^{m \times n}$$ is (assumed to be) of full rank (i.e. invertible), $$x \in \mathbb{R}^n$$ and $$b \in \mathbb{R}^m$$.
 
 The approximate solution is sought in spaces of increasing dimensionality; in other words, at iteration $$i \in {1 .. m}$$ the solution $$\tilde{x}_i$$ will be a vector in $$\mathbb{R}^i$$.
 

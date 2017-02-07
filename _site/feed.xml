@@ -6,8 +6,8 @@
 </description>
     <link>https://ocramz.github.io/</link>
     <atom:link href="https://ocramz.github.io/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Tue, 07 Feb 2017 12:07:41 +0100</pubDate>
-    <lastBuildDate>Tue, 07 Feb 2017 12:07:41 +0100</lastBuildDate>
+    <pubDate>Tue, 07 Feb 2017 13:54:30 +0100</pubDate>
+    <lastBuildDate>Tue, 07 Feb 2017 13:54:30 +0100</lastBuildDate>
     <generator>Jekyll v2.5.3</generator>
     
       <item>
@@ -41,7 +41,7 @@ In the following, I will restrict the notation to the special case in which all 
 
 &lt;script type=&quot;math/tex; mode=display&quot;&gt;\tilde{x} = \underset{x}{\arg \min} \| A x - b \|,&lt;/script&gt;
 
-&lt;p&gt;where &lt;script type=&quot;math/tex&quot;&gt;A \in \mathbb{R}^{m \times n}&lt;/script&gt; is (assumed to be) of full rank (i.e. invertible), &lt;script type=&quot;math/tex&quot;&gt;x \in \mathbb{R}^m&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;b \in \mathbb{R}^m&lt;/script&gt;.&lt;/p&gt;
+&lt;p&gt;where &lt;script type=&quot;math/tex&quot;&gt;A \in \mathbb{R}^{m \times n}&lt;/script&gt; is (assumed to be) of full rank (i.e. invertible), &lt;script type=&quot;math/tex&quot;&gt;x \in \mathbb{R}^n&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;b \in \mathbb{R}^m&lt;/script&gt;.&lt;/p&gt;
 
 &lt;p&gt;The approximate solution is sought in spaces of increasing dimensionality; in other words, at iteration &lt;script type=&quot;math/tex&quot;&gt;i \in {1 .. m}&lt;/script&gt; the solution &lt;script type=&quot;math/tex&quot;&gt;\tilde{x}_i&lt;/script&gt; will be a vector in &lt;script type=&quot;math/tex&quot;&gt;\mathbb{R}^i&lt;/script&gt;.&lt;/p&gt;
 
