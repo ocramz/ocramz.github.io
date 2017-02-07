@@ -11,10 +11,10 @@ In this blog post I will explain the Golub-Kahan-Lanczos bidiagonalization, whic
 
 $$
 P^\dagger A Q = B =: \left[
-\begin{array}{c c c c}
- \alpha_1 & \beta_1  & & \\
-          & \alpha_2 & \beta_2 & \\
-	  & & \ddots & \ddots \\
+\begin{array}{c c c c c}
+ \alpha_1 & \beta_1  &         & & \\
+          & \alpha_2 & \beta_2 & & \\
+	  & & \ddots & \ddots    & \\
 	  & & \alpha_{n-1} & \beta_{n-1} \\
           & & & \alpha_n \\
 \end{array}
