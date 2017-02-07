@@ -40,6 +40,13 @@ A \mathbf{q}_1 = \alpha_1 \mathbf{p}_1
 A^\dagger \mathbf{p}_1 = \alpha_1 \mathbf{q}_1 + \beta_1 \mathbf{q}_2
 $$
 
+Subsequent steps are only minimally different; at step $$j$$ :
+
+$$
+\begin{array}{c c}
+\mathbf{q}_j, \beta_{j-1}, \mathbf{p}_{j-1} & \mathrm{Input} 
+\end{array}
+$$
 
 
 
