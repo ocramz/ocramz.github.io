@@ -15,8 +15,8 @@ P^\dagger A Q = B =: \left[
  \alpha_1 & \beta_1  &         & & \\
           & \alpha_2 & \beta_2 & & \\
 	  & & \ddots & \ddots    & \\
-	  & & \alpha_{n-1} & \beta_{n-1} \\
-          & & & \alpha_n \\
+	  & & & \alpha_{n-1} & \beta_{n-1} \\
+          & & & & \alpha_n \\
 \end{array}
 \right]
 $$
