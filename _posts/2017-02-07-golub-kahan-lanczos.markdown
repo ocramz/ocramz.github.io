@@ -56,7 +56,7 @@ $$
 \end{array}
 $$
 
-Note : of course also the coefficients $$\alpha_i$$ are "outputs" to the iteration, but of the elements of $$B$$ only $$beta_i$$ is required to compute the results of iteration $$i+1$$.
+Note : of course also the coefficients $$\alpha_i$$ are "outputs" to the iteration, but of the elements of $$B$$ only $$\beta_i$$ is required to compute the results of iteration $$i+1$$.
 In [sparse-linear-algebra](https://hackage.haskell.org/package/sparse-linear-algebra) I implemented this control flow using the [State monad](https://hackage.haskell.org/package/mtl-2.2.1/docs/Control-Monad-State-Strict.html), which makes the partial datastructures produced during iteration invisible to the rest of the program, by construction.
 
 The final step will be slightly different, again due to the structure of $$B$$:
