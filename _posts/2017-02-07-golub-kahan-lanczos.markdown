@@ -46,8 +46,11 @@ Subsequent steps are only minimally different; at step $$j$$ :
 
 $$
 \begin{array}{c c}
-\mathbf{q}_j, \beta_{j-1}, \mathbf{p}_{j-1} & \mathrm{Input}
-\mathbf{p}_{j} = (A \mathbf{q}_{j} - \beta_{j-1} \mathbf{p}_{j-1})/\alpha_j & \alpha_j =  \|A \mathbf{q}_{j} - \beta_{j-1} \mathbf{p}_{j-1}\|
+\mathbf{q}_j, \beta_{j-1}, \mathbf{p}_{j-1} & \mathrm{Input} \\
+
+\mathbf{p}_{j} = (A \mathbf{q}_{j} - \beta_{j-1} \mathbf{p}_{j-1})/\alpha_j & \alpha_j =  \|A \mathbf{q}_{j} - \beta_{j-1} \mathbf{p}_{j-1}\|  \\
+
+\mathbf{q}_{j+1} = (A^\dagger \mathbf{p}_{j} - \alpha_{j} \mathbf{q}_{j})/\beta_j & \beta_j =  \|A^\dagger \mathbf{p}_{j} - \alpha_{j} \mathbf{q}_{j}\|  \\
 
 \mathbf{q}_{j+1}, \beta_{j}, \mathbf{p}_{j} & \mathrm{Output}
 \end{array}
