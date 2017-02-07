@@ -19,16 +19,19 @@ P^\dagger A Q = B =: \left[
           & & & & \alpha_n \\
 \end{array}
 \right]
+\label{eqn1}
 $$
 
-In the equation above we must find _two_ sets of orthonormal vectors, i.e. the columns of $$P$$ and $$Q$$. This means that there are effectively two sets of equations which we must solve iteratively to retrieve the factorization.
+In the equation above we must find _two_ sets of orthonormal vectors, i.e. the columns of $$P$$ and $$Q$$. This means that there are effectively two sets of equations which we must solve iteratively to retrieve the factorization; these are obtained by premultiplying Eqn $$\ref{eqn1}$$ by $$P$$ and respectively transposing Eqn $$\ref{eqn1}$$ and premultiplying by $$Q$$:
+
 
 $$
 \begin{cases}
 A Q = P B \\
-A^\dagget P = Q B^\dagger
+A^\dagger P = Q B^\dagger
 \end{cases}
 $$
+
 
 
 
