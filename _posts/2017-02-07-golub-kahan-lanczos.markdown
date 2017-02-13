@@ -34,13 +34,16 @@ $$
 
 The algorithm directly follows by inspecting the two systems of equations written above in terms of their columns.
 
-As first step we must choose an arbitrary vector of unit norm and appropriate dimensions, $$\mathbf{q}_1$$, which is used to obtain $$\mathbf{p}_1$$, $$\mathbf{p}_2$$, $$\mathbf{q}_2$$, $$\alpha_1$$ and $$\beta_1$$:
+As first step we must choose an arbitrary vector of unit norm and appropriate dimensions, $$\mathbf{q}_1$$, which is used to obtain $$\mathbf{p}_1$$ and $$\alpha_1$$:
 
 $$
-\begin{array}{l l}
-A \mathbf{q}_1 &= \alpha_1 \mathbf{p}_1\\
-A^\dagger \mathbf{p}_1 &= \alpha_1 \mathbf{q}_1 + \beta_1 \mathbf{q}_2 
-\end{array}
+A \mathbf{q}_1 = \alpha_1 \mathbf{p}_1
+$$
+
+whereas $$\mathbf{p}_2$$, $$\mathbf{q}_2$$ and $$\beta_1$$ are obtained from the second system of equations:
+
+$$
+A^\dagger \mathbf{p}_1 = \alpha_1 \mathbf{q}_1 + \beta_1 \mathbf{q}_2 
 $$
 
 (NB: the $$\alpha$$ and $$\beta$$ coefficients are obtained in turn by prescribing the $$\mathbf{p}$$ and $$\mathbf{q}$$ vectors to have unit norm).
