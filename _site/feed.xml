@@ -6,8 +6,8 @@
 </description>
     <link>https://ocramz.github.io/</link>
     <atom:link href="https://ocramz.github.io/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Thu, 30 Nov 2017 18:38:32 +0100</pubDate>
-    <lastBuildDate>Thu, 30 Nov 2017 18:38:32 +0100</lastBuildDate>
+    <pubDate>Thu, 30 Nov 2017 18:42:31 +0100</pubDate>
+    <lastBuildDate>Thu, 30 Nov 2017 18:42:31 +0100</lastBuildDate>
     <generator>Jekyll v3.6.2</generator>
     
       <item>
@@ -16,7 +16,7 @@
 
 &lt;p&gt;This blog post reproduces roughly the presentation, and incorporates some feedback I received and some further thoughts I have had on the matter in the meanwhile. It is written for people who had some prior exposure to Haskell, but I’ll try to keep the exposition as intuitive as possible.&lt;/p&gt;
 
-&lt;h2 id=&quot;warm-up-http-connections&quot;&gt;Warm-up: HTTP connections&lt;/h2&gt;
+&lt;h2 id=&quot;warm-up-http-connections-and-typeclasses&quot;&gt;Warm-up: HTTP connections and typeclasses&lt;/h2&gt;
 
 &lt;p&gt;This project uses the excellent &lt;a href=&quot;https://hackage.haskell.org/package/req&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;req&lt;/code&gt;&lt;/a&gt; library for HTTP connections. It’s very well thought out and documented, so I really recommend it.&lt;/p&gt;
 
@@ -41,6 +41,8 @@
    &lt;span class=&quot;n&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;$&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;responseBody&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;r&lt;/span&gt;   &lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
 &lt;p&gt;The above already requires the user to be familiar with typeclasses, lazy evaluation and a couple standard typeclasses (Monoid and Monad).&lt;/p&gt;
+
+&lt;p&gt;Let’s take the last parameter of &lt;code class=&quot;highlighter-rouge&quot;&gt;req&lt;/code&gt; as a concrete example&lt;/p&gt;
 
 </description>
         <pubDate>Thu, 30 Nov 2017 00:00:00 +0100</pubDate>

@@ -69,7 +69,7 @@
 
 <p>This blog post reproduces roughly the presentation, and incorporates some feedback I received and some further thoughts I have had on the matter in the meanwhile. It is written for people who had some prior exposure to Haskell, but I’ll try to keep the exposition as intuitive as possible.</p>
 
-<h2 id="warm-up-http-connections">Warm-up: HTTP connections</h2>
+<h2 id="warm-up-http-connections-and-typeclasses">Warm-up: HTTP connections and typeclasses</h2>
 
 <p>This project uses the excellent <a href="https://hackage.haskell.org/package/req"><code class="highlighter-rouge">req</code></a> library for HTTP connections. It’s very well thought out and documented, so I really recommend it.</p>
 
@@ -94,6 +94,8 @@
    <span class="n">return</span> <span class="o">$</span> <span class="n">responseBody</span> <span class="n">r</span>   </code></pre></figure>
 
 <p>The above already requires the user to be familiar with typeclasses, lazy evaluation and a couple standard typeclasses (Monoid and Monad).</p>
+
+<p>Let’s take the last parameter of <code class="highlighter-rouge">req</code> as a concrete example</p>
 
 
   </article>

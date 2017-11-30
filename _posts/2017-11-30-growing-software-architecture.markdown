@@ -12,8 +12,8 @@ This blog post reproduces roughly the presentation, and incorporates some feedba
 
 
 
-Warm-up: HTTP connections
--------------------------
+Warm-up: HTTP connections and typeclasses
+-------------------------------
 
 This project uses the excellent [`req`](https://hackage.haskell.org/package/req) library for HTTP connections. It's very well thought out and documented, so I really recommend it.
 
@@ -43,6 +43,8 @@ requestGet = do
 {% endhighlight %}
 
 The above already requires the user to be familiar with typeclasses, lazy evaluation and a couple standard typeclasses (Monoid and Monad).
+
+Let's take the last parameter of `req` as a concrete example
 
 
 
