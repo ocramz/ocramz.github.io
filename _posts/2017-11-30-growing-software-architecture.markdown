@@ -97,18 +97,19 @@ The `MonadHttp` typeclass encodes exactly this: since HTTP connections are a for
 We'll learn about the implications of this way of writing things in the next section.
 
 
-API authentication and `TypeFamilies`
+API authentication and type families
 -------------------------------------
 
 Many API providers require some form of authentication; during an initial "handshake" phase the client sends its credentials to the server over some secure channel (e.g. encrypted over TLS), which will in turn send back a "token" which will be necessary to perform the actual API calls and which will expire after a set time. This is for example how the OAuth2 authentication protocol works.
 
 In practice, each provider has its own :
-    - Set of credentials
-    - Authentication/token refresh mechanisms
-    - Handling of invalid input
-    - Request rate limiting
-    - Outage modes
-    - etc., etc.
+
+- Set of credentials
+- Authentication/token refresh mechanisms
+- Handling of invalid input
+- Request rate limiting
+- Outage modes
+- etc., etc.
 
 however the general semantics of this token-based connection are the same for all. This screams for some sort of common interface to hide the details of dealing with the individual providers from the point of view of higher levels of the application code.
 

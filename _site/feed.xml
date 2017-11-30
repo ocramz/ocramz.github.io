@@ -6,8 +6,8 @@
 </description>
     <link>https://ocramz.github.io/</link>
     <atom:link href="https://ocramz.github.io/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Thu, 30 Nov 2017 20:48:33 +0100</pubDate>
-    <lastBuildDate>Thu, 30 Nov 2017 20:48:33 +0100</lastBuildDate>
+    <pubDate>Thu, 30 Nov 2017 20:51:49 +0100</pubDate>
+    <lastBuildDate>Thu, 30 Nov 2017 20:51:49 +0100</lastBuildDate>
     <generator>Jekyll v3.6.2</generator>
     
       <item>
@@ -86,17 +86,20 @@
 
 &lt;p&gt;We’ll learn about the implications of this way of writing things in the next section.&lt;/p&gt;
 
-&lt;h2 id=&quot;api-authentication-and-typefamilies&quot;&gt;API authentication and &lt;code class=&quot;highlighter-rouge&quot;&gt;TypeFamilies&lt;/code&gt;&lt;/h2&gt;
+&lt;h2 id=&quot;api-authentication-and-type-families&quot;&gt;API authentication and type families&lt;/h2&gt;
 
 &lt;p&gt;Many API providers require some form of authentication; during an initial “handshake” phase the client sends its credentials to the server over some secure channel (e.g. encrypted over TLS), which will in turn send back a “token” which will be necessary to perform the actual API calls and which will expire after a set time. This is for example how the OAuth2 authentication protocol works.&lt;/p&gt;
 
-&lt;p&gt;In practice, each provider has its own :
-    - Set of credentials
-    - Authentication/token refresh mechanisms
-    - Handling of invalid input
-    - Request rate limiting
-    - Outage modes
-    - etc., etc.&lt;/p&gt;
+&lt;p&gt;In practice, each provider has its own :&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Set of credentials&lt;/li&gt;
+  &lt;li&gt;Authentication/token refresh mechanisms&lt;/li&gt;
+  &lt;li&gt;Handling of invalid input&lt;/li&gt;
+  &lt;li&gt;Request rate limiting&lt;/li&gt;
+  &lt;li&gt;Outage modes&lt;/li&gt;
+  &lt;li&gt;etc., etc.&lt;/li&gt;
+&lt;/ul&gt;
 
 &lt;p&gt;however the general semantics of this token-based connection are the same for all. This screams for some sort of common interface to hide the details of dealing with the individual providers from the point of view of higher levels of the application code.&lt;/p&gt;
 

@@ -139,17 +139,20 @@
 
 <p>We’ll learn about the implications of this way of writing things in the next section.</p>
 
-<h2 id="api-authentication-and-typefamilies">API authentication and <code class="highlighter-rouge">TypeFamilies</code></h2>
+<h2 id="api-authentication-and-type-families">API authentication and type families</h2>
 
 <p>Many API providers require some form of authentication; during an initial “handshake” phase the client sends its credentials to the server over some secure channel (e.g. encrypted over TLS), which will in turn send back a “token” which will be necessary to perform the actual API calls and which will expire after a set time. This is for example how the OAuth2 authentication protocol works.</p>
 
-<p>In practice, each provider has its own :
-    - Set of credentials
-    - Authentication/token refresh mechanisms
-    - Handling of invalid input
-    - Request rate limiting
-    - Outage modes
-    - etc., etc.</p>
+<p>In practice, each provider has its own :</p>
+
+<ul>
+  <li>Set of credentials</li>
+  <li>Authentication/token refresh mechanisms</li>
+  <li>Handling of invalid input</li>
+  <li>Request rate limiting</li>
+  <li>Outage modes</li>
+  <li>etc., etc.</li>
+</ul>
 
 <p>however the general semantics of this token-based connection are the same for all. This screams for some sort of common interface to hide the details of dealing with the individual providers from the point of view of higher levels of the application code.</p>
 
