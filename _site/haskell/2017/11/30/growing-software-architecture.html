@@ -67,7 +67,7 @@
   <article class="post-content">
     <p>Yesterday evening I made a presentation at a <a href="https://www.meetup.com/got-lambda">local functional programming meetup</a> regarding my recent experience in building a data ingestion microservice in Haskell. To tell the truth, I was more concerned with communicating the rationale for my design choices rather than the business application per se, and how my current understanding of the language helps (or doesn’t) in structuring a large and realistic application.</p>
 
-<p>This blog post reproduces roughly the presentation, and incorporates some feedback I received and some further thoughts I have had on the matter in the meanwhile. It is written for people who had some prior exposure to Haskell, but I’ll try to keep the exposition as intuitive as possible.</p>
+<p>This blog post reproduces roughly the presentation, and incorporates some feedback I received and some further thoughts I have had on the matter in the meanwhile. It is written for people who had some prior exposure to Haskell, but I’ll try to keep the exposition as intuitive and beginner-friendly as possible.</p>
 
 <h2 id="warm-up-http-connections-and-typeclasses">Warm-up: HTTP connections and typeclasses</h2>
 
@@ -93,11 +93,11 @@
       <span class="n">mempty</span>
    <span class="n">return</span> <span class="o">$</span> <span class="n">responseBody</span> <span class="n">r</span>   </code></pre></figure>
 
-<p>The above already requires the user to be familiar with typeclasses, lazy evaluation and a couple standard typeclasses (Monoid and Monad).</p>
+<p>The above already requires the user to be familiar with typeclasses, lazy evaluation and a couple standard typeclasses (Monoid and Monad). These are fundamental to Haskell, so it helps seeing them used in context.</p>
 
-<p>Let’s take the last parameter of <code class="highlighter-rouge">req</code> as a concrete example. It is of type <code class="highlighter-rouge">Option scheme</code>, where <code class="highlighter-rouge">scheme</code> is some type parameter. Now, how do I know what are the right types that can be used here? I always have a GHCi session running in one Emacs tile, so that I can explore interactively the libraries imported by the project I’m working on; in this case, I query for information on <code class="highlighter-rouge">Option</code> (the GHCi prompt is represented by a lambda letter):</p>
+<p>Let’s take the last parameter of <code class="highlighter-rouge">req</code> as a concrete example. It is of type <code class="highlighter-rouge">Option scheme</code>, where <code class="highlighter-rouge">scheme</code> is some type parameter. Now, how do I know what are the right types that can be used here? I always have a GHCi session running in one Emacs tile, so that I can explore interactively the libraries imported by the project I’m working on; in this case, I query for information on <code class="highlighter-rouge">Option</code> (the GHCi prompt is represented by the <code class="highlighter-rouge">&gt;</code> character):</p>
 
-<figure class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="err"></span> <span class="o">:</span><span class="n">i</span> <span class="kt">Option</span>
+<figure class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="o">&gt;</span> <span class="o">:</span><span class="n">i</span> <span class="kt">Option</span>
 <span class="kr">type</span> <span class="n">role</span> <span class="kt">Option</span> <span class="n">phantom</span>
 <span class="kr">data</span> <span class="kt">Option</span> <span class="p">(</span><span class="n">scheme</span> <span class="o">::</span> <span class="kt">Scheme</span><span class="p">)</span>
   <span class="o">=</span> <span class="kt">Network</span><span class="o">.</span><span class="kt">HTTP</span><span class="o">.</span><span class="kt">Req</span><span class="o">.</span><span class="kt">Option</span> <span class="p">(</span><span class="kt">Data</span><span class="o">.</span><span class="kt">Monoid</span><span class="o">.</span><span class="kt">Endo</span>
@@ -108,7 +108,9 @@
 <span class="kr">instance</span> <span class="kt">QueryParam</span> <span class="p">(</span><span class="kt">Option</span> <span class="n">scheme</span><span class="p">)</span>
   <span class="c1">-- Defined in ‘Network.HTTP.Req’</span></code></pre></figure>
 
-<p>This is quite a dense bit of information, so let’s unpack it: the <code class="highlighter-rouge">data ..</code> line shows the actual implementation of <code class="highlighter-rouge">Option</code> (which is normally hidden from the user), and the next two lines list what typeclass instances this type satisfies; there we see <code class="highlighter-rouge">Monoid</code> and <code class="highlighter-rouge">QueryParam</code>. The monoid property is extremely useful because it provides a type with a “neutral element” (<code class="highlighter-rouge">mempty</code>) and with a binary operation (<code class="highlighter-rouge">mappend</code>) with some closure property (if <code class="highlighter-rouge">a</code> and <code class="highlighter-rouge">b</code> are values of a Monoid type, <code class="highlighter-rouge">mappend a b</code> is of Monoid type as well).</p>
+<p>This is quite a dense bit of information, so let’s unpack it: the <code class="highlighter-rouge">data ..</code> line shows the actual implementation of <code class="highlighter-rouge">Option</code> (which is normally hidden from the user), and the next two lines list what typeclass instances this type satisfies; there we see <code class="highlighter-rouge">Monoid</code> and <code class="highlighter-rouge">QueryParam</code>. The Monoid instance is extremely useful because it provides a type with a “neutral element” (<code class="highlighter-rouge">mempty</code>) and with a binary operation (<code class="highlighter-rouge">mappend</code>) with some closure property (if <code class="highlighter-rouge">a</code> and <code class="highlighter-rouge">b</code> are values of a Monoid type, <code class="highlighter-rouge">mappend a b</code> is of Monoid type as well).</p>
+
+<p>Strings of texts are one familiar example of things with the Monoid property: the empty string (“”) is the neutral element, and appending two strings (<code class="highlighter-rouge">++</code>) is a binary and associative operation, corresponding to <code class="highlighter-rouge">mappend</code>. Another example is 0 and integer addition, or 1 and integer multiplication.</p>
 
 
   </article>
