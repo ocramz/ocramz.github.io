@@ -81,7 +81,7 @@
 
 <p>This should be mentally read: “the type <code class="highlighter-rouge">response</code> must be an instance of the <code class="highlighter-rouge">HttpResponse</code> class, <code class="highlighter-rouge">body</code> and <code class="highlighter-rouge">method</code> are jointly constrained by <code class="highlighter-rouge">HttpBodyAllowed</code> ..”, etc.</p>
 
-<p>As soon as we populate all of <code class="highlighter-rouge">req</code>’s parameter slots, the typechecker infers a more concrete (and understandable) type signature. The following example declares a GET request to a certain address, containing no body or request parameters, and requires that the response be returned as a “lazy” <a href="http://hackage.haskell.org/packages/bytestring"><code class="highlighter-rouge">bytestring</code></a>.</p>
+<p>As soon as we populate all of <code class="highlighter-rouge">req</code>’s parameter slots, the typechecker infers a more concrete (and understandable) type signature. The following example declares a GET request to a certain address, containing no body or parameters, and requires that the response be returned as a “lazy” <a href="http://hackage.haskell.org/packages/bytestring"><code class="highlighter-rouge">bytestring</code></a>.</p>
 
 <figure class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="n">requestGet</span> <span class="o">::</span> <span class="kt">MonadHttp</span> <span class="n">m</span> <span class="o">=&gt;</span> <span class="n">m</span> <span class="kt">LB</span><span class="o">.</span><span class="kt">ByteString</span>
 <span class="n">requestGet</span> <span class="o">=</span> <span class="kr">do</span>
@@ -92,6 +92,8 @@
       <span class="n">lbsResponse</span>
       <span class="n">mempty</span>
    <span class="n">return</span> <span class="o">$</span> <span class="n">responseBody</span> <span class="n">r</span>   </code></pre></figure>
+
+<p>The above already requires the user to be familiar with typeclasses, lazy evaluation and a couple standard typeclasses (Monoid and Monad).</p>
 
 
   </article>

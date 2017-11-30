@@ -27,7 +27,7 @@ req :: (HttpResponse response, HttpBody body, HttpMethod method,
 
 This should be mentally read: "the type `response` must be an instance of the `HttpResponse` class, `body` and `method` are jointly constrained by `HttpBodyAllowed` ..", etc.
 
-As soon as we populate all of `req`'s parameter slots, the typechecker infers a more concrete (and understandable) type signature. The following example declares a GET request to a certain address, containing no body or request parameters, and requires that the response be returned as a "lazy" [`bytestring`](http://hackage.haskell.org/packages/bytestring).
+As soon as we populate all of `req`'s parameter slots, the typechecker infers a more concrete (and understandable) type signature. The following example declares a GET request to a certain address, containing no body or parameters, and requires that the response be returned as a "lazy" [`bytestring`](http://hackage.haskell.org/packages/bytestring).
 
 
 {% highlight haskell %}
@@ -41,6 +41,8 @@ requestGet = do
       mempty
    return $ responseBody r   
 {% endhighlight %}
+
+The above already requires the user to be familiar with typeclasses, lazy evaluation and a couple standard typeclasses (Monoid and Monad).
 
 
 
