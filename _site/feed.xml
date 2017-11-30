@@ -6,8 +6,8 @@
 </description>
     <link>https://ocramz.github.io/</link>
     <atom:link href="https://ocramz.github.io/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Thu, 30 Nov 2017 19:52:35 +0100</pubDate>
-    <lastBuildDate>Thu, 30 Nov 2017 19:52:35 +0100</lastBuildDate>
+    <pubDate>Thu, 30 Nov 2017 19:58:14 +0100</pubDate>
+    <lastBuildDate>Thu, 30 Nov 2017 19:58:14 +0100</lastBuildDate>
     <generator>Jekyll v3.6.2</generator>
     
       <item>
@@ -77,6 +77,8 @@
 &lt;p&gt;It’s important to note that &lt;code class=&quot;highlighter-rouge&quot;&gt;a&lt;/code&gt;, the return type of &lt;code class=&quot;highlighter-rouge&quot;&gt;handleHttpException&lt;/code&gt;, is not constrained in any way but may be made to contain whatever information required by the rest of our program logic.&lt;/p&gt;
 
 &lt;p&gt;We also see that the parametric type &lt;code class=&quot;highlighter-rouge&quot;&gt;m&lt;/code&gt; is further required to have a &lt;code class=&quot;highlighter-rouge&quot;&gt;MonadIO&lt;/code&gt; instance. Fine, web connections are one form of I/O, so this makes some sense. What may be novel to some readers is that rather than being in the usual form &lt;code class=&quot;highlighter-rouge&quot;&gt;.. -&amp;gt; IO a&lt;/code&gt;, the computation is “lifted” to the MonadIO class, thus taking the form &lt;code class=&quot;highlighter-rouge&quot;&gt;MonadIO m =&amp;gt; .. -&amp;gt; m a&lt;/code&gt;. It’s as if we went from saying “something of this type” to “something of a type that satisfies this property” (or “that can perform this effect”).&lt;/p&gt;
+
+&lt;p&gt;This typeclass encodes exactly this: since HTTP connections are a form of I/O, the &lt;code class=&quot;highlighter-rouge&quot;&gt;MonadHttp&lt;/code&gt; constraint &lt;em&gt;entails&lt;/em&gt; the &lt;code class=&quot;highlighter-rouge&quot;&gt;MonadIO&lt;/code&gt; constraint; every type &lt;code class=&quot;highlighter-rouge&quot;&gt;m&lt;/code&gt; that has a &lt;code class=&quot;highlighter-rouge&quot;&gt;MonadHttp&lt;/code&gt; instance &lt;em&gt;must&lt;/em&gt; also declare a &lt;code class=&quot;highlighter-rouge&quot;&gt;MonadIO&lt;/code&gt; instance (the compiler will complain otherwise).&lt;/p&gt;
 
 &lt;p&gt;We’ll learn about the implications of this style in the next section.&lt;/p&gt;
 

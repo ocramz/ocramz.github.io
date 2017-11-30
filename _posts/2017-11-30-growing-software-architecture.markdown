@@ -88,6 +88,8 @@ It's important to note that `a`, the return type of `handleHttpException`, is no
 
 We also see that the parametric type `m` is further required to have a `MonadIO` instance. Fine, web connections are one form of I/O, so this makes some sense. What may be novel to some readers is that rather than being in the usual form `.. -> IO a`, the computation is "lifted" to the MonadIO class, thus taking the form `MonadIO m => .. -> m a`. It's as if we went from saying "something of this type" to "something of a type that satisfies this property" (or "that can perform this effect").
 
+This typeclass encodes exactly this: since HTTP connections are a form of I/O, the `MonadHttp` constraint _entails_ the `MonadIO` constraint; every type `m` that has a `MonadHttp` instance _must_ also declare a `MonadIO` instance (the compiler will complain otherwise).
+
 We'll learn about the implications of this style in the next section.
 
 
