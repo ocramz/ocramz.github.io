@@ -71,7 +71,7 @@
 
 <p>My biggest hope is to help beginning Haskellers wrap their heads around a few useful concepts, libraries and good practices, while grounding the examples in a concrete project rather than toy code.</p>
 
-<p>In practical terms, this post will show how to perform HTTP calls, use types, typeclasses and monad transformers to manage application complexity and some aspects of exception handling.</p>
+<p>In practical terms, this post will show how to perform HTTP calls and one possible use of types, typeclasses and monad transformers to manage application complexity.</p>
 
 <p>Enjoy!</p>
 
@@ -161,7 +161,7 @@
 
 <p>The first type parameter, <code class="highlighter-rouge">c</code>, denotes the API provider “label”, and the second parameter represents the result type of the computation.</p>
 
-<p>Now, we need a way of saying “for each provider <code class="highlighter-rouge">c</code>, I need a specific set of <code class="highlighter-rouge">Credentials</code>, and I will receive a specific type of <code class="highlighter-rouge">Token</code> in return”; the <code class="highlighter-rouge">TypeFamilies</code> language extension lets us do just that :</p>
+<p>Now, we need a way of saying “for each provider <code class="highlighter-rouge">c</code>, I need a specific set of <code class="highlighter-rouge">Credentials</code>, and I will receive a specific type of <code class="highlighter-rouge">Token</code> in return”; the TypeFamilies language extension lets us do just that :</p>
 
 <figure class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="cp">{-# language TypeFamilies #-}</span>
 
@@ -190,7 +190,7 @@
 
 <p>The body of a <code class="highlighter-rouge">Cloud</code> computation is something which can <em>read</em> the data in <code class="highlighter-rouge">Handle</code> (for example the <code class="highlighter-rouge">credentials</code> or the <code class="highlighter-rouge">token</code>) and perform some I/O such as connecting to the provider. <code class="highlighter-rouge">ReaderT</code> is the “reader” <a href="https://wiki.haskell.org/All_About_Monads#Monad_transformers">monad transformer</a>, in this case stacked “on top” of IO. A monad transformer is a very handy way of interleaving effects, and a number of the most common ones are conveniently implemented in the <a href="https://hackage.haskell.org/package/mtl"><code class="highlighter-rouge">mtl</code></a> and <a href="https://hackage.haskell.org/package/transformers"><code class="highlighter-rouge">transformers</code></a> libraries.</p>
 
-<p>The <code class="highlighter-rouge">GeneralizedNewtypeDeriving</code> language extension is necessary to make the compiler derive the Functor, Applicative and Monad instances for <code class="highlighter-rouge">Cloud</code>, which are very convenient for composing such computations together.</p>
+<p>The GeneralizedNewtypeDeriving language extension is necessary to make the compiler derive the Functor, Applicative and Monad instances for <code class="highlighter-rouge">Cloud</code>, which are very convenient for composing such computations together.</p>
 
 <p>We may think of <code class="highlighter-rouge">Cloud c a</code> as an “environment” or “context” within which our networking logic gets executed. In more concrete terms, a <code class="highlighter-rouge">Cloud</code> computation needs to:</p>
 
@@ -214,21 +214,25 @@
 
 <p>If, as we said, our <code class="highlighter-rouge">Cloud c a</code> type is enriched with these same instances, a complicated set of constraints such as</p>
 
-<figure class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="n">requestToken</span> <span class="o">::</span> <span class="p">(</span><span class="kt">MonadReader</span> <span class="kt">TokenCredentials</span> <span class="n">m</span><span class="p">,</span> <span class="kt">MonadThrow</span> <span class="n">m</span><span class="p">,</span> <span class="kt">MonadHttp</span> <span class="n">m</span><span class="p">,</span> <span class="kt">MonadRandom</span> <span class="n">m</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="n">m</span> <span class="kt">OAuth2Token</span></code></pre></figure>
+<figure class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="n">requestTokenProvider1</span> <span class="o">::</span> <span class="p">(</span><span class="kt">MonadReader</span> <span class="kt">TokenCredentials</span> <span class="n">m</span><span class="p">,</span> <span class="kt">MonadThrow</span> <span class="n">m</span><span class="p">,</span> <span class="kt">MonadHttp</span> <span class="n">m</span><span class="p">,</span> <span class="kt">MonadRandom</span> <span class="n">m</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="n">m</span> <span class="kt">OAuth2Token</span></code></pre></figure>
 
 <p>might be rewritten as the more informative</p>
 
-<figure class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="n">requestToken</span> <span class="o">::</span> <span class="kt">HasCredentials</span> <span class="n">c</span> <span class="o">=&gt;</span> <span class="kt">Cloud</span> <span class="n">c</span> <span class="kt">OAuth2Token</span></code></pre></figure>
+<figure class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="n">requestTokenProvider1</span> <span class="o">::</span> <span class="kt">Cloud</span> <span class="kt">Provider1</span> <span class="kt">OAuth2Token</span></code></pre></figure>
 
 <h1 id="long-overdue-aside--why-bother-">Long overdue aside : why bother ?</h1>
 
 <p>This highly polymorphic way of writing functions might feel alien at first, but it lets us be as general <em>or</em> precise as we need to. In particular, one of the initial requirements I mentioned was the ability to talk independently about these external data providers, since each has a distinct behaviour and requires different information, but under one same interface.</p>
 
-<p>The <code class="highlighter-rouge">Cloud c a</code> type is this interface. The parametrization over provider type <code class="highlighter-rouge">c</code> lets us provide independent implementations of the HTTP exception handling code, for example:</p>
+<p>The <code class="highlighter-rouge">Cloud c a</code> type is this interface. The parametrization over provider type <code class="highlighter-rouge">c</code> lets us declare the associated authentication types (with TypeFamilies) and separate implementations of the HTTP exception handling code, for example:</p>
 
 <figure class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="cp">{-# language FlexibleInstances #-}</span>
 
 <span class="kr">data</span> <span class="kt">Provider1</span>
+
+<span class="kr">instance</span> <span class="kt">HasCredentials</span> <span class="kt">Provider1</span> <span class="kr">where</span>
+  <span class="kr">type</span> <span class="kt">Credentials</span> <span class="kt">Provider1</span> <span class="o">=</span> <span class="kt">TokenCredentials</span>
+  <span class="kr">type</span> <span class="kt">Token</span> <span class="kt">Provider1</span> <span class="o">=</span> <span class="kt">OAuth2Token</span>
 
 <span class="kr">instance</span> <span class="kt">MonadHttp</span> <span class="p">(</span><span class="kt">Cloud</span> <span class="kt">Provider1</span><span class="p">)</span> <span class="kr">where</span>
   <span class="n">handleHttpException</span> <span class="n">e</span> <span class="o">=</span> <span class="o">...</span>
@@ -238,7 +242,9 @@
 <span class="kr">data</span> <span class="kt">Provider2</span>
 
 <span class="kr">instance</span> <span class="kt">MonadHttp</span> <span class="p">(</span><span class="kt">Cloud</span> <span class="kt">Provider2</span><span class="p">)</span> <span class="kr">where</span>
-  <span class="n">handleHttpException</span> <span class="n">e</span> <span class="o">=</span> <span class="o">...</span></code></pre></figure>
+  <span class="n">handleHttpException</span> <span class="n">e</span> <span class="o">=</span> <span class="o">...</span>
+
+<span class="o">...</span></code></pre></figure>
 
 <p>while all the behaviour which is <em>shared</em> by all providers can be conveniently written once and for all (for example, random number generation) :</p>
 
@@ -256,11 +262,18 @@
 
 <p>Since <code class="highlighter-rouge">Cloud</code> is an instance of Monad we can chain any number of such computations within a <code class="highlighter-rouge">do</code> block and wrap the overall computation in a <code class="highlighter-rouge">runCloudIO</code> call, which produces the result:</p>
 
-<figure class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="n">total</span> <span class="n">hdl</span> <span class="o">=</span> <span class="n">runCloudIO</span> <span class="n">hdl</span> <span class="o">$</span> <span class="kr">do</span> 
+<figure class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="n">total</span> <span class="o">::</span> <span class="kt">HasCredentials</span> <span class="n">c</span> <span class="o">=&gt;</span> <span class="kt">Handle</span> <span class="n">c</span> <span class="o">-&gt;</span> <span class="kt">IO</span> <span class="n">a</span>
+<span class="n">total</span> <span class="n">hdl</span> <span class="o">=</span> <span class="n">runCloudIO</span> <span class="n">hdl</span> <span class="o">$</span> <span class="kr">do</span> 
    <span class="n">c</span> <span class="o">&lt;-</span> <span class="n">cloudAuth</span>
    <span class="n">cloud2</span> <span class="n">c</span>
    <span class="n">d</span> <span class="o">&lt;-</span> <span class="n">cloud3</span> <span class="n">c</span>
    <span class="o">...</span></code></pre></figure>
+
+<hr />
+
+<p>This post is already pretty long so I will close it here, but there are a number of other topics that I care about and deserve a type-friendly treatment, for example exception handling and concurrency. There are a number of extremely interesting libraries such as <code class="highlighter-rouge">async</code> and <code class="highlighter-rouge">stm</code> that are a pleasure to work with.</p>
+
+<p>Thank you for reading this far, I hope you enjoyed it and got something out of it. Feel free to reach out on twitter with feedback, comments, etc. Those are always welcome!</p>
 
 
   </article>

@@ -6,8 +6,8 @@
 </description>
     <link>https://ocramz.github.io/</link>
     <atom:link href="https://ocramz.github.io/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Thu, 30 Nov 2017 22:42:34 +0100</pubDate>
-    <lastBuildDate>Thu, 30 Nov 2017 22:42:34 +0100</lastBuildDate>
+    <pubDate>Thu, 30 Nov 2017 22:56:26 +0100</pubDate>
+    <lastBuildDate>Thu, 30 Nov 2017 22:56:26 +0100</lastBuildDate>
     <generator>Jekyll v3.6.2</generator>
     
       <item>
@@ -18,7 +18,7 @@
 
 &lt;p&gt;My biggest hope is to help beginning Haskellers wrap their heads around a few useful concepts, libraries and good practices, while grounding the examples in a concrete project rather than toy code.&lt;/p&gt;
 
-&lt;p&gt;In practical terms, this post will show how to perform HTTP calls, use types, typeclasses and monad transformers to manage application complexity and some aspects of exception handling.&lt;/p&gt;
+&lt;p&gt;In practical terms, this post will show how to perform HTTP calls and one possible use of types, typeclasses and monad transformers to manage application complexity.&lt;/p&gt;
 
 &lt;p&gt;Enjoy!&lt;/p&gt;
 
@@ -108,7 +108,7 @@
 
 &lt;p&gt;The first type parameter, &lt;code class=&quot;highlighter-rouge&quot;&gt;c&lt;/code&gt;, denotes the API provider “label”, and the second parameter represents the result type of the computation.&lt;/p&gt;
 
-&lt;p&gt;Now, we need a way of saying “for each provider &lt;code class=&quot;highlighter-rouge&quot;&gt;c&lt;/code&gt;, I need a specific set of &lt;code class=&quot;highlighter-rouge&quot;&gt;Credentials&lt;/code&gt;, and I will receive a specific type of &lt;code class=&quot;highlighter-rouge&quot;&gt;Token&lt;/code&gt; in return”; the &lt;code class=&quot;highlighter-rouge&quot;&gt;TypeFamilies&lt;/code&gt; language extension lets us do just that :&lt;/p&gt;
+&lt;p&gt;Now, we need a way of saying “for each provider &lt;code class=&quot;highlighter-rouge&quot;&gt;c&lt;/code&gt;, I need a specific set of &lt;code class=&quot;highlighter-rouge&quot;&gt;Credentials&lt;/code&gt;, and I will receive a specific type of &lt;code class=&quot;highlighter-rouge&quot;&gt;Token&lt;/code&gt; in return”; the TypeFamilies language extension lets us do just that :&lt;/p&gt;
 
 &lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-haskell&quot; data-lang=&quot;haskell&quot;&gt;&lt;span class=&quot;cp&quot;&gt;{-# language TypeFamilies #-}&lt;/span&gt;
 
@@ -137,7 +137,7 @@
 
 &lt;p&gt;The body of a &lt;code class=&quot;highlighter-rouge&quot;&gt;Cloud&lt;/code&gt; computation is something which can &lt;em&gt;read&lt;/em&gt; the data in &lt;code class=&quot;highlighter-rouge&quot;&gt;Handle&lt;/code&gt; (for example the &lt;code class=&quot;highlighter-rouge&quot;&gt;credentials&lt;/code&gt; or the &lt;code class=&quot;highlighter-rouge&quot;&gt;token&lt;/code&gt;) and perform some I/O such as connecting to the provider. &lt;code class=&quot;highlighter-rouge&quot;&gt;ReaderT&lt;/code&gt; is the “reader” &lt;a href=&quot;https://wiki.haskell.org/All_About_Monads#Monad_transformers&quot;&gt;monad transformer&lt;/a&gt;, in this case stacked “on top” of IO. A monad transformer is a very handy way of interleaving effects, and a number of the most common ones are conveniently implemented in the &lt;a href=&quot;https://hackage.haskell.org/package/mtl&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;mtl&lt;/code&gt;&lt;/a&gt; and &lt;a href=&quot;https://hackage.haskell.org/package/transformers&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;transformers&lt;/code&gt;&lt;/a&gt; libraries.&lt;/p&gt;
 
-&lt;p&gt;The &lt;code class=&quot;highlighter-rouge&quot;&gt;GeneralizedNewtypeDeriving&lt;/code&gt; language extension is necessary to make the compiler derive the Functor, Applicative and Monad instances for &lt;code class=&quot;highlighter-rouge&quot;&gt;Cloud&lt;/code&gt;, which are very convenient for composing such computations together.&lt;/p&gt;
+&lt;p&gt;The GeneralizedNewtypeDeriving language extension is necessary to make the compiler derive the Functor, Applicative and Monad instances for &lt;code class=&quot;highlighter-rouge&quot;&gt;Cloud&lt;/code&gt;, which are very convenient for composing such computations together.&lt;/p&gt;
 
 &lt;p&gt;We may think of &lt;code class=&quot;highlighter-rouge&quot;&gt;Cloud c a&lt;/code&gt; as an “environment” or “context” within which our networking logic gets executed. In more concrete terms, a &lt;code class=&quot;highlighter-rouge&quot;&gt;Cloud&lt;/code&gt; computation needs to:&lt;/p&gt;
 
@@ -161,21 +161,25 @@
 
 &lt;p&gt;If, as we said, our &lt;code class=&quot;highlighter-rouge&quot;&gt;Cloud c a&lt;/code&gt; type is enriched with these same instances, a complicated set of constraints such as&lt;/p&gt;
 
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-haskell&quot; data-lang=&quot;haskell&quot;&gt;&lt;span class=&quot;n&quot;&gt;requestToken&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;::&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;MonadReader&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;TokenCredentials&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;m&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;MonadThrow&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;m&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;MonadHttp&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;m&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;MonadRandom&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;m&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;m&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;OAuth2Token&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-haskell&quot; data-lang=&quot;haskell&quot;&gt;&lt;span class=&quot;n&quot;&gt;requestTokenProvider1&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;::&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;MonadReader&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;TokenCredentials&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;m&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;MonadThrow&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;m&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;MonadHttp&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;m&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;MonadRandom&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;m&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;m&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;OAuth2Token&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
 &lt;p&gt;might be rewritten as the more informative&lt;/p&gt;
 
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-haskell&quot; data-lang=&quot;haskell&quot;&gt;&lt;span class=&quot;n&quot;&gt;requestToken&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;::&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;HasCredentials&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;c&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Cloud&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;c&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;OAuth2Token&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-haskell&quot; data-lang=&quot;haskell&quot;&gt;&lt;span class=&quot;n&quot;&gt;requestTokenProvider1&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;::&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Cloud&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Provider1&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;OAuth2Token&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
 &lt;h1 id=&quot;long-overdue-aside--why-bother-&quot;&gt;Long overdue aside : why bother ?&lt;/h1&gt;
 
 &lt;p&gt;This highly polymorphic way of writing functions might feel alien at first, but it lets us be as general &lt;em&gt;or&lt;/em&gt; precise as we need to. In particular, one of the initial requirements I mentioned was the ability to talk independently about these external data providers, since each has a distinct behaviour and requires different information, but under one same interface.&lt;/p&gt;
 
-&lt;p&gt;The &lt;code class=&quot;highlighter-rouge&quot;&gt;Cloud c a&lt;/code&gt; type is this interface. The parametrization over provider type &lt;code class=&quot;highlighter-rouge&quot;&gt;c&lt;/code&gt; lets us provide independent implementations of the HTTP exception handling code, for example:&lt;/p&gt;
+&lt;p&gt;The &lt;code class=&quot;highlighter-rouge&quot;&gt;Cloud c a&lt;/code&gt; type is this interface. The parametrization over provider type &lt;code class=&quot;highlighter-rouge&quot;&gt;c&lt;/code&gt; lets us declare the associated authentication types (with TypeFamilies) and separate implementations of the HTTP exception handling code, for example:&lt;/p&gt;
 
 &lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-haskell&quot; data-lang=&quot;haskell&quot;&gt;&lt;span class=&quot;cp&quot;&gt;{-# language FlexibleInstances #-}&lt;/span&gt;
 
 &lt;span class=&quot;kr&quot;&gt;data&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Provider1&lt;/span&gt;
+
+&lt;span class=&quot;kr&quot;&gt;instance&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;HasCredentials&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Provider1&lt;/span&gt; &lt;span class=&quot;kr&quot;&gt;where&lt;/span&gt;
+  &lt;span class=&quot;kr&quot;&gt;type&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Credentials&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Provider1&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;TokenCredentials&lt;/span&gt;
+  &lt;span class=&quot;kr&quot;&gt;type&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Token&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Provider1&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;OAuth2Token&lt;/span&gt;
 
 &lt;span class=&quot;kr&quot;&gt;instance&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;MonadHttp&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;Cloud&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Provider1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;kr&quot;&gt;where&lt;/span&gt;
   &lt;span class=&quot;n&quot;&gt;handleHttpException&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;e&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;...&lt;/span&gt;
@@ -185,7 +189,9 @@
 &lt;span class=&quot;kr&quot;&gt;data&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Provider2&lt;/span&gt;
 
 &lt;span class=&quot;kr&quot;&gt;instance&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;MonadHttp&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;Cloud&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Provider2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;kr&quot;&gt;where&lt;/span&gt;
-  &lt;span class=&quot;n&quot;&gt;handleHttpException&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;e&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;...&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+  &lt;span class=&quot;n&quot;&gt;handleHttpException&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;e&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;...&lt;/span&gt;
+
+&lt;span class=&quot;o&quot;&gt;...&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
 &lt;p&gt;while all the behaviour which is &lt;em&gt;shared&lt;/em&gt; by all providers can be conveniently written once and for all (for example, random number generation) :&lt;/p&gt;
 
@@ -203,11 +209,18 @@
 
 &lt;p&gt;Since &lt;code class=&quot;highlighter-rouge&quot;&gt;Cloud&lt;/code&gt; is an instance of Monad we can chain any number of such computations within a &lt;code class=&quot;highlighter-rouge&quot;&gt;do&lt;/code&gt; block and wrap the overall computation in a &lt;code class=&quot;highlighter-rouge&quot;&gt;runCloudIO&lt;/code&gt; call, which produces the result:&lt;/p&gt;
 
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-haskell&quot; data-lang=&quot;haskell&quot;&gt;&lt;span class=&quot;n&quot;&gt;total&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;hdl&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;runCloudIO&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;hdl&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;$&lt;/span&gt; &lt;span class=&quot;kr&quot;&gt;do&lt;/span&gt; 
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-haskell&quot; data-lang=&quot;haskell&quot;&gt;&lt;span class=&quot;n&quot;&gt;total&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;::&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;HasCredentials&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;c&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Handle&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;c&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;IO&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;total&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;hdl&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;runCloudIO&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;hdl&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;$&lt;/span&gt; &lt;span class=&quot;kr&quot;&gt;do&lt;/span&gt; 
    &lt;span class=&quot;n&quot;&gt;c&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;cloudAuth&lt;/span&gt;
    &lt;span class=&quot;n&quot;&gt;cloud2&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;c&lt;/span&gt;
    &lt;span class=&quot;n&quot;&gt;d&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;cloud3&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;c&lt;/span&gt;
    &lt;span class=&quot;o&quot;&gt;...&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;This post is already pretty long so I will close it here, but there are a number of other topics that I care about and deserve a type-friendly treatment, for example exception handling and concurrency. There are a number of extremely interesting libraries such as &lt;code class=&quot;highlighter-rouge&quot;&gt;async&lt;/code&gt; and &lt;code class=&quot;highlighter-rouge&quot;&gt;stm&lt;/code&gt; that are a pleasure to work with.&lt;/p&gt;
+
+&lt;p&gt;Thank you for reading this far, I hope you enjoyed it and got something out of it. Feel free to reach out on twitter with feedback, comments, etc. Those are always welcome!&lt;/p&gt;
 
 </description>
         <pubDate>Thu, 30 Nov 2017 00:00:00 +0100</pubDate>

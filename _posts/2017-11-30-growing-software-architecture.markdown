@@ -12,7 +12,7 @@ This blog post reproduces roughly the presentation, and incorporates some feedba
 
 My biggest hope is to help beginning Haskellers wrap their heads around a few useful concepts, libraries and good practices, while grounding the examples in a concrete project rather than toy code.
 
-In practical terms, this post will show how to perform HTTP calls, use types, typeclasses and monad transformers to manage application complexity and some aspects of exception handling.
+In practical terms, this post will show how to perform HTTP calls and one possible use of types, typeclasses and monad transformers to manage application complexity.
 
 Enjoy!
 
@@ -120,7 +120,7 @@ newtype Cloud c a = ...
 
 The first type parameter, `c`, denotes the API provider "label", and the second parameter represents the result type of the computation.
 
-Now, we need a way of saying "for each provider `c`, I need a specific set of `Credentials`, and I will receive a specific type of `Token` in return"; the `TypeFamilies` language extension lets us do just that :
+Now, we need a way of saying "for each provider `c`, I need a specific set of `Credentials`, and I will receive a specific type of `Token` in return"; the TypeFamilies language extension lets us do just that :
 
 {% highlight haskell %}
 {-# language TypeFamilies #-}
@@ -157,7 +157,7 @@ newtype Cloud c a = Cloud {
 
 The body of a `Cloud` computation is something which can _read_ the data in `Handle` (for example the `credentials` or the `token`) and perform some I/O such as connecting to the provider. `ReaderT` is the "reader" [monad transformer](https://wiki.haskell.org/All_About_Monads#Monad_transformers), in this case stacked "on top" of IO. A monad transformer is a very handy way of interleaving effects, and a number of the most common ones are conveniently implemented in the [`mtl`](https://hackage.haskell.org/package/mtl) and [`transformers`](https://hackage.haskell.org/package/transformers) libraries.
 
-The `GeneralizedNewtypeDeriving` language extension is necessary to make the compiler derive the Functor, Applicative and Monad instances for `Cloud`, which are very convenient for composing such computations together.
+The GeneralizedNewtypeDeriving language extension is necessary to make the compiler derive the Functor, Applicative and Monad instances for `Cloud`, which are very convenient for composing such computations together.
 
 We may think of `Cloud c a` as an "environment" or "context" within which our networking logic gets executed. In more concrete terms, a `Cloud` computation needs to:
 
@@ -182,25 +182,29 @@ This alone already requires our "execution environment" `m` to have three of the
 If, as we said, our `Cloud c a` type is enriched with these same instances, a complicated set of constraints such as
 
 {% highlight haskell %}
-requestToken :: (MonadReader TokenCredentials m, MonadThrow m, MonadHttp m, MonadRandom m) => m OAuth2Token
+requestTokenProvider1 :: (MonadReader TokenCredentials m, MonadThrow m, MonadHttp m, MonadRandom m) => m OAuth2Token
 {% endhighlight %}
 
 might be rewritten as the more informative
 
 {% highlight haskell %}
-requestToken :: HasCredentials c => Cloud c OAuth2Token
+requestTokenProvider1 :: Cloud Provider1 OAuth2Token
 {% endhighlight %}
 
 # Long overdue aside : why bother ?
 
 This highly polymorphic way of writing functions might feel alien at first, but it lets us be as general _or_ precise as we need to. In particular, one of the initial requirements I mentioned was the ability to talk independently about these external data providers, since each has a distinct behaviour and requires different information, but under one same interface.
 
-The `Cloud c a` type is this interface. The parametrization over provider type `c` lets us provide independent implementations of the HTTP exception handling code, for example:
+The `Cloud c a` type is this interface. The parametrization over provider type `c` lets us declare the associated authentication types (with TypeFamilies) and separate implementations of the HTTP exception handling code, for example:
 
 {% highlight haskell %}
 {-# language FlexibleInstances #-}
 
 data Provider1
+
+instance HasCredentials Provider1 where
+  type Credentials Provider1 = TokenCredentials
+  type Token Provider1 = OAuth2Token
 
 instance MonadHttp (Cloud Provider1) where
   handleHttpException e = ...
@@ -211,6 +215,8 @@ data Provider2
 
 instance MonadHttp (Cloud Provider2) where
   handleHttpException e = ...
+
+...
 
 {% endhighlight %}
 
@@ -236,12 +242,25 @@ runCloudIO r (Cloud body) = runReaderT body r
 Since `Cloud` is an instance of Monad we can chain any number of such computations within a `do` block and wrap the overall computation in a `runCloudIO` call, which produces the result:
 
 {% highlight haskell %}
+total :: HasCredentials c => Handle c -> IO a
 total hdl = runCloudIO hdl $ do 
    c <- cloudAuth
    cloud2 c
    d <- cloud3 c
    ...
 {% endhighlight %}
+
+
+-----------------
+
+
+This post is already pretty long so I will close it here, but there are a number of other topics that I care about and deserve a type-friendly treatment, for example exception handling and concurrency. There are a number of extremely interesting libraries such as `async` and `stm` that are a pleasure to work with.
+
+Thank you for reading this far, I hope you enjoyed it and got something out of it. Feel free to reach out on twitter with feedback, comments, etc. Those are always welcome!
+
+
+
+
 
 
 
