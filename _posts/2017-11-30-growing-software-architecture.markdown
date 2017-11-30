@@ -41,7 +41,7 @@ requestGet :: MonadHttp m => m LB.ByteString
 requestGet = do
    r <- req
       GET
-      (http "www.datahaskell.org" /: "docs" /: "community" /: "current-environment.html)
+      (http "www.datahaskell.org" /: "docs" /: "community" /: "current-environment.html")
       NoReqBody
       lbsResponse
       mempty

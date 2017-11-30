@@ -93,11 +93,11 @@
 <span class="n">requestGet</span> <span class="o">=</span> <span class="kr">do</span>
    <span class="n">r</span> <span class="o">&lt;-</span> <span class="n">req</span>
       <span class="kt">GET</span>
-      <span class="p">(</span><span class="n">http</span> <span class="s">"www.datahaskell.org"</span> <span class="o">/:</span> <span class="s">"docs"</span> <span class="o">/:</span> <span class="s">"community"</span> <span class="o">/:</span> <span class="s">"current-environment.html)
-      NoReqBody
-      lbsResponse
-      mempty
-   return $ responseBody r   </span></code></pre></figure>
+      <span class="p">(</span><span class="n">http</span> <span class="s">"www.datahaskell.org"</span> <span class="o">/:</span> <span class="s">"docs"</span> <span class="o">/:</span> <span class="s">"community"</span> <span class="o">/:</span> <span class="s">"current-environment.html"</span><span class="p">)</span>
+      <span class="kt">NoReqBody</span>
+      <span class="n">lbsResponse</span>
+      <span class="n">mempty</span>
+   <span class="n">return</span> <span class="o">$</span> <span class="n">responseBody</span> <span class="n">r</span>   </code></pre></figure>
 
 <p>The above already requires the user to be at least a bit familiar with typeclasses, lazy evaluation and a couple standard typeclasses (ok, just one really: Monoid. The Monad typeclass is implied by structuring the code in a <code class="highlighter-rouge">do</code> block). These are fundamental to Haskell, so it helps seeing them used in context. <code class="highlighter-rouge">req</code> returns in a Monad type because I/O is fundamentally an effect; returning an HTTP response means <em>doing</em> stuff with the network interface, the operating system, and might imply failure of some sort and not return any sensible result, which is distinct from how <em>pure</em> functions behave (i.e. just computing output).</p>
 

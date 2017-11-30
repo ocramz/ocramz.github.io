@@ -6,8 +6,8 @@
 </description>
     <link>https://ocramz.github.io/</link>
     <atom:link href="https://ocramz.github.io/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Thu, 30 Nov 2017 22:41:34 +0100</pubDate>
-    <lastBuildDate>Thu, 30 Nov 2017 22:41:34 +0100</lastBuildDate>
+    <pubDate>Thu, 30 Nov 2017 22:42:34 +0100</pubDate>
+    <lastBuildDate>Thu, 30 Nov 2017 22:42:34 +0100</lastBuildDate>
     <generator>Jekyll v3.6.2</generator>
     
       <item>
@@ -40,11 +40,11 @@
 &lt;span class=&quot;n&quot;&gt;requestGet&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kr&quot;&gt;do&lt;/span&gt;
    &lt;span class=&quot;n&quot;&gt;r&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;req&lt;/span&gt;
       &lt;span class=&quot;kt&quot;&gt;GET&lt;/span&gt;
-      &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;http&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;www.datahaskell.org&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;/:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;docs&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;/:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;community&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;/:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;current-environment.html)
-      NoReqBody
-      lbsResponse
-      mempty
-   return $ responseBody r   &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+      &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;http&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;www.datahaskell.org&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;/:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;docs&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;/:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;community&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;/:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;current-environment.html&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+      &lt;span class=&quot;kt&quot;&gt;NoReqBody&lt;/span&gt;
+      &lt;span class=&quot;n&quot;&gt;lbsResponse&lt;/span&gt;
+      &lt;span class=&quot;n&quot;&gt;mempty&lt;/span&gt;
+   &lt;span class=&quot;n&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;$&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;responseBody&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;r&lt;/span&gt;   &lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
 &lt;p&gt;The above already requires the user to be at least a bit familiar with typeclasses, lazy evaluation and a couple standard typeclasses (ok, just one really: Monoid. The Monad typeclass is implied by structuring the code in a &lt;code class=&quot;highlighter-rouge&quot;&gt;do&lt;/code&gt; block). These are fundamental to Haskell, so it helps seeing them used in context. &lt;code class=&quot;highlighter-rouge&quot;&gt;req&lt;/code&gt; returns in a Monad type because I/O is fundamentally an effect; returning an HTTP response means &lt;em&gt;doing&lt;/em&gt; stuff with the network interface, the operating system, and might imply failure of some sort and not return any sensible result, which is distinct from how &lt;em&gt;pure&lt;/em&gt; functions behave (i.e. just computing output).&lt;/p&gt;
 
