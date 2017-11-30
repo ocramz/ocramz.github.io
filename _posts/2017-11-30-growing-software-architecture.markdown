@@ -223,7 +223,12 @@ instance HasCredentials c => MonadRandom (Cloud c) where
 
 Reducing code duplication while allowing for flexibility where needed, while at the same time having the compiler warn us about every missing or overlapping implementation is a great feature to have for writing software with confidence, I think.
 
-Now we need a declare
+Now we need a function to actually _run_ `Cloud` computations. This is actually trivial: we unpack the `ReaderT (Handle c) IO a` stuff that's within the `Cloud` data constructor and apply it to `runReaderT` which passes in the given `Handle` data, thus configuring the computation:
+
+{% highlight haskell %}
+runCloudIO :: Handle c -> Cloud c a -> IO a
+runCloudIO r (Cloud body) = runReaderT body r
+{% endhighlight %}
 
 
 
