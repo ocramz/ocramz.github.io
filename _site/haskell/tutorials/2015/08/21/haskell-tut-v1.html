@@ -74,8 +74,8 @@
   <li><a href="#data">Datatypes</a></li>
 </ul>
 
-<p><a id="intro"></a> &lt;/a&gt;
-## Introduction</p>
+<p><a id="intro"></a> &lt;/a&gt;</p>
+<h2 id="introduction">Introduction</h2>
 
 <p>The aim of this tutorial is to help develop a working knowledge of functional programming using Haskell as the vessel language; this turns out to require one to digest a certain number of new ideas, and to get acquainted with the terminology to describe them.</p>
 
@@ -83,15 +83,15 @@
 
 <p>Luckily, Haskell comes with an interactive compiler as well (GHCi), and this lets us explore more or less separately the various features of the language.</p>
 
-<p><a id="overview"></a> &lt;/a&gt;
-## The interactive Haskell compiler, GHCi</p>
+<p><a id="overview"></a> &lt;/a&gt;</p>
+<h2 id="the-interactive-haskell-compiler-ghci">The interactive Haskell compiler, GHCi</h2>
 
 <p>In the following we will see an example interactive session with GHCi, to familiarize the reader with the notation and some fundamental concepts of the language. Some familiarity with programming concepts and mathematical notation is required, but the tutorial is intended to be as self-contained as possible (All feedback is very welcome!).</p>
 
-<p>The <code>&gt;</code>character at the start of a line indicates the interpreter prompt, whereas <code>:t</code> is the GHCi macro for requesting the <em>type</em> of an expression.</p>
+<p>The <code class="highlighter-rouge">&gt;</code>character at the start of a line indicates the interpreter prompt, whereas <code class="highlighter-rouge">:t</code> is the GHCi macro for requesting the <em>type</em> of an expression.</p>
 
 <p>If we input an expression that already has a value associated, GHCi computes and prints the expression value on the next line.
-If, on the other hand, we ask for the type of an expression <code>x</code> with <code>:t x</code>, the interpreter outputs this after a double colon.</p>
+If, on the other hand, we ask for the type of an expression <code class="highlighter-rouge">x</code> with <code class="highlighter-rouge">:t x</code>, the interpreter outputs this after a double colon.</p>
 
 <p>N.B.: In function bodies, parentheses are used to group subexpressions that must be evaluated first (as per convention).</p>
 
@@ -103,19 +103,19 @@ the reader is encouraged to install the latest version of the <a href="http://ww
 <p>For those in a hurry, <a href="http://ghc.io">ghc.io</a> provides a “safe” Haskell prompt to e.g. try out one-liners. Longer code can be developed (after a free signup) on <a href="https://www.fpcomplete.com/business/fp-haskell-center/">FPComplete Haskell Center</a>.</p>
 
 <hr />
-<p># First steps with GHCi</p>
+<h1 id="first-steps-with-ghci">First steps with GHCi</h1>
 
 <p>Starting from the very basics :</p>
 
-<div class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="o">&gt;</span> <span class="mi">1</span> <span class="o">+</span> <span class="mi">2</span>
+<figure class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="o">&gt;</span> <span class="mi">1</span> <span class="o">+</span> <span class="mi">2</span>
 <span class="mi">3</span>
 
-<span class="o">&gt;</span> <span class="kt">:</span><span class="n">t</span> <span class="mi">1</span>
-<span class="mi">1</span> <span class="ow">::</span> <span class="kt">Num</span> <span class="n">a</span> <span class="ow">=&gt;</span> <span class="n">a</span></code></pre></div>
+<span class="o">&gt;</span> <span class="o">:</span><span class="n">t</span> <span class="mi">1</span>
+<span class="mi">1</span> <span class="o">::</span> <span class="kt">Num</span> <span class="n">a</span> <span class="o">=&gt;</span> <span class="n">a</span></code></pre></figure>
 
-<p>The two interactions above show an <em>evaluation</em> and a <em>type query</em>, respectively. The former, being a constant expression, evaluates directly to its result (no surprises here), whereas the latter could be understood as “What is the type of <code>1</code>?” “The type of <code>1</code> is <code>a</code>, such that <code>a</code> is an instance of a numerical type (i.e. a number).”</p>
+<p>The two interactions above show an <em>evaluation</em> and a <em>type query</em>, respectively. The former, being a constant expression, evaluates directly to its result (no surprises here), whereas the latter could be understood as “What is the type of <code class="highlighter-rouge">1</code>?” “The type of <code class="highlighter-rouge">1</code> is <code class="highlighter-rouge">a</code>, such that <code class="highlighter-rouge">a</code> is an instance of a numerical type (i.e. a number).”</p>
 
-<p>The actual letter indicating a type in a signature, like <code>a</code> in the previous example, does not matter; distinct letters correspond to different types.</p>
+<p>The actual letter indicating a type in a signature, like <code class="highlighter-rouge">a</code> in the previous example, does not matter; distinct letters correspond to different types.</p>
 
 <blockquote>
   <p>Why is the type signature of something as simple as a number so verbose? 
@@ -123,13 +123,13 @@ Because many things have number-like properties (can be counted, added, subtract
 </blockquote>
 
 <blockquote>
-  <p>If a type is an “instance” of a typeclass such as <code>Num</code>, the corresponding functions to operate “numerically”, e.g. sum, product, absolute value etc., can be used on data objects belonging to it. Equivalently, by making it an instance of <code>Num</code>, we have “stapled” additional numerical functionality onto our type. More about this deep idea in the next sections.</p>
+  <p>If a type is an “instance” of a typeclass such as <code class="highlighter-rouge">Num</code>, the corresponding functions to operate “numerically”, e.g. sum, product, absolute value etc., can be used on data objects belonging to it. Equivalently, by making it an instance of <code class="highlighter-rouge">Num</code>, we have “stapled” additional numerical functionality onto our type. More about this deep idea in the next sections.</p>
 </blockquote>
 
 <p>Let’s interact some more with the interpreter and see what happens:</p>
 
-<div class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="o">&gt;</span> <span class="kt">:</span><span class="n">t</span> <span class="n">pi</span>
-<span class="nf">pi</span> <span class="ow">::</span> <span class="kt">Floating</span> <span class="n">a</span> <span class="ow">=&gt;</span> <span class="n">a</span>
+<figure class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="o">&gt;</span> <span class="o">:</span><span class="n">t</span> <span class="n">pi</span>
+<span class="n">pi</span> <span class="o">::</span> <span class="kt">Floating</span> <span class="n">a</span> <span class="o">=&gt;</span> <span class="n">a</span>
 
 <span class="o">&gt;</span> <span class="n">pi</span>
 <span class="mf">3.141592653589793</span>
@@ -137,99 +137,101 @@ Because many things have number-like properties (can be counted, added, subtract
 <span class="o">&gt;</span> <span class="n">exp</span> <span class="mi">1</span>
 <span class="mf">2.718281828459045</span>
 
-<span class="o">&gt;</span> <span class="kt">:</span><span class="n">t</span> <span class="n">exp</span>
-<span class="nf">exp</span> <span class="ow">::</span> <span class="kt">Floating</span> <span class="n">a</span> <span class="ow">=&gt;</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="n">a</span></code></pre></div>
+<span class="o">&gt;</span> <span class="o">:</span><span class="n">t</span> <span class="n">exp</span>
+<span class="n">exp</span> <span class="o">::</span> <span class="kt">Floating</span> <span class="n">a</span> <span class="o">=&gt;</span> <span class="n">a</span> <span class="o">-&gt;</span> <span class="n">a</span></code></pre></figure>
 
-<p>The exponential <code>exp</code> is a function of a single parameter (a real number, here represented as a <code>Floating</code> point value): <script type="math/tex">y(x) = e ^ x,\; x,y \in \mathbb{R}</script></p>
+<p>The exponential <code class="highlighter-rouge">exp</code> is a function of a single parameter (a real number, here represented as a <code class="highlighter-rouge">Floating</code> point value): <script type="math/tex">y(x) = e ^ x,\; x,y \in \mathbb{R}</script></p>
 
 <blockquote>
-  <p>Why <code>Floating a</code> and not <code>Num a</code>, for instance? Because <code>Num</code> is the most general typeclass of numbers (i.e including fractionals, integers, floats etc.), but transcendental numbers (i.e. having infinite decimal digits) such as <code>pi</code> and <code>exp 1</code> live in a “smaller” set, that is, require a more specialized definition.</p>
+  <p>Why <code class="highlighter-rouge">Floating a</code> and not <code class="highlighter-rouge">Num a</code>, for instance? Because <code class="highlighter-rouge">Num</code> is the most general typeclass of numbers (i.e including fractionals, integers, floats etc.), but transcendental numbers (i.e. having infinite decimal digits) such as <code class="highlighter-rouge">pi</code> and <code class="highlighter-rouge">exp 1</code> live in a “smaller” set, that is, require a more specialized definition.</p>
 </blockquote>
 
 <h1 id="text-characters-tuples-strings-and-lists">Text characters, tuples, strings and lists</h1>
 
-<div class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="o">&gt;</span> <span class="kt">:</span><span class="n">t</span> <span class="n">&#39;a&#39;</span>
-<span class="n">&#39;a&#39;</span> <span class="ow">::</span> <span class="kt">Char</span>
+<figure class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="o">&gt;</span> <span class="o">:</span><span class="n">t</span> <span class="sc">'a'</span>
+<span class="sc">'a'</span> <span class="o">::</span> <span class="kt">Char</span>
 
-<span class="o">&gt;</span> <span class="kt">:</span><span class="n">t</span> <span class="s">&quot;potato&quot;</span>
-<span class="s">&quot;potato&quot;</span> <span class="ow">::</span> <span class="p">[</span><span class="kt">Char</span><span class="p">]</span></code></pre></div>
+<span class="o">&gt;</span> <span class="o">:</span><span class="n">t</span> <span class="s">"potato"</span>
+<span class="s">"potato"</span> <span class="o">::</span> <span class="p">[</span><span class="kt">Char</span><span class="p">]</span></code></pre></figure>
 
-<p>Single characters are to be enclosed in single forward quotes whereas text strings require double quotes. Internally, strings are represented as lists of characters, so the above example is rendered internally as <code>['p','o','t','a','t','o']</code>.</p>
+<p>Single characters are to be enclosed in single forward quotes whereas text strings require double quotes. Internally, strings are represented as lists of characters, so the above example is rendered internally as <code class="highlighter-rouge">['p','o','t','a','t','o']</code>.</p>
 
-<p><em>Tuples</em> are <em>constant-size</em> ordered collections of data, not necessarily of the same type, separated by <code>,</code> and enclosed in <code>(</code> .. <code>)</code> as in</p>
+<p><em>Tuples</em> are <em>constant-size</em> ordered collections of data, not necessarily of the same type, separated by <code class="highlighter-rouge">,</code> and enclosed in <code class="highlighter-rouge">(</code> .. <code class="highlighter-rouge">)</code> as in</p>
 
-<div class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="o">&gt;</span> <span class="kt">:</span><span class="n">t</span> <span class="p">(</span><span class="mi">132</span><span class="p">,</span> <span class="s">&quot;potato&quot;</span><span class="p">)</span>
-<span class="p">(</span><span class="mi">132</span><span class="p">,</span> <span class="s">&quot;potato&quot;</span><span class="p">)</span> <span class="ow">::</span> <span class="kt">Num</span> <span class="n">t</span> <span class="ow">=&gt;</span> <span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="p">[</span><span class="kt">Char</span><span class="p">])</span></code></pre></div>
+<figure class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="o">&gt;</span> <span class="o">:</span><span class="n">t</span> <span class="p">(</span><span class="mi">132</span><span class="p">,</span> <span class="s">"potato"</span><span class="p">)</span>
+<span class="p">(</span><span class="mi">132</span><span class="p">,</span> <span class="s">"potato"</span><span class="p">)</span> <span class="o">::</span> <span class="kt">Num</span> <span class="n">t</span> <span class="o">=&gt;</span> <span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="p">[</span><span class="kt">Char</span><span class="p">])</span></code></pre></figure>
 
 <p><em>Lists</em> are ordered collections of any <em>one</em> valid type of data, a very versatile tool:</p>
 
-<div class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="o">&gt;</span> <span class="kt">:</span><span class="n">t</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span>
-<span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span> <span class="ow">::</span> <span class="kt">Num</span> <span class="n">t</span> <span class="ow">=&gt;</span> <span class="p">[</span><span class="n">t</span><span class="p">]</span>
+<figure class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="o">&gt;</span> <span class="o">:</span><span class="n">t</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span>
+<span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span> <span class="o">::</span> <span class="kt">Num</span> <span class="n">t</span> <span class="o">=&gt;</span> <span class="p">[</span><span class="n">t</span><span class="p">]</span>
 
 <span class="o">&gt;</span> <span class="p">[</span><span class="mi">23</span> <span class="o">..</span> <span class="mi">28</span><span class="p">]</span>
 <span class="p">[</span><span class="mi">23</span><span class="p">,</span><span class="mi">24</span><span class="p">,</span><span class="mi">25</span><span class="p">,</span><span class="mi">26</span><span class="p">,</span><span class="mi">27</span><span class="p">,</span><span class="mi">28</span><span class="p">]</span>
 
-<span class="o">&gt;</span> <span class="p">[</span><span class="n">&#39;b&#39;</span> <span class="o">..</span> <span class="n">&#39;m&#39;</span><span class="p">]</span>
-<span class="s">&quot;bcdefghijklm&quot;</span>
+<span class="o">&gt;</span> <span class="p">[</span><span class="sc">'b'</span> <span class="o">..</span> <span class="sc">'m'</span><span class="p">]</span>
+<span class="s">"bcdefghijklm"</span>
 
-<span class="o">&gt;</span> <span class="kt">:</span><span class="n">t</span> <span class="p">[</span><span class="mi">1</span> <span class="o">..</span><span class="p">]</span>
-<span class="p">[</span><span class="mi">1</span> <span class="o">..</span><span class="p">]</span> <span class="ow">::</span> <span class="p">(</span><span class="kt">Num</span> <span class="n">t</span><span class="p">,</span> <span class="kt">Enum</span> <span class="n">t</span><span class="p">)</span> <span class="ow">=&gt;</span> <span class="p">[</span><span class="n">t</span><span class="p">]</span>
+<span class="o">&gt;</span> <span class="o">:</span><span class="n">t</span> <span class="p">[</span><span class="mi">1</span> <span class="o">..</span><span class="p">]</span>
+<span class="p">[</span><span class="mi">1</span> <span class="o">..</span><span class="p">]</span> <span class="o">::</span> <span class="p">(</span><span class="kt">Num</span> <span class="n">t</span><span class="p">,</span> <span class="kt">Enum</span> <span class="n">t</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">[</span><span class="n">t</span><span class="p">]</span>
 
-<span class="o">&gt;</span> <span class="kt">:</span><span class="n">t</span> <span class="p">[(</span><span class="mi">1</span><span class="p">,</span> <span class="s">&quot;one&quot;</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="s">&quot;two&quot;</span><span class="p">)]</span>
-<span class="p">[(</span><span class="mi">1</span><span class="p">,</span> <span class="s">&quot;one&quot;</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="s">&quot;two&quot;</span><span class="p">)]</span> <span class="ow">::</span> <span class="kt">Num</span> <span class="n">t</span> <span class="ow">=&gt;</span> <span class="p">[(</span><span class="n">t</span><span class="p">,</span> <span class="p">[</span><span class="kt">Char</span><span class="p">])]</span></code></pre></div>
+<span class="o">&gt;</span> <span class="o">:</span><span class="n">t</span> <span class="p">[(</span><span class="mi">1</span><span class="p">,</span> <span class="s">"one"</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="s">"two"</span><span class="p">)]</span>
+<span class="p">[(</span><span class="mi">1</span><span class="p">,</span> <span class="s">"one"</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="s">"two"</span><span class="p">)]</span> <span class="o">::</span> <span class="kt">Num</span> <span class="n">t</span> <span class="o">=&gt;</span> <span class="p">[(</span><span class="n">t</span><span class="p">,</span> <span class="p">[</span><span class="kt">Char</span><span class="p">])]</span></code></pre></figure>
 
 <blockquote>
-  <p>Lists can be infinite in length (thus it is more appropriate to describe them as <em>streams</em>). Among the many other library functions, e.g. <code>take</code>, <code>drop</code> and <code>filter</code> let us query or pick out elements from streams.</p>
+  <p>Lists can be infinite in length (thus it is more appropriate to describe them as <em>streams</em>). Among the many other library functions, e.g. <code class="highlighter-rouge">take</code>, <code class="highlighter-rouge">drop</code> and <code class="highlighter-rouge">filter</code> let us query or pick out elements from streams.</p>
 </blockquote>
 
-<p>N.B.: if you actually decide to evaluate an infinite stream such as <code>[1 ..]</code>, be prepared to interrupt it! (Control-C terminates the execution of a command in Unix-like systems).</p>
+<p>N.B.: if you actually decide to evaluate an infinite stream such as <code class="highlighter-rouge">[1 ..]</code>, be prepared to interrupt it! (Control-C terminates the execution of a command in Unix-like systems).</p>
 
-<p>The <code>take</code> function, as the name implies, takes a few sequential elements from an array (i.e. outputs the first <em>n</em> elements of the array, where <em>n</em> is an integer number):</p>
+<p>The <code class="highlighter-rouge">take</code> function, as the name implies, takes a few sequential elements from an array (i.e. outputs the first <em>n</em> elements of the array, where <em>n</em> is an integer number):</p>
 
-<div class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="o">&gt;</span> <span class="kt">:</span><span class="n">t</span> <span class="n">take</span>
-<span class="nf">take</span> <span class="ow">::</span> <span class="kt">Int</span> <span class="ow">-&gt;</span> <span class="p">[</span><span class="n">a</span><span class="p">]</span> <span class="ow">-&gt;</span> <span class="p">[</span><span class="n">a</span><span class="p">]</span>
+<figure class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="o">&gt;</span> <span class="o">:</span><span class="n">t</span> <span class="n">take</span>
+<span class="n">take</span> <span class="o">::</span> <span class="kt">Int</span> <span class="o">-&gt;</span> <span class="p">[</span><span class="n">a</span><span class="p">]</span> <span class="o">-&gt;</span> <span class="p">[</span><span class="n">a</span><span class="p">]</span>
 
 <span class="o">&gt;</span> <span class="n">take</span> <span class="mi">7</span> <span class="p">[</span><span class="mi">5</span> <span class="o">..</span><span class="p">]</span>
-<span class="p">[</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">8</span><span class="p">,</span><span class="mi">9</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mi">11</span><span class="p">]</span></code></pre></div>
+<span class="p">[</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">8</span><span class="p">,</span><span class="mi">9</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mi">11</span><span class="p">]</span></code></pre></figure>
 
 <blockquote>
-  <p>Function application such as <code>exp 1</code> and <code>take 7 [5..]</code> is so fundamental that Haskell uses a space to denote it, i.e. considering <code>f x y z</code>, <code>f</code> is the function and <code>x</code>, <code>y</code> and <code>z</code> are its arguments.</p>
+  <p>Function application such as <code class="highlighter-rouge">exp 1</code> and <code class="highlighter-rouge">take 7 [5..]</code> is so fundamental that Haskell uses a space to denote it, i.e. considering <code class="highlighter-rouge">f x y z</code>, <code class="highlighter-rouge">f</code> is the function and <code class="highlighter-rouge">x</code>, <code class="highlighter-rouge">y</code> and <code class="highlighter-rouge">z</code> are its arguments.</p>
 </blockquote>
 
 <h1 id="higher-order-functions-partial-application-operator-sections">Higher order functions, partial application, operator sections</h1>
 
-<p>A versatile list-digesting function is <code>filter</code>:</p>
+<p>A versatile list-digesting function is <code class="highlighter-rouge">filter</code>:</p>
 
-<div class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="o">&gt;</span> <span class="kt">:</span><span class="n">t</span> <span class="n">filter</span>
-<span class="nf">filter</span> <span class="ow">::</span> <span class="p">(</span><span class="n">a</span> <span class="ow">-&gt;</span> <span class="kt">Bool</span><span class="p">)</span> <span class="ow">-&gt;</span> <span class="p">[</span><span class="n">a</span><span class="p">]</span> <span class="ow">-&gt;</span> <span class="p">[</span><span class="n">a</span><span class="p">]</span>
+<figure class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="o">&gt;</span> <span class="o">:</span><span class="n">t</span> <span class="n">filter</span>
+<span class="n">filter</span> <span class="o">::</span> <span class="p">(</span><span class="n">a</span> <span class="o">-&gt;</span> <span class="kt">Bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">[</span><span class="n">a</span><span class="p">]</span> <span class="o">-&gt;</span> <span class="p">[</span><span class="n">a</span><span class="p">]</span>
 
 <span class="o">&gt;</span> <span class="n">filter</span> <span class="p">(</span><span class="o">&gt;</span> <span class="mi">2</span><span class="p">)</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mi">9</span><span class="p">,</span><span class="o">-</span><span class="mi">4</span><span class="p">]</span>
 <span class="p">[</span><span class="mi">3</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mi">9</span><span class="p">]</span>
 
-<span class="o">&gt;</span> <span class="n">filter</span> <span class="p">(</span><span class="o">/=</span> <span class="n">&#39;x&#39;</span><span class="p">)</span> <span class="s">&quot;xxxjgxkjg&quot;</span> 
-<span class="s">&quot;jgkjg&quot;</span></code></pre></div>
+<span class="o">&gt;</span> <span class="n">filter</span> <span class="p">(</span><span class="o">/=</span> <span class="sc">'x'</span><span class="p">)</span> <span class="s">"xxxjgxkjg"</span> 
+<span class="s">"jgkjg"</span>
+ </code></pre></figure>
 
-<p><code>filter</code> is our first example of <em>higher order function</em>; it requires as arguments a <em>function</em> of type <code>a -&gt; Bool</code> (a <em>predicate</em>, that is, a function that evaluates to <code>True</code> or <code>False</code>) and a list of <code>a</code>s and returns the subset of the input list that evaluates to <code>True</code>.</p>
+<p><code class="highlighter-rouge">filter</code> is our first example of <em>higher order function</em>; it requires as arguments a <em>function</em> of type <code class="highlighter-rouge">a -&gt; Bool</code> (a <em>predicate</em>, that is, a function that evaluates to <code class="highlighter-rouge">True</code> or <code class="highlighter-rouge">False</code>) and a list of <code class="highlighter-rouge">a</code>s and returns the subset of the input list that evaluates to <code class="highlighter-rouge">True</code>.</p>
 
 <p>In the previous code block, we also see the first examples of <em>operator section</em>:
-<code>(&gt; 2)</code> and <code>(/= 'x')</code>, passed as first argument to <code>filter</code>. 
-The ordering relation <code>(&gt;)</code> is a binary operator (since it compares two values and returns True or False), but <code>(&gt; 2)</code> takes only one argument and returns a Boolean. Instead, <code>(/= 'x')</code> compares its only argument to the constant character <code>'x'</code>.</p>
+<code class="highlighter-rouge">(&gt; 2)</code> and <code class="highlighter-rouge">(/= 'x')</code>, passed as first argument to <code class="highlighter-rouge">filter</code>. 
+The ordering relation <code class="highlighter-rouge">(&gt;)</code> is a binary operator (since it compares two values and returns True or False), but <code class="highlighter-rouge">(&gt; 2)</code> takes only one argument and returns a Boolean. Instead, <code class="highlighter-rouge">(/= 'x')</code> compares its only argument to the constant character <code class="highlighter-rouge">'x'</code>.</p>
 
 <p>The following examples should clarify the idea:</p>
 
-<div class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="kt">:</span><span class="n">t</span> <span class="p">(</span><span class="o">+</span><span class="p">)</span>
-<span class="p">(</span><span class="o">+</span><span class="p">)</span> <span class="ow">::</span> <span class="kt">Num</span> <span class="n">a</span> <span class="ow">=&gt;</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="n">a</span>
+<figure class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="o">:</span><span class="n">t</span> <span class="p">(</span><span class="o">+</span><span class="p">)</span>
+<span class="p">(</span><span class="o">+</span><span class="p">)</span> <span class="o">::</span> <span class="kt">Num</span> <span class="n">a</span> <span class="o">=&gt;</span> <span class="n">a</span> <span class="o">-&gt;</span> <span class="n">a</span> <span class="o">-&gt;</span> <span class="n">a</span>
 
-<span class="o">&gt;</span> <span class="kt">:</span><span class="n">t</span> <span class="p">(</span><span class="o">==</span><span class="p">)</span>
-<span class="p">(</span><span class="o">==</span><span class="p">)</span> <span class="ow">::</span> <span class="kt">Eq</span> <span class="n">a</span> <span class="ow">=&gt;</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="kt">Bool</span>
+<span class="o">&gt;</span> <span class="o">:</span><span class="n">t</span> <span class="p">(</span><span class="o">==</span><span class="p">)</span>
+<span class="p">(</span><span class="o">==</span><span class="p">)</span> <span class="o">::</span> <span class="kt">Eq</span> <span class="n">a</span> <span class="o">=&gt;</span> <span class="n">a</span> <span class="o">-&gt;</span> <span class="n">a</span> <span class="o">-&gt;</span> <span class="kt">Bool</span>
  
-<span class="o">&gt;</span> <span class="kt">:</span><span class="n">t</span> <span class="p">(</span><span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
-<span class="p">(</span><span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="ow">::</span> <span class="kt">Num</span> <span class="n">a</span> <span class="ow">=&gt;</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="n">a</span>
+<span class="o">&gt;</span> <span class="o">:</span><span class="n">t</span> <span class="p">(</span><span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+<span class="p">(</span><span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">::</span> <span class="kt">Num</span> <span class="n">a</span> <span class="o">=&gt;</span> <span class="n">a</span> <span class="o">-&gt;</span> <span class="n">a</span>
 
-<span class="o">&gt;</span> <span class="kt">:</span><span class="n">t</span> <span class="p">(</span><span class="o">==</span> <span class="mi">2</span><span class="p">)</span>
-<span class="p">(</span><span class="o">==</span> <span class="mi">2</span><span class="p">)</span> <span class="ow">::</span> <span class="p">(</span><span class="kt">Num</span> <span class="n">a</span><span class="p">,</span> <span class="kt">Eq</span> <span class="n">a</span><span class="p">)</span> <span class="ow">=&gt;</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="kt">Bool</span></code></pre></div>
+<span class="o">&gt;</span> <span class="o">:</span><span class="n">t</span> <span class="p">(</span><span class="o">==</span> <span class="mi">2</span><span class="p">)</span>
+<span class="p">(</span><span class="o">==</span> <span class="mi">2</span><span class="p">)</span> <span class="o">::</span> <span class="p">(</span><span class="kt">Num</span> <span class="n">a</span><span class="p">,</span> <span class="kt">Eq</span> <span class="n">a</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="n">a</span> <span class="o">-&gt;</span> <span class="kt">Bool</span>
+ </code></pre></figure>
 
-<p>The arithmetic sum <code>(+)</code> and equality comparison <code>(==)</code> functions require two parameters, but fixing the first one to e.g. a constant is equivalent to considering functions of the remaining number of arguments. This is an instance of <em>partial evaluation</em>, ubiquitous in Haskell and very powerful.</p>
+<p>The arithmetic sum <code class="highlighter-rouge">(+)</code> and equality comparison <code class="highlighter-rouge">(==)</code> functions require two parameters, but fixing the first one to e.g. a constant is equivalent to considering functions of the remaining number of arguments. This is an instance of <em>partial evaluation</em>, ubiquitous in Haskell and very powerful.</p>
 
 <blockquote>
   <p>Haskell functions are “curried” by default. This means that N-ary functions (functions of N arguments) can be considered as taking arguments in sequence, rather than all at once.</p>
@@ -243,36 +245,37 @@ The ordering relation <code>(&gt;)</code> is a binary operator (since it compare
   <p>This fundamental tool has many different uses, for example specializing a general function in a few different ways, by introducing very little additional syntax as we will see in the next sections.</p>
 </blockquote>
 
-<p>Operator sections are just shorthand for partial application of infix operators; however the usual caveats for non-commutative functions such as arithmetic division <code>/</code> apply; as the following snippet shows for numbers, “.. over two” and “two over ..” have clearly different meanings.</p>
+<p>Operator sections are just shorthand for partial application of infix operators; however the usual caveats for non-commutative functions such as arithmetic division <code class="highlighter-rouge">/</code> apply; as the following snippet shows for numbers, “.. over two” and “two over ..” have clearly different meanings.</p>
 
-<div class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="o">&gt;</span> <span class="p">(</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span> <span class="mi">3</span>
+<figure class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="o">&gt;</span> <span class="p">(</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span> <span class="mi">3</span>
 <span class="mf">1.5</span>
 
 <span class="o">&gt;</span> <span class="p">(</span><span class="mi">2</span><span class="o">/</span><span class="p">)</span> <span class="mi">3</span>
-<span class="mf">0.6666666666666666</span></code></pre></div>
+<span class="mf">0.6666666666666666</span></code></pre></figure>
 
-<p>Other useful higher-order functions that operate on lists are <code>map</code> and <code>foldr</code>:</p>
+<p>Other useful higher-order functions that operate on lists are <code class="highlighter-rouge">map</code> and <code class="highlighter-rouge">foldr</code>:</p>
 
-<div class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="o">&gt;</span> <span class="kt">:</span><span class="n">t</span> <span class="n">map</span>
-<span class="nf">map</span> <span class="ow">::</span> <span class="p">(</span><span class="n">a</span> <span class="ow">-&gt;</span> <span class="n">b</span><span class="p">)</span> <span class="ow">-&gt;</span> <span class="p">[</span><span class="n">a</span><span class="p">]</span> <span class="ow">-&gt;</span> <span class="p">[</span><span class="n">b</span><span class="p">]</span>
+<figure class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="o">&gt;</span> <span class="o">:</span><span class="n">t</span> <span class="n">map</span>
+<span class="n">map</span> <span class="o">::</span> <span class="p">(</span><span class="n">a</span> <span class="o">-&gt;</span> <span class="n">b</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">[</span><span class="n">a</span><span class="p">]</span> <span class="o">-&gt;</span> <span class="p">[</span><span class="n">b</span><span class="p">]</span>
 
-<span class="o">&gt;</span> <span class="kt">:</span><span class="n">t</span> <span class="n">foldr</span>
-<span class="nf">foldr</span> <span class="ow">::</span> <span class="p">(</span><span class="n">a</span> <span class="ow">-&gt;</span> <span class="n">b</span> <span class="ow">-&gt;</span> <span class="n">b</span><span class="p">)</span> <span class="ow">-&gt;</span> <span class="n">b</span> <span class="ow">-&gt;</span> <span class="p">[</span><span class="n">a</span><span class="p">]</span> <span class="ow">-&gt;</span> <span class="n">b</span></code></pre></div>
+<span class="o">&gt;</span> <span class="o">:</span><span class="n">t</span> <span class="n">foldr</span>
+<span class="n">foldr</span> <span class="o">::</span> <span class="p">(</span><span class="n">a</span> <span class="o">-&gt;</span> <span class="n">b</span> <span class="o">-&gt;</span> <span class="n">b</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">b</span> <span class="o">-&gt;</span> <span class="p">[</span><span class="n">a</span><span class="p">]</span> <span class="o">-&gt;</span> <span class="n">b</span>
+ </code></pre></figure>
 
-<p><code>map</code> can be interpreted right from its signature: given a function from <code>a</code> to <code>b</code>, and a list of <code>a</code>s, it returns a list of <code>b</code>s, obtained by applying the function to every element of the input array.</p>
+<p><code class="highlighter-rouge">map</code> can be interpreted right from its signature: given a function from <code class="highlighter-rouge">a</code> to <code class="highlighter-rouge">b</code>, and a list of <code class="highlighter-rouge">a</code>s, it returns a list of <code class="highlighter-rouge">b</code>s, obtained by applying the function to every element of the input array.</p>
 
-<div class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="o">&gt;</span> <span class="n">map</span> <span class="p">(</span><span class="o">==</span><span class="n">&#39;r&#39;</span><span class="p">)</span> <span class="s">&quot;chirp&quot;</span>
+<figure class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="o">&gt;</span> <span class="n">map</span> <span class="p">(</span><span class="o">==</span><span class="sc">'r'</span><span class="p">)</span> <span class="s">"chirp"</span>
 <span class="p">[</span><span class="kt">False</span><span class="p">,</span><span class="kt">False</span><span class="p">,</span><span class="kt">False</span><span class="p">,</span><span class="kt">True</span><span class="p">,</span><span class="kt">False</span><span class="p">]</span>
 
 <span class="o">&gt;</span> <span class="n">map</span> <span class="p">(</span><span class="o">*</span> <span class="mi">2</span><span class="p">)</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span> <span class="o">..</span> <span class="mi">8</span><span class="p">]</span>
-<span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">8</span><span class="p">,</span><span class="mi">12</span><span class="p">,</span><span class="mi">16</span><span class="p">]</span></code></pre></div>
+<span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">8</span><span class="p">,</span><span class="mi">12</span><span class="p">,</span><span class="mi">16</span><span class="p">]</span></code></pre></figure>
 
-<p><code>foldr</code> is a type of <em>fold</em> that is, an operator which reduces a set of things to a single summary value with a certain policy, i.e. function; it requires a binary function say <code>f</code>, an initial element of type <code>b</code> and a list of <code>a</code>s, and recursively applies <code>f</code> to the current first element of the remaining list and an accumulator value, which is returned as result. For example:</p>
+<p><code class="highlighter-rouge">foldr</code> is a type of <em>fold</em> that is, an operator which reduces a set of things to a single summary value with a certain policy, i.e. function; it requires a binary function say <code class="highlighter-rouge">f</code>, an initial element of type <code class="highlighter-rouge">b</code> and a list of <code class="highlighter-rouge">a</code>s, and recursively applies <code class="highlighter-rouge">f</code> to the current first element of the remaining list and an accumulator value, which is returned as result. For example:</p>
 
-<div class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="o">&gt;</span> <span class="n">foldr</span> <span class="p">(</span><span class="o">+</span><span class="p">)</span> <span class="mi">3</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mi">24</span><span class="p">]</span>
-<span class="mi">42</span></code></pre></div>
+<figure class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="o">&gt;</span> <span class="n">foldr</span> <span class="p">(</span><span class="o">+</span><span class="p">)</span> <span class="mi">3</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mi">24</span><span class="p">]</span>
+<span class="mi">42</span></code></pre></figure>
 
-<p>We will see the implementation of <code>map</code>, <code>foldr</code> and of a few other essential library functions in the following.</p>
+<p>We will see the implementation of <code class="highlighter-rouge">map</code>, <code class="highlighter-rouge">foldr</code> and of a few other essential library functions in the following.</p>
 
 <p>It is very instructive to have a look at the <a href="https://hackage.haskell.org/package/base-4.8.0.0/docs/src/GHC-Base.html">Haskell Prelude</a>, the core library of the language.</p>
 
@@ -282,7 +285,7 @@ The ordering relation <code>(&gt;)</code> is a binary operator (since it compare
 
 <ul>
   <li>types</li>
-  <li>classes of types (a.k.a. <em>typeclasses</em> <code>Num</code>, <code>Floating</code>, <code>Eq</code>, <code>Ord</code> …)</li>
+  <li>classes of types (a.k.a. <em>typeclasses</em> <code class="highlighter-rouge">Num</code>, <code class="highlighter-rouge">Floating</code>, <code class="highlighter-rouge">Eq</code>, <code class="highlighter-rouge">Ord</code> …)</li>
   <li>higher order functions</li>
   <li>partial application, operator sections</li>
 </ul>
@@ -291,26 +294,26 @@ The ordering relation <code>(&gt;)</code> is a binary operator (since it compare
 
 <hr />
 <hr />
-<p><a id="lambda"></a>&lt;/a&gt;
-## Notation for functional programs</p>
+<p><a id="lambda"></a>&lt;/a&gt;</p>
+<h2 id="notation-for-functional-programs">Notation for functional programs</h2>
 
 <blockquote>
   <p>Anonymous expressions (often called “lambda” functions) let us define what a function <em>does</em>, and to separate this from what we choose to call it.</p>
 </blockquote>
 
-<p>They often are used as single-use functions, if a certain functionality is too specific to be given a name; the pattern is <code>\ x -&gt; f x</code>, in which what lies to the left of the arrow is the set of free variables (separated by spaces if more than one), and what lies to the right is an arbitrarily complex function of these and other variables (this might be read “for any given <em>x</em>, give me the result of function <em>f</em> applied on <em>x</em>”, or <script type="math/tex">\forall x, f(x)</script></p>
+<p>They often are used as single-use functions, if a certain functionality is too specific to be given a name; the pattern is <code class="highlighter-rouge">\ x -&gt; f x</code>, in which what lies to the left of the arrow is the set of free variables (separated by spaces if more than one), and what lies to the right is an arbitrarily complex function of these and other variables (this might be read “for any given <em>x</em>, give me the result of function <em>f</em> applied on <em>x</em>”, or <script type="math/tex">\forall x, f(x)</script></p>
 
 <p>The actual syntax to be used in the free variable declaration is a backslash, but it is often pretty-printed (e.g. in Computer Science and Logic textbooks) as a Greek lambda character, as a reminder of its origins in Church’s Lambda Calculus.</p>
 
 <p>Two elementary examples of lambda expressions could be:</p>
 
-<div class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="o">&gt;</span> <span class="kt">:</span><span class="n">t</span> <span class="nf">\</span> <span class="n">x</span> <span class="ow">-&gt;</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">x</span>
-<span class="nf">\</span> <span class="n">x</span> <span class="ow">-&gt;</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">x</span> <span class="ow">::</span> <span class="kt">Num</span> <span class="n">a</span> <span class="ow">=&gt;</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="n">a</span>
+<figure class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="o">&gt;</span> <span class="o">:</span><span class="n">t</span> <span class="nf">\</span> <span class="n">x</span> <span class="o">-&gt;</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">x</span>
+<span class="nf">\</span> <span class="n">x</span> <span class="o">-&gt;</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">x</span> <span class="o">::</span> <span class="kt">Num</span> <span class="n">a</span> <span class="o">=&gt;</span> <span class="n">a</span> <span class="o">-&gt;</span> <span class="n">a</span>
 
-<span class="o">&gt;</span> <span class="kt">:</span><span class="n">t</span> <span class="nf">\</span> <span class="n">x</span> <span class="n">y</span> <span class="ow">-&gt;</span> <span class="n">x</span> <span class="o">+</span> <span class="n">y</span>
-<span class="nf">\</span> <span class="n">x</span> <span class="n">y</span> <span class="ow">-&gt;</span> <span class="n">x</span> <span class="o">+</span> <span class="n">y</span> <span class="ow">::</span> <span class="kt">Num</span> <span class="n">a</span> <span class="ow">=&gt;</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="n">a</span></code></pre></div>
+<span class="o">&gt;</span> <span class="o">:</span><span class="n">t</span> <span class="nf">\</span> <span class="n">x</span> <span class="n">y</span> <span class="o">-&gt;</span> <span class="n">x</span> <span class="o">+</span> <span class="n">y</span>
+<span class="nf">\</span> <span class="n">x</span> <span class="n">y</span> <span class="o">-&gt;</span> <span class="n">x</span> <span class="o">+</span> <span class="n">y</span> <span class="o">::</span> <span class="kt">Num</span> <span class="n">a</span> <span class="o">=&gt;</span> <span class="n">a</span> <span class="o">-&gt;</span> <span class="n">a</span> <span class="o">-&gt;</span> <span class="n">a</span></code></pre></figure>
 
-<p>We should note that, in the snippet above, the Num constraint is introduced by <code>(*)</code> and <code>(+)</code>.</p>
+<p>We should note that, in the snippet above, the Num constraint is introduced by <code class="highlighter-rouge">(*)</code> and <code class="highlighter-rouge">(+)</code>.</p>
 
 <p>In the following, we will implement a few useful functions using only lambda expressions, to demonstrate their versatility and to introduce some key concepts.</p>
 
@@ -318,22 +321,24 @@ The ordering relation <code>(&gt;)</code> is a binary operator (since it compare
 
 <p>This one is pretty self explanatory:</p>
 
-<div class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="o">&gt;</span> <span class="kt">:</span><span class="n">t</span> <span class="nf">\</span> <span class="n">x</span> <span class="ow">-&gt;</span> <span class="n">x</span>
-<span class="nf">\</span> <span class="n">x</span> <span class="ow">-&gt;</span> <span class="n">x</span> <span class="ow">::</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="n">a</span>
+<figure class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="o">&gt;</span> <span class="o">:</span><span class="n">t</span> <span class="nf">\</span> <span class="n">x</span> <span class="o">-&gt;</span> <span class="n">x</span>
+<span class="nf">\</span> <span class="n">x</span> <span class="o">-&gt;</span> <span class="n">x</span> <span class="o">::</span> <span class="n">a</span> <span class="o">-&gt;</span> <span class="n">a</span>
 
-<span class="o">&gt;</span> <span class="kt">:</span><span class="n">t</span> <span class="n">id</span>
-<span class="nf">id</span> <span class="ow">::</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="n">a</span></code></pre></div>
+<span class="o">&gt;</span> <span class="o">:</span><span class="n">t</span> <span class="n">id</span>
+<span class="n">id</span> <span class="o">::</span> <span class="n">a</span> <span class="o">-&gt;</span> <span class="n">a</span>
+ </code></pre></figure>
 
 <h1 id="function-application">Function application</h1>
 <p>If the body of the lambda expression contains function application syntax, we can easily re-create <em>higher order functions</em>, as shown below:</p>
 
-<div class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="o">&gt;</span> <span class="kt">:</span><span class="n">t</span> <span class="nf">\</span> <span class="n">f</span> <span class="n">x</span> <span class="ow">-&gt;</span> <span class="n">f</span> <span class="n">x</span>
-<span class="nf">\</span> <span class="n">f</span> <span class="n">x</span> <span class="ow">-&gt;</span> <span class="n">f</span> <span class="n">x</span> <span class="ow">::</span> <span class="p">(</span><span class="n">a</span> <span class="ow">-&gt;</span> <span class="n">b</span><span class="p">)</span> <span class="ow">-&gt;</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="n">b</span>
+<figure class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="o">&gt;</span> <span class="o">:</span><span class="n">t</span> <span class="nf">\</span> <span class="n">f</span> <span class="n">x</span> <span class="o">-&gt;</span> <span class="n">f</span> <span class="n">x</span>
+<span class="nf">\</span> <span class="n">f</span> <span class="n">x</span> <span class="o">-&gt;</span> <span class="n">f</span> <span class="n">x</span> <span class="o">::</span> <span class="p">(</span><span class="n">a</span> <span class="o">-&gt;</span> <span class="n">b</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">a</span> <span class="o">-&gt;</span> <span class="n">b</span>
 
-<span class="o">&gt;</span> <span class="kt">:</span><span class="n">t</span> <span class="p">(</span><span class="o">$</span><span class="p">)</span>
-<span class="p">(</span><span class="o">$</span><span class="p">)</span> <span class="ow">::</span> <span class="p">(</span><span class="n">a</span> <span class="ow">-&gt;</span> <span class="n">b</span><span class="p">)</span> <span class="ow">-&gt;</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="n">b</span></code></pre></div>
+<span class="o">&gt;</span> <span class="o">:</span><span class="n">t</span> <span class="p">(</span><span class="o">$</span><span class="p">)</span>
+<span class="p">(</span><span class="o">$</span><span class="p">)</span> <span class="o">::</span> <span class="p">(</span><span class="n">a</span> <span class="o">-&gt;</span> <span class="n">b</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">a</span> <span class="o">-&gt;</span> <span class="n">b</span>
+ </code></pre></figure>
 
-<p>The library function <code>($)</code> captures the function application pattern shown in the definition above it.</p>
+<p>The library function <code class="highlighter-rouge">($)</code> captures the function application pattern shown in the definition above it.</p>
 
 <blockquote>
   <p>As the first example above shows, <strong>some function arguments are inferred to be functions by how they are used in the body</strong> of the (anonymous) function.</p>
@@ -345,27 +350,27 @@ The ordering relation <code>(&gt;)</code> is a binary operator (since it compare
 
 <p>As an example, we can apply the ``squared’’ function to an arbitrary value:</p>
 
-<div class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="o">&gt;</span> <span class="p">(</span><span class="o">$</span><span class="p">)</span> <span class="p">(</span><span class="nf">\</span> <span class="n">x</span> <span class="ow">-&gt;</span> <span class="n">x</span><span class="o">^</span><span class="mi">2</span><span class="p">)</span> <span class="mf">0.98</span>
-<span class="mf">0.9603999999999999</span></code></pre></div>
+<figure class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="o">&gt;</span> <span class="p">(</span><span class="o">$</span><span class="p">)</span> <span class="p">(</span><span class="nf">\</span> <span class="n">x</span> <span class="o">-&gt;</span> <span class="n">x</span><span class="o">^</span><span class="mi">2</span><span class="p">)</span> <span class="mf">0.98</span>
+<span class="mf">0.9603999999999999</span></code></pre></figure>
 
 <h1 id="function-composition">Function composition</h1>
 
 <p>What does it mean to “compose functions”? If we think of a function as a machine on a factory floor, feeding the output of one (<em>g</em>, say)  into the input of the next (which we can call <em>f</em>) is a form of composition. This of course only works if the <em>f</em> is designed to work on the outputs of <em>g</em> (you wouldn’t want to plug a grinder to an Easter egg packaging machine, for example).</p>
 
-<p>The <em>composition</em> of <em>f</em> and <em>g</em>, written <code>f . g</code> in Haskell and  <script type="math/tex">f \circ g</script> in mathematical literature, is itself a function, taking <code>g</code>’s input type and returning <code>f</code>’s result type. It’s as if we welded the two machines together, and obtained a new, more complex machine as a result. (However the Haskell compiler, when types are aligned, does a great job of simplifying out the “seam”).</p>
+<p>The <em>composition</em> of <em>f</em> and <em>g</em>, written <code class="highlighter-rouge">f . g</code> in Haskell and  <script type="math/tex">f \circ g</script> in mathematical literature, is itself a function, taking <code class="highlighter-rouge">g</code>’s input type and returning <code class="highlighter-rouge">f</code>’s result type. It’s as if we welded the two machines together, and obtained a new, more complex machine as a result. (However the Haskell compiler, when types are aligned, does a great job of simplifying out the “seam”).</p>
 
-<p>Here is a nested function application pattern, and below it the type signature of the corresponding library function <code>(.)</code>:</p>
+<p>Here is a nested function application pattern, and below it the type signature of the corresponding library function <code class="highlighter-rouge">(.)</code>:</p>
 
-<div class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="o">&gt;</span> <span class="kt">:</span><span class="n">t</span> <span class="nf">\</span> <span class="n">f</span> <span class="n">g</span> <span class="n">x</span> <span class="ow">-&gt;</span> <span class="n">f</span> <span class="p">(</span><span class="n">g</span> <span class="n">x</span><span class="p">)</span>
-<span class="nf">\</span> <span class="n">f</span> <span class="n">g</span> <span class="n">x</span><span class="ow">-&gt;</span> <span class="n">f</span> <span class="p">(</span><span class="n">g</span> <span class="n">x</span><span class="p">)</span> <span class="ow">::</span> <span class="p">(</span><span class="n">b</span> <span class="ow">-&gt;</span> <span class="n">c</span><span class="p">)</span> <span class="ow">-&gt;</span> <span class="p">(</span><span class="n">a</span> <span class="ow">-&gt;</span> <span class="n">b</span><span class="p">)</span> <span class="ow">-&gt;</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="n">c</span>
+<figure class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="o">&gt;</span> <span class="o">:</span><span class="n">t</span> <span class="nf">\</span> <span class="n">f</span> <span class="n">g</span> <span class="n">x</span> <span class="o">-&gt;</span> <span class="n">f</span> <span class="p">(</span><span class="n">g</span> <span class="n">x</span><span class="p">)</span>
+<span class="nf">\</span> <span class="n">f</span> <span class="n">g</span> <span class="n">x</span><span class="o">-&gt;</span> <span class="n">f</span> <span class="p">(</span><span class="n">g</span> <span class="n">x</span><span class="p">)</span> <span class="o">::</span> <span class="p">(</span><span class="n">b</span> <span class="o">-&gt;</span> <span class="n">c</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">(</span><span class="n">a</span> <span class="o">-&gt;</span> <span class="n">b</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">a</span> <span class="o">-&gt;</span> <span class="n">c</span>
 
-<span class="o">&gt;</span> <span class="kt">:</span><span class="n">t</span> <span class="p">(</span><span class="o">.</span><span class="p">)</span>
-<span class="p">(</span><span class="o">.</span><span class="p">)</span> <span class="ow">::</span> <span class="p">(</span><span class="n">b</span> <span class="ow">-&gt;</span> <span class="n">c</span><span class="p">)</span> <span class="ow">-&gt;</span> <span class="p">(</span><span class="n">a</span> <span class="ow">-&gt;</span> <span class="n">b</span><span class="p">)</span> <span class="ow">-&gt;</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="n">c</span></code></pre></div>
+<span class="o">&gt;</span> <span class="o">:</span><span class="n">t</span> <span class="p">(</span><span class="o">.</span><span class="p">)</span>
+<span class="p">(</span><span class="o">.</span><span class="p">)</span> <span class="o">::</span> <span class="p">(</span><span class="n">b</span> <span class="o">-&gt;</span> <span class="n">c</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">(</span><span class="n">a</span> <span class="o">-&gt;</span> <span class="n">b</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">a</span> <span class="o">-&gt;</span> <span class="n">c</span></code></pre></figure>
 
-<p>When given two single-argument functions of the right types as inputs, as in <code>f . g</code> or <code>(.) f g</code> (the <em>infix</em> and <em>prefix</em> ways to write application of a binary operator, respectively), the result will be a new unary function of type <code>a -&gt; c</code> obtained by chaining the outputs of <code>g</code> to <code>f</code>: seamless.</p>
+<p>When given two single-argument functions of the right types as inputs, as in <code class="highlighter-rouge">f . g</code> or <code class="highlighter-rouge">(.) f g</code> (the <em>infix</em> and <em>prefix</em> ways to write application of a binary operator, respectively), the result will be a new unary function of type <code class="highlighter-rouge">a -&gt; c</code> obtained by chaining the outputs of <code class="highlighter-rouge">g</code> to <code class="highlighter-rouge">f</code>: seamless.</p>
 
 <blockquote>
-  <p>The Haskell Prelude and the other built-in libraries come with a rich library of synonyms, such as <code>(.)</code> and <code>($)</code> shown above, and lets us define and use our own, as soon as the need for abstraction arises.</p>
+  <p>The Haskell Prelude and the other built-in libraries come with a rich library of synonyms, such as <code class="highlighter-rouge">(.)</code> and <code class="highlighter-rouge">($)</code> shown above, and lets us define and use our own, as soon as the need for abstraction arises.</p>
 </blockquote>
 
 <h1 id="partial-evaluation">Partial evaluation</h1>
@@ -376,98 +381,98 @@ The ordering relation <code>(&gt;)</code> is a binary operator (since it compare
 
 <p>In the following we will see a few more examples of this from a slightly abstract point of view, in order not to lose sight of the pattern amid the implementation details.</p>
 
-<div class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="o">&gt;</span> <span class="kr">let</span> <span class="n">f1</span> <span class="ow">=</span> <span class="nf">\</span> <span class="n">f</span> <span class="n">g</span> <span class="n">x</span> <span class="n">y</span> <span class="ow">-&gt;</span> <span class="n">f</span> <span class="p">(</span><span class="n">g</span> <span class="n">x</span><span class="p">)</span> <span class="p">(</span><span class="n">g</span> <span class="n">y</span><span class="p">)</span>
+<figure class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="o">&gt;</span> <span class="kr">let</span> <span class="n">f1</span> <span class="o">=</span> <span class="nf">\</span> <span class="n">f</span> <span class="n">g</span> <span class="n">x</span> <span class="n">y</span> <span class="o">-&gt;</span> <span class="n">f</span> <span class="p">(</span><span class="n">g</span> <span class="n">x</span><span class="p">)</span> <span class="p">(</span><span class="n">g</span> <span class="n">y</span><span class="p">)</span>
 
-<span class="o">&gt;</span> <span class="kt">:</span><span class="n">t</span> <span class="n">f1</span>
-<span class="nf">f1</span> <span class="ow">::</span> <span class="p">(</span><span class="n">b</span> <span class="ow">-&gt;</span> <span class="n">b</span> <span class="ow">-&gt;</span> <span class="n">c</span><span class="p">)</span> <span class="ow">-&gt;</span> <span class="p">(</span><span class="n">a</span> <span class="ow">-&gt;</span> <span class="n">b</span><span class="p">)</span> <span class="ow">-&gt;</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="n">c</span></code></pre></div>
+<span class="o">&gt;</span> <span class="o">:</span><span class="n">t</span> <span class="n">f1</span>
+<span class="n">f1</span> <span class="o">::</span> <span class="p">(</span><span class="n">b</span> <span class="o">-&gt;</span> <span class="n">b</span> <span class="o">-&gt;</span> <span class="n">c</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">(</span><span class="n">a</span> <span class="o">-&gt;</span> <span class="n">b</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">a</span> <span class="o">-&gt;</span> <span class="n">a</span> <span class="o">-&gt;</span> <span class="n">c</span></code></pre></figure>
 
-<p>In the example above we first define a function <code>f1</code> of four arguments; in the next lines we specialize <code>f1</code> to use the sum or ordering relation <code>(&lt;)</code> as “external” functions <code>f</code>. The “internal” function <code>g</code> is instead meant to be separately applied on the operands <code>x</code> and <code>y</code>:</p>
+<p>In the example above we first define a function <code class="highlighter-rouge">f1</code> of four arguments; in the next lines we specialize <code class="highlighter-rouge">f1</code> to use the sum or ordering relation <code class="highlighter-rouge">(&lt;)</code> as “external” functions <code class="highlighter-rouge">f</code>. The “internal” function <code class="highlighter-rouge">g</code> is instead meant to be separately applied on the operands <code class="highlighter-rouge">x</code> and <code class="highlighter-rouge">y</code>:</p>
 
-<div class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="o">&gt;</span> <span class="kt">:</span><span class="n">t</span> <span class="n">f1</span> <span class="p">(</span><span class="o">+</span><span class="p">)</span>
-<span class="nf">f1</span> <span class="p">(</span><span class="o">+</span><span class="p">)</span> <span class="ow">::</span> <span class="kt">Num</span> <span class="n">b</span> <span class="ow">=&gt;</span> <span class="p">(</span><span class="n">a</span> <span class="ow">-&gt;</span> <span class="n">b</span><span class="p">)</span> <span class="ow">-&gt;</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="n">b</span>
+<figure class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="o">&gt;</span> <span class="o">:</span><span class="n">t</span> <span class="n">f1</span> <span class="p">(</span><span class="o">+</span><span class="p">)</span>
+<span class="n">f1</span> <span class="p">(</span><span class="o">+</span><span class="p">)</span> <span class="o">::</span> <span class="kt">Num</span> <span class="n">b</span> <span class="o">=&gt;</span> <span class="p">(</span><span class="n">a</span> <span class="o">-&gt;</span> <span class="n">b</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">a</span> <span class="o">-&gt;</span> <span class="n">a</span> <span class="o">-&gt;</span> <span class="n">b</span>
 
-<span class="o">&gt;</span> <span class="kt">:</span><span class="n">t</span> <span class="n">f1</span> <span class="p">(</span><span class="o">+</span><span class="p">)</span> <span class="p">(</span><span class="o">^</span><span class="mi">2</span><span class="p">)</span> 
-<span class="nf">f1</span> <span class="p">(</span><span class="o">+</span><span class="p">)</span> <span class="p">(</span><span class="o">^</span><span class="mi">2</span><span class="p">)</span> <span class="ow">::</span> <span class="kt">Num</span> <span class="n">a</span> <span class="ow">=&gt;</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="n">a</span>
+<span class="o">&gt;</span> <span class="o">:</span><span class="n">t</span> <span class="n">f1</span> <span class="p">(</span><span class="o">+</span><span class="p">)</span> <span class="p">(</span><span class="o">^</span><span class="mi">2</span><span class="p">)</span> 
+<span class="n">f1</span> <span class="p">(</span><span class="o">+</span><span class="p">)</span> <span class="p">(</span><span class="o">^</span><span class="mi">2</span><span class="p">)</span> <span class="o">::</span> <span class="kt">Num</span> <span class="n">a</span> <span class="o">=&gt;</span> <span class="n">a</span> <span class="o">-&gt;</span> <span class="n">a</span> <span class="o">-&gt;</span> <span class="n">a</span>
 
-<span class="o">&gt;</span> <span class="kt">:</span><span class="n">t</span> <span class="n">f1</span> <span class="p">(</span><span class="o">&lt;</span><span class="p">)</span>
-<span class="nf">f1</span> <span class="p">(</span><span class="o">&lt;</span><span class="p">)</span> <span class="ow">::</span> <span class="kt">Ord</span> <span class="n">b</span> <span class="ow">=&gt;</span> <span class="p">(</span><span class="n">a</span> <span class="ow">-&gt;</span> <span class="n">b</span><span class="p">)</span> <span class="ow">-&gt;</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="kt">Bool</span>
+<span class="o">&gt;</span> <span class="o">:</span><span class="n">t</span> <span class="n">f1</span> <span class="p">(</span><span class="o">&lt;</span><span class="p">)</span>
+<span class="n">f1</span> <span class="p">(</span><span class="o">&lt;</span><span class="p">)</span> <span class="o">::</span> <span class="kt">Ord</span> <span class="n">b</span> <span class="o">=&gt;</span> <span class="p">(</span><span class="n">a</span> <span class="o">-&gt;</span> <span class="n">b</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">a</span> <span class="o">-&gt;</span> <span class="n">a</span> <span class="o">-&gt;</span> <span class="kt">Bool</span>
 
-<span class="o">&gt;</span> <span class="kt">:</span><span class="n">t</span> <span class="n">f1</span> <span class="p">(</span><span class="o">&lt;</span><span class="p">)</span> <span class="n">cos</span>
-<span class="nf">f1</span> <span class="p">(</span><span class="o">&lt;</span><span class="p">)</span> <span class="n">cos</span> <span class="ow">::</span> <span class="p">(</span><span class="kt">Ord</span> <span class="n">t1</span><span class="p">,</span> <span class="kt">Floating</span> <span class="n">t1</span><span class="p">)</span> <span class="ow">=&gt;</span> <span class="n">t1</span> <span class="ow">-&gt;</span> <span class="n">t1</span> <span class="ow">-&gt;</span> <span class="kt">Bool</span></code></pre></div>
+<span class="o">&gt;</span> <span class="o">:</span><span class="n">t</span> <span class="n">f1</span> <span class="p">(</span><span class="o">&lt;</span><span class="p">)</span> <span class="n">cos</span>
+<span class="n">f1</span> <span class="p">(</span><span class="o">&lt;</span><span class="p">)</span> <span class="n">cos</span> <span class="o">::</span> <span class="p">(</span><span class="kt">Ord</span> <span class="n">t1</span><span class="p">,</span> <span class="kt">Floating</span> <span class="n">t1</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="n">t1</span> <span class="o">-&gt;</span> <span class="n">t1</span> <span class="o">-&gt;</span> <span class="kt">Bool</span></code></pre></figure>
 
-<p>The expressions <code>f1 (+)</code>, <code>f1 (&lt;)</code> and <code>f1 (&lt;) exp</code> are examples of <em>partial application</em>; the resulting expression is itself a function with a reduced number of arguments than the original one.</p>
+<p>The expressions <code class="highlighter-rouge">f1 (+)</code>, <code class="highlighter-rouge">f1 (&lt;)</code> and <code class="highlighter-rouge">f1 (&lt;) exp</code> are examples of <em>partial application</em>; the resulting expression is itself a function with a reduced number of arguments than the original one.</p>
 
-<p>The higher-order function <code>f2</code> accepts three arguments, the first of which is a binary function; if we only supply this, the result will itself be a binary function:</p>
+<p>The higher-order function <code class="highlighter-rouge">f2</code> accepts three arguments, the first of which is a binary function; if we only supply this, the result will itself be a binary function:</p>
 
-<div class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="o">&gt;</span> <span class="kr">let</span> <span class="n">f2</span> <span class="n">g</span> <span class="n">x</span> <span class="n">y</span> <span class="ow">=</span> <span class="n">g</span> <span class="n">y</span> <span class="n">x</span> 
+<figure class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="o">&gt;</span> <span class="kr">let</span> <span class="n">f2</span> <span class="n">g</span> <span class="n">x</span> <span class="n">y</span> <span class="o">=</span> <span class="n">g</span> <span class="n">y</span> <span class="n">x</span> 
 
-<span class="o">&gt;</span> <span class="kt">:</span><span class="n">t</span> <span class="n">f2</span>
-<span class="nf">f2</span> <span class="ow">::</span> <span class="p">(</span><span class="n">a</span> <span class="ow">-&gt;</span> <span class="n">b</span> <span class="ow">-&gt;</span> <span class="n">c</span><span class="p">)</span> <span class="ow">-&gt;</span> <span class="n">b</span> <span class="ow">-&gt;</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="n">c</span>
+<span class="o">&gt;</span> <span class="o">:</span><span class="n">t</span> <span class="n">f2</span>
+<span class="n">f2</span> <span class="o">::</span> <span class="p">(</span><span class="n">a</span> <span class="o">-&gt;</span> <span class="n">b</span> <span class="o">-&gt;</span> <span class="n">c</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">b</span> <span class="o">-&gt;</span> <span class="n">a</span> <span class="o">-&gt;</span> <span class="n">c</span>
  
-<span class="o">&gt;</span> <span class="kt">:</span><span class="n">t</span> <span class="n">flip</span>
-<span class="nf">flip</span> <span class="ow">::</span> <span class="p">(</span><span class="n">a</span> <span class="ow">-&gt;</span> <span class="n">b</span> <span class="ow">-&gt;</span> <span class="n">c</span><span class="p">)</span> <span class="ow">-&gt;</span> <span class="p">(</span><span class="n">b</span> <span class="ow">-&gt;</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="n">c</span><span class="p">)</span></code></pre></div>
+<span class="o">&gt;</span> <span class="o">:</span><span class="n">t</span> <span class="n">flip</span>
+<span class="n">flip</span> <span class="o">::</span> <span class="p">(</span><span class="n">a</span> <span class="o">-&gt;</span> <span class="n">b</span> <span class="o">-&gt;</span> <span class="n">c</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">(</span><span class="n">b</span> <span class="o">-&gt;</span> <span class="n">a</span> <span class="o">-&gt;</span> <span class="n">c</span><span class="p">)</span></code></pre></figure>
 
-<p>(my parentheses on the right hand side of <code>flip</code>). Both <code>f2</code> and the library function <code>flip</code> return the input binary function but with exchanged order of arguments:</p>
+<p>(my parentheses on the right hand side of <code class="highlighter-rouge">flip</code>). Both <code class="highlighter-rouge">f2</code> and the library function <code class="highlighter-rouge">flip</code> return the input binary function but with exchanged order of arguments:</p>
 
-<div class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="o">&gt;</span> <span class="kr">let</span> <span class="n">pow</span> <span class="ow">=</span> <span class="p">(</span><span class="o">^</span><span class="p">)</span>
+<figure class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="o">&gt;</span> <span class="kr">let</span> <span class="n">pow</span> <span class="o">=</span> <span class="p">(</span><span class="o">^</span><span class="p">)</span>
 
-<span class="o">&gt;</span> <span class="kt">:</span><span class="n">t</span> <span class="n">pow</span>
-<span class="nf">pow</span> <span class="ow">::</span> <span class="p">(</span><span class="kt">Num</span> <span class="n">a</span><span class="p">,</span> <span class="kt">Integral</span> <span class="n">b</span><span class="p">)</span> <span class="ow">=&gt;</span> <span class="n">b</span> <span class="ow">-&gt;</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="n">a</span>
+<span class="o">&gt;</span> <span class="o">:</span><span class="n">t</span> <span class="n">pow</span>
+<span class="n">pow</span> <span class="o">::</span> <span class="p">(</span><span class="kt">Num</span> <span class="n">a</span><span class="p">,</span> <span class="kt">Integral</span> <span class="n">b</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="n">b</span> <span class="o">-&gt;</span> <span class="n">a</span> <span class="o">-&gt;</span> <span class="n">a</span>
  
 <span class="o">&gt;</span> <span class="n">pow</span> <span class="mi">2</span> <span class="mi">3</span>
 <span class="mi">9</span>
 
-<span class="o">&gt;</span> <span class="kr">let</span> <span class="n">wop</span> <span class="ow">=</span> <span class="n">flip</span> <span class="n">pow</span>
+<span class="o">&gt;</span> <span class="kr">let</span> <span class="n">wop</span> <span class="o">=</span> <span class="n">flip</span> <span class="n">pow</span>
 
-<span class="o">&gt;</span> <span class="kt">:</span><span class="n">t</span> <span class="n">wop</span>
-<span class="nf">wop</span> <span class="ow">::</span> <span class="p">(</span><span class="kt">Num</span> <span class="n">a</span><span class="p">,</span> <span class="kt">Integral</span> <span class="n">b</span><span class="p">)</span> <span class="ow">=&gt;</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="n">b</span> <span class="ow">-&gt;</span> <span class="n">a</span>
+<span class="o">&gt;</span> <span class="o">:</span><span class="n">t</span> <span class="n">wop</span>
+<span class="n">wop</span> <span class="o">::</span> <span class="p">(</span><span class="kt">Num</span> <span class="n">a</span><span class="p">,</span> <span class="kt">Integral</span> <span class="n">b</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="n">a</span> <span class="o">-&gt;</span> <span class="n">b</span> <span class="o">-&gt;</span> <span class="n">a</span>
  
 <span class="o">&gt;</span> <span class="n">wop</span> <span class="mi">2</span> <span class="mi">3</span>
-<span class="mi">8</span></code></pre></div>
+<span class="mi">8</span></code></pre></figure>
 
 <h1 id="eta-conversion">Eta-conversion</h1>
 
 <p>Dropping or adding an abstraction over a variable to an expression are termed “eta-reduction” and “eta-abstraction”, respectively.
 The following two expressions are identical, in this sense; the latter being the eta-reduced version of the former.</p>
 
-<div class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="o">&gt;</span> <span class="kt">:</span><span class="n">t</span> <span class="nf">\</span> <span class="n">x</span> <span class="ow">-&gt;</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">x</span>
-<span class="nf">\</span> <span class="n">x</span> <span class="ow">-&gt;</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">x</span> <span class="ow">::</span> <span class="kt">Num</span> <span class="n">a</span> <span class="ow">=&gt;</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="n">a</span>
+<figure class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="o">&gt;</span> <span class="o">:</span><span class="n">t</span> <span class="nf">\</span> <span class="n">x</span> <span class="o">-&gt;</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">x</span>
+<span class="nf">\</span> <span class="n">x</span> <span class="o">-&gt;</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">x</span> <span class="o">::</span> <span class="kt">Num</span> <span class="n">a</span> <span class="o">=&gt;</span> <span class="n">a</span> <span class="o">-&gt;</span> <span class="n">a</span>
 
-<span class="o">&gt;</span> <span class="kt">:</span><span class="n">t</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span><span class="p">)</span>
-<span class="p">(</span><span class="mi">2</span> <span class="o">*</span><span class="p">)</span> <span class="ow">::</span> <span class="kt">Num</span> <span class="n">a</span> <span class="ow">=&gt;</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="n">a</span></code></pre></div>
+<span class="o">&gt;</span> <span class="o">:</span><span class="n">t</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span><span class="p">)</span>
+<span class="p">(</span><span class="mi">2</span> <span class="o">*</span><span class="p">)</span> <span class="o">::</span> <span class="kt">Num</span> <span class="n">a</span> <span class="o">=&gt;</span> <span class="n">a</span> <span class="o">-&gt;</span> <span class="n">a</span></code></pre></figure>
 
 <h1 id="examples">Examples</h1>
 
-<p>Let’s try together a few of the things we’ve see so far: partial application, function composition, the higher order function <code>map :: (a -&gt; b) -&gt; [a] -&gt; [b]</code>, and operate on a list-of-lists for the first time:</p>
+<p>Let’s try together a few of the things we’ve see so far: partial application, function composition, the higher order function <code class="highlighter-rouge">map :: (a -&gt; b) -&gt; [a] -&gt; [b]</code>, and operate on a list-of-lists for the first time:</p>
 
-<div class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="o">&gt;</span> <span class="kr">let</span> <span class="n">testData</span> <span class="ow">=</span> <span class="p">[[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">],[</span><span class="mi">23452</span><span class="p">,</span><span class="mi">24</span><span class="p">,</span><span class="mi">515</span><span class="p">,</span><span class="mi">0</span><span class="p">],[</span><span class="mi">2351661</span><span class="p">]]</span>
+<figure class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="o">&gt;</span> <span class="kr">let</span> <span class="n">testData</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">],[</span><span class="mi">23452</span><span class="p">,</span><span class="mi">24</span><span class="p">,</span><span class="mi">515</span><span class="p">,</span><span class="mi">0</span><span class="p">],[</span><span class="mi">2351661</span><span class="p">]]</span>
 
-<span class="o">&gt;</span> <span class="kr">let</span> <span class="n">listShorterThan</span> <span class="n">m</span> <span class="ow">=</span> <span class="p">(</span><span class="n">m</span> <span class="o">&gt;</span><span class="p">)</span> <span class="o">.</span> <span class="n">length</span> 
+<span class="o">&gt;</span> <span class="kr">let</span> <span class="n">listShorterThan</span> <span class="n">m</span> <span class="o">=</span> <span class="p">(</span><span class="n">m</span> <span class="o">&gt;</span><span class="p">)</span> <span class="o">.</span> <span class="n">length</span> 
 
-<span class="o">&gt;</span> <span class="kt">:</span><span class="n">t</span> <span class="n">listShorterThan</span>
-<span class="nf">listShorterThan</span> <span class="ow">::</span> <span class="kt">Int</span> <span class="ow">-&gt;</span> <span class="p">[</span><span class="n">a</span><span class="p">]</span> <span class="ow">-&gt;</span> <span class="kt">Bool</span>
+<span class="o">&gt;</span> <span class="o">:</span><span class="n">t</span> <span class="n">listShorterThan</span>
+<span class="n">listShorterThan</span> <span class="o">::</span> <span class="kt">Int</span> <span class="o">-&gt;</span> <span class="p">[</span><span class="n">a</span><span class="p">]</span> <span class="o">-&gt;</span> <span class="kt">Bool</span>
 
 <span class="o">&gt;</span> <span class="n">map</span> <span class="p">(</span><span class="n">listShorterThan</span> <span class="mi">4</span><span class="p">)</span> <span class="n">testData</span>
-<span class="p">[</span><span class="kt">True</span><span class="p">,</span><span class="kt">False</span><span class="p">,</span><span class="kt">True</span><span class="p">]</span></code></pre></div>
+<span class="p">[</span><span class="kt">True</span><span class="p">,</span><span class="kt">False</span><span class="p">,</span><span class="kt">True</span><span class="p">]</span></code></pre></figure>
 
-<p>Recall how <code>(.)</code> works: from right to left. The rightmost function in the chain is the “innermost”, and the first to be applied. Our <code>listShorterThan</code> may be a bit contrived, but shows one advantage of this compositional approach: we are not interested in the actual length of the list, but only to know whether it’s shorter than <em>m</em>.</p>
+<p>Recall how <code class="highlighter-rouge">(.)</code> works: from right to left. The rightmost function in the chain is the “innermost”, and the first to be applied. Our <code class="highlighter-rouge">listShorterThan</code> may be a bit contrived, but shows one advantage of this compositional approach: we are not interested in the actual length of the list, but only to know whether it’s shorter than <em>m</em>.</p>
 
 <p>Another interesting, albeit a bit more abstract, little example is the following:</p>
 
-<div class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="o">&gt;</span> <span class="kt">:</span><span class="n">t</span> <span class="n">map</span> <span class="o">.</span> <span class="n">map</span>
-<span class="nf">map</span> <span class="o">.</span> <span class="n">map</span> <span class="ow">::</span> <span class="p">(</span><span class="n">a</span> <span class="ow">-&gt;</span> <span class="n">b</span><span class="p">)</span> <span class="ow">-&gt;</span> <span class="p">[[</span><span class="n">a</span><span class="p">]]</span> <span class="ow">-&gt;</span> <span class="p">[[</span><span class="n">b</span><span class="p">]]</span></code></pre></div>
+<figure class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="o">&gt;</span> <span class="o">:</span><span class="n">t</span> <span class="n">map</span> <span class="o">.</span> <span class="n">map</span>
+<span class="n">map</span> <span class="o">.</span> <span class="n">map</span> <span class="o">::</span> <span class="p">(</span><span class="n">a</span> <span class="o">-&gt;</span> <span class="n">b</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">[[</span><span class="n">a</span><span class="p">]]</span> <span class="o">-&gt;</span> <span class="p">[[</span><span class="n">b</span><span class="p">]]</span> </code></pre></figure>
 
-<p>A composition of <code>map</code>s is equivalent to <em>lifting</em> an <code>(a -&gt; b)</code> function to work onto lists of lists. Neat! We can easily prove this, by considering the composition operator <code>(.)</code> in infix position and plugging in the definitions;</p>
+<p>A composition of <code class="highlighter-rouge">map</code>s is equivalent to <em>lifting</em> an <code class="highlighter-rouge">(a -&gt; b)</code> function to work onto lists of lists. Neat! We can easily prove this, by considering the composition operator <code class="highlighter-rouge">(.)</code> in infix position and plugging in the definitions;</p>
 
-<div class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="o">&gt;</span> <span class="kt">:</span><span class="n">t</span> <span class="p">(</span><span class="o">.</span><span class="p">)</span> <span class="n">map</span>
-<span class="p">(</span><span class="o">.</span><span class="p">)</span> <span class="n">map</span> <span class="ow">::</span> <span class="p">(</span><span class="n">x</span> <span class="ow">-&gt;</span> <span class="n">y</span> <span class="ow">-&gt;</span> <span class="n">z</span><span class="p">)</span> <span class="ow">-&gt;</span> <span class="n">x</span> <span class="ow">-&gt;</span> <span class="p">[</span><span class="n">y</span><span class="p">]</span> <span class="ow">-&gt;</span> <span class="p">[</span><span class="n">z</span><span class="p">]</span></code></pre></div>
+<figure class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="o">&gt;</span> <span class="o">:</span><span class="n">t</span> <span class="p">(</span><span class="o">.</span><span class="p">)</span> <span class="n">map</span>
+<span class="p">(</span><span class="o">.</span><span class="p">)</span> <span class="n">map</span> <span class="o">::</span> <span class="p">(</span><span class="n">x</span> <span class="o">-&gt;</span> <span class="n">y</span> <span class="o">-&gt;</span> <span class="n">z</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">x</span> <span class="o">-&gt;</span> <span class="p">[</span><span class="n">y</span><span class="p">]</span> <span class="o">-&gt;</span> <span class="p">[</span><span class="n">z</span><span class="p">]</span></code></pre></figure>
 
-<p>and, since <code>map</code> is a binary function accepting a <em>function</em> and a list, we can identify equal terms. In the line above, if we partially apply <code>(.) map</code> on <code>map</code>, <code>x</code> is identified with a function and <code>y</code> has to be a list, resulting in the initial type identity.</p>
+<p>and, since <code class="highlighter-rouge">map</code> is a binary function accepting a <em>function</em> and a list, we can identify equal terms. In the line above, if we partially apply <code class="highlighter-rouge">(.) map</code> on <code class="highlighter-rouge">map</code>, <code class="highlighter-rouge">x</code> is identified with a function and <code class="highlighter-rouge">y</code> has to be a list, resulting in the initial type identity.</p>
 
-<p>Let’s recycle <code>testData</code> from the example before to try it out:</p>
+<p>Let’s recycle <code class="highlighter-rouge">testData</code> from the example before to try it out:</p>
 
-<div class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="o">&gt;</span> <span class="p">(</span><span class="n">map</span> <span class="o">.</span> <span class="n">map</span><span class="p">)</span> <span class="p">(</span><span class="nf">\</span><span class="n">s</span> <span class="ow">-&gt;</span> <span class="kr">if</span> <span class="n">s</span> <span class="o">&gt;</span> <span class="mi">100</span> <span class="kr">then</span> <span class="n">&#39;</span><span class="o">+</span><span class="n">&#39;</span> <span class="kr">else</span> <span class="n">&#39;</span><span class="o">-</span><span class="n">&#39;</span><span class="p">)</span> <span class="n">testData</span>
-<span class="p">[</span><span class="s">&quot;--&quot;</span><span class="p">,</span><span class="s">&quot;+-+-&quot;</span><span class="p">,</span><span class="s">&quot;+&quot;</span><span class="p">]</span></code></pre></div>
+<figure class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="o">&gt;</span> <span class="p">(</span><span class="n">map</span> <span class="o">.</span> <span class="n">map</span><span class="p">)</span> <span class="p">(</span><span class="nf">\</span><span class="n">s</span> <span class="o">-&gt;</span> <span class="kr">if</span> <span class="n">s</span> <span class="o">&gt;</span> <span class="mi">100</span> <span class="kr">then</span> <span class="sc">'+'</span> <span class="kr">else</span> <span class="sc">'-'</span><span class="p">)</span> <span class="n">testData</span>
+<span class="p">[</span><span class="s">"--"</span><span class="p">,</span><span class="s">"+-+-"</span><span class="p">,</span><span class="s">"+"</span><span class="p">]</span></code></pre></figure>
 
 <p>“Wow, if-then-else like a normal language !”</p>
 
@@ -476,236 +481,237 @@ The following two expressions are identical, in this sense; the latter being the
 <hr />
 <hr />
 
-<p><a id="io"> </a>
-## Defining new symbols, functions and modules</p>
+<p><a id="io"> </a></p>
+<h2 id="defining-new-symbols-functions-and-modules">Defining new symbols, functions and modules</h2>
 
-<p>When in the interactive mode (or, equivalently, while we are working within the IO monad, more details in the following), we need the <code>let</code> construct, which behaves very much like its mathematical counterpart:</p>
+<p>When in the interactive mode (or, equivalently, while we are working within the IO monad, more details in the following), we need the <code class="highlighter-rouge">let</code> construct, which behaves very much like its mathematical counterpart:</p>
 
-<div class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="o">&gt;</span> <span class="kr">let</span> <span class="n">a</span> <span class="ow">=</span> <span class="n">pi</span> <span class="o">/</span> <span class="mi">2</span>
+<figure class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="o">&gt;</span> <span class="kr">let</span> <span class="n">a</span> <span class="o">=</span> <span class="n">pi</span> <span class="o">/</span> <span class="mi">2</span>
 
 <span class="o">&gt;</span> <span class="n">a</span>
 <span class="mf">1.5707963267948966</span>
 
-<span class="o">&gt;</span> <span class="kr">let</span> <span class="n">f</span> <span class="n">x</span> <span class="ow">=</span> <span class="kr">if</span> <span class="n">x</span><span class="o">==</span><span class="n">&#39;o&#39;</span> <span class="kr">then</span> <span class="n">&#39;i&#39;</span> <span class="kr">else</span> <span class="n">x</span>
+<span class="o">&gt;</span> <span class="kr">let</span> <span class="n">f</span> <span class="n">x</span> <span class="o">=</span> <span class="kr">if</span> <span class="n">x</span><span class="o">==</span><span class="sc">'o'</span> <span class="kr">then</span> <span class="sc">'i'</span> <span class="kr">else</span> <span class="n">x</span>
 
-<span class="o">&gt;</span> <span class="kt">:</span><span class="n">t</span> <span class="n">f</span>
-<span class="nf">f</span> <span class="ow">::</span> <span class="kt">Char</span> <span class="ow">-&gt;</span> <span class="kt">Char</span>
+<span class="o">&gt;</span> <span class="o">:</span><span class="n">t</span> <span class="n">f</span>
+<span class="n">f</span> <span class="o">::</span> <span class="kt">Char</span> <span class="o">-&gt;</span> <span class="kt">Char</span>
 
-<span class="o">&gt;</span> <span class="n">map</span> <span class="n">f</span> <span class="s">&quot;potatoes&quot;</span>
-<span class="s">&quot;pitaties&quot;</span></code></pre></div>
+<span class="o">&gt;</span> <span class="n">map</span> <span class="n">f</span> <span class="s">"potatoes"</span>
+<span class="s">"pitaties"</span>
+ </code></pre></figure>
 
-<p>In bulk code, there is no need for <code>let</code> for declaring a new entity; if we write the following in a blank text file named, say, <code>TestModule.hs</code> :</p>
+<p>In bulk code, there is no need for <code class="highlighter-rouge">let</code> for declaring a new entity; if we write the following in a blank text file named, say, <code class="highlighter-rouge">TestModule.hs</code> :</p>
 
-<div class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="c1">-- If the prompt is not present, we assume to be working in a `.hs` text file, </span>
+<figure class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="c1">-- If the prompt is not present, we assume to be working in a `.hs` text file, </span>
 <span class="c1">-- to be loaded in GHCi.</span>
 
-<span class="cm">{- </span>
-<span class="cm">The `--` token at the start of a line specifies a comment: </span>
-<span class="cm">the line as a whole is not interpreted as Haskell code. </span>
-<span class="cm">Multiple-line comments are enclosed in a `{-`,  `-}` pair.</span>
-<span class="cm">-}</span>
+<span class="cm">{- 
+The `--` token at the start of a line specifies a comment: 
+the line as a whole is not interpreted as Haskell code. 
+Multiple-line comments are enclosed in a `{-`,  `-}` pair.
+-}</span>
 <span class="kr">module</span> <span class="nn">TestModule</span> <span class="kr">where</span>
 
-<span class="nf">f1</span> <span class="ow">=</span> <span class="p">(</span><span class="o">^</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">f1</span> <span class="o">=</span> <span class="p">(</span><span class="o">^</span><span class="mi">2</span><span class="p">)</span>
 
-<span class="nf">v</span> <span class="ow">=</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">]</span>
+<span class="n">v</span> <span class="o">=</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">]</span>
 
-<span class="nf">main</span> <span class="ow">=</span> <span class="kr">do</span>
-  <span class="n">putStrLn</span> <span class="o">$</span> <span class="n">map</span> <span class="n">f1</span> <span class="n">v</span></code></pre></div>
+<span class="n">main</span> <span class="o">=</span> <span class="kr">do</span>
+  <span class="n">putStrLn</span> <span class="o">$</span> <span class="n">map</span> <span class="n">f1</span> <span class="n">v</span></code></pre></figure>
 
-<p>and load it with GHCi (from command line: <code>ghci TestModule.hs</code>), calling <code>main</code> will print <code>[4,9,16]</code> to screen.</p>
+<p>and load it with GHCi (from command line: <code class="highlighter-rouge">ghci TestModule.hs</code>), calling <code class="highlighter-rouge">main</code> will print <code class="highlighter-rouge">[4,9,16]</code> to screen.</p>
 
 <blockquote>
   <p>In the previous code snippet we start to see one of Haskell’s strength points: a clean separation of input-output (“IO”) and purely functional code. 
-The first line is a function, the second a piece of data, and the <code>main</code> function runs the example (in this case <code>map</code>ping the squaring function over the data) and displays on-screen the results as a newline-terminated string with <code>putStrLn</code>.</p>
+The first line is a function, the second a piece of data, and the <code class="highlighter-rouge">main</code> function runs the example (in this case <code class="highlighter-rouge">map</code>ping the squaring function over the data) and displays on-screen the results as a newline-terminated string with <code class="highlighter-rouge">putStrLn</code>.</p>
 </blockquote>
 
-<p>The <code>main</code> function effectively “coordinates” the execution of the purely functional parts; its body is a <code>do</code> block, to signify that it is to be executed top-to-bottom. However the intermediate results are only effectively computed when requested (this is the <em>non-strict</em>, or <em>lazy</em> evaluation logic of Haskell). In the code above, <code>f1</code> is <code>map</code>ped over <code>v</code> only when <code>putStrLn</code> is run.</p>
+<p>The <code class="highlighter-rouge">main</code> function effectively “coordinates” the execution of the purely functional parts; its body is a <code class="highlighter-rouge">do</code> block, to signify that it is to be executed top-to-bottom. However the intermediate results are only effectively computed when requested (this is the <em>non-strict</em>, or <em>lazy</em> evaluation logic of Haskell). In the code above, <code class="highlighter-rouge">f1</code> is <code class="highlighter-rouge">map</code>ped over <code class="highlighter-rouge">v</code> only when <code class="highlighter-rouge">putStrLn</code> is run.</p>
 
-<p>We will return on how to write <code>do</code> blocks (the “imperative” part of Haskell) shortly. At this point we still need to see a few general features of the language syntax.</p>
+<p>We will return on how to write <code class="highlighter-rouge">do</code> blocks (the “imperative” part of Haskell) shortly. At this point we still need to see a few general features of the language syntax.</p>
 
 <hr />
 <hr />
 
-<p><a id="pattern"></a>&lt;/a&gt;
-## Pattern matching
-# Recursive functions</p>
+<p><a id="pattern"></a>&lt;/a&gt;</p>
+<h2 id="pattern-matching">Pattern matching</h2>
+<h1 id="recursive-functions">Recursive functions</h1>
 
 <blockquote>
   <p>Haskell allows multiple declarations of any function, that are applied according to the arguments; this of course can hold only if the type signatures match and the declarations are mutually exclusive and complementary.</p>
 </blockquote>
 
-<p>As an example, this is the implementation of <code>map</code>:</p>
+<p>As an example, this is the implementation of <code class="highlighter-rouge">map</code>:</p>
 
-<div class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="nf">map</span> <span class="n">f</span> <span class="kt">[]</span> <span class="ow">=</span> <span class="kt">[]</span>
-<span class="nf">map</span> <span class="n">f</span> <span class="p">(</span><span class="n">x</span><span class="kt">:</span><span class="n">xs</span><span class="p">)</span> <span class="ow">=</span> <span class="n">f</span> <span class="n">x</span> <span class="kt">:</span> <span class="n">map</span> <span class="n">f</span> <span class="n">xs</span></code></pre></div>
+<figure class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="n">map</span> <span class="n">f</span> <span class="kt">[]</span> <span class="o">=</span> <span class="kt">[]</span>
+<span class="n">map</span> <span class="n">f</span> <span class="p">(</span><span class="n">x</span><span class="o">:</span><span class="n">xs</span><span class="p">)</span> <span class="o">=</span> <span class="n">f</span> <span class="n">x</span> <span class="o">:</span> <span class="n">map</span> <span class="n">f</span> <span class="n">xs</span></code></pre></figure>
 
-<p>The above code recursively consumes the list supplied as second argument by applying <code>f</code> to its first element and appending the result (with <code>(:)</code>) to the output array. The first declaration is used if the supplied list is empty (this decision is called <em>pattern matching</em>), which also holds at the base case of the recursion.</p>
+<p>The above code recursively consumes the list supplied as second argument by applying <code class="highlighter-rouge">f</code> to its first element and appending the result (with <code class="highlighter-rouge">(:)</code>) to the output array. The first declaration is used if the supplied list is empty (this decision is called <em>pattern matching</em>), which also holds at the base case of the recursion.</p>
 
 <hr />
-<p># A brief digression on lists</p>
+<h1 id="a-brief-digression-on-lists">A brief digression on lists</h1>
 
 <p>Lists (“streams”) are better thought of in recursive terms: a list can either be the empty list, or a concatenation of an element to a preexisting list (including the empty one).
-The signatures of <code>[]</code> and <code>(:)</code> represent exactly this, and in the following lines we see their use as “list constructors”:</p>
+The signatures of <code class="highlighter-rouge">[]</code> and <code class="highlighter-rouge">(:)</code> represent exactly this, and in the following lines we see their use as “list constructors”:</p>
 
-<div class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="o">&gt;</span> <span class="kt">:</span><span class="n">t</span> <span class="kt">[]</span>
-<span class="kt">[]</span> <span class="ow">::</span> <span class="p">[</span><span class="n">a</span><span class="p">]</span>
+<figure class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="o">&gt;</span> <span class="o">:</span><span class="n">t</span> <span class="kt">[]</span>
+<span class="kt">[]</span> <span class="o">::</span> <span class="p">[</span><span class="n">a</span><span class="p">]</span>
 
-<span class="o">&gt;</span> <span class="kt">:</span><span class="n">t</span> <span class="p">(</span><span class="kt">:</span><span class="p">)</span>
-<span class="p">(</span><span class="kt">:</span><span class="p">)</span> <span class="ow">::</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="p">[</span><span class="n">a</span><span class="p">]</span> <span class="ow">-&gt;</span> <span class="p">[</span><span class="n">a</span><span class="p">]</span>
+<span class="o">&gt;</span> <span class="o">:</span><span class="n">t</span> <span class="p">(</span><span class="o">:</span><span class="p">)</span>
+<span class="p">(</span><span class="o">:</span><span class="p">)</span> <span class="o">::</span> <span class="n">a</span> <span class="o">-&gt;</span> <span class="p">[</span><span class="n">a</span><span class="p">]</span> <span class="o">-&gt;</span> <span class="p">[</span><span class="n">a</span><span class="p">]</span>
 
-<span class="o">&gt;</span> <span class="mi">2</span> <span class="kt">:</span> <span class="kt">[]</span>
+<span class="o">&gt;</span> <span class="mi">2</span> <span class="o">:</span> <span class="kt">[]</span>
 <span class="p">[</span><span class="mi">2</span><span class="p">]</span>
 
-<span class="o">&gt;</span> <span class="mi">4</span> <span class="kt">:</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
-<span class="p">[</span><span class="mi">4</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span></code></pre></div>
+<span class="o">&gt;</span> <span class="mi">4</span> <span class="o">:</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
+<span class="p">[</span><span class="mi">4</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span></code></pre></figure>
 
-<p>It seems like <code>[]</code> and <code>(:)</code> are intimately connected: both are necessary to build a non-trivial list. Having a “neutral element” and an (associative) “appending” operation is the characteristic of a much more general algebraic class called a <em>Monoid</em> (to which lists naturally belong), but discussing the details would distract us at this point.</p>
+<p>It seems like <code class="highlighter-rouge">[]</code> and <code class="highlighter-rouge">(:)</code> are intimately connected: both are necessary to build a non-trivial list. Having a “neutral element” and an (associative) “appending” operation is the characteristic of a much more general algebraic class called a <em>Monoid</em> (to which lists naturally belong), but discussing the details would distract us at this point.</p>
 
-<p>For now, it suffices to say that <code>[]</code> and <code>(:)</code> are the <em>constructor</em> (methods) of the empty and nontrivial list respectively, and as such can be “pattern matched against” in function declarations (left hand side of the <code>=</code>), or used for constructing a list from its elements in a function body (right hand side).</p>
+<p>For now, it suffices to say that <code class="highlighter-rouge">[]</code> and <code class="highlighter-rouge">(:)</code> are the <em>constructor</em> (methods) of the empty and nontrivial list respectively, and as such can be “pattern matched against” in function declarations (left hand side of the <code class="highlighter-rouge">=</code>), or used for constructing a list from its elements in a function body (right hand side).</p>
 
-<p>The notation <code>(x:xs)</code> in the calling sequence of <code>map</code>, <code>foldr</code> etc. is one such example of “pattern matching on the constructor of the input data”. <code>x</code> and <code>xs</code>, interpreted as an element of type <code>a</code> and list containing elements of the same type, <code>[a]</code>, respectively, will be used in the body of the function as usual.</p>
+<p>The notation <code class="highlighter-rouge">(x:xs)</code> in the calling sequence of <code class="highlighter-rouge">map</code>, <code class="highlighter-rouge">foldr</code> etc. is one such example of “pattern matching on the constructor of the input data”. <code class="highlighter-rouge">x</code> and <code class="highlighter-rouge">xs</code>, interpreted as an element of type <code class="highlighter-rouge">a</code> and list containing elements of the same type, <code class="highlighter-rouge">[a]</code>, respectively, will be used in the body of the function as usual.</p>
 
 <hr />
 
 <p>Let us now return to recursive functions that take apart their arguments by pattern matching.</p>
 
-<p>A <em>fold</em> operation is to obtain a “summary” value from a set of values. The right-associative fold (<code>foldr</code>) is defined recursively as:</p>
+<p>A <em>fold</em> operation is to obtain a “summary” value from a set of values. The right-associative fold (<code class="highlighter-rouge">foldr</code>) is defined recursively as:</p>
 
-<div class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="nf">foldr</span> <span class="n">f</span> <span class="n">z</span> <span class="kt">[]</span>     <span class="ow">=</span> <span class="n">z</span>
-<span class="nf">foldr</span> <span class="n">f</span> <span class="n">z</span> <span class="p">(</span><span class="n">x</span><span class="kt">:</span><span class="n">xs</span><span class="p">)</span> <span class="ow">=</span> <span class="n">f</span> <span class="n">x</span> <span class="p">(</span><span class="n">foldr</span> <span class="n">f</span> <span class="n">z</span> <span class="n">xs</span><span class="p">)</span></code></pre></div>
+<figure class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="n">foldr</span> <span class="n">f</span> <span class="n">z</span> <span class="kt">[]</span>     <span class="o">=</span> <span class="n">z</span>
+<span class="n">foldr</span> <span class="n">f</span> <span class="n">z</span> <span class="p">(</span><span class="n">x</span><span class="o">:</span><span class="n">xs</span><span class="p">)</span> <span class="o">=</span> <span class="n">f</span> <span class="n">x</span> <span class="p">(</span><span class="n">foldr</span> <span class="n">f</span> <span class="n">z</span> <span class="n">xs</span><span class="p">)</span></code></pre></figure>
 
 <p>One of the most famous examples of Haskell conciseness is this implementation of the QuickSort algorithm:</p>
 
-<div class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="nf">qsort</span> <span class="kt">[]</span> <span class="ow">=</span> <span class="kt">[]</span>
-<span class="nf">qsort</span> <span class="p">(</span><span class="n">x</span><span class="kt">:</span><span class="n">xs</span><span class="p">)</span> <span class="ow">=</span> <span class="n">qsort</span> <span class="n">l</span> <span class="o">++</span> <span class="p">[</span><span class="n">x</span><span class="p">]</span> <span class="o">++</span> <span class="n">qsort</span> <span class="n">r</span> <span class="kr">where</span>
-   <span class="n">l</span> <span class="ow">=</span> <span class="n">filter</span> <span class="p">(</span><span class="o">&lt;</span> <span class="n">x</span><span class="p">)</span> <span class="n">xs</span>
-   <span class="n">r</span> <span class="ow">=</span> <span class="n">filter</span> <span class="p">(</span><span class="o">&gt;</span> <span class="n">x</span><span class="p">)</span> <span class="n">xs</span></code></pre></div>
+<figure class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="n">qsort</span> <span class="kt">[]</span> <span class="o">=</span> <span class="kt">[]</span>
+<span class="n">qsort</span> <span class="p">(</span><span class="n">x</span><span class="o">:</span><span class="n">xs</span><span class="p">)</span> <span class="o">=</span> <span class="n">qsort</span> <span class="n">l</span> <span class="o">++</span> <span class="p">[</span><span class="n">x</span><span class="p">]</span> <span class="o">++</span> <span class="n">qsort</span> <span class="n">r</span> <span class="kr">where</span>
+   <span class="n">l</span> <span class="o">=</span> <span class="n">filter</span> <span class="p">(</span><span class="o">&lt;</span> <span class="n">x</span><span class="p">)</span> <span class="n">xs</span>
+   <span class="n">r</span> <span class="o">=</span> <span class="n">filter</span> <span class="p">(</span><span class="o">&gt;</span> <span class="n">x</span><span class="p">)</span> <span class="n">xs</span></code></pre></figure>
 
 <p>The first element of the unsorted list is chosen as pivot (This choice of pivoting means that this naive version of QuickSort will be suboptimal for partially sorted inputs.) and the remaining elements are filtered (cost <em>O (N)</em>) and passed to the next level of recursive call.</p>
 
 <blockquote>
-  <p>The three examples above all use <em>pattern matching on the constructor</em> of the input data, i.e. if the input is the empty list, the base case is computed, otherwise (list with at least one element <code>x</code>) the algorithm takes the induction branch.</p>
+  <p>The three examples above all use <em>pattern matching on the constructor</em> of the input data, i.e. if the input is the empty list, the base case is computed, otherwise (list with at least one element <code class="highlighter-rouge">x</code>) the algorithm takes the induction branch.</p>
 </blockquote>
 
 <p>We can apply the same reasoning to user-made types (which will be explained in the following Section):</p>
 
-<div class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="kr">data</span> <span class="kt">Pop</span> <span class="n">a</span> <span class="ow">=</span> <span class="kt">Z</span> <span class="o">|</span> <span class="kt">P</span> <span class="n">a</span>
-<span class="kr">data</span> <span class="kt">Pip</span> <span class="n">a</span> <span class="ow">=</span> <span class="kt">W</span> <span class="o">|</span> <span class="kt">Q</span> <span class="n">a</span>
+<figure class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="kr">data</span> <span class="kt">Pop</span> <span class="n">a</span> <span class="o">=</span> <span class="kt">Z</span> <span class="o">|</span> <span class="kt">P</span> <span class="n">a</span>
+<span class="kr">data</span> <span class="kt">Pip</span> <span class="n">a</span> <span class="o">=</span> <span class="kt">W</span> <span class="o">|</span> <span class="kt">Q</span> <span class="n">a</span>
 
-<span class="nf">woop</span> <span class="kt">Z</span> <span class="ow">=</span> <span class="kt">W</span>
-<span class="nf">woop</span> <span class="p">(</span><span class="kt">P</span> <span class="n">x</span><span class="p">)</span> <span class="ow">=</span> <span class="kt">Q</span> <span class="n">r</span> <span class="kr">where</span>
-  <span class="n">r</span> <span class="ow">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">x</span></code></pre></div>
+<span class="n">woop</span> <span class="kt">Z</span> <span class="o">=</span> <span class="kt">W</span>
+<span class="n">woop</span> <span class="p">(</span><span class="kt">P</span> <span class="n">x</span><span class="p">)</span> <span class="o">=</span> <span class="kt">Q</span> <span class="n">r</span> <span class="kr">where</span>
+  <span class="n">r</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">x</span></code></pre></figure>
 
 <p>and, after loading the above code in GHCi:</p>
 
-<p>Above we have used two <em>algebraic, polymorphic types</em> <code>Pop a</code> and <code>Pip a</code> and a function that pattern matches on each constructor of the input data type.</p>
+<p>Above we have used two <em>algebraic, polymorphic types</em> <code class="highlighter-rouge">Pop a</code> and <code class="highlighter-rouge">Pip a</code> and a function that pattern matches on each constructor of the input data type.</p>
 
-<div class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="o">&gt;</span> <span class="kt">:</span><span class="n">t</span> <span class="n">woop</span>
-<span class="nf">woop</span> <span class="ow">::</span> <span class="kt">Num</span> <span class="n">a</span> <span class="ow">=&gt;</span> <span class="kt">Pop</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="kt">Pip</span> <span class="n">a</span></code></pre></div>
+<figure class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="o">&gt;</span> <span class="o">:</span><span class="n">t</span> <span class="n">woop</span>
+<span class="n">woop</span> <span class="o">::</span> <span class="kt">Num</span> <span class="n">a</span> <span class="o">=&gt;</span> <span class="kt">Pop</span> <span class="n">a</span> <span class="o">-&gt;</span> <span class="kt">Pip</span> <span class="n">a</span></code></pre></figure>
 
 <h1 id="pattern-guards">Pattern guards</h1>
 
-<p>One form of conditional branching statement is the <em>pattern guard</em> <code>|</code>. Let’s see a posible implementation of <code>filter</code>:</p>
+<p>One form of conditional branching statement is the <em>pattern guard</em> <code class="highlighter-rouge">|</code>. Let’s see a posible implementation of <code class="highlighter-rouge">filter</code>:</p>
 
-<div class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="nf">filter&#39;</span> <span class="kr">_</span> <span class="kt">[]</span> <span class="ow">=</span> <span class="kt">[]</span>
-<span class="nf">filter&#39;</span> <span class="n">p</span> <span class="p">(</span><span class="n">x</span><span class="kt">:</span><span class="n">xs</span><span class="p">)</span> <span class="o">|</span> <span class="n">p</span> <span class="n">x</span>       <span class="ow">=</span> <span class="n">x</span> <span class="kt">:</span> <span class="n">filter&#39;</span> <span class="n">p</span> <span class="n">xs</span>
-                 <span class="o">|</span> <span class="n">otherwise</span> <span class="ow">=</span> <span class="n">filter&#39;</span> <span class="n">p</span> <span class="n">xs</span></code></pre></div>
+<figure class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="n">filter'</span> <span class="kr">_</span> <span class="kt">[]</span> <span class="o">=</span> <span class="kt">[]</span>
+<span class="n">filter'</span> <span class="n">p</span> <span class="p">(</span><span class="n">x</span><span class="o">:</span><span class="n">xs</span><span class="p">)</span> <span class="o">|</span> <span class="n">p</span> <span class="n">x</span>       <span class="o">=</span> <span class="n">x</span> <span class="o">:</span> <span class="n">filter'</span> <span class="n">p</span> <span class="n">xs</span>
+                 <span class="o">|</span> <span class="n">otherwise</span> <span class="o">=</span> <span class="n">filter'</span> <span class="n">p</span> <span class="n">xs</span></code></pre></figure>
 
-<p>If <code>p x</code> evaluates to <code>True</code>, the first branch is taken;</p>
+<p>If <code class="highlighter-rouge">p x</code> evaluates to <code class="highlighter-rouge">True</code>, the first branch is taken;</p>
 
-<p>The options (expressions after <code>|</code>) are evaluated in top-to-bottom order, and the last one is only evaluated if none of the previous ones evaluates to <code>True</code>.</p>
+<p>The options (expressions after <code class="highlighter-rouge">|</code>) are evaluated in top-to-bottom order, and the last one is only evaluated if none of the previous ones evaluates to <code class="highlighter-rouge">True</code>.</p>
 
-<div class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="nf">oddness</span> <span class="n">x</span>
-   <span class="o">|</span> <span class="n">odd</span> <span class="n">x</span> <span class="ow">=</span> <span class="n">sx</span> <span class="o">++</span> <span class="s">&quot; is odd&quot;</span>
-   <span class="o">|</span> <span class="n">otherwise</span> <span class="ow">=</span> <span class="n">sx</span> <span class="o">++</span> <span class="s">&quot; is even&quot;</span>
+<figure class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="n">oddness</span> <span class="n">x</span>
+   <span class="o">|</span> <span class="n">odd</span> <span class="n">x</span> <span class="o">=</span> <span class="n">sx</span> <span class="o">++</span> <span class="s">" is odd"</span>
+   <span class="o">|</span> <span class="n">otherwise</span> <span class="o">=</span> <span class="n">sx</span> <span class="o">++</span> <span class="s">" is even"</span>
        <span class="kr">where</span>
-         <span class="n">sx</span> <span class="ow">=</span> <span class="n">show</span> <span class="n">x</span>
+         <span class="n">sx</span> <span class="o">=</span> <span class="n">show</span> <span class="n">x</span>
 
-<span class="nf">buzz</span> <span class="n">x</span> 
-   <span class="o">|</span> <span class="n">f</span> <span class="o">||</span> <span class="n">g</span>  <span class="ow">=</span> <span class="mi">0</span>             <span class="c1">-- (||) is the logical OR operation</span>
-   <span class="o">|</span> <span class="n">even</span> <span class="n">x</span> <span class="ow">=</span> <span class="mi">1</span>
-   <span class="o">|</span> <span class="n">otherwise</span> <span class="ow">=</span> <span class="mi">2</span> 
+<span class="n">buzz</span> <span class="n">x</span> 
+   <span class="o">|</span> <span class="n">f</span> <span class="o">||</span> <span class="n">g</span>  <span class="o">=</span> <span class="mi">0</span>             <span class="c1">-- (||) is the logical OR operation</span>
+   <span class="o">|</span> <span class="n">even</span> <span class="n">x</span> <span class="o">=</span> <span class="mi">1</span>
+   <span class="o">|</span> <span class="n">otherwise</span> <span class="o">=</span> <span class="mi">2</span> 
        <span class="kr">where</span>
-         <span class="n">f</span> <span class="ow">=</span> <span class="n">x</span> <span class="p">`</span><span class="n">mod</span><span class="p">`</span> <span class="mi">7</span> <span class="o">==</span> <span class="mi">0</span>
-         <span class="n">g</span> <span class="ow">=</span> <span class="n">x</span> <span class="o">&lt;</span> <span class="mi">20</span></code></pre></div>
+         <span class="n">f</span> <span class="o">=</span> <span class="n">x</span> <span class="p">`</span><span class="n">mod</span><span class="p">`</span> <span class="mi">7</span> <span class="o">==</span> <span class="mi">0</span>
+         <span class="n">g</span> <span class="o">=</span> <span class="n">x</span> <span class="o">&lt;</span> <span class="mi">20</span></code></pre></figure>
 
-<p>Pattern guards are convenient syntax for deciding which conditional branch to take according to the <em>truth value</em> computed from one or more of the input variables. Note that the functions acting as pattern guards (e.g. <code>odd x</code>, <code>f || g</code>) have to return a Boolean, and only after the <code>=</code> sign do we specify the return value for each branch.</p>
+<p>Pattern guards are convenient syntax for deciding which conditional branch to take according to the <em>truth value</em> computed from one or more of the input variables. Note that the functions acting as pattern guards (e.g. <code class="highlighter-rouge">odd x</code>, <code class="highlighter-rouge">f || g</code>) have to return a Boolean, and only after the <code class="highlighter-rouge">=</code> sign do we specify the return value for each branch.</p>
 
 <blockquote>
-  <p>Quiz: what are the type signatures of <code>oddness</code> and <code>buzz</code> and why ?</p>
+  <p>Quiz: what are the type signatures of <code class="highlighter-rouge">oddness</code> and <code class="highlighter-rouge">buzz</code> and why ?</p>
 </blockquote>
 
 <hr />
 <hr />
 
-<p><a id="data"></a> &lt;/a&gt;
-## Datatypes
-# Record notation, constructor as a function</p>
+<p><a id="data"></a> &lt;/a&gt;</p>
+<h2 id="datatypes">Datatypes</h2>
+<h1 id="record-notation-constructor-as-a-function">Record notation, constructor as a function</h1>
 
-<p>We can specify datatypes (which remind of structs in C) with the <code>data</code> keyword, as shown in the following examples.
-(Also <code>newtype</code> can be used in the same fashion as <code>data</code>, for datastructures that have a single constuctor, but the difference between the two keywords is a bit technical and will not be discussed here.)</p>
+<p>We can specify datatypes (which remind of structs in C) with the <code class="highlighter-rouge">data</code> keyword, as shown in the following examples.
+(Also <code class="highlighter-rouge">newtype</code> can be used in the same fashion as <code class="highlighter-rouge">data</code>, for datastructures that have a single constuctor, but the difference between the two keywords is a bit technical and will not be discussed here.)</p>
 
-<div class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="o">&gt;</span> <span class="kr">data</span> <span class="kt">TypeA</span> <span class="ow">=</span> <span class="kt">MakeA</span> <span class="p">{</span> <span class="n">unA</span> <span class="ow">::</span> <span class="kt">Int</span> <span class="p">}</span> <span class="kr">deriving</span> <span class="kt">Show</span>
+<figure class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="o">&gt;</span> <span class="kr">data</span> <span class="kt">TypeA</span> <span class="o">=</span> <span class="kt">MakeA</span> <span class="p">{</span> <span class="n">unA</span> <span class="o">::</span> <span class="kt">Int</span> <span class="p">}</span> <span class="kr">deriving</span> <span class="kt">Show</span>
 
-<span class="o">&gt;</span> <span class="kt">:</span><span class="n">t</span> <span class="kt">MakeA</span>
-<span class="kt">MakeA</span> <span class="ow">::</span> <span class="kt">Int</span> <span class="ow">-&gt;</span> <span class="kt">TypeA</span>
+<span class="o">&gt;</span> <span class="o">:</span><span class="n">t</span> <span class="kt">MakeA</span>
+<span class="kt">MakeA</span> <span class="o">::</span> <span class="kt">Int</span> <span class="o">-&gt;</span> <span class="kt">TypeA</span>
 
-<span class="o">&gt;</span> <span class="kt">:</span><span class="n">t</span> <span class="n">unA</span>
-<span class="nf">unA</span> <span class="ow">::</span> <span class="kt">TypeA</span> <span class="ow">-&gt;</span> <span class="kt">Int</span></code></pre></div>
+<span class="o">&gt;</span> <span class="o">:</span><span class="n">t</span> <span class="n">unA</span>
+<span class="n">unA</span> <span class="o">::</span> <span class="kt">TypeA</span> <span class="o">-&gt;</span> <span class="kt">Int</span></code></pre></figure>
 
-<p>The constructor (<code>MakeA</code>, in this case) is a function; we build a data “object” by passing the appropriate arguments to it and whenever we need the values stored inside, we just call the appropriate accessor method (<code>unA</code>, in the example), using the data object as its argument :</p>
+<p>The constructor (<code class="highlighter-rouge">MakeA</code>, in this case) is a function; we build a data “object” by passing the appropriate arguments to it and whenever we need the values stored inside, we just call the appropriate accessor method (<code class="highlighter-rouge">unA</code>, in the example), using the data object as its argument :</p>
 
-<div class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="o">&gt;</span> <span class="kr">let</span> <span class="n">test1</span> <span class="ow">=</span> <span class="kt">MakeA</span> <span class="mi">597</span>
+<figure class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="o">&gt;</span> <span class="kr">let</span> <span class="n">test1</span> <span class="o">=</span> <span class="kt">MakeA</span> <span class="mi">597</span>
 
 <span class="o">&gt;</span> <span class="n">test1</span>
-<span class="kt">MakeA</span> <span class="p">{</span><span class="n">unA</span> <span class="ow">=</span> <span class="mi">597</span><span class="p">}</span>
+<span class="kt">MakeA</span> <span class="p">{</span><span class="n">unA</span> <span class="o">=</span> <span class="mi">597</span><span class="p">}</span>
 
-<span class="o">&gt;</span> <span class="kt">:</span><span class="n">t</span> <span class="n">test1</span>
-<span class="nf">test1</span> <span class="ow">::</span> <span class="kt">TypeA</span>
+<span class="o">&gt;</span> <span class="o">:</span><span class="n">t</span> <span class="n">test1</span>
+<span class="n">test1</span> <span class="o">::</span> <span class="kt">TypeA</span>
 
 <span class="o">&gt;</span> <span class="n">unA</span> <span class="n">test1</span>
-<span class="mi">597</span></code></pre></div>
+<span class="mi">597</span></code></pre></figure>
 
 <p>Within the curly brackets we can specify a number of “records” to hold values; however these are not simple data fields but also declare the accessor functions to retrieve them.</p>
 
 <blockquote>
-  <p>Haskell provides the machinery to augment our datatypes, by making them “instances” of standard classes such as <code>Show</code> above. 
-If a datatype is an instance of one or more classes, it “inherits” the functionality of that class, so in the present example making <code>TypeA</code> an instance of <code>Show</code> lets us print <code>TypeA</code> objects on screen.</p>
+  <p>Haskell provides the machinery to augment our datatypes, by making them “instances” of standard classes such as <code class="highlighter-rouge">Show</code> above. 
+If a datatype is an instance of one or more classes, it “inherits” the functionality of that class, so in the present example making <code class="highlighter-rouge">TypeA</code> an instance of <code class="highlighter-rouge">Show</code> lets us print <code class="highlighter-rouge">TypeA</code> objects on screen.</p>
 </blockquote>
 
-<p>N.B.: if we hadn’t made <code>TypeA</code> an instance of <code>Show</code>, the evaluation of <code>test1</code> would have returned a “No instance for (Show TypeA) … “ error, instead.</p>
+<p>N.B.: if we hadn’t made <code class="highlighter-rouge">TypeA</code> an instance of <code class="highlighter-rouge">Show</code>, the evaluation of <code class="highlighter-rouge">test1</code> would have returned a “No instance for (Show TypeA) … “ error, instead.</p>
 
 <p>Let’s declare a slightly larger datatype constructor and try out its accessor functions:</p>
 
-<div class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="o">&gt;</span> <span class="kr">data</span> <span class="kt">Test</span> <span class="ow">=</span> <span class="kt">Tee</span> <span class="p">{</span> <span class="n">h1</span> <span class="ow">::</span> <span class="p">[(</span><span class="kt">Bool</span><span class="p">,</span> <span class="kt">String</span><span class="p">)],</span> <span class="n">h2</span> <span class="ow">::</span> <span class="kt">Char</span> <span class="p">}</span>
+<figure class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="o">&gt;</span> <span class="kr">data</span> <span class="kt">Test</span> <span class="o">=</span> <span class="kt">Tee</span> <span class="p">{</span> <span class="n">h1</span> <span class="o">::</span> <span class="p">[(</span><span class="kt">Bool</span><span class="p">,</span> <span class="kt">String</span><span class="p">)],</span> <span class="n">h2</span> <span class="o">::</span> <span class="kt">Char</span> <span class="p">}</span>
 
-<span class="o">&gt;</span> <span class="kt">:</span><span class="n">t</span> <span class="kt">Tee</span>
-<span class="kt">Tee</span> <span class="ow">::</span> <span class="p">[(</span><span class="kt">Bool</span><span class="p">,</span> <span class="kt">String</span><span class="p">)]</span> <span class="ow">-&gt;</span> <span class="kt">Char</span> <span class="ow">-&gt;</span> <span class="kt">Test</span>
+<span class="o">&gt;</span> <span class="o">:</span><span class="n">t</span> <span class="kt">Tee</span>
+<span class="kt">Tee</span> <span class="o">::</span> <span class="p">[(</span><span class="kt">Bool</span><span class="p">,</span> <span class="kt">String</span><span class="p">)]</span> <span class="o">-&gt;</span> <span class="kt">Char</span> <span class="o">-&gt;</span> <span class="kt">Test</span>
 
 
-<span class="o">&gt;</span> <span class="kr">let</span> <span class="n">test2</span> <span class="ow">=</span> <span class="kt">Tee</span> <span class="p">[(</span><span class="kt">True</span><span class="p">,</span> <span class="s">&quot;boop&quot;</span><span class="p">)]</span> <span class="n">&#39;x&#39;</span>
+<span class="o">&gt;</span> <span class="kr">let</span> <span class="n">test2</span> <span class="o">=</span> <span class="kt">Tee</span> <span class="p">[(</span><span class="kt">True</span><span class="p">,</span> <span class="s">"boop"</span><span class="p">)]</span> <span class="sc">'x'</span>
 
 <span class="o">&gt;</span> <span class="p">(</span><span class="n">snd</span> <span class="o">.</span> <span class="n">head</span> <span class="o">.</span> <span class="n">h1</span><span class="p">)</span> <span class="n">test2</span>
-<span class="s">&quot;boop&quot;</span>
+<span class="s">"boop"</span>
 
 <span class="o">&gt;</span> <span class="n">h2</span> <span class="n">test2</span>
-<span class="n">&#39;x&#39;</span></code></pre></div>
+<span class="sc">'x'</span></code></pre></figure>
 
-<p>In the above example, we have declared a <code>Test</code> datatype with constructor <code>Tee</code> and two records, the first of which is of a composite type, and created a <code>test2</code> object of this type.</p>
+<p>In the above example, we have declared a <code class="highlighter-rouge">Test</code> datatype with constructor <code class="highlighter-rouge">Tee</code> and two records, the first of which is of a composite type, and created a <code class="highlighter-rouge">test2</code> object of this type.</p>
 
 <p>Next, we access an internal field in a purely functional style, by composition of elementary functions. This idea of functional manipulation of “getter”/”setter” methods for nested datastructure is called <em>lensing</em>, and it is implemented (and greatly expanded) in a few packages such as <a href="https://hackage.haskell.org/package/lens">lens</a>, which however is beyond the scope of this tutorial.</p>
 
 <blockquote>
-  <p>What happens if we supply an integer to the Tee constructor, instead of the expected list of <code>(Bool, String)</code> tuples? Our first type error! &lt;3</p>
+  <p>What happens if we supply an integer to the Tee constructor, instead of the expected list of <code class="highlighter-rouge">(Bool, String)</code> tuples? Our first type error! &lt;3</p>
 </blockquote>
 
-<div class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="o">&gt;</span> <span class="kt">:</span><span class="n">t</span> <span class="kt">Tee</span> <span class="mi">2</span>
+<figure class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="o">&gt;</span> <span class="o">:</span><span class="n">t</span> <span class="kt">Tee</span> <span class="mi">2</span>
 
-<span class="o">&lt;</span><span class="n">interactive</span><span class="o">&gt;:</span><span class="mi">1</span><span class="kt">:</span><span class="mi">5</span><span class="kt">:</span>
-   <span class="kt">No</span> <span class="kr">instance</span> <span class="n">for</span> <span class="p">(</span><span class="kt">Num</span> <span class="p">[(</span><span class="kt">Bool</span><span class="p">,</span> <span class="kt">String</span><span class="p">)])</span> <span class="n">arising</span> <span class="n">from</span> <span class="n">the</span> <span class="n">literal</span> <span class="n">&#39;2&#39;</span>
-   <span class="kt">In</span> <span class="n">the</span> <span class="n">first</span> <span class="n">argument</span> <span class="kr">of</span> <span class="n">&#39;Tee&#39;</span><span class="p">,</span> <span class="n">namely</span> <span class="n">&#39;2&#39;</span>
-   <span class="kt">In</span> <span class="n">the</span> <span class="n">expression</span><span class="kt">:</span> <span class="kt">Tee</span> <span class="mi">2</span></code></pre></div>
+<span class="o">&lt;</span><span class="n">interactive</span><span class="o">&gt;:</span><span class="mi">1</span><span class="o">:</span><span class="mi">5</span><span class="o">:</span>
+   <span class="kt">No</span> <span class="kr">instance</span> <span class="n">for</span> <span class="p">(</span><span class="kt">Num</span> <span class="p">[(</span><span class="kt">Bool</span><span class="p">,</span> <span class="kt">String</span><span class="p">)])</span> <span class="n">arising</span> <span class="n">from</span> <span class="n">the</span> <span class="n">literal</span> <span class="sc">'2'</span>
+   <span class="kt">In</span> <span class="n">the</span> <span class="n">first</span> <span class="n">argument</span> <span class="kr">of</span> <span class="sc">'T</span><span class="err">e</span><span class="n">e'</span><span class="p">,</span> <span class="n">namely</span> <span class="sc">'2'</span>
+   <span class="kt">In</span> <span class="n">the</span> <span class="n">expression</span><span class="o">:</span> <span class="kt">Tee</span> <span class="mi">2</span></code></pre></figure>
 
 <blockquote>
   <p>The second line, “In the first argument of ‘Tee’”, is the hint!</p>
@@ -713,15 +719,15 @@ If a datatype is an instance of one or more classes, it “inherits” the funct
 
 <h1 id="type-synonyms">Type synonyms</h1>
 
-<p>The keyword <code>type</code> is reserved to declare transparent type synonyms (i.e. that are internally re-written into their elementary types at compile time). Let’s see a few examples:</p>
+<p>The keyword <code class="highlighter-rouge">type</code> is reserved to declare transparent type synonyms (i.e. that are internally re-written into their elementary types at compile time). Let’s see a few examples:</p>
 
-<div class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="o">&gt;</span> <span class="kr">type</span> <span class="kt">Name</span> <span class="ow">=</span> <span class="kt">String</span>
+<figure class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="o">&gt;</span> <span class="kr">type</span> <span class="kt">Name</span> <span class="o">=</span> <span class="kt">String</span>
 
-<span class="o">&gt;</span> <span class="kr">type</span> <span class="kt">Address</span> <span class="ow">=</span> <span class="p">(</span><span class="kt">String</span><span class="p">,</span> <span class="kt">Int</span><span class="p">)</span>
+<span class="o">&gt;</span> <span class="kr">type</span> <span class="kt">Address</span> <span class="o">=</span> <span class="p">(</span><span class="kt">String</span><span class="p">,</span> <span class="kt">Int</span><span class="p">)</span>
 
-<span class="o">&gt;</span> <span class="kr">type</span> <span class="kt">Contact</span> <span class="ow">=</span> <span class="p">(</span><span class="kt">Name</span><span class="p">,</span> <span class="kt">Address</span><span class="p">)</span>
+<span class="o">&gt;</span> <span class="kr">type</span> <span class="kt">Contact</span> <span class="o">=</span> <span class="p">(</span><span class="kt">Name</span><span class="p">,</span> <span class="kt">Address</span><span class="p">)</span>
 
-<span class="o">&gt;</span> <span class="kr">type</span> <span class="kt">Directory</span> <span class="ow">=</span> <span class="p">[</span><span class="kt">Contact</span><span class="p">]</span></code></pre></div>
+<span class="o">&gt;</span> <span class="kr">type</span> <span class="kt">Directory</span> <span class="o">=</span> <span class="p">[</span><span class="kt">Contact</span><span class="p">]</span></code></pre></figure>
 
 <blockquote>
   <p>Type synonyms let us describe the problem domain more accurately, and enforce consistency among the functions using them.</p>
@@ -731,44 +737,44 @@ If a datatype is an instance of one or more classes, it “inherits” the funct
 
 <p>We now show a slightly longer example, a sketch of customer database application with query functions. The code captures the situation of having an array of structured data and having to take a decision based on some computation performed on each entry. Here we aim to display together a few of the syntactic elements shown so far, in a not-too-contrived setting.</p>
 
-<div class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="kr">type</span> <span class="kt">NameStr</span> <span class="ow">=</span> <span class="kt">String</span>
-<span class="kr">type</span> <span class="kt">AddrStr</span> <span class="ow">=</span> <span class="kt">String</span>
-<span class="kr">type</span> <span class="kt">AddrN</span> <span class="ow">=</span> <span class="kt">Int</span>
-<span class="kr">data</span> <span class="kt">Address</span> <span class="ow">=</span> <span class="kt">A</span> <span class="p">{</span><span class="n">addressStr</span> <span class="ow">::</span> <span class="kt">AddrStr</span><span class="p">,</span>
-                  <span class="n">houseNo</span> <span class="ow">::</span> <span class="kt">AddrN</span><span class="p">}</span> <span class="kr">deriving</span> <span class="p">(</span><span class="kt">Show</span><span class="p">,</span> <span class="kt">Eq</span><span class="p">)</span>
+<figure class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="kr">type</span> <span class="kt">NameStr</span> <span class="o">=</span> <span class="kt">String</span>
+<span class="kr">type</span> <span class="kt">AddrStr</span> <span class="o">=</span> <span class="kt">String</span>
+<span class="kr">type</span> <span class="kt">AddrN</span> <span class="o">=</span> <span class="kt">Int</span>
+<span class="kr">data</span> <span class="kt">Address</span> <span class="o">=</span> <span class="kt">A</span> <span class="p">{</span><span class="n">addressStr</span> <span class="o">::</span> <span class="kt">AddrStr</span><span class="p">,</span>
+                  <span class="n">houseNo</span> <span class="o">::</span> <span class="kt">AddrN</span><span class="p">}</span> <span class="kr">deriving</span> <span class="p">(</span><span class="kt">Show</span><span class="p">,</span> <span class="kt">Eq</span><span class="p">)</span>
                                                    
-<span class="kr">data</span> <span class="kt">Name</span> <span class="ow">=</span> <span class="kt">N</span> <span class="p">{</span><span class="n">nameStr</span> <span class="ow">::</span> <span class="kt">NameStr</span><span class="p">}</span> <span class="kr">deriving</span> <span class="p">(</span><span class="kt">Show</span><span class="p">,</span> <span class="kt">Eq</span><span class="p">)</span>
+<span class="kr">data</span> <span class="kt">Name</span> <span class="o">=</span> <span class="kt">N</span> <span class="p">{</span><span class="n">nameStr</span> <span class="o">::</span> <span class="kt">NameStr</span><span class="p">}</span> <span class="kr">deriving</span> <span class="p">(</span><span class="kt">Show</span><span class="p">,</span> <span class="kt">Eq</span><span class="p">)</span>
 
-<span class="kr">data</span> <span class="kt">Contact</span> <span class="ow">=</span> <span class="kt">C</span> <span class="p">{</span><span class="n">name</span> <span class="ow">::</span> <span class="kt">Name</span><span class="p">,</span>
-                  <span class="n">addr</span> <span class="ow">::</span> <span class="kt">Address</span><span class="p">}</span> <span class="kr">deriving</span> <span class="p">(</span><span class="kt">Show</span><span class="p">,</span> <span class="kt">Eq</span><span class="p">)</span>
+<span class="kr">data</span> <span class="kt">Contact</span> <span class="o">=</span> <span class="kt">C</span> <span class="p">{</span><span class="n">name</span> <span class="o">::</span> <span class="kt">Name</span><span class="p">,</span>
+                  <span class="n">addr</span> <span class="o">::</span> <span class="kt">Address</span><span class="p">}</span> <span class="kr">deriving</span> <span class="p">(</span><span class="kt">Show</span><span class="p">,</span> <span class="kt">Eq</span><span class="p">)</span>
 
-<span class="nf">houseNoContact</span> <span class="ow">=</span> <span class="n">houseNo</span> <span class="o">.</span> <span class="n">addr</span>
-<span class="nf">nameContact</span> <span class="ow">=</span> <span class="n">nameStr</span> <span class="o">.</span> <span class="n">name</span>
-<span class="nf">addressContact</span> <span class="ow">=</span> <span class="n">addressStr</span> <span class="o">.</span> <span class="n">addr</span></code></pre></div>
+<span class="n">houseNoContact</span> <span class="o">=</span> <span class="n">houseNo</span> <span class="o">.</span> <span class="n">addr</span>
+<span class="n">nameContact</span> <span class="o">=</span> <span class="n">nameStr</span> <span class="o">.</span> <span class="n">name</span>
+<span class="n">addressContact</span> <span class="o">=</span> <span class="n">addressStr</span> <span class="o">.</span> <span class="n">addr</span></code></pre></figure>
 
-<p>A query method <code>deliver</code> : if the house number is within range, return <code>True</code></p>
+<p>A query method <code class="highlighter-rouge">deliver</code> : if the house number is within range, return <code class="highlighter-rouge">True</code></p>
 
-<div class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="nf">deliver</span> <span class="n">nMax</span> <span class="n">nMin</span> <span class="n">c</span>
-  <span class="o">|</span> <span class="n">inRange</span> <span class="p">(</span><span class="n">houseNoContact</span> <span class="n">c</span><span class="p">)</span> <span class="ow">=</span> <span class="kt">True</span>
-  <span class="o">|</span> <span class="n">otherwise</span> <span class="ow">=</span> <span class="kt">False</span> <span class="kr">where</span>
-       <span class="n">inRange</span> <span class="n">m</span> <span class="ow">=</span> <span class="n">abs</span> <span class="p">(</span><span class="n">nMax</span> <span class="o">-</span> <span class="n">nMin</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">abs</span> <span class="p">(</span><span class="n">m</span> <span class="o">-</span> <span class="n">nMin</span><span class="p">)</span></code></pre></div>
+<figure class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="n">deliver</span> <span class="n">nMax</span> <span class="n">nMin</span> <span class="n">c</span>
+  <span class="o">|</span> <span class="n">inRange</span> <span class="p">(</span><span class="n">houseNoContact</span> <span class="n">c</span><span class="p">)</span> <span class="o">=</span> <span class="kt">True</span>
+  <span class="o">|</span> <span class="n">otherwise</span> <span class="o">=</span> <span class="kt">False</span> <span class="kr">where</span>
+       <span class="n">inRange</span> <span class="n">m</span> <span class="o">=</span> <span class="n">abs</span> <span class="p">(</span><span class="n">nMax</span> <span class="o">-</span> <span class="n">nMin</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">abs</span> <span class="p">(</span><span class="n">m</span> <span class="o">-</span> <span class="n">nMin</span><span class="p">)</span></code></pre></figure>
 
 <p>or, more concisely:</p>
 
-<div class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="nf">deliver&#39;</span> <span class="n">nMax</span> <span class="n">nMin</span> <span class="n">c</span> <span class="ow">=</span> <span class="n">abs</span> <span class="p">(</span><span class="n">nMax</span> <span class="o">-</span> <span class="n">nMin</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">abs</span> <span class="p">(</span><span class="n">houseNoContact</span> <span class="n">c</span> <span class="o">-</span> <span class="n">nMin</span><span class="p">)</span></code></pre></div>
+<figure class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="n">deliver'</span> <span class="n">nMax</span> <span class="n">nMin</span> <span class="n">c</span> <span class="o">=</span> <span class="n">abs</span> <span class="p">(</span><span class="n">nMax</span> <span class="o">-</span> <span class="n">nMin</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">abs</span> <span class="p">(</span><span class="n">houseNoContact</span> <span class="n">c</span> <span class="o">-</span> <span class="n">nMin</span><span class="p">)</span></code></pre></figure>
 
 <blockquote>
-  <p>Quiz: what is the type signature of <code>deliver'</code> and why?</p>
+  <p>Quiz: what is the type signature of <code class="highlighter-rouge">deliver'</code> and why?</p>
 </blockquote>
 
-<p>Partial application of both <code>deliver</code> and <code>filter</code> :</p>
+<p>Partial application of both <code class="highlighter-rouge">deliver</code> and <code class="highlighter-rouge">filter</code> :</p>
 
-<div class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="nf">todaysDeliveries</span> <span class="n">n1</span> <span class="n">n2</span> <span class="ow">=</span> <span class="n">filter</span> <span class="p">(</span><span class="n">deliver</span> <span class="n">n1</span> <span class="n">n2</span><span class="p">)</span></code></pre></div>
+<figure class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="n">todaysDeliveries</span> <span class="n">n1</span> <span class="n">n2</span> <span class="o">=</span> <span class="n">filter</span> <span class="p">(</span><span class="n">deliver</span> <span class="n">n1</span> <span class="n">n2</span><span class="p">)</span></code></pre></figure>
 
 <p>We can now load the previous code snippet in GHCi and see the signature of today’s delivery list, mapping from two house numbers and a list of contacts to the subset of the original contact list whose house number lies within the range.</p>
 
-<div class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="o">&gt;</span> <span class="kt">:</span><span class="n">t</span> <span class="n">todaysDeliveries</span>
-<span class="nf">todaysDeliveries</span> <span class="ow">::</span> <span class="kt">AddrN</span> <span class="ow">-&gt;</span> <span class="kt">AddrN</span> <span class="ow">-&gt;</span> <span class="p">[</span><span class="kt">Contact</span><span class="p">]</span> <span class="ow">-&gt;</span> <span class="p">[</span><span class="kt">Contact</span><span class="p">]</span></code></pre></div>
+<figure class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="o">&gt;</span> <span class="o">:</span><span class="n">t</span> <span class="n">todaysDeliveries</span>
+<span class="n">todaysDeliveries</span> <span class="o">::</span> <span class="kt">AddrN</span> <span class="o">-&gt;</span> <span class="kt">AddrN</span> <span class="o">-&gt;</span> <span class="p">[</span><span class="kt">Contact</span><span class="p">]</span> <span class="o">-&gt;</span> <span class="p">[</span><span class="kt">Contact</span><span class="p">]</span></code></pre></figure>
 
 <blockquote>
   <p>Haskell uses a <em>decidable</em> type system (the Hindley-Milner system) which allows the type-checking algorithm to always terminate without the user having to supply type annotations; in the above example we see the utility of this: using partial application wisely, we can achieve the desired signature function very concisely.</p>
@@ -778,89 +784,89 @@ If a datatype is an instance of one or more classes, it “inherits” the funct
   <p>Concise code has very far-reaching implications, besides just “looking clever”: it greatly simplifies reasoning, checking for correctness, refactoring and knowledge propagation. This is one of the many examples in which Haskell’s theoretical foundations have very practical advantages.</p>
 </blockquote>
 
-<p>For instance, imagine having one day to update the matching criterion, i.e. the function <code>deliver</code> in our case; it’s a single line change, and as long as the types match, the whole code will still be correct.</p>
+<p>For instance, imagine having one day to update the matching criterion, i.e. the function <code class="highlighter-rouge">deliver</code> in our case; it’s a single line change, and as long as the types match, the whole code will still be correct.</p>
 
 <p>An example data entry for the delivery example above:</p>
 
-<div class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="nf">name1</span> <span class="ow">=</span> <span class="kt">N</span> <span class="s">&quot;John Doe&quot;</span>
-<span class="nf">addr1</span> <span class="ow">=</span> <span class="kt">A</span> <span class="s">&quot;Potato St.&quot;</span> <span class="mi">42</span>
-<span class="nf">contact1</span> <span class="ow">=</span> <span class="kt">C</span> <span class="n">name1</span> <span class="n">addr1</span>
+<figure class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="n">name1</span> <span class="o">=</span> <span class="kt">N</span> <span class="s">"John Doe"</span>
+<span class="n">addr1</span> <span class="o">=</span> <span class="kt">A</span> <span class="s">"Potato St."</span> <span class="mi">42</span>
+<span class="n">contact1</span> <span class="o">=</span> <span class="kt">C</span> <span class="n">name1</span> <span class="n">addr1</span>
 
-<span class="o">&gt;</span> <span class="kt">:</span><span class="n">t</span> <span class="n">contact1</span>
-<span class="nf">contact1</span> <span class="ow">::</span> <span class="kt">Contact</span></code></pre></div>
+<span class="o">&gt;</span> <span class="o">:</span><span class="n">t</span> <span class="n">contact1</span>
+<span class="n">contact1</span> <span class="o">::</span> <span class="kt">Contact</span></code></pre></figure>
 
 <h1 id="algebraic-types">Algebraic types</h1>
 
-<p>We have already seen an instance of an algebraic datatype (ADT): <code>Bool</code> can have two mutually exclusive values.</p>
+<p>We have already seen an instance of an algebraic datatype (ADT): <code class="highlighter-rouge">Bool</code> can have two mutually exclusive values.</p>
 
-<div class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="o">&gt;</span> <span class="kr">data</span> <span class="kt">Bool</span> <span class="ow">=</span> <span class="kt">True</span> <span class="o">|</span> <span class="kt">False</span>
+<figure class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="o">&gt;</span> <span class="kr">data</span> <span class="kt">Bool</span> <span class="o">=</span> <span class="kt">True</span> <span class="o">|</span> <span class="kt">False</span>
 
-<span class="o">&gt;</span> <span class="kr">data</span> <span class="kt">PS</span> <span class="ow">=</span> <span class="kt">Tri</span> <span class="o">|</span> <span class="kt">Cir</span> <span class="o">|</span> <span class="kt">Sqr</span> <span class="o">|</span> <span class="kt">Crs</span></code></pre></div>
+<span class="o">&gt;</span> <span class="kr">data</span> <span class="kt">PS</span> <span class="o">=</span> <span class="kt">Tri</span> <span class="o">|</span> <span class="kt">Cir</span> <span class="o">|</span> <span class="kt">Sqr</span> <span class="o">|</span> <span class="kt">Crs</span></code></pre></figure>
 
 <h1 id="polymorphic-types">Polymorphic types</h1>
-<p>Polymorphic types can be thought of as a labeled scaffolding for more elementary types; in the following example we show how the constructor <code>Pt a a</code> can be specialized to cater for various needs:</p>
+<p>Polymorphic types can be thought of as a labeled scaffolding for more elementary types; in the following example we show how the constructor <code class="highlighter-rouge">Pt a a</code> can be specialized to cater for various needs:</p>
 
-<div class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="o">&gt;</span> <span class="kr">data</span> <span class="kt">Point</span> <span class="n">a</span> <span class="ow">=</span> <span class="kt">Pt</span> <span class="n">a</span> <span class="n">a</span>
+<figure class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="o">&gt;</span> <span class="kr">data</span> <span class="kt">Point</span> <span class="n">a</span> <span class="o">=</span> <span class="kt">Pt</span> <span class="n">a</span> <span class="n">a</span>
 
-<span class="o">&gt;</span> <span class="kt">:</span><span class="n">t</span> <span class="kt">Pt</span> <span class="mi">2</span> <span class="mi">3</span> 
-<span class="kt">Pt</span> <span class="mi">2</span> <span class="mi">3</span> <span class="ow">::</span> <span class="kt">Num</span> <span class="n">a</span> <span class="ow">=&gt;</span> <span class="kt">Point</span> <span class="n">a</span>
+<span class="o">&gt;</span> <span class="o">:</span><span class="n">t</span> <span class="kt">Pt</span> <span class="mi">2</span> <span class="mi">3</span> 
+<span class="kt">Pt</span> <span class="mi">2</span> <span class="mi">3</span> <span class="o">::</span> <span class="kt">Num</span> <span class="n">a</span> <span class="o">=&gt;</span> <span class="kt">Point</span> <span class="n">a</span>
 
-<span class="o">&gt;</span> <span class="kt">:</span><span class="n">t</span> <span class="kt">Pt</span> <span class="n">&#39;c&#39;</span> <span class="n">&#39;d&#39;</span>
-<span class="kt">Pt</span> <span class="n">&#39;c&#39;</span> <span class="n">&#39;d&#39;</span> <span class="ow">::</span> <span class="kt">Point</span> <span class="kt">Char</span>
+<span class="o">&gt;</span> <span class="o">:</span><span class="n">t</span> <span class="kt">Pt</span> <span class="sc">'c'</span> <span class="sc">'d'</span>
+<span class="kt">Pt</span> <span class="sc">'c'</span> <span class="sc">'d'</span> <span class="o">::</span> <span class="kt">Point</span> <span class="kt">Char</span>
 
-<span class="o">&gt;</span> <span class="kr">let</span> <span class="n">inside</span> <span class="n">p1</span> <span class="n">p2</span> <span class="ow">=</span> <span class="kr">let</span> <span class="n">normP</span> <span class="p">(</span><span class="kt">Pt</span> <span class="n">x</span> <span class="n">y</span><span class="p">)</span> <span class="ow">=</span> <span class="n">x</span><span class="o">^</span><span class="mi">2</span> <span class="o">+</span> <span class="n">y</span><span class="o">^</span><span class="mi">2</span> <span class="kr">in</span> <span class="n">normP</span> <span class="n">p1</span> <span class="o">&lt;</span> <span class="n">normP</span> <span class="n">p2</span> 
+<span class="o">&gt;</span> <span class="kr">let</span> <span class="n">inside</span> <span class="n">p1</span> <span class="n">p2</span> <span class="o">=</span> <span class="kr">let</span> <span class="n">normP</span> <span class="p">(</span><span class="kt">Pt</span> <span class="n">x</span> <span class="n">y</span><span class="p">)</span> <span class="o">=</span> <span class="n">x</span><span class="o">^</span><span class="mi">2</span> <span class="o">+</span> <span class="n">y</span><span class="o">^</span><span class="mi">2</span> <span class="kr">in</span> <span class="n">normP</span> <span class="n">p1</span> <span class="o">&lt;</span> <span class="n">normP</span> <span class="n">p2</span> 
 
-<span class="o">&gt;</span> <span class="kt">:</span><span class="n">t</span> <span class="n">inside</span>
-<span class="nf">inside</span> <span class="ow">::</span> <span class="p">(</span><span class="kt">Ord</span> <span class="n">a</span><span class="p">,</span> <span class="kt">Num</span> <span class="n">a</span><span class="p">)</span> <span class="ow">=&gt;</span> <span class="kt">Point</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="kt">Point</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="kt">Bool</span></code></pre></div>
+<span class="o">&gt;</span> <span class="o">:</span><span class="n">t</span> <span class="n">inside</span>
+<span class="n">inside</span> <span class="o">::</span> <span class="p">(</span><span class="kt">Ord</span> <span class="n">a</span><span class="p">,</span> <span class="kt">Num</span> <span class="n">a</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="kt">Point</span> <span class="n">a</span> <span class="o">-&gt;</span> <span class="kt">Point</span> <span class="n">a</span> <span class="o">-&gt;</span> <span class="kt">Bool</span></code></pre></figure>
 
 <blockquote>
-  <p>Quiz: why do the<code>Ord</code> and <code>Num</code> constraints arise, in the definition of <code>inside</code> ?</p>
+  <p>Quiz: why do the<code class="highlighter-rouge">Ord</code> and <code class="highlighter-rouge">Num</code> constraints arise, in the definition of <code class="highlighter-rouge">inside</code> ?</p>
 </blockquote>
 
-<p>A simple polymorphic datatype to represent a computation that can fail is <code>Maybe a</code>:</p>
+<p>A simple polymorphic datatype to represent a computation that can fail is <code class="highlighter-rouge">Maybe a</code>:</p>
 
-<div class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="o">&gt;</span> <span class="kr">data</span> <span class="kt">Maybe</span> <span class="n">a</span> <span class="ow">=</span> <span class="kt">Nothing</span> <span class="o">|</span> <span class="kt">Just</span> <span class="n">a</span></code></pre></div>
+<figure class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="o">&gt;</span> <span class="kr">data</span> <span class="kt">Maybe</span> <span class="n">a</span> <span class="o">=</span> <span class="kt">Nothing</span> <span class="o">|</span> <span class="kt">Just</span> <span class="n">a</span></code></pre></figure>
 
 <p>For example, we can implement a simple “safe division”, as follows</p>
 
-<div class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="nf">safeDiv</span> <span class="n">a</span> <span class="n">b</span>
-  <span class="o">|</span> <span class="n">b</span> <span class="o">/=</span> <span class="mi">0</span> <span class="ow">=</span> <span class="kt">Just</span> <span class="p">(</span> <span class="n">a</span><span class="o">/</span><span class="n">b</span> <span class="p">)</span>
-  <span class="o">|</span> <span class="n">otherwise</span> <span class="ow">=</span> <span class="kt">Nothing</span> 
+<figure class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="n">safeDiv</span> <span class="n">a</span> <span class="n">b</span>
+  <span class="o">|</span> <span class="n">b</span> <span class="o">/=</span> <span class="mi">0</span> <span class="o">=</span> <span class="kt">Just</span> <span class="p">(</span> <span class="n">a</span><span class="o">/</span><span class="n">b</span> <span class="p">)</span>
+  <span class="o">|</span> <span class="n">otherwise</span> <span class="o">=</span> <span class="kt">Nothing</span> 
 
-<span class="o">&gt;</span> <span class="kt">:</span><span class="n">t</span> <span class="n">safeDiv</span>
-<span class="nf">safeDiv</span> <span class="ow">::</span> <span class="p">(</span><span class="kt">Eq</span> <span class="n">a</span><span class="p">,</span> <span class="kt">Fractional</span> <span class="n">a</span><span class="p">)</span> <span class="ow">=&gt;</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="kt">Maybe</span> <span class="n">a</span></code></pre></div>
+<span class="o">&gt;</span> <span class="o">:</span><span class="n">t</span> <span class="n">safeDiv</span>
+<span class="n">safeDiv</span> <span class="o">::</span> <span class="p">(</span><span class="kt">Eq</span> <span class="n">a</span><span class="p">,</span> <span class="kt">Fractional</span> <span class="n">a</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="n">a</span> <span class="o">-&gt;</span> <span class="n">a</span> <span class="o">-&gt;</span> <span class="kt">Maybe</span> <span class="n">a</span></code></pre></figure>
 
 <blockquote>
-  <p>The <code>Maybe a</code> type is a simple way to treat <em>errors as values</em>, and to perform further computation on them, rather than letting the program fail and stop.</p>
+  <p>The <code class="highlighter-rouge">Maybe a</code> type is a simple way to treat <em>errors as values</em>, and to perform further computation on them, rather than letting the program fail and stop.</p>
 </blockquote>
 
 <h1 id="recursive-types">Recursive types</h1>
 
 <p>We have been using a recursive data structure all along, the humble list:</p>
 
-<div class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="o">&gt;</span> <span class="kr">data</span> <span class="kt">[]</span> <span class="n">a</span> <span class="ow">=</span> <span class="kt">[]</span> <span class="o">|</span> <span class="n">a</span> <span class="kt">:</span> <span class="p">[</span><span class="n">a</span><span class="p">]</span> 	<span class="c1">-- Defined in ‘GHC.Types’</span></code></pre></div>
+<figure class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="o">&gt;</span> <span class="kr">data</span> <span class="kt">[]</span> <span class="n">a</span> <span class="o">=</span> <span class="kt">[]</span> <span class="o">|</span> <span class="n">a</span> <span class="o">:</span> <span class="p">[</span><span class="n">a</span><span class="p">]</span> 	<span class="c1">-- Defined in ‘GHC.Types’</span></code></pre></figure>
 
-<p>Next, we introduce a handy binary tree type <code>Tree a</code>, which can be either a “leaf” <code>L</code> carrying a type <code>a</code>, i.e. <code>L a</code>, or a “branch” <code>B</code> carrying two <code>Tree a</code>’s.</p>
+<p>Next, we introduce a handy binary tree type <code class="highlighter-rouge">Tree a</code>, which can be either a “leaf” <code class="highlighter-rouge">L</code> carrying a type <code class="highlighter-rouge">a</code>, i.e. <code class="highlighter-rouge">L a</code>, or a “branch” <code class="highlighter-rouge">B</code> carrying two <code class="highlighter-rouge">Tree a</code>’s.</p>
 
-<div class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="o">&gt;</span> <span class="kr">data</span> <span class="kt">Tree</span> <span class="n">a</span> <span class="ow">=</span> <span class="kt">L</span> <span class="n">a</span> <span class="o">|</span> <span class="kt">B</span> <span class="p">(</span><span class="kt">Tree</span> <span class="n">a</span><span class="p">)</span> <span class="p">(</span><span class="kt">Tree</span> <span class="n">a</span><span class="p">)</span> <span class="kr">deriving</span> <span class="kt">Show</span>
+<figure class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="o">&gt;</span> <span class="kr">data</span> <span class="kt">Tree</span> <span class="n">a</span> <span class="o">=</span> <span class="kt">L</span> <span class="n">a</span> <span class="o">|</span> <span class="kt">B</span> <span class="p">(</span><span class="kt">Tree</span> <span class="n">a</span><span class="p">)</span> <span class="p">(</span><span class="kt">Tree</span> <span class="n">a</span><span class="p">)</span> <span class="kr">deriving</span> <span class="kt">Show</span>
 
-<span class="o">&gt;</span> <span class="kt">:</span><span class="n">t</span> <span class="kt">L</span>
-<span class="kt">L</span> <span class="ow">::</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="kt">Tree</span> <span class="n">a</span>
+<span class="o">&gt;</span> <span class="o">:</span><span class="n">t</span> <span class="kt">L</span>
+<span class="kt">L</span> <span class="o">::</span> <span class="n">a</span> <span class="o">-&gt;</span> <span class="kt">Tree</span> <span class="n">a</span>
 
-<span class="o">&gt;</span> <span class="kt">:</span><span class="n">t</span> <span class="kt">B</span>
-<span class="kt">B</span> <span class="ow">::</span> <span class="kt">Tree</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="kt">Tree</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="kt">Tree</span> <span class="n">a</span>
+<span class="o">&gt;</span> <span class="o">:</span><span class="n">t</span> <span class="kt">B</span>
+<span class="kt">B</span> <span class="o">::</span> <span class="kt">Tree</span> <span class="n">a</span> <span class="o">-&gt;</span> <span class="kt">Tree</span> <span class="n">a</span> <span class="o">-&gt;</span> <span class="kt">Tree</span> <span class="n">a</span>
 
-<span class="o">&gt;</span> <span class="kr">let</span> <span class="n">leaf1</span> <span class="ow">=</span> <span class="kt">L</span> <span class="mi">15</span>
+<span class="o">&gt;</span> <span class="kr">let</span> <span class="n">leaf1</span> <span class="o">=</span> <span class="kt">L</span> <span class="mi">15</span>
  
-<span class="o">&gt;</span> <span class="kr">let</span> <span class="n">leaf2</span> <span class="ow">=</span> <span class="kt">L</span> <span class="mi">27</span>
+<span class="o">&gt;</span> <span class="kr">let</span> <span class="n">leaf2</span> <span class="o">=</span> <span class="kt">L</span> <span class="mi">27</span>
  
 <span class="o">&gt;</span> <span class="kt">B</span> <span class="n">leaf1</span> <span class="n">leaf2</span>
 <span class="kt">B</span> <span class="p">(</span><span class="kt">L</span> <span class="mi">15</span><span class="p">)</span> <span class="p">(</span><span class="kt">L</span> <span class="mi">27</span><span class="p">)</span>
 
-<span class="o">&gt;</span> <span class="kr">let</span> <span class="n">b0</span> <span class="ow">=</span> <span class="kt">B</span> <span class="n">leaf1</span> <span class="n">leaf2</span>
+<span class="o">&gt;</span> <span class="kr">let</span> <span class="n">b0</span> <span class="o">=</span> <span class="kt">B</span> <span class="n">leaf1</span> <span class="n">leaf2</span>
 
-<span class="o">&gt;</span> <span class="kt">:</span><span class="n">t</span> <span class="n">b0</span>
-<span class="nf">b0</span> <span class="ow">::</span> <span class="kt">Num</span> <span class="n">a</span> <span class="ow">=&gt;</span> <span class="kt">Tree</span> <span class="n">a</span></code></pre></div>
+<span class="o">&gt;</span> <span class="o">:</span><span class="n">t</span> <span class="n">b0</span>
+<span class="n">b0</span> <span class="o">::</span> <span class="kt">Num</span> <span class="n">a</span> <span class="o">=&gt;</span> <span class="kt">Tree</span> <span class="n">a</span>         </code></pre></figure>
 
 <p>Trees have very convenient asymptotic performance for search and sorting operations, and they are naturally suited to be traversed with recursive logic in Haskell.</p>
 
