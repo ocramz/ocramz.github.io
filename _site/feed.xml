@@ -6,8 +6,8 @@
 </description>
     <link>https://ocramz.github.io/</link>
     <atom:link href="https://ocramz.github.io/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Thu, 30 Nov 2017 21:35:01 +0100</pubDate>
-    <lastBuildDate>Thu, 30 Nov 2017 21:35:01 +0100</lastBuildDate>
+    <pubDate>Thu, 30 Nov 2017 21:37:54 +0100</pubDate>
+    <lastBuildDate>Thu, 30 Nov 2017 21:37:54 +0100</lastBuildDate>
     <generator>Jekyll v3.6.2</generator>
     
       <item>
@@ -148,7 +148,7 @@
   &lt;li&gt;Potentially throw and catch exceptions of some sort, for example when an API provider cannot find a certain piece of data.&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;All the above &lt;em&gt;effects&lt;/em&gt; can be “lifted” to corresponding typeclasses, exactly as we saw with &lt;code class=&quot;highlighter-rouge&quot;&gt;MonadHTTP&lt;/code&gt; and &lt;code class=&quot;highlighter-rouge&quot;&gt;MonadIO&lt;/code&gt;. The &lt;a href=&quot;https://hackage.haskell.org/package/exceptions&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;exceptions&lt;/code&gt;&lt;/a&gt; library provides &lt;code class=&quot;highlighter-rouge&quot;&gt;MonadThrow&lt;/code&gt;/&lt;code class=&quot;highlighter-rouge&quot;&gt;MonadCatch&lt;/code&gt;, &lt;a href=&quot;https://hackage.haskell.org/package/cryptonite&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;cryptonite&lt;/code&gt;&lt;/a&gt; provides both all the cryptography primitives and the &lt;code class=&quot;highlighter-rouge&quot;&gt;MonadRandom&lt;/code&gt; class, and &lt;a href=&quot;https://hackage.haskell.org/package/transformers&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;transformers&lt;/code&gt;&lt;/a&gt; provides &lt;code class=&quot;highlighter-rouge&quot;&gt;MonadReader&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;All the above &lt;em&gt;effects&lt;/em&gt; can be “lifted” to corresponding typeclasses, exactly as we saw with &lt;code class=&quot;highlighter-rouge&quot;&gt;MonadHTTP&lt;/code&gt; and &lt;code class=&quot;highlighter-rouge&quot;&gt;MonadIO&lt;/code&gt;. The &lt;a href=&quot;https://hackage.haskell.org/package/exceptions&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;exceptions&lt;/code&gt;&lt;/a&gt; library provides &lt;code class=&quot;highlighter-rouge&quot;&gt;MonadThrow&lt;/code&gt;/&lt;code class=&quot;highlighter-rouge&quot;&gt;MonadCatch&lt;/code&gt;, &lt;a href=&quot;https://hackage.haskell.org/package/cryptonite&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;cryptonite&lt;/code&gt;&lt;/a&gt; provides both all the cryptography primitives and the &lt;code class=&quot;highlighter-rouge&quot;&gt;MonadRandom&lt;/code&gt; class, and &lt;a href=&quot;https://hackage.haskell.org/package/mtl&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;mtl&lt;/code&gt;&lt;/a&gt; provides &lt;code class=&quot;highlighter-rouge&quot;&gt;MonadReader&lt;/code&gt;.&lt;/p&gt;
 
 </description>
         <pubDate>Thu, 30 Nov 2017 00:00:00 +0100</pubDate>
