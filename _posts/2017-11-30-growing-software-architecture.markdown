@@ -6,7 +6,7 @@ categories: haskell
 ---
 
 
-Yesterday evening I made a presentation at a [local functional programming meetup](https://www.meetup.com/got-lambda) regarding my recent experience in building a data ingestion microservice in Haskell. To tell the truth, I was more concerned with communicating the rationale for my design choices rather than the business application per se, and I wanted to show how (my current understanding of) the language helps (or doesn't) in structuring a large and realistic application.
+Yesterday evening I gave a presentation at a [local functional programming meetup](https://www.meetup.com/got-lambda) regarding my recent experience in building a data ingestion microservice in Haskell. To tell the truth, I was more concerned with communicating the rationale for my design choices rather than the business application per se, and I wanted to show how (my current understanding of) the language helps (or doesn't) in structuring a large and realistic application.
 
 This blog post reproduces roughly the presentation, and incorporates some feedback I received and some further thoughts I have had on the matter in the meanwhile. It is written for people who had some prior exposure to Haskell, but I'll try to keep the exposition as intuitive and beginner-friendly as possible.
 
@@ -254,8 +254,8 @@ total hdl = runCloudIO hdl $ do
 -----------------
 
 
-This post is already pretty long so I will close it here, but there are a number of other topics that I care about and deserve a type-friendly treatment, for example exception handling and concurrency, and extremely useful libraries such as `async` and `stm`.
-
+This post is already pretty long so I will close it here, but there are a number of other topics that I care about and deserve a type-friendly treatment, for example exception handling and concurrency, as well as extremely useful libraries such as `async` and `stm` that I'd love to incorporate in this treatment. 
+ 
 Thank you for reading this far, I hope you enjoyed it and got something out of it. Feel free to reach out on twitter with feedback, comments, etc. Those are always welcome!
 
 
