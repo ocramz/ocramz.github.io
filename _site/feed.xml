@@ -6,8 +6,8 @@
 </description>
     <link>https://ocramz.github.io/</link>
     <atom:link href="https://ocramz.github.io/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Thu, 30 Nov 2017 19:08:56 +0100</pubDate>
-    <lastBuildDate>Thu, 30 Nov 2017 19:08:56 +0100</lastBuildDate>
+    <pubDate>Thu, 30 Nov 2017 19:15:52 +0100</pubDate>
+    <lastBuildDate>Thu, 30 Nov 2017 19:15:52 +0100</lastBuildDate>
     <generator>Jekyll v3.6.2</generator>
     
       <item>
@@ -42,6 +42,8 @@
 
 &lt;p&gt;The above already requires the user to be familiar with typeclasses, lazy evaluation and a couple standard typeclasses (Monoid and Monad). These are fundamental to Haskell, so it helps seeing them used in context.&lt;/p&gt;
 
+&lt;h1 id=&quot;aside--inspecting-types-in-ghci&quot;&gt;Aside : inspecting types in GHCi&lt;/h1&gt;
+
 &lt;p&gt;Let’s take the last parameter of &lt;code class=&quot;highlighter-rouge&quot;&gt;req&lt;/code&gt; as a concrete example. It is of type &lt;code class=&quot;highlighter-rouge&quot;&gt;Option scheme&lt;/code&gt;, where &lt;code class=&quot;highlighter-rouge&quot;&gt;scheme&lt;/code&gt; is some type parameter. Now, how do I know what are the right types that can be used here? I always have a GHCi session running in one Emacs tile, so that I can explore interactively the libraries imported by the project I’m working on; in this case, I query for information on &lt;code class=&quot;highlighter-rouge&quot;&gt;Option&lt;/code&gt; (the GHCi prompt is represented by the &lt;code class=&quot;highlighter-rouge&quot;&gt;&amp;gt;&lt;/code&gt; character):&lt;/p&gt;
 
 &lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-haskell&quot; data-lang=&quot;haskell&quot;&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Option&lt;/span&gt;
@@ -57,7 +59,17 @@
 
 &lt;p&gt;This is quite a dense bit of information, so let’s unpack it: the &lt;code class=&quot;highlighter-rouge&quot;&gt;data ..&lt;/code&gt; line shows the actual implementation of &lt;code class=&quot;highlighter-rouge&quot;&gt;Option&lt;/code&gt; (which is normally hidden from the user), and the next two lines list what typeclass instances this type satisfies; there we see &lt;code class=&quot;highlighter-rouge&quot;&gt;Monoid&lt;/code&gt; and &lt;code class=&quot;highlighter-rouge&quot;&gt;QueryParam&lt;/code&gt;. The Monoid instance is extremely useful because it provides a type with a “neutral element” (&lt;code class=&quot;highlighter-rouge&quot;&gt;mempty&lt;/code&gt;) and with a binary operation (&lt;code class=&quot;highlighter-rouge&quot;&gt;mappend&lt;/code&gt;) with some closure property (if &lt;code class=&quot;highlighter-rouge&quot;&gt;a&lt;/code&gt; and &lt;code class=&quot;highlighter-rouge&quot;&gt;b&lt;/code&gt; are values of a Monoid type, &lt;code class=&quot;highlighter-rouge&quot;&gt;mappend a b&lt;/code&gt; is of Monoid type as well).&lt;/p&gt;
 
-&lt;p&gt;Strings of texts are one familiar example of things with the Monoid property: the empty string (“”) is the neutral element, and appending two strings (&lt;code class=&quot;highlighter-rouge&quot;&gt;++&lt;/code&gt;) is a binary and associative operation, corresponding to &lt;code class=&quot;highlighter-rouge&quot;&gt;mappend&lt;/code&gt;. Another example is 0 and integer addition, or 1 and integer multiplication.&lt;/p&gt;
+&lt;p&gt;Strings of texts are one familiar example of things with the Monoid property: the empty string (“”) is the neutral element, and appending two strings (&lt;code class=&quot;highlighter-rouge&quot;&gt;++&lt;/code&gt;) is a binary and associative operation, corresponding to &lt;code class=&quot;highlighter-rouge&quot;&gt;mappend&lt;/code&gt;. Other common examples of Monoid are 0 and integer addition, or 1 and integer multiplication.&lt;/p&gt;
+
+&lt;p&gt;Back to our function &lt;code class=&quot;highlighter-rouge&quot;&gt;req&lt;/code&gt;; all of this means that since &lt;code class=&quot;highlighter-rouge&quot;&gt;Option&lt;/code&gt; is a Monoid and I simply wish to pass “no parameter” as an argument, I can use &lt;code class=&quot;highlighter-rouge&quot;&gt;mempty&lt;/code&gt; and the concrete type will be inferred automatically.&lt;/p&gt;
+
+&lt;h2 id=&quot;monadhttp&quot;&gt;MonadHttp&lt;/h2&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-haskell&quot; data-lang=&quot;haskell&quot;&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;MonadHttp&lt;/span&gt;
+&lt;span class=&quot;kr&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;MonadIO&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;m&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;MonadHttp&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;m&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;::&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;kr&quot;&gt;where&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;handleHttpException&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;::&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;HttpException&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;m&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;
+  &lt;span class=&quot;o&quot;&gt;...&lt;/span&gt;
+  &lt;span class=&quot;cp&quot;&gt;{-# MINIMAL handleHttpException #-}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
 </description>
         <pubDate>Thu, 30 Nov 2017 00:00:00 +0100</pubDate>

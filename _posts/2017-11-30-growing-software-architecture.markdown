@@ -44,6 +44,9 @@ requestGet = do
 
 The above already requires the user to be familiar with typeclasses, lazy evaluation and a couple standard typeclasses (Monoid and Monad). These are fundamental to Haskell, so it helps seeing them used in context.
 
+
+# Aside : inspecting types in GHCi
+
 Let's take the last parameter of `req` as a concrete example. It is of type `Option scheme`, where `scheme` is some type parameter. Now, how do I know what are the right types that can be used here? I always have a GHCi session running in one Emacs tile, so that I can explore interactively the libraries imported by the project I'm working on; in this case, I query for information on `Option` (the GHCi prompt is represented by the `>` character):
 
 {% highlight haskell %}
@@ -61,7 +64,29 @@ instance QueryParam (Option scheme)
 
 This is quite a dense bit of information, so let's unpack it: the `data ..` line shows the actual implementation of `Option` (which is normally hidden from the user), and the next two lines list what typeclass instances this type satisfies; there we see `Monoid` and `QueryParam`. The Monoid instance is extremely useful because it provides a type with a "neutral element" (`mempty`) and with a binary operation (`mappend`) with some closure property (if `a` and `b` are values of a Monoid type, `mappend a b` is of Monoid type as well).
 
-Strings of texts are one familiar example of things with the Monoid property: the empty string ("") is the neutral element, and appending two strings (`++`) is a binary and associative operation, corresponding to `mappend`. Another example is 0 and integer addition, or 1 and integer multiplication.
+Strings of texts are one familiar example of things with the Monoid property: the empty string ("") is the neutral element, and appending two strings (`++`) is a binary and associative operation, corresponding to `mappend`. Other common examples of Monoid are 0 and integer addition, or 1 and integer multiplication.
+
+Back to our function `req`; all of this means that since `Option` is a Monoid and I simply wish to pass "no parameter" as an argument, I can use `mempty` and the concrete type will be inferred automatically.
+
+
+
+MonadHttp
+---------
+
+
+
+
+
+{% highlight haskell %}
+> :i MonadHttp
+class MonadIO m => MonadHttp (m :: * -> *) where
+  handleHttpException :: HttpException -> m a
+  ...
+  {-# MINIMAL handleHttpException #-}
+{% endhighlight %}
+
+
+
 
 
 
