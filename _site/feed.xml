@@ -6,8 +6,8 @@
 </description>
     <link>https://ocramz.github.io/</link>
     <atom:link href="https://ocramz.github.io/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Thu, 30 Nov 2017 22:56:26 +0100</pubDate>
-    <lastBuildDate>Thu, 30 Nov 2017 22:56:26 +0100</lastBuildDate>
+    <pubDate>Thu, 30 Nov 2017 22:57:33 +0100</pubDate>
+    <lastBuildDate>Thu, 30 Nov 2017 22:57:33 +0100</lastBuildDate>
     <generator>Jekyll v3.6.2</generator>
     
       <item>
@@ -218,7 +218,7 @@
 
 &lt;hr /&gt;
 
-&lt;p&gt;This post is already pretty long so I will close it here, but there are a number of other topics that I care about and deserve a type-friendly treatment, for example exception handling and concurrency. There are a number of extremely interesting libraries such as &lt;code class=&quot;highlighter-rouge&quot;&gt;async&lt;/code&gt; and &lt;code class=&quot;highlighter-rouge&quot;&gt;stm&lt;/code&gt; that are a pleasure to work with.&lt;/p&gt;
+&lt;p&gt;This post is already pretty long so I will close it here, but there are a number of other topics that I care about and deserve a type-friendly treatment, for example exception handling and concurrency, and extremely useful libraries such as &lt;code class=&quot;highlighter-rouge&quot;&gt;async&lt;/code&gt; and &lt;code class=&quot;highlighter-rouge&quot;&gt;stm&lt;/code&gt;.&lt;/p&gt;
 
 &lt;p&gt;Thank you for reading this far, I hope you enjoyed it and got something out of it. Feel free to reach out on twitter with feedback, comments, etc. Those are always welcome!&lt;/p&gt;
 

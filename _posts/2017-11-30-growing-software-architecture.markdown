@@ -254,7 +254,7 @@ total hdl = runCloudIO hdl $ do
 -----------------
 
 
-This post is already pretty long so I will close it here, but there are a number of other topics that I care about and deserve a type-friendly treatment, for example exception handling and concurrency. There are a number of extremely interesting libraries such as `async` and `stm` that are a pleasure to work with.
+This post is already pretty long so I will close it here, but there are a number of other topics that I care about and deserve a type-friendly treatment, for example exception handling and concurrency, and extremely useful libraries such as `async` and `stm`.
 
 Thank you for reading this far, I hope you enjoyed it and got something out of it. Feel free to reach out on twitter with feedback, comments, etc. Those are always welcome!
 
