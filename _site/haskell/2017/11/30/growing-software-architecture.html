@@ -220,9 +220,30 @@
 
 <figure class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="n">requestToken</span> <span class="o">::</span> <span class="kt">HasCredentials</span> <span class="n">c</span> <span class="o">=&gt;</span> <span class="kt">Cloud</span> <span class="n">c</span> <span class="kt">OAuth2Token</span></code></pre></figure>
 
-<h1 id="aside--why-bother-">Aside : why bother ?</h1>
+<h1 id="long-overdue-aside--why-bother-">Long overdue aside : why bother ?</h1>
 
-<p>This highly polymorphic way of writing functions lets us be as general <em>or</em> precise as we need to. In particular, one of the initial requirements I mentioned was the ability to talk independently</p>
+<p>This highly polymorphic way of writing functions lets us be as general <em>or</em> precise as we need to. In particular, one of the initial requirements I mentioned was the ability to talk independently about these external data providers, since each has a distinct behaviour and requires different information, but under one same interface.</p>
+
+<p>The <code class="highlighter-rouge">Cloud c a</code> type is this interface. The parametrization over provider type <code class="highlighter-rouge">c</code> lets us provide independent implementations of the HTTP exception handling code, for example:</p>
+
+<figure class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="cp">{-# language FlexibleInstances #-}</span>
+
+<span class="kr">data</span> <span class="kt">Provider1</span>
+
+<span class="kr">instance</span> <span class="kt">MonadHttp</span> <span class="p">(</span><span class="kt">Cloud</span> <span class="kt">Provider1</span><span class="p">)</span> <span class="kr">where</span>
+  <span class="n">handleHttpException</span> <span class="n">e</span> <span class="o">=</span> <span class="o">...</span>
+
+<span class="o">...</span> 
+
+<span class="kr">data</span> <span class="kt">Provider2</span>
+
+<span class="kr">instance</span> <span class="kt">MonadHttp</span> <span class="p">(</span><span class="kt">Cloud</span> <span class="kt">Provider2</span><span class="p">)</span> <span class="kr">where</span>
+  <span class="n">handleHttpException</span> <span class="n">e</span> <span class="o">=</span> <span class="o">...</span></code></pre></figure>
+
+<p>while all the behaviour which is <em>shared</em> by all providers can be conveniently written once and for all (for example, random number generation) :</p>
+
+<figure class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="kr">instance</span> <span class="kt">HasCredentials</span> <span class="n">c</span> <span class="o">=&gt;</span> <span class="kt">MonadRandom</span> <span class="p">(</span><span class="kt">Cloud</span> <span class="n">c</span><span class="p">)</span> <span class="kr">where</span>
+  <span class="n">getRandomBytes</span> <span class="o">=</span> <span class="n">liftIO</span> <span class="o">.</span> <span class="n">getEntropy</span></code></pre></figure>
 
 
   </article>

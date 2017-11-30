@@ -191,9 +191,36 @@ might be rewritten as the more informative
 requestToken :: HasCredentials c => Cloud c OAuth2Token
 {% endhighlight %}
 
-# Aside : why bother ?
+# Long overdue aside : why bother ?
 
-This highly polymorphic way of writing functions lets us be as general _or_ precise as we need to. In particular, one of the initial requirements I mentioned was the ability to talk independently 
+This highly polymorphic way of writing functions lets us be as general _or_ precise as we need to. In particular, one of the initial requirements I mentioned was the ability to talk independently about these external data providers, since each has a distinct behaviour and requires different information, but under one same interface.
+
+The `Cloud c a` type is this interface. The parametrization over provider type `c` lets us provide independent implementations of the HTTP exception handling code, for example:
+
+{% highlight haskell %}
+{-# language FlexibleInstances #-}
+
+data Provider1
+
+instance MonadHttp (Cloud Provider1) where
+  handleHttpException e = ...
+
+... 
+
+data Provider2
+
+instance MonadHttp (Cloud Provider2) where
+  handleHttpException e = ...
+
+{% endhighlight %}
+
+while all the behaviour which is _shared_ by all providers can be conveniently written once and for all (for example, random number generation) :
+
+{% highlight haskell %}
+instance HasCredentials c => MonadRandom (Cloud c) where
+  getRandomBytes = liftIO . getEntropy
+{% endhighlight %}
+
 
 
 
