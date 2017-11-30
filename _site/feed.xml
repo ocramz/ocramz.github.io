@@ -6,8 +6,8 @@
 </description>
     <link>https://ocramz.github.io/</link>
     <atom:link href="https://ocramz.github.io/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Thu, 30 Nov 2017 19:15:52 +0100</pubDate>
-    <lastBuildDate>Thu, 30 Nov 2017 19:15:52 +0100</lastBuildDate>
+    <pubDate>Thu, 30 Nov 2017 19:23:33 +0100</pubDate>
+    <lastBuildDate>Thu, 30 Nov 2017 19:23:33 +0100</lastBuildDate>
     <generator>Jekyll v3.6.2</generator>
     
       <item>
@@ -15,6 +15,8 @@
         <description>&lt;p&gt;Yesterday evening I made a presentation at a &lt;a href=&quot;https://www.meetup.com/got-lambda&quot;&gt;local functional programming meetup&lt;/a&gt; regarding my recent experience in building a data ingestion microservice in Haskell. To tell the truth, I was more concerned with communicating the rationale for my design choices rather than the business application per se, and how my current understanding of the language helps (or doesn’t) in structuring a large and realistic application.&lt;/p&gt;
 
 &lt;p&gt;This blog post reproduces roughly the presentation, and incorporates some feedback I received and some further thoughts I have had on the matter in the meanwhile. It is written for people who had some prior exposure to Haskell, but I’ll try to keep the exposition as intuitive and beginner-friendly as possible.&lt;/p&gt;
+
+&lt;p&gt;My biggest hope is to help beginning Haskellers wrap their heads around a few useful concepts, libraries and good practices, while grounding the examples in a concrete project rather than toy code. Enjoy!&lt;/p&gt;
 
 &lt;h2 id=&quot;warm-up-http-connections-and-typeclasses&quot;&gt;Warm-up: HTTP connections and typeclasses&lt;/h2&gt;
 
@@ -42,28 +44,25 @@
 
 &lt;p&gt;The above already requires the user to be familiar with typeclasses, lazy evaluation and a couple standard typeclasses (Monoid and Monad). These are fundamental to Haskell, so it helps seeing them used in context.&lt;/p&gt;
 
-&lt;h1 id=&quot;aside--inspecting-types-in-ghci&quot;&gt;Aside : inspecting types in GHCi&lt;/h1&gt;
+&lt;h1 id=&quot;aside--inspecting-type-instances-in-ghci&quot;&gt;Aside : inspecting type instances in GHCi&lt;/h1&gt;
 
 &lt;p&gt;Let’s take the last parameter of &lt;code class=&quot;highlighter-rouge&quot;&gt;req&lt;/code&gt; as a concrete example. It is of type &lt;code class=&quot;highlighter-rouge&quot;&gt;Option scheme&lt;/code&gt;, where &lt;code class=&quot;highlighter-rouge&quot;&gt;scheme&lt;/code&gt; is some type parameter. Now, how do I know what are the right types that can be used here? I always have a GHCi session running in one Emacs tile, so that I can explore interactively the libraries imported by the project I’m working on; in this case, I query for information on &lt;code class=&quot;highlighter-rouge&quot;&gt;Option&lt;/code&gt; (the GHCi prompt is represented by the &lt;code class=&quot;highlighter-rouge&quot;&gt;&amp;gt;&lt;/code&gt; character):&lt;/p&gt;
 
 &lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-haskell&quot; data-lang=&quot;haskell&quot;&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Option&lt;/span&gt;
-&lt;span class=&quot;kr&quot;&gt;type&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;role&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Option&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;phantom&lt;/span&gt;
-&lt;span class=&quot;kr&quot;&gt;data&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Option&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;scheme&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;::&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Scheme&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-  &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Network&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;HTTP&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;Req&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;Option&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;Data&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;Monoid&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;Endo&lt;/span&gt;
-                               &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;H&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;QueryText&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;H&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;Request&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
-                            &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;Maybe&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;H&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;Request&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;IO&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;H&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;Request&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
-  	&lt;span class=&quot;c1&quot;&gt;-- Defined in ‘Network.HTTP.Req’&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;...&lt;/span&gt;
 &lt;span class=&quot;kr&quot;&gt;instance&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Monoid&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;Option&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;scheme&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;-- Defined in ‘Network.HTTP.Req’&lt;/span&gt;
 &lt;span class=&quot;kr&quot;&gt;instance&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;QueryParam&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;Option&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;scheme&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
   &lt;span class=&quot;c1&quot;&gt;-- Defined in ‘Network.HTTP.Req’&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
-&lt;p&gt;This is quite a dense bit of information, so let’s unpack it: the &lt;code class=&quot;highlighter-rouge&quot;&gt;data ..&lt;/code&gt; line shows the actual implementation of &lt;code class=&quot;highlighter-rouge&quot;&gt;Option&lt;/code&gt; (which is normally hidden from the user), and the next two lines list what typeclass instances this type satisfies; there we see &lt;code class=&quot;highlighter-rouge&quot;&gt;Monoid&lt;/code&gt; and &lt;code class=&quot;highlighter-rouge&quot;&gt;QueryParam&lt;/code&gt;. The Monoid instance is extremely useful because it provides a type with a “neutral element” (&lt;code class=&quot;highlighter-rouge&quot;&gt;mempty&lt;/code&gt;) and with a binary operation (&lt;code class=&quot;highlighter-rouge&quot;&gt;mappend&lt;/code&gt;) with some closure property (if &lt;code class=&quot;highlighter-rouge&quot;&gt;a&lt;/code&gt; and &lt;code class=&quot;highlighter-rouge&quot;&gt;b&lt;/code&gt; are values of a Monoid type, &lt;code class=&quot;highlighter-rouge&quot;&gt;mappend a b&lt;/code&gt; is of Monoid type as well).&lt;/p&gt;
+&lt;p&gt;I omitted the first few lines because they are not of immediate interest at the moment. The lines above list what typeclass instances this type satisfies; there we see &lt;code class=&quot;highlighter-rouge&quot;&gt;Monoid&lt;/code&gt; and &lt;code class=&quot;highlighter-rouge&quot;&gt;QueryParam&lt;/code&gt;. The Monoid instance is extremely useful because it provides a type with a “neutral element” (&lt;code class=&quot;highlighter-rouge&quot;&gt;mempty&lt;/code&gt;) and with a binary operation (&lt;code class=&quot;highlighter-rouge&quot;&gt;mappend&lt;/code&gt;) with some closure property (if &lt;code class=&quot;highlighter-rouge&quot;&gt;a&lt;/code&gt; and &lt;code class=&quot;highlighter-rouge&quot;&gt;b&lt;/code&gt; are values of a Monoid type, &lt;code class=&quot;highlighter-rouge&quot;&gt;mappend a b&lt;/code&gt; is of Monoid type as well).&lt;/p&gt;
 
 &lt;p&gt;Strings of texts are one familiar example of things with the Monoid property: the empty string (“”) is the neutral element, and appending two strings (&lt;code class=&quot;highlighter-rouge&quot;&gt;++&lt;/code&gt;) is a binary and associative operation, corresponding to &lt;code class=&quot;highlighter-rouge&quot;&gt;mappend&lt;/code&gt;. Other common examples of Monoid are 0 and integer addition, or 1 and integer multiplication.&lt;/p&gt;
 
 &lt;p&gt;Back to our function &lt;code class=&quot;highlighter-rouge&quot;&gt;req&lt;/code&gt;; all of this means that since &lt;code class=&quot;highlighter-rouge&quot;&gt;Option&lt;/code&gt; is a Monoid and I simply wish to pass “no parameter” as an argument, I can use &lt;code class=&quot;highlighter-rouge&quot;&gt;mempty&lt;/code&gt; and the concrete type will be inferred automatically.&lt;/p&gt;
 
 &lt;h2 id=&quot;monadhttp&quot;&gt;MonadHttp&lt;/h2&gt;
+
+&lt;p&gt;The &lt;code class=&quot;highlighter-rouge&quot;&gt;req&lt;/code&gt;&lt;/p&gt;
 
 &lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-haskell&quot; data-lang=&quot;haskell&quot;&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;MonadHttp&lt;/span&gt;
 &lt;span class=&quot;kr&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;MonadIO&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;m&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;MonadHttp&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;m&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;::&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;kr&quot;&gt;where&lt;/span&gt;
