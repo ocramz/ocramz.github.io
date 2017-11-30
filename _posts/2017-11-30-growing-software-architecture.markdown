@@ -12,7 +12,7 @@ This blog post reproduces roughly the presentation, and incorporates some feedba
 
 My biggest hope is to help beginning Haskellers wrap their heads around a few useful concepts, libraries and good practices, while grounding the examples in a concrete project rather than toy code.
 
-In practical terms, this post will show how to perform HTTP calls, use types and typeclasses to manage application complexity and some aspects of exception handling.
+In practical terms, this post will show how to perform HTTP calls, use types, typeclasses and monad transformers to manage application complexity and some aspects of exception handling.
 
 Enjoy!
 
@@ -144,7 +144,7 @@ data Handle c = Handle {
 The types of the fields of `Handle` are associated (injectively) to the API provider type `c`. All that's left at this point is to actually declare the `Cloud` type, which will use these `Handle`s. We'll see how in the next section.
 
 
-Managing application complexity with types
+Managing application complexity with types and monad transformers
 ------------------------------------------
 
 {% highlight haskell %}
@@ -170,7 +170,7 @@ All the above _effects_ can be "lifted" to corresponding typeclasses, exactly as
 
 We'll need to provide `Cloud` with instances of all these typeclasses (which most of the time boils down to implementing one or two methods for each), or in other words "augment it" with additional capabilities, in order to unify it with the constraints imposed by our network-related code.
 
-What I wrote above might sound super abstract, so let me provide an example. Suppose we have written a function that requests an authentication token; its type might look something like the following:
+I guess what I wrote above might sound super abstract, so let me provide an example. Suppose we have written a function that requests an authentication token; its type might look something like the following:
 
 {% highlight haskell %}
 requestToken :: (MonadHttp m, MonadRandom m, MonadThrow m) =>

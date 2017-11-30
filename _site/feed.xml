@@ -6,8 +6,8 @@
 </description>
     <link>https://ocramz.github.io/</link>
     <atom:link href="https://ocramz.github.io/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Thu, 30 Nov 2017 21:47:58 +0100</pubDate>
-    <lastBuildDate>Thu, 30 Nov 2017 21:47:58 +0100</lastBuildDate>
+    <pubDate>Thu, 30 Nov 2017 21:51:12 +0100</pubDate>
+    <lastBuildDate>Thu, 30 Nov 2017 21:51:12 +0100</lastBuildDate>
     <generator>Jekyll v3.6.2</generator>
     
       <item>
@@ -18,7 +18,7 @@
 
 &lt;p&gt;My biggest hope is to help beginning Haskellers wrap their heads around a few useful concepts, libraries and good practices, while grounding the examples in a concrete project rather than toy code.&lt;/p&gt;
 
-&lt;p&gt;In practical terms, this post will show how to perform HTTP calls, use types and typeclasses to manage application complexity and some aspects of exception handling.&lt;/p&gt;
+&lt;p&gt;In practical terms, this post will show how to perform HTTP calls, use types, typeclasses and monad transformers to manage application complexity and some aspects of exception handling.&lt;/p&gt;
 
 &lt;p&gt;Enjoy!&lt;/p&gt;
 
@@ -127,7 +127,7 @@
 
 &lt;p&gt;The types of the fields of &lt;code class=&quot;highlighter-rouge&quot;&gt;Handle&lt;/code&gt; are associated (injectively) to the API provider type &lt;code class=&quot;highlighter-rouge&quot;&gt;c&lt;/code&gt;. All that’s left at this point is to actually declare the &lt;code class=&quot;highlighter-rouge&quot;&gt;Cloud&lt;/code&gt; type, which will use these &lt;code class=&quot;highlighter-rouge&quot;&gt;Handle&lt;/code&gt;s. We’ll see how in the next section.&lt;/p&gt;
 
-&lt;h2 id=&quot;managing-application-complexity-with-types&quot;&gt;Managing application complexity with types&lt;/h2&gt;
+&lt;h2 id=&quot;managing-application-complexity-with-types-and-monad-transformers&quot;&gt;Managing application complexity with types and monad transformers&lt;/h2&gt;
 
 &lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-haskell&quot; data-lang=&quot;haskell&quot;&gt;&lt;span class=&quot;cp&quot;&gt;{-# language GeneralizedNewtypeDeriving #-}&lt;/span&gt;
 
@@ -152,7 +152,7 @@
 
 &lt;p&gt;We’ll need to provide &lt;code class=&quot;highlighter-rouge&quot;&gt;Cloud&lt;/code&gt; with instances of all these typeclasses (which most of the time boils down to implementing one or two methods for each), or in other words “augment it” with additional capabilities, in order to unify it with the constraints imposed by our network-related code.&lt;/p&gt;
 
-&lt;p&gt;What I wrote above might sound super abstract, so let me provide an example. Suppose we have written a function that requests an authentication token; its type might look something like the following:&lt;/p&gt;
+&lt;p&gt;I guess what I wrote above might sound super abstract, so let me provide an example. Suppose we have written a function that requests an authentication token; its type might look something like the following:&lt;/p&gt;
 
 &lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-haskell&quot; data-lang=&quot;haskell&quot;&gt;&lt;span class=&quot;n&quot;&gt;requestToken&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;::&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;MonadHttp&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;m&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;MonadRandom&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;m&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;MonadThrow&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;m&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt;
      &lt;span class=&quot;kt&quot;&gt;TokenCredentials&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;TokenOptions&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;m&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;OAuth2Token&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;

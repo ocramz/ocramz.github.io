@@ -71,7 +71,7 @@
 
 <p>My biggest hope is to help beginning Haskellers wrap their heads around a few useful concepts, libraries and good practices, while grounding the examples in a concrete project rather than toy code.</p>
 
-<p>In practical terms, this post will show how to perform HTTP calls, use types and typeclasses to manage application complexity and some aspects of exception handling.</p>
+<p>In practical terms, this post will show how to perform HTTP calls, use types, typeclasses and monad transformers to manage application complexity and some aspects of exception handling.</p>
 
 <p>Enjoy!</p>
 
@@ -180,7 +180,7 @@
 
 <p>The types of the fields of <code class="highlighter-rouge">Handle</code> are associated (injectively) to the API provider type <code class="highlighter-rouge">c</code>. All that’s left at this point is to actually declare the <code class="highlighter-rouge">Cloud</code> type, which will use these <code class="highlighter-rouge">Handle</code>s. We’ll see how in the next section.</p>
 
-<h2 id="managing-application-complexity-with-types">Managing application complexity with types</h2>
+<h2 id="managing-application-complexity-with-types-and-monad-transformers">Managing application complexity with types and monad transformers</h2>
 
 <figure class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="cp">{-# language GeneralizedNewtypeDeriving #-}</span>
 
@@ -205,7 +205,7 @@
 
 <p>We’ll need to provide <code class="highlighter-rouge">Cloud</code> with instances of all these typeclasses (which most of the time boils down to implementing one or two methods for each), or in other words “augment it” with additional capabilities, in order to unify it with the constraints imposed by our network-related code.</p>
 
-<p>What I wrote above might sound super abstract, so let me provide an example. Suppose we have written a function that requests an authentication token; its type might look something like the following:</p>
+<p>I guess what I wrote above might sound super abstract, so let me provide an example. Suppose we have written a function that requests an authentication token; its type might look something like the following:</p>
 
 <figure class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="n">requestToken</span> <span class="o">::</span> <span class="p">(</span><span class="kt">MonadHttp</span> <span class="n">m</span><span class="p">,</span> <span class="kt">MonadRandom</span> <span class="n">m</span><span class="p">,</span> <span class="kt">MonadThrow</span> <span class="n">m</span><span class="p">)</span> <span class="o">=&gt;</span>
      <span class="kt">TokenCredentials</span> <span class="o">-&gt;</span> <span class="kt">TokenOptions</span> <span class="o">-&gt;</span> <span class="n">m</span> <span class="kt">OAuth2Token</span></code></pre></figure>
