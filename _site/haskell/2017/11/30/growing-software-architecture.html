@@ -113,7 +113,7 @@
 
 <p>Back to our function <code class="highlighter-rouge">req</code>; all of this means that since <code class="highlighter-rouge">Option</code> is a Monoid and I simply wish to pass “no parameter” as an argument, I can use <code class="highlighter-rouge">mempty</code> and the concrete type will be inferred automatically.</p>
 
-<h2 id="monadhttp-and-monadio">MonadHttp and MonadIO</h2>
+<h2 id="monadhttp-monadio-and-typeclass-lifting">MonadHttp, MonadIO and typeclass “lifting”</h2>
 
 <p>In the second code snippet above we see that the HTTP response is returned by some computation of type <code class="highlighter-rouge">m</code>, which is constrained to being an instance of <code class="highlighter-rouge">MonadHttp</code> :</p>
 
@@ -129,7 +129,9 @@
 
 <p>It’s important to note that <code class="highlighter-rouge">a</code>, the return type of <code class="highlighter-rouge">handleHttpException</code>, is not constrained in any way but may be made to contain whatever information required by the rest of our program logic.</p>
 
-<p>We also see that the parametric type <code class="highlighter-rouge">m</code> is further required to have a <code class="highlighter-rouge">MonadIO</code> instance. Fine, web connections are one form of I/O, so this makes some sense. What may be new is that rather than being in the usual form <code class="highlighter-rouge">.. -&gt; IO a</code>, the computation is “lifted” to the MonadIO class, thus taking the form <code class="highlighter-rouge">MonadIO m =&gt; .. -&gt; m a</code>. It’s as if we went from saying “something of this type” to “something of a type that satisfies this property”.</p>
+<p>We also see that the parametric type <code class="highlighter-rouge">m</code> is further required to have a <code class="highlighter-rouge">MonadIO</code> instance. Fine, web connections are one form of I/O, so this makes some sense. What may be novel to some readers is that rather than being in the usual form <code class="highlighter-rouge">.. -&gt; IO a</code>, the computation is “lifted” to the MonadIO class, thus taking the form <code class="highlighter-rouge">MonadIO m =&gt; .. -&gt; m a</code>. It’s as if we went from saying “something of this type” to “something of a type that satisfies this property” (or “that can perform this effect”).</p>
+
+<p>We’ll learn about the implications of this style in the next section.</p>
 
 
   </article>

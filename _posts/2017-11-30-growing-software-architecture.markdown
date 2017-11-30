@@ -67,8 +67,8 @@ Back to our function `req`; all of this means that since `Option` is a Monoid an
 
 
 
-MonadHttp and MonadIO
----------------------
+MonadHttp, MonadIO and typeclass "lifting"
+----------------------------------------
 
 In the second code snippet above we see that the HTTP response is returned by some computation of type `m`, which is constrained to being an instance of `MonadHttp` :
 
@@ -86,7 +86,9 @@ Recall that the HTTP protocol uses status codes to communicate the details of co
 
 It's important to note that `a`, the return type of `handleHttpException`, is not constrained in any way but may be made to contain whatever information required by the rest of our program logic.
 
-We also see that the parametric type `m` is further required to have a `MonadIO` instance. Fine, web connections are one form of I/O, so this makes some sense. What may be new is that rather than being in the usual form `.. -> IO a`, the computation is "lifted" to the MonadIO class, thus taking the form `MonadIO m => .. -> m a`. It's as if we went from saying "something of this type" to "something of a type that satisfies this property".
+We also see that the parametric type `m` is further required to have a `MonadIO` instance. Fine, web connections are one form of I/O, so this makes some sense. What may be novel to some readers is that rather than being in the usual form `.. -> IO a`, the computation is "lifted" to the MonadIO class, thus taking the form `MonadIO m => .. -> m a`. It's as if we went from saying "something of this type" to "something of a type that satisfies this property" (or "that can perform this effect").
+
+We'll learn about the implications of this style in the next section.
 
 
 
