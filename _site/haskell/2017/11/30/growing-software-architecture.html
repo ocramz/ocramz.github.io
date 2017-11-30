@@ -129,11 +129,11 @@
 
 <p>It’s important to note that <code class="highlighter-rouge">a</code>, the return type of <code class="highlighter-rouge">handleHttpException</code>, is not constrained in any way but may be made to contain whatever information required by the rest of our program logic.</p>
 
-<p>We also see that the parametric type <code class="highlighter-rouge">m</code> is further required to have a <code class="highlighter-rouge">MonadIO</code> instance. Fine, web connections are one form of I/O, so this makes some sense. What may be novel to some readers is that rather than being in the usual form <code class="highlighter-rouge">.. -&gt; IO a</code>, the computation is “lifted” to the MonadIO class, thus taking the form <code class="highlighter-rouge">MonadIO m =&gt; .. -&gt; m a</code>. It’s as if we went from saying “something of this type” to “something of a type that satisfies this property” (or “that can perform this effect”).</p>
+<p>We also see that the parametric type <code class="highlighter-rouge">m</code> is further required to have a <code class="highlighter-rouge">MonadIO</code> instance. Fine, web connections are one form of I/O, so this makes some sense. What may be novel to some readers is that rather than being in the usual “concrete” form <code class="highlighter-rouge">.. -&gt; IO a</code>, the computation is “lifted” to the MonadIO class, thus taking the form <code class="highlighter-rouge">MonadIO m =&gt; .. -&gt; m a</code>. It’s as if we went from saying “a computation of type IO” to “something of a type that can perform IO”.</p>
 
-<p>This typeclass encodes exactly this: since HTTP connections are a form of I/O, the <code class="highlighter-rouge">MonadHttp</code> constraint <em>entails</em> the <code class="highlighter-rouge">MonadIO</code> constraint; every type <code class="highlighter-rouge">m</code> that has a <code class="highlighter-rouge">MonadHttp</code> instance <em>must</em> also declare a <code class="highlighter-rouge">MonadIO</code> instance (the compiler will complain otherwise).</p>
+<p>The <code class="highlighter-rouge">MonadHttp</code> typeclass encodes exactly this: since HTTP connections are a form of I/O, the <code class="highlighter-rouge">MonadHttp</code> constraint <em>entails</em> the <code class="highlighter-rouge">MonadIO</code> constraint; in other words, every type <code class="highlighter-rouge">m</code> that has a <code class="highlighter-rouge">MonadHttp</code> instance <em>must</em> also declare a <code class="highlighter-rouge">MonadIO</code> instance (the compiler will complain otherwise).</p>
 
-<p>We’ll learn about the implications of this style in the next section.</p>
+<p>We’ll learn about the implications of this way of writing things in the next section.</p>
 
 
   </article>
