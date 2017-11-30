@@ -6,8 +6,8 @@
 </description>
     <link>https://ocramz.github.io/</link>
     <atom:link href="https://ocramz.github.io/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Thu, 30 Nov 2017 22:35:32 +0100</pubDate>
-    <lastBuildDate>Thu, 30 Nov 2017 22:35:32 +0100</lastBuildDate>
+    <pubDate>Thu, 30 Nov 2017 22:35:47 +0100</pubDate>
+    <lastBuildDate>Thu, 30 Nov 2017 22:35:47 +0100</lastBuildDate>
     <generator>Jekyll v3.6.2</generator>
     
       <item>
@@ -193,6 +193,8 @@
   &lt;span class=&quot;n&quot;&gt;getRandomBytes&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;liftIO&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;getEntropy&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
 &lt;p&gt;Reducing code duplication while allowing for flexibility where needed, while at the same time having the compiler warn us about every missing or overlapping implementation is a great feature to have for writing software with confidence, I think.&lt;/p&gt;
+
+&lt;hr /&gt;
 
 &lt;p&gt;Now we need a function to actually &lt;em&gt;run&lt;/em&gt; &lt;code class=&quot;highlighter-rouge&quot;&gt;Cloud&lt;/code&gt; computations. This is actually trivial: we unpack the &lt;code class=&quot;highlighter-rouge&quot;&gt;ReaderT (Handle c) IO a&lt;/code&gt; stuff that’s within the &lt;code class=&quot;highlighter-rouge&quot;&gt;Cloud&lt;/code&gt; data constructor and apply it to &lt;code class=&quot;highlighter-rouge&quot;&gt;runReaderT&lt;/code&gt; which passes in the given &lt;code class=&quot;highlighter-rouge&quot;&gt;Handle&lt;/code&gt; data, thus configuring the computation:&lt;/p&gt;
 

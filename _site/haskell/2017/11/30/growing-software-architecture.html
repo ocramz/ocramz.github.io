@@ -247,6 +247,8 @@
 
 <p>Reducing code duplication while allowing for flexibility where needed, while at the same time having the compiler warn us about every missing or overlapping implementation is a great feature to have for writing software with confidence, I think.</p>
 
+<hr />
+
 <p>Now we need a function to actually <em>run</em> <code class="highlighter-rouge">Cloud</code> computations. This is actually trivial: we unpack the <code class="highlighter-rouge">ReaderT (Handle c) IO a</code> stuff that’s within the <code class="highlighter-rouge">Cloud</code> data constructor and apply it to <code class="highlighter-rouge">runReaderT</code> which passes in the given <code class="highlighter-rouge">Handle</code> data, thus configuring the computation:</p>
 
 <figure class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="n">runCloudIO</span> <span class="o">::</span> <span class="kt">Handle</span> <span class="n">c</span> <span class="o">-&gt;</span> <span class="kt">Cloud</span> <span class="n">c</span> <span class="n">a</span> <span class="o">-&gt;</span> <span class="kt">IO</span> <span class="n">a</span>
