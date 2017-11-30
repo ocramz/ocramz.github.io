@@ -75,10 +75,9 @@
 
 <p>Its only function is called, quite fittingly, <code class="highlighter-rouge">req</code>; its type signature reflects the typeclass-oriented design (i.e. function parameters are constrained to belong to certain sets, so to speak). Let’s focus on the constraints:</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>req :: (HttpResponse response, HttpBody body, HttpMethod method,
-  MonadHttp m,
-  HttpBodyAllowed (AllowsBody method) (ProvidesBody body)) =&gt;
-</code></pre></div></div>
+<figure class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="n">req</span> <span class="o">::</span> <span class="p">(</span><span class="kt">HttpResponse</span> <span class="n">response</span><span class="p">,</span> <span class="kt">HttpBody</span> <span class="n">body</span><span class="p">,</span> <span class="kt">HttpMethod</span> <span class="n">method</span><span class="p">,</span>
+  <span class="kt">MonadHttp</span> <span class="n">m</span><span class="p">,</span>
+  <span class="kt">HttpBodyAllowed</span> <span class="p">(</span><span class="kt">AllowsBody</span> <span class="n">method</span><span class="p">)</span> <span class="p">(</span><span class="kt">ProvidesBody</span> <span class="n">body</span><span class="p">))</span> <span class="o">=&gt;</span> <span class="o">...</span></code></pre></figure>
 
 
   </article>

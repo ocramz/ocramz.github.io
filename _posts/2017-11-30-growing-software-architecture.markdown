@@ -19,7 +19,17 @@ The library uses the excellent [`req`](https://hackage.haskell.org/package/req) 
 
 Its only function is called, quite fittingly, `req`; its type signature reflects the typeclass-oriented design (i.e. function parameters are constrained to belong to certain sets, so to speak). Let's focus on the constraints:
 
-    req :: (HttpResponse response, HttpBody body, HttpMethod method,
-      MonadHttp m,
-      HttpBodyAllowed (AllowsBody method) (ProvidesBody body)) =>
+{% highlight haskell %}
+req :: (HttpResponse response, HttpBody body, HttpMethod method,
+  MonadHttp m,
+  HttpBodyAllowed (AllowsBody method) (ProvidesBody body)) => ...
+{% endhighlight %}
 
+
+
+
+
+
+{% highlight haskell %}
+
+{% endhighlight %}
