@@ -6,8 +6,8 @@
 </description>
     <link>https://ocramz.github.io/</link>
     <atom:link href="https://ocramz.github.io/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Thu, 30 Nov 2017 18:51:13 +0100</pubDate>
-    <lastBuildDate>Thu, 30 Nov 2017 18:51:13 +0100</lastBuildDate>
+    <pubDate>Thu, 30 Nov 2017 19:01:28 +0100</pubDate>
+    <lastBuildDate>Thu, 30 Nov 2017 19:01:28 +0100</lastBuildDate>
     <generator>Jekyll v3.6.2</generator>
     
       <item>
@@ -54,6 +54,8 @@
 &lt;span class=&quot;kr&quot;&gt;instance&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Monoid&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;Option&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;scheme&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;-- Defined in ‘Network.HTTP.Req’&lt;/span&gt;
 &lt;span class=&quot;kr&quot;&gt;instance&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;QueryParam&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;Option&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;scheme&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
   &lt;span class=&quot;c1&quot;&gt;-- Defined in ‘Network.HTTP.Req’&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;This is quite a dense bit of information, so let’s unpack it: the &lt;code class=&quot;highlighter-rouge&quot;&gt;data ..&lt;/code&gt; line shows the actual implementation of &lt;code class=&quot;highlighter-rouge&quot;&gt;Option&lt;/code&gt; (which is normally hidden from the user), and the next two lines list what typeclass instances this type satisfies; there we see &lt;code class=&quot;highlighter-rouge&quot;&gt;Monoid&lt;/code&gt; and &lt;code class=&quot;highlighter-rouge&quot;&gt;QueryParam&lt;/code&gt;. The monoid property is extremely useful because it provides a type with a “neutral element” (&lt;code class=&quot;highlighter-rouge&quot;&gt;mempty&lt;/code&gt;) and with a binary operation (&lt;code class=&quot;highlighter-rouge&quot;&gt;mappend&lt;/code&gt;) with some closure property (if &lt;code class=&quot;highlighter-rouge&quot;&gt;a&lt;/code&gt; and &lt;code class=&quot;highlighter-rouge&quot;&gt;b&lt;/code&gt; are values of a Monoid type, &lt;code class=&quot;highlighter-rouge&quot;&gt;mappend a b&lt;/code&gt; is of Monoid type as well).&lt;/p&gt;
 
 </description>
         <pubDate>Thu, 30 Nov 2017 00:00:00 +0100</pubDate>

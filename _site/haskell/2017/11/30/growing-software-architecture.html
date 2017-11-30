@@ -108,6 +108,8 @@
 <span class="kr">instance</span> <span class="kt">QueryParam</span> <span class="p">(</span><span class="kt">Option</span> <span class="n">scheme</span><span class="p">)</span>
   <span class="c1">-- Defined in ‘Network.HTTP.Req’</span></code></pre></figure>
 
+<p>This is quite a dense bit of information, so let’s unpack it: the <code class="highlighter-rouge">data ..</code> line shows the actual implementation of <code class="highlighter-rouge">Option</code> (which is normally hidden from the user), and the next two lines list what typeclass instances this type satisfies; there we see <code class="highlighter-rouge">Monoid</code> and <code class="highlighter-rouge">QueryParam</code>. The monoid property is extremely useful because it provides a type with a “neutral element” (<code class="highlighter-rouge">mempty</code>) and with a binary operation (<code class="highlighter-rouge">mappend</code>) with some closure property (if <code class="highlighter-rouge">a</code> and <code class="highlighter-rouge">b</code> are values of a Monoid type, <code class="highlighter-rouge">mappend a b</code> is of Monoid type as well).</p>
+
 
   </article>
 

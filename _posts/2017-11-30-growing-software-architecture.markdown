@@ -59,6 +59,7 @@ instance QueryParam (Option scheme)
   -- Defined in ‘Network.HTTP.Req’
 {% endhighlight %}
 
+This is quite a dense bit of information, so let's unpack it: the `data ..` line shows the actual implementation of `Option` (which is normally hidden from the user), and the next two lines list what typeclass instances this type satisfies; there we see `Monoid` and `QueryParam`. The monoid property is extremely useful because it provides a type with a "neutral element" (`mempty`) and with a binary operation (`mappend`) with some closure property (if `a` and `b` are values of a Monoid type, `mappend a b` is of Monoid type as well).
 
 
 
