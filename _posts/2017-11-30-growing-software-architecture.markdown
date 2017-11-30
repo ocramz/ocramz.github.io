@@ -120,7 +120,7 @@ newtype Cloud c a = ...
 
 The first type parameter, `c`, denotes the API provider "label", and the second parameter represents the result type of the computation.
 
-Now, we need a way of saying "for each provider `c`, I need a specific set of `Credentials`, and I will receive a specific type of `Token` in return"; the `TypeFamilies` language extension lets us say this :
+Now, we need a way of saying "for each provider `c`, I need a specific set of `Credentials`, and I will receive a specific type of `Token` in return"; the `TypeFamilies` language extension can help here :
 
 {% highlight haskell %}
 {-# language TypeFamilies #-}
@@ -131,6 +131,31 @@ class HasCredentials c where
 {% endhighlight %}
 
 In other words, the API provider label will be a distinct type, and we'll need to write a separate instance of `HasCredentials` for each.
+
+In addition, let's write a `Handle` record type which will store the actual credentials and (temporary) token for a given provider:
+
+{% highlight haskell %}
+data Handle c = Handle {
+    credentials :: Credentials c
+  , token :: Maybe (Token c)
+  }
+{% endhighlight %}
+
+The types of the fields of `Handle` are associated (injectively) to the API provider type `c`. All that's left at this point is to actually declare the `Cloud` type, which will use these `Handle`s. We'll see how in the next section.
+
+
+Managing complexity with types
+------------------------------
+
+{% highlight haskell %}
+{-# language GeneralizedNewtypeDeriving #-}
+
+newtype Cloud c a = Cloud {
+  runCloud :: ReaderT (Handle c) IO a
+  } deriving (Functor, Applicative, Monad)
+{% endhighlight %}
+
+The body of a `Cloud` computation is something which can _read_ the data in `Handle` (for example the `credentials` or the `token`) and perform some I/O such as connecting to the provider. `ReaderT` is the "reader" [monad transformer](https://wiki.haskell.org/All_About_Monads#Monad_transformers), in this case stacked "on top" of IO. A monad transformer is a very handy way of interleaving effects, and a number of the most common ones are conveniently implemented in the [mtl](hackage.haskell.org/package/mtl) and [transformers](hackage.haskell.org/package/transformers)
 
 
 
