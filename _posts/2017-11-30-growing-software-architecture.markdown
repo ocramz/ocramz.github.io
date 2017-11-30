@@ -193,7 +193,7 @@ requestToken :: HasCredentials c => Cloud c OAuth2Token
 
 # Long overdue aside : why bother ?
 
-This highly polymorphic way of writing functions lets us be as general _or_ precise as we need to. In particular, one of the initial requirements I mentioned was the ability to talk independently about these external data providers, since each has a distinct behaviour and requires different information, but under one same interface.
+This highly polymorphic way of writing functions might feel alien at first, but it lets us be as general _or_ precise as we need to. In particular, one of the initial requirements I mentioned was the ability to talk independently about these external data providers, since each has a distinct behaviour and requires different information, but under one same interface.
 
 The `Cloud c a` type is this interface. The parametrization over provider type `c` lets us provide independent implementations of the HTTP exception handling code, for example:
 

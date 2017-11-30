@@ -6,8 +6,8 @@
 </description>
     <link>https://ocramz.github.io/</link>
     <atom:link href="https://ocramz.github.io/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Thu, 30 Nov 2017 22:39:26 +0100</pubDate>
-    <lastBuildDate>Thu, 30 Nov 2017 22:39:26 +0100</lastBuildDate>
+    <pubDate>Thu, 30 Nov 2017 22:39:59 +0100</pubDate>
+    <lastBuildDate>Thu, 30 Nov 2017 22:39:59 +0100</lastBuildDate>
     <generator>Jekyll v3.6.2</generator>
     
       <item>
@@ -169,7 +169,7 @@
 
 &lt;h1 id=&quot;long-overdue-aside--why-bother-&quot;&gt;Long overdue aside : why bother ?&lt;/h1&gt;
 
-&lt;p&gt;This highly polymorphic way of writing functions lets us be as general &lt;em&gt;or&lt;/em&gt; precise as we need to. In particular, one of the initial requirements I mentioned was the ability to talk independently about these external data providers, since each has a distinct behaviour and requires different information, but under one same interface.&lt;/p&gt;
+&lt;p&gt;This highly polymorphic way of writing functions might feel alien at first, but it lets us be as general &lt;em&gt;or&lt;/em&gt; precise as we need to. In particular, one of the initial requirements I mentioned was the ability to talk independently about these external data providers, since each has a distinct behaviour and requires different information, but under one same interface.&lt;/p&gt;
 
 &lt;p&gt;The &lt;code class=&quot;highlighter-rouge&quot;&gt;Cloud c a&lt;/code&gt; type is this interface. The parametrization over provider type &lt;code class=&quot;highlighter-rouge&quot;&gt;c&lt;/code&gt; lets us provide independent implementations of the HTTP exception handling code, for example:&lt;/p&gt;
 
