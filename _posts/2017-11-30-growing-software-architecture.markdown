@@ -78,7 +78,7 @@ In the second code snippet above we see that the HTTP response is returned by so
 
 {% highlight haskell %}
 > :i MonadHttp
-class MonadIO m => MonadHttp (m :: * -> *) where
+class MonadIO m => MonadHttp m where
   handleHttpException :: HttpException -> m a
   ...
   {-# MINIMAL handleHttpException #-}
@@ -126,8 +126,8 @@ Now, we need a way of saying "for each provider `c`, I need a specific set of `C
 {-# language TypeFamilies #-}
 
 class HasCredentials c where
-  type Credentials c :: *
-  type Token c :: *
+  type Credentials c
+  type Token c
 {% endhighlight %}
 
 In other words, the API provider label will be a distinct type, and we'll need to write a separate instance of `HasCredentials` (and corresponding concrete types for `Credentials` and `Token`) for each.

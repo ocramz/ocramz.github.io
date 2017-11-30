@@ -122,7 +122,7 @@
 <p>In the second code snippet above we see that the HTTP response is returned by some computation of type <code class="highlighter-rouge">m</code>, which is constrained to being an instance of <code class="highlighter-rouge">MonadHttp</code> :</p>
 
 <figure class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="o">&gt;</span> <span class="o">:</span><span class="n">i</span> <span class="kt">MonadHttp</span>
-<span class="kr">class</span> <span class="kt">MonadIO</span> <span class="n">m</span> <span class="o">=&gt;</span> <span class="kt">MonadHttp</span> <span class="p">(</span><span class="n">m</span> <span class="o">::</span> <span class="o">*</span> <span class="o">-&gt;</span> <span class="o">*</span><span class="p">)</span> <span class="kr">where</span>
+<span class="kr">class</span> <span class="kt">MonadIO</span> <span class="n">m</span> <span class="o">=&gt;</span> <span class="kt">MonadHttp</span> <span class="n">m</span> <span class="kr">where</span>
   <span class="n">handleHttpException</span> <span class="o">::</span> <span class="kt">HttpException</span> <span class="o">-&gt;</span> <span class="n">m</span> <span class="n">a</span>
   <span class="o">...</span>
   <span class="cp">{-# MINIMAL handleHttpException #-}</span></code></pre></figure>
@@ -166,8 +166,8 @@
 <figure class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="cp">{-# language TypeFamilies #-}</span>
 
 <span class="kr">class</span> <span class="kt">HasCredentials</span> <span class="n">c</span> <span class="kr">where</span>
-  <span class="kr">type</span> <span class="kt">Credentials</span> <span class="n">c</span> <span class="o">::</span> <span class="o">*</span>
-  <span class="kr">type</span> <span class="kt">Token</span> <span class="n">c</span> <span class="o">::</span> <span class="o">*</span></code></pre></figure>
+  <span class="kr">type</span> <span class="kt">Credentials</span> <span class="n">c</span>
+  <span class="kr">type</span> <span class="kt">Token</span> <span class="n">c</span></code></pre></figure>
 
 <p>In other words, the API provider label will be a distinct type, and we’ll need to write a separate instance of <code class="highlighter-rouge">HasCredentials</code> (and corresponding concrete types for <code class="highlighter-rouge">Credentials</code> and <code class="highlighter-rouge">Token</code>) for each.</p>
 
