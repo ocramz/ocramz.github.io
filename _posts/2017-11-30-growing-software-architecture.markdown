@@ -109,17 +109,28 @@ In practice, each provider has its own :
 - Handling of invalid input
 - Request rate limiting
 - Outage modes
-- etc., etc.
 
-however the general semantics of this token-based connection are the same for all. This screams for some sort of common interface to hide the details of dealing with the individual providers from the point of view of higher levels of the application code.
+and so forth, however the general semantics of token-based authentication are common to all. This screams for some sort of common interface to hide the details of dealing with the individual providers from the rest of the application code.
 
 One possible way of representing this is with a parametrized type; a way of declaring a computation that is "tagged" by the name of the API provider we're talking to under the hood. Let's call this type `Cloud`:
 
-    newtype Cloud c a = ...
+{% highlight haskell %}
+newtype Cloud c a = ...
+{% endhighlight %}
 
 The first type parameter, `c`, denotes the API provider "label", and the second parameter represents the result type of the computation.
 
+Now, we need a way of saying "for each provider `c`, I need a specific set of `Credentials`, and I will receive a specific type of `Token` in return"; the `TypeFamilies` language extension lets us say this :
 
+{% highlight haskell %}
+{-# language TypeFamilies #-}
+
+class HasCredentials c where
+  type Credentials c :: *
+  type Token c :: *
+{% endhighlight %}
+
+In other words, the API provider label will be a distinct type, and we'll need to write a separate instance of `HasCredentials` for each.
 
 
 
