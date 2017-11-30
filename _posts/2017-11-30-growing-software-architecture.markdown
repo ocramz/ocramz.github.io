@@ -177,6 +177,24 @@ requestToken :: (MonadHttp m, MonadRandom m, MonadThrow m) =>
      TokenCredentials -> TokenOptions -> m OAuth2Token
 {% endhighlight %}
 
+This alone already requires our "execution environment" `m` to have three of the constraints mentioned above. Suppose now we want to read the credentials and/or the options from an immutable record, which might be supplied e.g. by parsing a text file or some command line argument; we can do this if our `m` additionally has a `MonadReader` instance over the relevant configuration variable (e.g. `Handle c` declared above).
+
+If, as we said, our `Cloud c a` type is enriched with these same instances, a complicated set of constraints such as
+
+{% highlight haskell %}
+requestToken :: (MonadReader TokenCredentials m, MonadThrow m, MonadHttp m, MonadRandom m) => m OAuth2Token
+{% endhighlight %}
+
+might be rewritten as the more informative
+
+{% highlight haskell %}
+requestToken :: HasCredentials c => Cloud c OAuth2Token
+{% endhighlight %}
+
+# Aside : why bother ?
+
+This highly polymorphic way of writing functions lets us be as general _or_ precise as we need to. In particular, one of the initial requirements I mentioned was the ability to talk independently 
+
 
 
 

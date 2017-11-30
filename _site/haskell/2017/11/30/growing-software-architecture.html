@@ -210,6 +210,20 @@
 <figure class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="n">requestToken</span> <span class="o">::</span> <span class="p">(</span><span class="kt">MonadHttp</span> <span class="n">m</span><span class="p">,</span> <span class="kt">MonadRandom</span> <span class="n">m</span><span class="p">,</span> <span class="kt">MonadThrow</span> <span class="n">m</span><span class="p">)</span> <span class="o">=&gt;</span>
      <span class="kt">TokenCredentials</span> <span class="o">-&gt;</span> <span class="kt">TokenOptions</span> <span class="o">-&gt;</span> <span class="n">m</span> <span class="kt">OAuth2Token</span></code></pre></figure>
 
+<p>This alone already requires our “execution environment” <code class="highlighter-rouge">m</code> to have three of the constraints mentioned above. Suppose now we want to read the credentials and/or the options from an immutable record, which might be supplied e.g. by parsing a text file or some command line argument; we can do this if our <code class="highlighter-rouge">m</code> additionally has a <code class="highlighter-rouge">MonadReader</code> instance over the relevant configuration variable (e.g. <code class="highlighter-rouge">Handle c</code> declared above).</p>
+
+<p>If, as we said, our <code class="highlighter-rouge">Cloud c a</code> type is enriched with these same instances, a complicated set of constraints such as</p>
+
+<figure class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="n">requestToken</span> <span class="o">::</span> <span class="p">(</span><span class="kt">MonadReader</span> <span class="kt">TokenCredentials</span> <span class="n">m</span><span class="p">,</span> <span class="kt">MonadThrow</span> <span class="n">m</span><span class="p">,</span> <span class="kt">MonadHttp</span> <span class="n">m</span><span class="p">,</span> <span class="kt">MonadRandom</span> <span class="n">m</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="n">m</span> <span class="kt">OAuth2Token</span></code></pre></figure>
+
+<p>might be rewritten as the more informative</p>
+
+<figure class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="n">requestToken</span> <span class="o">::</span> <span class="kt">HasCredentials</span> <span class="n">c</span> <span class="o">=&gt;</span> <span class="kt">Cloud</span> <span class="n">c</span> <span class="kt">OAuth2Token</span></code></pre></figure>
+
+<h1 id="aside--why-bother-">Aside : why bother ?</h1>
+
+<p>This highly polymorphic way of writing functions lets us be as general <em>or</em> precise as we need to. In particular, one of the initial requirements I mentioned was the ability to talk independently</p>
+
 
   </article>
 
