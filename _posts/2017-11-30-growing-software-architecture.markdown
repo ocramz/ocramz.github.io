@@ -6,11 +6,15 @@ categories: haskell
 ---
 
 
-Yesterday evening I made a presentation at a [local functional programming meetup](https://www.meetup.com/got-lambda) regarding my recent experience in building a data ingestion microservice in Haskell. To tell the truth, I was more concerned with communicating the rationale for my design choices rather than the business application per se, and how my current understanding of the language helps (or doesn't) in structuring a large and realistic application.
+Yesterday evening I made a presentation at a [local functional programming meetup](https://www.meetup.com/got-lambda) regarding my recent experience in building a data ingestion microservice in Haskell. To tell the truth, I was more concerned with communicating the rationale for my design choices rather than the business application per se, and I wanted to show how (my current understanding of) the language helps (or doesn't) in structuring a large and realistic application.
 
 This blog post reproduces roughly the presentation, and incorporates some feedback I received and some further thoughts I have had on the matter in the meanwhile. It is written for people who had some prior exposure to Haskell, but I'll try to keep the exposition as intuitive and beginner-friendly as possible.
 
-My biggest hope is to help beginning Haskellers wrap their heads around a few useful concepts, libraries and good practices, while grounding the examples in a concrete project rather than toy code. Enjoy!
+My biggest hope is to help beginning Haskellers wrap their heads around a few useful concepts, libraries and good practices, while grounding the examples in a concrete project rather than toy code.
+
+In practical terms, this post will show how to perform HTTP calls, use types and typeclasses to manage application complexity and some aspects of exception handling.
+
+Enjoy!
 
 
 
@@ -93,8 +97,26 @@ The `MonadHttp` typeclass encodes exactly this: since HTTP connections are a for
 We'll learn about the implications of this way of writing things in the next section.
 
 
+API authentication and `TypeFamilies`
+-------------------------------------
 
+Many API providers require some form of authentication; during an initial "handshake" phase the client sends its credentials to the server over some secure channel (e.g. encrypted over TLS), which will in turn send back a "token" which will be necessary to perform the actual API calls and which will expire after a set time. This is for example how the OAuth2 authentication protocol works.
 
+In practice, each provider has its own :
+    - Set of credentials
+    - Authentication/token refresh mechanisms
+    - Handling of invalid input
+    - Request rate limiting
+    - Outage modes
+    - etc., etc.
+
+however the general semantics of this token-based connection are the same for all. This screams for some sort of common interface to hide the details of dealing with the individual providers from the point of view of higher levels of the application code.
+
+One possible way of representing this is with a parametrized type; a way of declaring a computation that is "tagged" by the name of the API provider we're talking to under the hood. Let's call this type `Cloud`:
+
+    newtype Cloud c a = ...
+
+The first type parameter, `c`, denotes the API provider "label", and the second parameter represents the result type of the computation.
 
 
 
