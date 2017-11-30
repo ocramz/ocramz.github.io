@@ -9,8 +9,8 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>Building microservices with Haskell, pt.1</title>
-  <meta name="description" content="">
+  <title>Growing a software architecture with types</title>
+  <meta name="description" content="Yesterday evening I made a short presentation at a local functional programming meetup regarding my recent experience in building a data ingestion microservi...">
 
   <link rel="stylesheet" href="/css/main.css">
   <link rel="canonical" href="https://ocramz.github.io/haskell/2017/11/30/hs-microservices-1.html">
@@ -60,12 +60,19 @@
         <div class="post">
 
   <header class="post-header">
-    <h1 class="post-title">Building microservices with Haskell, pt.1</h1>
+    <h1 class="post-title">Growing a software architecture with types</h1>
     <p class="post-meta">Nov 30, 2017</p>
   </header>
 
   <article class="post-content">
-    
+    <p>Yesterday evening I made a short presentation at a <a href="https://www.meetup.com/got-lambda">local functional programming meetup</a> regarding my recent experience in building a data ingestion microservice in Haskell. To tell the truth, I was more concerned with communicating my design choices rather than the business application per se, and how my current understanding of the language helps (or doesn’t) in structuring a large and realistic application.</p>
+
+<p>This blog post reproduces roughly the presentation, and incorporates some feedback I received and some further thoughts I have had on the matter in the meanwhile.</p>
+
+<h2 id="warm-up-http-connections">Warm-up: HTTP connections</h2>
+
+<p>The library uses <a href="https://hackage.haskell.org/package/req"><code class="highlighter-rouge">req</code></a></p>
+
 
   </article>
 

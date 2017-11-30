@@ -6,13 +6,20 @@
 </description>
     <link>https://ocramz.github.io/</link>
     <atom:link href="https://ocramz.github.io/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Thu, 30 Nov 2017 17:24:53 +0100</pubDate>
-    <lastBuildDate>Thu, 30 Nov 2017 17:24:53 +0100</lastBuildDate>
+    <pubDate>Thu, 30 Nov 2017 17:45:06 +0100</pubDate>
+    <lastBuildDate>Thu, 30 Nov 2017 17:45:06 +0100</lastBuildDate>
     <generator>Jekyll v3.6.2</generator>
     
       <item>
-        <title>Building microservices with Haskell, pt.1</title>
-        <description>
+        <title>Growing a software architecture with types</title>
+        <description>&lt;p&gt;Yesterday evening I made a short presentation at a &lt;a href=&quot;https://www.meetup.com/got-lambda&quot;&gt;local functional programming meetup&lt;/a&gt; regarding my recent experience in building a data ingestion microservice in Haskell. To tell the truth, I was more concerned with communicating my design choices rather than the business application per se, and how my current understanding of the language helps (or doesn’t) in structuring a large and realistic application.&lt;/p&gt;
+
+&lt;p&gt;This blog post reproduces roughly the presentation, and incorporates some feedback I received and some further thoughts I have had on the matter in the meanwhile.&lt;/p&gt;
+
+&lt;h2 id=&quot;warm-up-http-connections&quot;&gt;Warm-up: HTTP connections&lt;/h2&gt;
+
+&lt;p&gt;The library uses &lt;a href=&quot;https://hackage.haskell.org/package/req&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;req&lt;/code&gt;&lt;/a&gt;&lt;/p&gt;
+
 </description>
         <pubDate>Thu, 30 Nov 2017 00:00:00 +0100</pubDate>
         <link>https://ocramz.github.io/haskell/2017/11/30/hs-microservices-1.html</link>
