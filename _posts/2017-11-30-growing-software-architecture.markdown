@@ -221,6 +221,10 @@ instance HasCredentials c => MonadRandom (Cloud c) where
   getRandomBytes = liftIO . getEntropy
 {% endhighlight %}
 
+Reducing code duplication while allowing for flexibility where needed, while at the same time having the compiler warn us about every missing or overlapping implementation is a great feature to have for writing software with confidence, I think.
+
+
+
 
 
 
