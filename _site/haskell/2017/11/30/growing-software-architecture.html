@@ -203,6 +203,13 @@
 
 <p>All the above <em>effects</em> can be “lifted” to corresponding typeclasses, exactly as we saw with <code class="highlighter-rouge">MonadHTTP</code> and <code class="highlighter-rouge">MonadIO</code>. The <a href="https://hackage.haskell.org/package/exceptions"><code class="highlighter-rouge">exceptions</code></a> library provides <code class="highlighter-rouge">MonadThrow</code>/<code class="highlighter-rouge">MonadCatch</code>, <a href="https://hackage.haskell.org/package/cryptonite"><code class="highlighter-rouge">cryptonite</code></a> provides both all the cryptography primitives and the <code class="highlighter-rouge">MonadRandom</code> class, and <a href="https://hackage.haskell.org/package/mtl"><code class="highlighter-rouge">mtl</code></a> provides <code class="highlighter-rouge">MonadReader</code>.</p>
 
+<p>We’ll need to provide <code class="highlighter-rouge">Cloud</code> with instances of all these typeclasses (which most of the time boils down to implementing one or two methods for each), or in other words “augment it” with additional capabilities, in order to unify it with the constraints imposed by our network-related code.</p>
+
+<p>What I wrote above might sound super abstract, so let me provide an example. Suppose we have written a function that requests an authentication token; its type might look something like the following:</p>
+
+<figure class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="n">requestToken</span> <span class="o">::</span> <span class="p">(</span><span class="kt">MonadHttp</span> <span class="n">m</span><span class="p">,</span> <span class="kt">MonadRandom</span> <span class="n">m</span><span class="p">,</span> <span class="kt">MonadThrow</span> <span class="n">m</span><span class="p">)</span> <span class="o">=&gt;</span>
+     <span class="kt">TokenCredentials</span> <span class="o">-&gt;</span> <span class="kt">TokenOptions</span> <span class="o">-&gt;</span> <span class="n">m</span> <span class="kt">OAuth2Token</span></code></pre></figure>
+
 
   </article>
 

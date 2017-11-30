@@ -168,6 +168,14 @@ We may think of `Cloud c a` as an "environment" or "context" within which our ne
 
 All the above _effects_ can be "lifted" to corresponding typeclasses, exactly as we saw with `MonadHTTP` and `MonadIO`. The [`exceptions`](https://hackage.haskell.org/package/exceptions) library provides `MonadThrow`/`MonadCatch`, [`cryptonite`](https://hackage.haskell.org/package/cryptonite) provides both all the cryptography primitives and the `MonadRandom` class, and [`mtl`](https://hackage.haskell.org/package/mtl) provides `MonadReader`.
 
+We'll need to provide `Cloud` with instances of all these typeclasses (which most of the time boils down to implementing one or two methods for each), or in other words "augment it" with additional capabilities, in order to unify it with the constraints imposed by our network-related code.
+
+What I wrote above might sound super abstract, so let me provide an example. Suppose we have written a function that requests an authentication token; its type might look something like the following:
+
+{% highlight haskell %}
+requestToken :: (MonadHttp m, MonadRandom m, MonadThrow m) =>
+     TokenCredentials -> TokenOptions -> m OAuth2Token
+{% endhighlight %}
 
 
 
