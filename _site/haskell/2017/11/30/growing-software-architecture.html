@@ -180,7 +180,7 @@
 
 <p>The types of the fields of <code class="highlighter-rouge">Handle</code> are associated (injectively) to the API provider type <code class="highlighter-rouge">c</code>. All that’s left at this point is to actually declare the <code class="highlighter-rouge">Cloud</code> type, which will use these <code class="highlighter-rouge">Handle</code>s. We’ll see how in the next section.</p>
 
-<h2 id="managing-complexity-with-types">Managing complexity with types</h2>
+<h2 id="managing-application-complexity-with-types">Managing application complexity with types</h2>
 
 <figure class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="cp">{-# language GeneralizedNewtypeDeriving #-}</span>
 
@@ -188,7 +188,20 @@
   <span class="n">runCloud</span> <span class="o">::</span> <span class="kt">ReaderT</span> <span class="p">(</span><span class="kt">Handle</span> <span class="n">c</span><span class="p">)</span> <span class="kt">IO</span> <span class="n">a</span>
   <span class="p">}</span> <span class="kr">deriving</span> <span class="p">(</span><span class="kt">Functor</span><span class="p">,</span> <span class="kt">Applicative</span><span class="p">,</span> <span class="kt">Monad</span><span class="p">)</span></code></pre></figure>
 
-<p>The body of a <code class="highlighter-rouge">Cloud</code> computation is something which can <em>read</em> the data in <code class="highlighter-rouge">Handle</code> (for example the <code class="highlighter-rouge">credentials</code> or the <code class="highlighter-rouge">token</code>) and perform some I/O such as connecting to the provider. <code class="highlighter-rouge">ReaderT</code> is the “reader” <a href="https://wiki.haskell.org/All_About_Monads#Monad_transformers">monad transformer</a>, in this case stacked “on top” of IO. A monad transformer is a very handy way of interleaving effects, and a number of the most common ones are conveniently implemented in the <a href="hackage.haskell.org/package/mtl">mtl</a> and <a href="hackage.haskell.org/package/transformers">transformers</a> libraries.</p>
+<p>The body of a <code class="highlighter-rouge">Cloud</code> computation is something which can <em>read</em> the data in <code class="highlighter-rouge">Handle</code> (for example the <code class="highlighter-rouge">credentials</code> or the <code class="highlighter-rouge">token</code>) and perform some I/O such as connecting to the provider. <code class="highlighter-rouge">ReaderT</code> is the “reader” <a href="https://wiki.haskell.org/All_About_Monads#Monad_transformers">monad transformer</a>, in this case stacked “on top” of IO. A monad transformer is a very handy way of interleaving effects, and a number of the most common ones are conveniently implemented in the <a href="https://hackage.haskell.org/package/mtl"><code class="highlighter-rouge">mtl</code></a> and <a href="https://hackage.haskell.org/package/transformers"><code class="highlighter-rouge">transformers</code></a> libraries.</p>
+
+<p>The <code class="highlighter-rouge">GeneralizedNewtypeDeriving</code> language extension is necessary to make the compiler derive the Functor, Applicative and Monad instances for <code class="highlighter-rouge">Cloud</code>, which are very convenient for composing such computations together.</p>
+
+<p>We may think of <code class="highlighter-rouge">Cloud c a</code> as an “environment” or “context” within which our networking logic gets executed. In more concrete terms, a <code class="highlighter-rouge">Cloud</code> computation needs to:</p>
+
+<ul>
+  <li>Read configuration (i.e. a variable of type <code class="highlighter-rouge">Handle c</code>)</li>
+  <li>Create HTTP connections (i.e. I/O)</li>
+  <li>Generate random numbers (since the token request is cryptographically hashed)</li>
+  <li>Potentially throw and catch exceptions of some sort, for example when an API provider cannot find a certain piece of data.</li>
+</ul>
+
+<p>All the above <em>effects</em> can be “lifted” to corresponding typeclasses, exactly as we saw with <code class="highlighter-rouge">MonadHTTP</code> and <code class="highlighter-rouge">MonadIO</code>. The <a href="https://hackage.haskell.org/package/exceptions"><code class="highlighter-rouge">exceptions</code></a> library provides <code class="highlighter-rouge">MonadThrow</code>/<code class="highlighter-rouge">MonadCatch</code>, <a href="https://hackage.haskell.org/package/cryptonite"><code class="highlighter-rouge">cryptonite</code></a> provides both all the cryptography primitives and the <code class="highlighter-rouge">MonadRandom</code> class, and <a href="https://hackage.haskell.org/package/transformers"><code class="highlighter-rouge">transformers</code></a> provides <code class="highlighter-rouge">MonadReader</code>.</p>
 
 
   </article>

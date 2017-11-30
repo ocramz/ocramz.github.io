@@ -144,8 +144,8 @@ data Handle c = Handle {
 The types of the fields of `Handle` are associated (injectively) to the API provider type `c`. All that's left at this point is to actually declare the `Cloud` type, which will use these `Handle`s. We'll see how in the next section.
 
 
-Managing complexity with types
-------------------------------
+Managing application complexity with types
+------------------------------------------
 
 {% highlight haskell %}
 {-# language GeneralizedNewtypeDeriving #-}
@@ -155,7 +155,19 @@ newtype Cloud c a = Cloud {
   } deriving (Functor, Applicative, Monad)
 {% endhighlight %}
 
-The body of a `Cloud` computation is something which can _read_ the data in `Handle` (for example the `credentials` or the `token`) and perform some I/O such as connecting to the provider. `ReaderT` is the "reader" [monad transformer](https://wiki.haskell.org/All_About_Monads#Monad_transformers), in this case stacked "on top" of IO. A monad transformer is a very handy way of interleaving effects, and a number of the most common ones are conveniently implemented in the [mtl](hackage.haskell.org/package/mtl) and [transformers](hackage.haskell.org/package/transformers) libraries.
+The body of a `Cloud` computation is something which can _read_ the data in `Handle` (for example the `credentials` or the `token`) and perform some I/O such as connecting to the provider. `ReaderT` is the "reader" [monad transformer](https://wiki.haskell.org/All_About_Monads#Monad_transformers), in this case stacked "on top" of IO. A monad transformer is a very handy way of interleaving effects, and a number of the most common ones are conveniently implemented in the [`mtl`](https://hackage.haskell.org/package/mtl) and [`transformers`](https://hackage.haskell.org/package/transformers) libraries.
+
+The `GeneralizedNewtypeDeriving` language extension is necessary to make the compiler derive the Functor, Applicative and Monad instances for `Cloud`, which are very convenient for composing such computations together.
+
+We may think of `Cloud c a` as an "environment" or "context" within which our networking logic gets executed. In more concrete terms, a `Cloud` computation needs to:
+
+- Read configuration (i.e. a variable of type `Handle c`)
+- Create HTTP connections (i.e. I/O)
+- Generate random numbers (since the token request is cryptographically hashed)
+- Potentially throw and catch exceptions of some sort, for example when an API provider cannot find a certain piece of data.
+
+All the above _effects_ can be "lifted" to corresponding typeclasses, exactly as we saw with `MonadHTTP` and `MonadIO`. The [`exceptions`](https://hackage.haskell.org/package/exceptions) library provides `MonadThrow`/`MonadCatch`, [`cryptonite`](https://hackage.haskell.org/package/cryptonite) provides both all the cryptography primitives and the `MonadRandom` class, and [`transformers`](https://hackage.haskell.org/package/transformers) provides `MonadReader`.
+
 
 
 
