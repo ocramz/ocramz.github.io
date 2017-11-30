@@ -41,14 +41,14 @@ requestGet :: MonadHttp m => m LB.ByteString
 requestGet = do
    r <- req
       GET
-      (https "www.meetup.com" /: "got-lambda")
+      (http "www.datahaskell.org" /: "docs" /: "community" /: "current-environment.html)
       NoReqBody
       lbsResponse
       mempty
    return $ responseBody r   
 {% endhighlight %}
 
-The above already requires the user to be familiar with typeclasses, lazy evaluation and a couple standard typeclasses (Monoid and Monad). These are fundamental to Haskell, so it helps seeing them used in context.
+The above already requires the user to be at least a bit familiar with typeclasses, lazy evaluation and a couple standard typeclasses (ok, just one really: Monoid. The Monad typeclass is implied by structuring the code in a `do` block). These are fundamental to Haskell, so it helps seeing them used in context. `req` returns in a Monad type because I/O is fundamentally an effect; returning an HTTP response means _doing_ stuff with the network interface, the operating system, and might imply failure of some sort and not return any sensible result, which is distinct from how _pure_ functions behave (i.e. just computing output).
 
 
 # Aside : inspecting type instances in GHCi
@@ -223,7 +223,7 @@ instance HasCredentials c => MonadRandom (Cloud c) where
 
 Reducing code duplication while allowing for flexibility where needed, while at the same time having the compiler warn us about every missing or overlapping implementation is a great feature to have for writing software with confidence, I think.
 
-
+Now we need a declare
 
 
 
