@@ -226,11 +226,21 @@ Reducing code duplication while allowing for flexibility where needed, while at 
 ---------
 
 
-Now we need a function to actually _run_ `Cloud` computations. This is actually trivial: we unpack the `ReaderT (Handle c) IO a` stuff that's within the `Cloud` data constructor and apply it to `runReaderT` which passes in the given `Handle` data, thus configuring the computation:
+Now we need a function to actually _run_ `Cloud` computations. This is actually trivial: we extract the `ReaderT (Handle c) IO a` stuff that's within the `Cloud` data constructor and apply it to `runReaderT` which passes in the given `Handle` data, thus configuring the computation:
 
 {% highlight haskell %}
 runCloudIO :: Handle c -> Cloud c a -> IO a
 runCloudIO r (Cloud body) = runReaderT body r
+{% endhighlight %}
+
+Since `Cloud` is an instance of Monad we can chain any number of such computations within a `do` block and wrap the overall computation in a `runCloudIO` call, which produces the result:
+
+{% highlight haskell %}
+total hdl = runCloudIO hdl $ do 
+   c <- cloudAuth
+   cloud2 c
+   d <- cloud3 c
+   ...
 {% endhighlight %}
 
 

@@ -6,8 +6,8 @@
 </description>
     <link>https://ocramz.github.io/</link>
     <atom:link href="https://ocramz.github.io/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Thu, 30 Nov 2017 22:35:47 +0100</pubDate>
-    <lastBuildDate>Thu, 30 Nov 2017 22:35:47 +0100</lastBuildDate>
+    <pubDate>Thu, 30 Nov 2017 22:39:26 +0100</pubDate>
+    <lastBuildDate>Thu, 30 Nov 2017 22:39:26 +0100</lastBuildDate>
     <generator>Jekyll v3.6.2</generator>
     
       <item>
@@ -196,10 +196,18 @@
 
 &lt;hr /&gt;
 
-&lt;p&gt;Now we need a function to actually &lt;em&gt;run&lt;/em&gt; &lt;code class=&quot;highlighter-rouge&quot;&gt;Cloud&lt;/code&gt; computations. This is actually trivial: we unpack the &lt;code class=&quot;highlighter-rouge&quot;&gt;ReaderT (Handle c) IO a&lt;/code&gt; stuff that’s within the &lt;code class=&quot;highlighter-rouge&quot;&gt;Cloud&lt;/code&gt; data constructor and apply it to &lt;code class=&quot;highlighter-rouge&quot;&gt;runReaderT&lt;/code&gt; which passes in the given &lt;code class=&quot;highlighter-rouge&quot;&gt;Handle&lt;/code&gt; data, thus configuring the computation:&lt;/p&gt;
+&lt;p&gt;Now we need a function to actually &lt;em&gt;run&lt;/em&gt; &lt;code class=&quot;highlighter-rouge&quot;&gt;Cloud&lt;/code&gt; computations. This is actually trivial: we extract the &lt;code class=&quot;highlighter-rouge&quot;&gt;ReaderT (Handle c) IO a&lt;/code&gt; stuff that’s within the &lt;code class=&quot;highlighter-rouge&quot;&gt;Cloud&lt;/code&gt; data constructor and apply it to &lt;code class=&quot;highlighter-rouge&quot;&gt;runReaderT&lt;/code&gt; which passes in the given &lt;code class=&quot;highlighter-rouge&quot;&gt;Handle&lt;/code&gt; data, thus configuring the computation:&lt;/p&gt;
 
 &lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-haskell&quot; data-lang=&quot;haskell&quot;&gt;&lt;span class=&quot;n&quot;&gt;runCloudIO&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;::&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Handle&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;c&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Cloud&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;c&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;IO&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;
 &lt;span class=&quot;n&quot;&gt;runCloudIO&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;r&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;Cloud&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;body&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;runReaderT&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;body&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;r&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;Since &lt;code class=&quot;highlighter-rouge&quot;&gt;Cloud&lt;/code&gt; is an instance of Monad we can chain any number of such computations within a &lt;code class=&quot;highlighter-rouge&quot;&gt;do&lt;/code&gt; block and wrap the overall computation in a &lt;code class=&quot;highlighter-rouge&quot;&gt;runCloudIO&lt;/code&gt; call, which produces the result:&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-haskell&quot; data-lang=&quot;haskell&quot;&gt;&lt;span class=&quot;n&quot;&gt;total&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;hdl&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;runCloudIO&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;hdl&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;$&lt;/span&gt; &lt;span class=&quot;kr&quot;&gt;do&lt;/span&gt; 
+   &lt;span class=&quot;n&quot;&gt;c&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;cloudAuth&lt;/span&gt;
+   &lt;span class=&quot;n&quot;&gt;cloud2&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;c&lt;/span&gt;
+   &lt;span class=&quot;n&quot;&gt;d&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;cloud3&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;c&lt;/span&gt;
+   &lt;span class=&quot;o&quot;&gt;...&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
 </description>
         <pubDate>Thu, 30 Nov 2017 00:00:00 +0100</pubDate>

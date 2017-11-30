@@ -249,10 +249,18 @@
 
 <hr />
 
-<p>Now we need a function to actually <em>run</em> <code class="highlighter-rouge">Cloud</code> computations. This is actually trivial: we unpack the <code class="highlighter-rouge">ReaderT (Handle c) IO a</code> stuff that’s within the <code class="highlighter-rouge">Cloud</code> data constructor and apply it to <code class="highlighter-rouge">runReaderT</code> which passes in the given <code class="highlighter-rouge">Handle</code> data, thus configuring the computation:</p>
+<p>Now we need a function to actually <em>run</em> <code class="highlighter-rouge">Cloud</code> computations. This is actually trivial: we extract the <code class="highlighter-rouge">ReaderT (Handle c) IO a</code> stuff that’s within the <code class="highlighter-rouge">Cloud</code> data constructor and apply it to <code class="highlighter-rouge">runReaderT</code> which passes in the given <code class="highlighter-rouge">Handle</code> data, thus configuring the computation:</p>
 
 <figure class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="n">runCloudIO</span> <span class="o">::</span> <span class="kt">Handle</span> <span class="n">c</span> <span class="o">-&gt;</span> <span class="kt">Cloud</span> <span class="n">c</span> <span class="n">a</span> <span class="o">-&gt;</span> <span class="kt">IO</span> <span class="n">a</span>
 <span class="n">runCloudIO</span> <span class="n">r</span> <span class="p">(</span><span class="kt">Cloud</span> <span class="n">body</span><span class="p">)</span> <span class="o">=</span> <span class="n">runReaderT</span> <span class="n">body</span> <span class="n">r</span></code></pre></figure>
+
+<p>Since <code class="highlighter-rouge">Cloud</code> is an instance of Monad we can chain any number of such computations within a <code class="highlighter-rouge">do</code> block and wrap the overall computation in a <code class="highlighter-rouge">runCloudIO</code> call, which produces the result:</p>
+
+<figure class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="n">total</span> <span class="n">hdl</span> <span class="o">=</span> <span class="n">runCloudIO</span> <span class="n">hdl</span> <span class="o">$</span> <span class="kr">do</span> 
+   <span class="n">c</span> <span class="o">&lt;-</span> <span class="n">cloudAuth</span>
+   <span class="n">cloud2</span> <span class="n">c</span>
+   <span class="n">d</span> <span class="o">&lt;-</span> <span class="n">cloud3</span> <span class="n">c</span>
+   <span class="o">...</span></code></pre></figure>
 
 
   </article>
