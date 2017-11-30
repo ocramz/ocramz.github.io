@@ -27,7 +27,7 @@ req :: (HttpResponse response, HttpBody body, HttpMethod method,
 
 This should be mentally read: "the type `response` must be an instance of the `HttpResponse` class, `body` and `method` are jointly constrained by `HttpBodyAllowed` ..", etc.
 
-As soon as we populate all of `req`'s parameter slots, the typechecker infers a more concrete (and understandable) type signature. The following example declares a GET request to a certain address, containing no body or parameters, and requires that the response be returned as a "lazy" [`bytestring`](http://hackage.haskell.org/packages/bytestring).
+As soon as we populate all of `req`'s parameter slots, the typechecker infers a more concrete (and understandable) type signature. The following example declares a GET request to a certain address, containing no body or parameters, and requires that the response be returned as a "lazy" [`bytestring`](http://hackage.haskell.org/package/bytestring).
 
 
 {% highlight haskell %}
@@ -44,7 +44,21 @@ requestGet = do
 
 The above already requires the user to be familiar with typeclasses, lazy evaluation and a couple standard typeclasses (Monoid and Monad).
 
-Let's take the last parameter of `req` as a concrete example
+Let's take the last parameter of `req` as a concrete example. It is of type `Option scheme`, where `scheme` is some type parameter. Now, how do I know what are the right types that can be used here? I always have a GHCi session running in one Emacs tile, so that I can explore interactively the libraries imported by the project I'm working on; in this case, I query for information on `Option` (the GHCi prompt is represented by a lambda letter):
+
+{% highlight haskell %}
+ :i Option
+type role Option phantom
+data Option (scheme :: Scheme)
+  = Network.HTTP.Req.Option (Data.Monoid.Endo
+                               (H.QueryText, H.Request))
+                            (Maybe (H.Request -> IO H.Request))
+  	-- Defined in ‘Network.HTTP.Req’
+instance Monoid (Option scheme) -- Defined in ‘Network.HTTP.Req’
+instance QueryParam (Option scheme)
+  -- Defined in ‘Network.HTTP.Req’
+{% endhighlight %}
+
 
 
 
