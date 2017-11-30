@@ -67,12 +67,10 @@ Back to our function `req`; all of this means that since `Option` is a Monoid an
 
 
 
-MonadHttp
----------
+MonadHttp and MonadIO
+---------------------
 
-The `req`
-
-
+In the second code snippet above we see that the HTTP response is returned by some computation of type `m`, which is constrained to being an instance of `MonadHttp` :
 
 {% highlight haskell %}
 > :i MonadHttp
@@ -81,6 +79,16 @@ class MonadIO m => MonadHttp (m :: * -> *) where
   ...
   {-# MINIMAL handleHttpException #-}
 {% endhighlight %}
+
+.. What does _that_ mean?
+
+Recall that the HTTP protocol uses status codes to communicate the details of connection failure or success. For example, code 200 stands for success, 404 for "Not Found", etc. The `HttpException` type contains a field where such codes are stored, and any type that's made an instance of `MonadHttp` must provide an implementation of `handleHttpException` that processes this status.
+
+It's important to note that `a`, the return type of `handleHttpException`, is not constrained in any way but may be made to contain whatever information required by the rest of our program logic.
+
+We also see that the parametric type `m` is further required to have a `MonadIO` instance. Fine, web connections are one form of I/O, so this makes some sense. What may be new is that rather than being in the usual form `.. -> IO a`, the computation is "lifted" to the MonadIO class, thus taking the form `MonadIO m => .. -> m a`. It's as if we went from saying "something of this type" to "something of a type that satisfies this property".
+
+
 
 
 
