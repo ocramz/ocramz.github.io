@@ -49,7 +49,7 @@ The above already requires the user to be familiar with typeclasses, lazy evalua
 
 # Aside : inspecting type instances in GHCi
 
-Let's take the last parameter of `req` as a concrete example. It is of type `Option scheme`, where `scheme` is some type parameter. Now, how do I know what are the right types that can be used here? I always have a GHCi session running in one Emacs tile, so that I can explore interactively the libraries imported by the project I'm working on; in this case, I query for information on `Option` (the GHCi prompt is represented by the `>` character):
+Let's take the last parameter of `req` as a concrete example. It is of type `Option scheme`, where `scheme` is some type parameter. Now, how do I know what are the right types that can be used here? I always have a GHCi session running in one Emacs tile, so that I can explore interactively the libraries imported by the project I'm working on; in this case, I query for information (by using the `:i` GHCi macro) on `Option` (the GHCi prompt is represented by the `>` character):
 
 {% highlight haskell %}
 > :i Option
@@ -59,7 +59,7 @@ instance QueryParam (Option scheme)
   -- Defined in ‘Network.HTTP.Req’
 {% endhighlight %}
 
-I omitted the first few lines because they are not of immediate interest at the moment. The lines above list what typeclass instances this type satisfies; there we see `Monoid` and `QueryParam`. The Monoid instance is extremely useful because it provides a type with a "neutral element" (`mempty`) and with a binary operation (`mappend`) with some closure property (if `a` and `b` are values of a Monoid type, `mappend a b` is of Monoid type as well).
+I omitted the first few lines because they are not of immediate interest. The rest of the GHCi response shows what typeclass instances the `Option` type satisfies; there we see `Monoid` and `QueryParam`. The Monoid instance is extremely useful because it provides a type with a "neutral element" (`mempty`) and with a binary operation (`mappend`) with some closure property (if `a` and `b` are values of a Monoid type, `mappend a b` is of Monoid type as well).
 
 Strings of texts are one familiar example of things with the Monoid property: the empty string ("") is the neutral element, and appending two strings (`++`) is a binary and associative operation, corresponding to `mappend`. Other common examples of Monoid are 0 and integer addition, or 1 and integer multiplication.
 
@@ -86,7 +86,7 @@ Recall that the HTTP protocol uses status codes to communicate the details of co
 
 It's important to note that `a`, the return type of `handleHttpException`, is not constrained in any way but may be made to contain whatever information required by the rest of our program logic.
 
-We also see that the parametric type `m` is further required to have a `MonadIO` instance. Fine, web connections are one form of I/O, so this makes some sense. What may be novel to some readers is that rather than being in the usual "concrete" form `.. -> IO a`, the computation is "lifted" to the MonadIO class, thus taking the form `MonadIO m => .. -> m a`. It's as if we went from saying "a computation of type IO" to "something of a type that can perform IO".
+We also see that the parametric type `m` is further required to have a `MonadIO` instance. Fine, web connections are one form of I/O, so this makes some sense. What may be novel to some readers is that rather than being in the usual "concrete" form `.. -> IO a`, the computation is "lifted" to the MonadIO class, thus taking the form `MonadIO m => .. -> m a`. It's as if we went from saying "a computation of type IO" to "something of _any_ type that can perform IO".
 
 The `MonadHttp` typeclass encodes exactly this: since HTTP connections are a form of I/O, the `MonadHttp` constraint _entails_ the `MonadIO` constraint; in other words, every type `m` that has a `MonadHttp` instance _must_ also declare a `MonadIO` instance (the compiler will complain otherwise).
 
