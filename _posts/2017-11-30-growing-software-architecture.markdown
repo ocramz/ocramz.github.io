@@ -120,7 +120,7 @@ newtype Cloud c a = ...
 
 The first type parameter, `c`, denotes the API provider "label", and the second parameter represents the result type of the computation.
 
-Now, we need a way of saying "for each provider `c`, I need a specific set of `Credentials`, and I will receive a specific type of `Token` in return"; the `TypeFamilies` language extension can help here :
+Now, we need a way of saying "for each provider `c`, I need a specific set of `Credentials`, and I will receive a specific type of `Token` in return"; the `TypeFamilies` language extension lets us do just that :
 
 {% highlight haskell %}
 {-# language TypeFamilies #-}
@@ -130,7 +130,7 @@ class HasCredentials c where
   type Token c :: *
 {% endhighlight %}
 
-In other words, the API provider label will be a distinct type, and we'll need to write a separate instance of `HasCredentials` for each.
+In other words, the API provider label will be a distinct type, and we'll need to write a separate instance of `HasCredentials` (and corresponding concrete types for `Credentials` and `Token`) for each.
 
 In addition, let's write a `Handle` record type which will store the actual credentials and (temporary) token for a given provider:
 
@@ -155,7 +155,7 @@ newtype Cloud c a = Cloud {
   } deriving (Functor, Applicative, Monad)
 {% endhighlight %}
 
-The body of a `Cloud` computation is something which can _read_ the data in `Handle` (for example the `credentials` or the `token`) and perform some I/O such as connecting to the provider. `ReaderT` is the "reader" [monad transformer](https://wiki.haskell.org/All_About_Monads#Monad_transformers), in this case stacked "on top" of IO. A monad transformer is a very handy way of interleaving effects, and a number of the most common ones are conveniently implemented in the [mtl](hackage.haskell.org/package/mtl) and [transformers](hackage.haskell.org/package/transformers)
+The body of a `Cloud` computation is something which can _read_ the data in `Handle` (for example the `credentials` or the `token`) and perform some I/O such as connecting to the provider. `ReaderT` is the "reader" [monad transformer](https://wiki.haskell.org/All_About_Monads#Monad_transformers), in this case stacked "on top" of IO. A monad transformer is a very handy way of interleaving effects, and a number of the most common ones are conveniently implemented in the [mtl](hackage.haskell.org/package/mtl) and [transformers](hackage.haskell.org/package/transformers) libraries.
 
 
 

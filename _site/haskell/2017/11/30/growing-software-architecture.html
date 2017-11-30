@@ -161,7 +161,7 @@
 
 <p>The first type parameter, <code class="highlighter-rouge">c</code>, denotes the API provider “label”, and the second parameter represents the result type of the computation.</p>
 
-<p>Now, we need a way of saying “for each provider <code class="highlighter-rouge">c</code>, I need a specific set of <code class="highlighter-rouge">Credentials</code>, and I will receive a specific type of <code class="highlighter-rouge">Token</code> in return”; the <code class="highlighter-rouge">TypeFamilies</code> language extension can help here :</p>
+<p>Now, we need a way of saying “for each provider <code class="highlighter-rouge">c</code>, I need a specific set of <code class="highlighter-rouge">Credentials</code>, and I will receive a specific type of <code class="highlighter-rouge">Token</code> in return”; the <code class="highlighter-rouge">TypeFamilies</code> language extension lets us do just that :</p>
 
 <figure class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="cp">{-# language TypeFamilies #-}</span>
 
@@ -169,7 +169,7 @@
   <span class="kr">type</span> <span class="kt">Credentials</span> <span class="n">c</span> <span class="o">::</span> <span class="o">*</span>
   <span class="kr">type</span> <span class="kt">Token</span> <span class="n">c</span> <span class="o">::</span> <span class="o">*</span></code></pre></figure>
 
-<p>In other words, the API provider label will be a distinct type, and we’ll need to write a separate instance of <code class="highlighter-rouge">HasCredentials</code> for each.</p>
+<p>In other words, the API provider label will be a distinct type, and we’ll need to write a separate instance of <code class="highlighter-rouge">HasCredentials</code> (and corresponding concrete types for <code class="highlighter-rouge">Credentials</code> and <code class="highlighter-rouge">Token</code>) for each.</p>
 
 <p>In addition, let’s write a <code class="highlighter-rouge">Handle</code> record type which will store the actual credentials and (temporary) token for a given provider:</p>
 
@@ -188,7 +188,7 @@
   <span class="n">runCloud</span> <span class="o">::</span> <span class="kt">ReaderT</span> <span class="p">(</span><span class="kt">Handle</span> <span class="n">c</span><span class="p">)</span> <span class="kt">IO</span> <span class="n">a</span>
   <span class="p">}</span> <span class="kr">deriving</span> <span class="p">(</span><span class="kt">Functor</span><span class="p">,</span> <span class="kt">Applicative</span><span class="p">,</span> <span class="kt">Monad</span><span class="p">)</span></code></pre></figure>
 
-<p>The body of a <code class="highlighter-rouge">Cloud</code> computation is something which can <em>read</em> the data in <code class="highlighter-rouge">Handle</code> (for example the <code class="highlighter-rouge">credentials</code> or the <code class="highlighter-rouge">token</code>) and perform some I/O such as connecting to the provider. <code class="highlighter-rouge">ReaderT</code> is the “reader” <a href="https://wiki.haskell.org/All_About_Monads#Monad_transformers">monad transformer</a>, in this case stacked “on top” of IO. A monad transformer is a very handy way of interleaving effects, and a number of the most common ones are conveniently implemented in the <a href="hackage.haskell.org/package/mtl">mtl</a> and <a href="hackage.haskell.org/package/transformers">transformers</a></p>
+<p>The body of a <code class="highlighter-rouge">Cloud</code> computation is something which can <em>read</em> the data in <code class="highlighter-rouge">Handle</code> (for example the <code class="highlighter-rouge">credentials</code> or the <code class="highlighter-rouge">token</code>) and perform some I/O such as connecting to the provider. <code class="highlighter-rouge">ReaderT</code> is the “reader” <a href="https://wiki.haskell.org/All_About_Monads#Monad_transformers">monad transformer</a>, in this case stacked “on top” of IO. A monad transformer is a very handy way of interleaving effects, and a number of the most common ones are conveniently implemented in the <a href="hackage.haskell.org/package/mtl">mtl</a> and <a href="hackage.haskell.org/package/transformers">transformers</a> libraries.</p>
 
 
   </article>

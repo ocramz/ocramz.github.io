@@ -6,8 +6,8 @@
 </description>
     <link>https://ocramz.github.io/</link>
     <atom:link href="https://ocramz.github.io/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Thu, 30 Nov 2017 21:20:36 +0100</pubDate>
-    <lastBuildDate>Thu, 30 Nov 2017 21:20:36 +0100</lastBuildDate>
+    <pubDate>Thu, 30 Nov 2017 21:23:10 +0100</pubDate>
+    <lastBuildDate>Thu, 30 Nov 2017 21:23:10 +0100</lastBuildDate>
     <generator>Jekyll v3.6.2</generator>
     
       <item>
@@ -108,7 +108,7 @@
 
 &lt;p&gt;The first type parameter, &lt;code class=&quot;highlighter-rouge&quot;&gt;c&lt;/code&gt;, denotes the API provider “label”, and the second parameter represents the result type of the computation.&lt;/p&gt;
 
-&lt;p&gt;Now, we need a way of saying “for each provider &lt;code class=&quot;highlighter-rouge&quot;&gt;c&lt;/code&gt;, I need a specific set of &lt;code class=&quot;highlighter-rouge&quot;&gt;Credentials&lt;/code&gt;, and I will receive a specific type of &lt;code class=&quot;highlighter-rouge&quot;&gt;Token&lt;/code&gt; in return”; the &lt;code class=&quot;highlighter-rouge&quot;&gt;TypeFamilies&lt;/code&gt; language extension can help here :&lt;/p&gt;
+&lt;p&gt;Now, we need a way of saying “for each provider &lt;code class=&quot;highlighter-rouge&quot;&gt;c&lt;/code&gt;, I need a specific set of &lt;code class=&quot;highlighter-rouge&quot;&gt;Credentials&lt;/code&gt;, and I will receive a specific type of &lt;code class=&quot;highlighter-rouge&quot;&gt;Token&lt;/code&gt; in return”; the &lt;code class=&quot;highlighter-rouge&quot;&gt;TypeFamilies&lt;/code&gt; language extension lets us do just that :&lt;/p&gt;
 
 &lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-haskell&quot; data-lang=&quot;haskell&quot;&gt;&lt;span class=&quot;cp&quot;&gt;{-# language TypeFamilies #-}&lt;/span&gt;
 
@@ -116,7 +116,7 @@
   &lt;span class=&quot;kr&quot;&gt;type&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Credentials&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;c&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;::&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;
   &lt;span class=&quot;kr&quot;&gt;type&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Token&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;c&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;::&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
-&lt;p&gt;In other words, the API provider label will be a distinct type, and we’ll need to write a separate instance of &lt;code class=&quot;highlighter-rouge&quot;&gt;HasCredentials&lt;/code&gt; for each.&lt;/p&gt;
+&lt;p&gt;In other words, the API provider label will be a distinct type, and we’ll need to write a separate instance of &lt;code class=&quot;highlighter-rouge&quot;&gt;HasCredentials&lt;/code&gt; (and corresponding concrete types for &lt;code class=&quot;highlighter-rouge&quot;&gt;Credentials&lt;/code&gt; and &lt;code class=&quot;highlighter-rouge&quot;&gt;Token&lt;/code&gt;) for each.&lt;/p&gt;
 
 &lt;p&gt;In addition, let’s write a &lt;code class=&quot;highlighter-rouge&quot;&gt;Handle&lt;/code&gt; record type which will store the actual credentials and (temporary) token for a given provider:&lt;/p&gt;
 
@@ -135,7 +135,7 @@
   &lt;span class=&quot;n&quot;&gt;runCloud&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;::&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;ReaderT&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;Handle&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;IO&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;
   &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;kr&quot;&gt;deriving&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;Functor&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Applicative&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Monad&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
-&lt;p&gt;The body of a &lt;code class=&quot;highlighter-rouge&quot;&gt;Cloud&lt;/code&gt; computation is something which can &lt;em&gt;read&lt;/em&gt; the data in &lt;code class=&quot;highlighter-rouge&quot;&gt;Handle&lt;/code&gt; (for example the &lt;code class=&quot;highlighter-rouge&quot;&gt;credentials&lt;/code&gt; or the &lt;code class=&quot;highlighter-rouge&quot;&gt;token&lt;/code&gt;) and perform some I/O such as connecting to the provider. &lt;code class=&quot;highlighter-rouge&quot;&gt;ReaderT&lt;/code&gt; is the “reader” &lt;a href=&quot;https://wiki.haskell.org/All_About_Monads#Monad_transformers&quot;&gt;monad transformer&lt;/a&gt;, in this case stacked “on top” of IO. A monad transformer is a very handy way of interleaving effects, and a number of the most common ones are conveniently implemented in the &lt;a href=&quot;hackage.haskell.org/package/mtl&quot;&gt;mtl&lt;/a&gt; and &lt;a href=&quot;hackage.haskell.org/package/transformers&quot;&gt;transformers&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;The body of a &lt;code class=&quot;highlighter-rouge&quot;&gt;Cloud&lt;/code&gt; computation is something which can &lt;em&gt;read&lt;/em&gt; the data in &lt;code class=&quot;highlighter-rouge&quot;&gt;Handle&lt;/code&gt; (for example the &lt;code class=&quot;highlighter-rouge&quot;&gt;credentials&lt;/code&gt; or the &lt;code class=&quot;highlighter-rouge&quot;&gt;token&lt;/code&gt;) and perform some I/O such as connecting to the provider. &lt;code class=&quot;highlighter-rouge&quot;&gt;ReaderT&lt;/code&gt; is the “reader” &lt;a href=&quot;https://wiki.haskell.org/All_About_Monads#Monad_transformers&quot;&gt;monad transformer&lt;/a&gt;, in this case stacked “on top” of IO. A monad transformer is a very handy way of interleaving effects, and a number of the most common ones are conveniently implemented in the &lt;a href=&quot;hackage.haskell.org/package/mtl&quot;&gt;mtl&lt;/a&gt; and &lt;a href=&quot;hackage.haskell.org/package/transformers&quot;&gt;transformers&lt;/a&gt; libraries.&lt;/p&gt;
 
 </description>
         <pubDate>Thu, 30 Nov 2017 00:00:00 +0100</pubDate>
