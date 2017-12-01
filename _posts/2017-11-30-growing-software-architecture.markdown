@@ -94,7 +94,7 @@ We also see that the parametric type `m` is further required to have a `MonadIO`
 
 The `MonadHttp` typeclass encodes exactly this: since HTTP connections are a form of I/O, the `MonadHttp` constraint _entails_ the `MonadIO` constraint; in other words, every type `m` that has a `MonadHttp` instance _must_ also declare a `MonadIO` instance (the compiler will complain otherwise).
 
-We'll learn about the implications of this way of writing things in the next section.
+We'll learn about the implications of this way of writing things in the following sections.
 
 
 API authentication and type families

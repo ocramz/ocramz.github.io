@@ -137,7 +137,7 @@
 
 <p>The <code class="highlighter-rouge">MonadHttp</code> typeclass encodes exactly this: since HTTP connections are a form of I/O, the <code class="highlighter-rouge">MonadHttp</code> constraint <em>entails</em> the <code class="highlighter-rouge">MonadIO</code> constraint; in other words, every type <code class="highlighter-rouge">m</code> that has a <code class="highlighter-rouge">MonadHttp</code> instance <em>must</em> also declare a <code class="highlighter-rouge">MonadIO</code> instance (the compiler will complain otherwise).</p>
 
-<p>We’ll learn about the implications of this way of writing things in the next section.</p>
+<p>We’ll learn about the implications of this way of writing things in the following sections.</p>
 
 <h2 id="api-authentication-and-type-families">API authentication and type families</h2>
 

@@ -6,8 +6,8 @@
 </description>
     <link>https://ocramz.github.io/</link>
     <atom:link href="https://ocramz.github.io/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Fri, 01 Dec 2017 09:37:31 +0100</pubDate>
-    <lastBuildDate>Fri, 01 Dec 2017 09:37:31 +0100</lastBuildDate>
+    <pubDate>Fri, 01 Dec 2017 09:57:55 +0100</pubDate>
+    <lastBuildDate>Fri, 01 Dec 2017 09:57:55 +0100</lastBuildDate>
     <generator>Jekyll v3.6.2</generator>
     
       <item>
@@ -84,7 +84,7 @@
 
 &lt;p&gt;The &lt;code class=&quot;highlighter-rouge&quot;&gt;MonadHttp&lt;/code&gt; typeclass encodes exactly this: since HTTP connections are a form of I/O, the &lt;code class=&quot;highlighter-rouge&quot;&gt;MonadHttp&lt;/code&gt; constraint &lt;em&gt;entails&lt;/em&gt; the &lt;code class=&quot;highlighter-rouge&quot;&gt;MonadIO&lt;/code&gt; constraint; in other words, every type &lt;code class=&quot;highlighter-rouge&quot;&gt;m&lt;/code&gt; that has a &lt;code class=&quot;highlighter-rouge&quot;&gt;MonadHttp&lt;/code&gt; instance &lt;em&gt;must&lt;/em&gt; also declare a &lt;code class=&quot;highlighter-rouge&quot;&gt;MonadIO&lt;/code&gt; instance (the compiler will complain otherwise).&lt;/p&gt;
 
-&lt;p&gt;We’ll learn about the implications of this way of writing things in the next section.&lt;/p&gt;
+&lt;p&gt;We’ll learn about the implications of this way of writing things in the following sections.&lt;/p&gt;
 
 &lt;h2 id=&quot;api-authentication-and-type-families&quot;&gt;API authentication and type families&lt;/h2&gt;
 
