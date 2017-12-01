@@ -119,7 +119,7 @@
 
 <h2 id="monadhttp-monadio-and-typeclass-lifting">MonadHttp, MonadIO and typeclass “lifting”</h2>
 
-<p>In the second code snippet above we see that the HTTP response is returned by some computation of type <code class="highlighter-rouge">m</code>, which is constrained to being an instance of <code class="highlighter-rouge">MonadHttp</code> :</p>
+<p>In the second code snippet above we see that the HTTP response is returned by some computation of type <code class="highlighter-rouge">m</code>, which is constrained to being an instance of <code class="highlighter-rouge">MonadHttp</code>. Let’s see what GHCi knows about <code class="highlighter-rouge">MonadHttp</code> :</p>
 
 <figure class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="o">&gt;</span> <span class="o">:</span><span class="n">i</span> <span class="kt">MonadHttp</span>
 <span class="kr">class</span> <span class="kt">MonadIO</span> <span class="n">m</span> <span class="o">=&gt;</span> <span class="kt">MonadHttp</span> <span class="n">m</span> <span class="kr">where</span>
@@ -264,9 +264,9 @@
 
 <figure class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="n">total</span> <span class="o">::</span> <span class="kt">HasCredentials</span> <span class="n">c</span> <span class="o">=&gt;</span> <span class="kt">Handle</span> <span class="n">c</span> <span class="o">-&gt;</span> <span class="kt">IO</span> <span class="n">a</span>
 <span class="n">total</span> <span class="n">hdl</span> <span class="o">=</span> <span class="n">runCloudIO</span> <span class="n">hdl</span> <span class="o">$</span> <span class="kr">do</span> 
-   <span class="n">c</span> <span class="o">&lt;-</span> <span class="n">cloudAuth</span>
-   <span class="n">cloud2</span> <span class="n">c</span>
-   <span class="n">d</span> <span class="o">&lt;-</span> <span class="n">cloud3</span> <span class="n">c</span>
+   <span class="n">x</span> <span class="o">&lt;-</span> <span class="n">cloudAuth</span>
+   <span class="n">cloud2</span> <span class="n">x</span>
+   <span class="n">y</span> <span class="o">&lt;-</span> <span class="n">cloud3</span> <span class="n">x</span>
    <span class="o">...</span></code></pre></figure>
 
 <hr />

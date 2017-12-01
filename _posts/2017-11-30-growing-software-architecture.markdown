@@ -74,7 +74,7 @@ Back to our function `req`; all of this means that since `Option` is a Monoid an
 MonadHttp, MonadIO and typeclass "lifting"
 ----------------------------------------
 
-In the second code snippet above we see that the HTTP response is returned by some computation of type `m`, which is constrained to being an instance of `MonadHttp` :
+In the second code snippet above we see that the HTTP response is returned by some computation of type `m`, which is constrained to being an instance of `MonadHttp`. Let's see what GHCi knows about `MonadHttp` :
 
 {% highlight haskell %}
 > :i MonadHttp
@@ -244,9 +244,9 @@ Since `Cloud` is an instance of Monad we can chain any number of such computatio
 {% highlight haskell %}
 total :: HasCredentials c => Handle c -> IO a
 total hdl = runCloudIO hdl $ do 
-   c <- cloudAuth
-   cloud2 c
-   d <- cloud3 c
+   x <- cloudAuth
+   cloud2 x
+   y <- cloud3 x
    ...
 {% endhighlight %}
 
