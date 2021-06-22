@@ -100,6 +100,8 @@ fromTHName thn = thNameToGhcName thn >>= \case
 Here we are interested in the compiler phase that produces Core IR, so we'll have to modify the `defaultPlugin` value provided by `ghc` by passing a custom implementation of `installCoreToDos` :
 
 {% highlight haskell %}
+-- module MyPlugin
+
 plugin :: Plugin
 plugin = defaultPlugin {
   installCoreToDos = install -- see below
@@ -156,7 +158,8 @@ With this, we can declare a minimal module that imports the TH helper `inspect` 
 
 {% highlight haskell %}
 {-# LANGUAGE TemplateHaskell #-}
-{-# OPTIONS_GHC -fplugin=Numeric.AD.Plugin #-}
+{-# OPTIONS_GHC -fplugin=MyPlugin #-}
+module PluginTest where
 
 -- try building with either type signature for extra fun
 
