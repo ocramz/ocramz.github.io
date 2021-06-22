@@ -158,7 +158,7 @@ With this, we can declare a minimal module that imports the TH helper `inspect` 
 {-# LANGUAGE TemplateHaskell #-}
 {-# OPTIONS_GHC -fplugin=Numeric.AD.Plugin #-}
 
--- try with both type signatures for extra fun
+-- try building with either type signature for extra fun
 
 f :: Double -> Double -> Double
 -- f :: Floating a => a -> a -> a 
