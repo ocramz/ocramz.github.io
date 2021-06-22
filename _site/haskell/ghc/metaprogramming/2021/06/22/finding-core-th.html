@@ -9,12 +9,11 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>ocramz.github.io</title>
-  <meta name="description" content="lambdas and large linear systems, oh my
-">
+  <title>Finding the Core corresponding to a Template Haskell annotation</title>
+  <meta name="description" content="Introduction">
 
   <link rel="stylesheet" href="/css/main.css">
-  <link rel="canonical" href="https://ocramz.github.io/">
+  <link rel="canonical" href="https://ocramz.github.io/haskell/ghc/metaprogramming/2021/06/22/finding-core-th.html">
   <link rel="alternate" type="application/rss+xml" title="ocramz.github.io" href="https://ocramz.github.io/feed.xml" />
 </head>
 
@@ -58,84 +57,26 @@
 
     <div class="page-content">
       <div class="wrapper">
-        <div class="home">
+        <div class="post">
 
-  <h1 class="page-heading">Posts</h1>
+  <header class="post-header">
+    <h1 class="post-title">Finding the Core corresponding to a Template Haskell annotation</h1>
+    <p class="post-meta">Jun 22, 2021</p>
+  </header>
 
-  <ul class="post-list">
-    
-      <li>
-        <span class="post-meta">Jun 22, 2021</span>
+  <article class="post-content">
+    <h2 id="introduction">Introduction</h2>
 
-        <h2>
-          <a class="post-link" href="/haskell/ghc/metaprogramming/2021/06/22/finding-core-th.html">Finding the Core corresponding to a Template Haskell annotation</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Nov 30, 2017</span>
+<p>GHC Haskell is a wonderful <del>compiler</del> platform for writing compilers and languages on. Both the surface language and the internals of the compiler can be interfaced and extended in many ways, letting users come up with mind-bending innovations in <a href="http://conal.net/papers/compiling-to-categories/compiling-to-categories.pdf">scientific computing</a> and <a href="https://haskellwingman.dev/">code editing</a>, among many other examples.</p>
 
-        <h2>
-          <a class="post-link" href="/haskell/2017/11/30/growing-software-architecture.html">Growing a software architecture with types</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Feb 7, 2017</span>
+<p>The compiler</p>
 
-        <h2>
-          <a class="post-link" href="/mathematics/tutorials/2017/02/07/golub-kahan-lanczos.html">The singular value decomposition, pt.1 - Golub-Kahan-Lanczos bidiagonalization</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Feb 6, 2017</span>
+<p>While writing a <a href="https://downloads.haskell.org/ghc/latest/docs/html/users_guide/extending_ghc.html#compiler-plugins">GHC plugin</a> that lets the user pinpoint a given declaration whose Core will be analyzed and transformed, I found myself in need of a specific bit of machinery</p>
 
-        <h2>
-          <a class="post-link" href="/mathematics/linear-algebra/2017/02/06/gmres.html">The generalized minimal-residual method for linear systems</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Nov 9, 2016</span>
-
-        <h2>
-          <a class="post-link" href="/mathematics/tutorials/2016/11/09/arnoldi-alt.html">A simple derivation of the Arnoldi algorithm</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Aug 25, 2016</span>
-
-        <h2>
-          <a class="post-link" href="/haskell/tutorials/2016/08/25/icfp2016.html">Folding a paper crane - a solution to the ICFP 2016 programming contest - part 1</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Aug 21, 2015</span>
-
-        <h2>
-          <a class="post-link" href="/haskell/tutorials/2015/08/21/haskell-tut-v1.html">Introduction to functional programming with Haskell</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Aug 20, 2015</span>
-
-        <h2>
-          <a class="post-link" href="/tests/2015/08/20/haskell-test.html">Test</a>
-        </h2>
-      </li>
-    
-  </ul>
-
-  <p class="rss-subscribe">subscribe <a href="/feed.xml">via RSS</a></p>
+  </article>
 
 
-<script type="text/javascript" src="http://counter5.freecounterstat.ovh/private/counter.js?c=67315087edf8235aa036fada193c4fc5"></script>
-        
-
+  
 </div>
 
       </div>

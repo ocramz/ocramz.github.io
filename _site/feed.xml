@@ -6,9 +6,32 @@
 </description>
     <link>https://ocramz.github.io/</link>
     <atom:link href="https://ocramz.github.io/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Tue, 22 Jun 2021 10:23:59 +0200</pubDate>
-    <lastBuildDate>Tue, 22 Jun 2021 10:23:59 +0200</lastBuildDate>
+    <pubDate>Tue, 22 Jun 2021 10:54:31 +0200</pubDate>
+    <lastBuildDate>Tue, 22 Jun 2021 10:54:31 +0200</lastBuildDate>
     <generator>Jekyll v4.2.0</generator>
+    
+      <item>
+        <title>Finding the Core corresponding to a Template Haskell annotation</title>
+        <description>&lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;/h2&gt;
+
+&lt;p&gt;GHC Haskell is a wonderful &lt;del&gt;compiler&lt;/del&gt; platform for writing compilers and languages on. Both the surface language and the internals of the compiler can be interfaced and extended in many ways, letting users come up with mind-bending innovations in &lt;a href=&quot;http://conal.net/papers/compiling-to-categories/compiling-to-categories.pdf&quot;&gt;scientific computing&lt;/a&gt; and &lt;a href=&quot;https://haskellwingman.dev/&quot;&gt;code editing&lt;/a&gt;, among many other examples.&lt;/p&gt;
+
+&lt;p&gt;The compiler&lt;/p&gt;
+
+&lt;p&gt;While writing a &lt;a href=&quot;https://downloads.haskell.org/ghc/latest/docs/html/users_guide/extending_ghc.html#compiler-plugins&quot;&gt;GHC plugin&lt;/a&gt; that lets the user pinpoint a given declaration whose Core will be analyzed and transformed, I found myself in need of a specific bit of machinery&lt;/p&gt;
+</description>
+        <pubDate>Tue, 22 Jun 2021 00:00:00 +0200</pubDate>
+        <link>https://ocramz.github.io/haskell/ghc/metaprogramming/2021/06/22/finding-core-th.html</link>
+        <guid isPermaLink="true">https://ocramz.github.io/haskell/ghc/metaprogramming/2021/06/22/finding-core-th.html</guid>
+        
+        
+        <category>Haskell</category>
+        
+        <category>GHC</category>
+        
+        <category>metaprogramming</category>
+        
+      </item>
     
       <item>
         <title>Growing a software architecture with types</title>
