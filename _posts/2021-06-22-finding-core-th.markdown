@@ -7,11 +7,11 @@ categories: Haskell GHC metaprogramming
 
 ## Introduction
 
-[GHC](https://www.haskell.org/ghc/) is a wonderful ~~compiler~~ platform for writing compilers and languages on. In addition to Haskell offering convenient syntactic abstractions for writing domain-specific languages with, the language itself and the internals of the compiler can be extended in many ways, which let users come up with mind-bending innovations in [scientific computing](http://conal.net/papers/compiling-to-categories/compiling-to-categories.pdf), [testing](https://hackage.haskell.org/package/inspection-testing) and [code editing](https://haskellwingman.dev/), among many other examples.
+[GHC](https://www.haskell.org/ghc/) is a wonderful ~~compiler~~ platform for writing compilers and languages. In addition to Haskell offering convenient syntactic abstractions for writing domain-specific languages, the language itself and the internals of the compiler can be extended in many ways, which let users come up with mind-bending innovations in [scientific computing](http://conal.net/papers/compiling-to-categories/compiling-to-categories.pdf), [testing](https://hackage.haskell.org/package/inspection-testing) and [code editing](https://haskellwingman.dev/), among many other examples.
 
 The compiler offers a [plugin system](https://downloads.haskell.org/ghc/latest/docs/html/users_guide/extending_ghc.html#compiler-plugins) that lets users customize various aspects of the syntax analysis, typechecking and compilation phases, without having to rebuild the compiler itself.
 
-While writing a GHC plugin that lets the user analyze and transform the Core representation of certain Haskell expressions, I found myself in need of a specific bit of machinery: how can the user _tell_ the compiler which expression to look for? Moreover, how to map the names of user-defined terms to the internal representation used by the compiler?
+While writing a GHC plugin that lets the user analyze and transform the Core representation of certain Haskell expressions, I found myself in need of a specific bit of machinery: _how can the user tell the compiler which expression to look for?_ Moreover, how to map the names of user-defined terms to the internal representation used by the compiler?
 
 It turns out `inspection-testing` provides this functionality as part of its user interface, and I will document it here both to consolidate its details in my head and so that others might learn from it in the future. 
 
@@ -154,7 +154,7 @@ Here it's important to stress that `install` _appends_ our plugin pass to the on
 
 A GHC plugin can be imported as any other Haskell library in the `build-depends` section of the Cabal file. While developing a plugin, one should ensure that the test `hs-srcs-dirs` directory is distinct from that under which the plugin source is defined, so as not to form an import loop.
 
-With this, we can declare a minimal module that imports the TH helper `inspect` and the plugin as well:
+With this, we can declare a minimal module that imports the TH helper `inspect` and the plugin as well. Important to note that `MyPlugin` in the `-fplugin` option is the name of the Cabal _module_ in which GHC will look for the `plugin :: Plugin` value (the entry point to our plugin).
 
 {% highlight haskell %}
 {-# LANGUAGE TemplateHaskell #-}
@@ -170,7 +170,7 @@ f = \x y -> sqrt x + y
 inspect 'f
 {% endhighlight %}
 
-The output of our custom compiler pass will be interleaved to the rest of the GHC output as part of a clean recompile (e.g. `stack clean && stack build`):
+The output of our custom compiler pass will be interleaved with the rest of the GHC output as part of a clean recompile (e.g. `stack clean && stack build`):
 
 {% highlight haskell %}
 [1 of 2] Compiling Main
