@@ -7,7 +7,7 @@ categories: Haskell GHC metaprogramming
 
 ## Introduction
 
-[GHC](https://www.haskell.org/ghc/) is a wonderful ~~compiler~~ platform for writing compilers and languages. In addition to Haskell offering convenient syntactic abstractions for writing domain-specific languages, the language itself and the internals of the compiler can be extended in many ways, which let users come up with mind-bending innovations in [scientific computing](http://conal.net/papers/compiling-to-categories/compiling-to-categories.pdf), [testing](https://hackage.haskell.org/package/inspection-testing) and [code editing](https://haskellwingman.dev/), among many other examples.
+[GHC](https://www.haskell.org/ghc/) is a wonderful ~~compiler~~ platform for writing compilers and languages. In addition to Haskell offering convenient syntactic abstractions for creating domain-specific languages, the language itself and the internals of the compiler can be extended in many ways, which let users come up with mind-bending innovations in [scientific computing](http://conal.net/papers/compiling-to-categories/compiling-to-categories.pdf), [testing](https://hackage.haskell.org/package/inspection-testing) and [code editing](https://haskellwingman.dev/), among many other examples.
 
 The compiler offers a [plugin system](https://downloads.haskell.org/ghc/latest/docs/html/users_guide/extending_ghc.html#compiler-plugins) that lets users customize various aspects of the syntax analysis, typechecking and compilation phases, without having to rebuild the compiler itself.
 

@@ -6,15 +6,15 @@
 </description>
     <link>https://ocramz.github.io/</link>
     <atom:link href="https://ocramz.github.io/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Tue, 22 Jun 2021 20:14:23 +0200</pubDate>
-    <lastBuildDate>Tue, 22 Jun 2021 20:14:23 +0200</lastBuildDate>
+    <pubDate>Tue, 22 Jun 2021 20:16:19 +0200</pubDate>
+    <lastBuildDate>Tue, 22 Jun 2021 20:16:19 +0200</lastBuildDate>
     <generator>Jekyll v4.2.0</generator>
     
       <item>
         <title>Finding the Core of an expression using Template Haskell and a custom GHC Core plugin</title>
         <description>&lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;/h2&gt;
 
-&lt;p&gt;&lt;a href=&quot;https://www.haskell.org/ghc/&quot;&gt;GHC&lt;/a&gt; is a wonderful &lt;del&gt;compiler&lt;/del&gt; platform for writing compilers and languages. In addition to Haskell offering convenient syntactic abstractions for writing domain-specific languages, the language itself and the internals of the compiler can be extended in many ways, which let users come up with mind-bending innovations in &lt;a href=&quot;http://conal.net/papers/compiling-to-categories/compiling-to-categories.pdf&quot;&gt;scientific computing&lt;/a&gt;, &lt;a href=&quot;https://hackage.haskell.org/package/inspection-testing&quot;&gt;testing&lt;/a&gt; and &lt;a href=&quot;https://haskellwingman.dev/&quot;&gt;code editing&lt;/a&gt;, among many other examples.&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;https://www.haskell.org/ghc/&quot;&gt;GHC&lt;/a&gt; is a wonderful &lt;del&gt;compiler&lt;/del&gt; platform for writing compilers and languages. In addition to Haskell offering convenient syntactic abstractions for creating domain-specific languages, the language itself and the internals of the compiler can be extended in many ways, which let users come up with mind-bending innovations in &lt;a href=&quot;http://conal.net/papers/compiling-to-categories/compiling-to-categories.pdf&quot;&gt;scientific computing&lt;/a&gt;, &lt;a href=&quot;https://hackage.haskell.org/package/inspection-testing&quot;&gt;testing&lt;/a&gt; and &lt;a href=&quot;https://haskellwingman.dev/&quot;&gt;code editing&lt;/a&gt;, among many other examples.&lt;/p&gt;
 
 &lt;p&gt;The compiler offers a &lt;a href=&quot;https://downloads.haskell.org/ghc/latest/docs/html/users_guide/extending_ghc.html#compiler-plugins&quot;&gt;plugin system&lt;/a&gt; that lets users customize various aspects of the syntax analysis, typechecking and compilation phases, without having to rebuild the compiler itself.&lt;/p&gt;
 
