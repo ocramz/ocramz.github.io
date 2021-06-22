@@ -11,11 +11,11 @@ categories: Haskell GHC metaprogramming
 
 The compiler offers a [plugin system](https://downloads.haskell.org/ghc/latest/docs/html/users_guide/extending_ghc.html#compiler-plugins) that lets users customize various aspect of the syntax analysis, typechecking and compilation to imperative code, without having to rebuild the compiler itself.
 
-While writing a GHC plugin that lets the user pinpoint a given declaration whose Core will be analyzed and transformed, I found myself in need of a specific bit of machinery: how can the user _tell_ the compiler which expression to look for?
+While writing a GHC plugin that lets the user analyze and transform the Core representation of certain Haskell expressions, I found myself in need of a specific bit of machinery: how can the user _tell_ the compiler which expression to look for? Moreover, how to map the names of user-defined terms to the internal representation used by the compiler?
 
-At the top level, we talk about binders (e.g. in `squared x = x * x` the function `\x -> x * x` is said to be _bound_ to the name `squared`), but the compiler uses a richer naming system internally. How to map user-facing terms to the internal representation used by the compiler?
+It turns out `inspection-testing` provides this functionality as part of its user interface, and I will document it here both not to forget it and so that others might learn from it in the future. 
 
-It turns out `inspection-testing` provides this functionality as part of its user interface, and I will document it here both not to forget it and so that others might learn from it in the future.
+This post will also introduce things from both the `ghc` and `template-haskell` libraries as needed, so it should be useful to people who, like me, had zero experience in compiler internals and metaprogramming until the other day.
 
 Note on reproducibility : here I'm referring to GHC 9.0.1, some modules changed paths since GHC series 8.
 
@@ -42,7 +42,7 @@ import Language.Haskell.TH (Name, Loc, AnnTarget(..), Pragma(..), Dec(..), locat
 import Language.Haskell.TH.Syntax (liftData)
 
 -- our annotation payload type
-data Target = MkTarget Name deriving (Data)
+data Target = MkTarget { tgName :: Name } deriving (Data)
 
 inspect :: Name -> Q [Dec]
 inspect n = do
@@ -50,7 +50,7 @@ inspect n = do
   pure [PragmaD (AnnP ModuleAnnotation annExpr)]
 {% endhighlight %}
 
-and `nameAnnotation` can be used as follows (in a separate module) :
+and `inspect` can be used as follows (in a separate module) :
 
 {% highlight haskell %}
 {-# language TemplateHaskell #-}
@@ -79,14 +79,11 @@ import qualified Language.Haskell.TH.Syntax as TH (Name)
 {% endhighlight %}
 
 
-
-
-
 First, we need a function that looks up all the annotations from the module internals (aptly named `ModGuts` in ghc) and attempts to decode them via their Data interface. Here we are using a custom `Target` type defined above, which could carry additional metadata.
 
 {% highlight haskell %}
-extractAnns :: ModGuts -> (ModGuts, [Target])
-extractAnns guts = (guts', xs)
+extractTargets :: ModGuts -> (ModGuts, [Target])
+extractTargets guts = (guts', xs)
   where
     (anns_clean, xs) = partitionMaybe findTargetAnn (mg_anns guts)
     guts' = guts { mg_anns = anns_clean }
@@ -123,7 +120,7 @@ plugin = defaultPlugin {
 As a minimal example, let's pretty-print the Core expression corresponding to the `Name` we just found:
 
 {% highlight haskell %}
--- | Print the Core representation of the expression that has the given Name
+-- Print the Core representation of the expression that has the given Name
 printCore :: ModGuts -> TH.Name -> CoreM ()
 printCore guts thn = do
   n <- fromTHName thn
@@ -147,7 +144,7 @@ lookupNameInGuts guts n = listToMaybe
 And that's it! All that's left is to package `printCore` into a plugin pass called `install`:
 
 {% highlight haskell %}
--- | append a 'CoreDoPluginPass' at the _end_ of the 'CoreToDo' list
+-- append a 'CoreDoPluginPass' at the _end_ of the 'CoreToDo' list
 install :: [CommandLineOption] -> [CoreToDo] -> CoreM [CoreToDo]
 install _ todos = pure (todos ++ [pass])
   where
@@ -155,10 +152,34 @@ install _ todos = pure (todos ++ [pass])
       let (guts', targets) = extractTargets guts
       traverse_ (\(_, t) -> printCore guts' (tgName t)) targets
       pure guts'
-    pname = "AD-Plugin"
+    pname = "My-plugin"
 {% endhighlight %}
 
 Here it's important to stress that `install` _appends_ our plugin pass to the ones received as input from the upstream compilation pipeline. 
+
+
+## Trying out our plugin
+
+A GHC plugin can be imported as any other Haskell library in the `build-depends` section of the Cabal file. While developing a plugin, one should ensure that the test `hs-srcs-dirs` directory is distinct from that under which the plugin source is defined, so as not to form an import loop.
+
+With this, we can declare a minimal module that imports the TH helper `inspect` and the module as well:
+
+{% highlight haskell %}
+{-# LANGUAGE TemplateHaskell #-}
+{-# OPTIONS_GHC -fplugin=Numeric.AD.Plugin #-}
+
+-- try with both type signatures for extra fun
+
+f :: Double -> Double -> Double
+-- f :: Floating a => a -> a -> a 
+f = \x y -> sqrt x + y
+
+inspect 'f
+{% endhighlight %}
+
+
+
+
 
 
 
