@@ -17,6 +17,7 @@ At the top level, we talk about binders (e.g. in `squared x = x * x` the functio
 
 It turns out `inspection-testing` provides this functionality as part of its user interface, and I will document it here both not to forget it and so that others might learn from it in the future.
 
+Note on reproducibility : here I'm referring to GHC 9.0.1, some modules changed paths since GHC series 8.
 
 ## Finding the `Name` of declarations with template Haskell
 
@@ -32,35 +33,83 @@ Annotations can also be attached by the user to declarations, types and modules,
 
 The resulting function has a type signature similar to this : `Name -> Q [Dec]`, i.e. given a `Name` it will produce a list of new declarations `Dec` at compile time.
 
-## Picking out our annotation from within the plugin
-
-The other half of the trick takes place within the plugin, so we'll need to import a bunch of modules from `ghc`-the-library (here I'm referring to GHC 9.0.1, some modules changed path since GHC series 8):
+If we're only interested in attaching a `Name` to the annotation, we just need : 
 
 {% highlight haskell %}
+{-# language DeriveDataTypeable #-}
+import Data.Data (Data)
+import Language.Haskell.TH (Name, Loc, AnnTarget(..), Pragma(..), Dec(..), location, Q, Exp(..))
+import Language.Haskell.TH.Syntax (liftData)
+
+data Target = Target Name deriving (Data)
+
+nameAnnotation :: Name -> Q [Dec]
+nameAnnotation n = do
+  annExpr <- liftData (MkTarget n)
+  pure [PragmaD (AnnP ModuleAnnotation annExpr)]
+{% endhighlight %}
+
+
+## Picking out our annotation from within the plugin
+
+The other half of the trick takes place within the plugin, so we'll need to import a bunch of modules from `ghc`-the-library :
+
+{% highlight haskell %}
+-- ghc
 import GHC.Plugins (Plugin, defaultPlugin, CorePlugin, installCoreToDos, pluginRecompile, CommandLineOption, fromSerialized, deserializeWithData, ModGuts(..), Name, CoreExpr, Var, flattenBinds, getName, thNameToGhcName, PluginRecompile(..))
 import GHC.Core.Opt.Monad (CoreToDo(..), CorePluginPass, bindsOnlyPass, CoreM, putMsgS, getDynFlags, errorMsg)
 import GHC.Core (CoreProgram, CoreBind, Bind(..), Expr(..))
 import GHC.Types.Annotations (Annotation(..), AnnTarget(..))
 import GHC.Utils.Outputable (Outputable(..), SDoc, showSDoc, (<+>), ppr, text)
+-- template-haskell
+import qualified Language.Haskell.TH.Syntax as TH (Name)
 {% endhighlight %}
 
 
 {% highlight haskell %}
 {% endhighlight %}
 
-Here we are interested in the compiler phase that produces Core IR, so we'll have to modify the `defaultPlugin` value provided by `ghc`:
-
+Here we are interested in the compiler phase that produces Core IR, so we'll have to modify the `defaultPlugin` value provided by `ghc` by passing a custom implementation of `installCoreToDos` :
 
 {% highlight haskell %}
 plugin :: Plugin
 plugin = defaultPlugin {
-  installCoreToDos = install
+  installCoreToDos = install -- see below
   , pluginRecompile = \_ -> pure NoForceRecompile
                        }
 {% endhighlight %}
 
+First, we need a function that looks up all the annotations from the module internals (aptly named `ModGuts` in ghc) and attempts to decode them via their Data interface. 
 
+{% highlight haskell %}
+extractAnns :: Data b => ModGuts -> (ModGuts, [b])
+extractAnns guts = (guts', xs)
+  where
+    (anns_clean, xs) = partitionMaybe findTargetAnn (mg_anns guts)
+    guts' = guts { mg_anns = anns_clean }
+    findTargetAnn (Annotation _ payload)
+      | Just t <- fromSerialized deserializeWithData payload
+      = Just t
+    fintTargetAnn _ = Nothing
+{% endhighlight %}
 
+Next, we need to map `template-haskell` names to the internal GHC namespace, `thNameToGhcName` to the rescue :
+
+{% highlight haskell %}
+fromTHName :: TH.Name -> CoreM Name
+fromTHName thn = thNameToGhcName thn >>= \case
+    Nothing -> do
+        errorMsg $ text "Could not resolve TH name" <+> text (show thn)
+        liftIO $ exitFailure -- kill the compiler. Is there a nicer way?
+    Just n -> return n
+
+-- | Try to decode all ANNotations into 'Target' values
+extractTargets :: ModGuts -> (ModGuts, [(ResultTarget, Target)])
+extractTargets guts = (guts', obligations)
+  where
+    (anns_clean, obligations) = partitionMaybe findTargetAnn (mg_anns guts)
+    guts' = guts { mg_anns = anns_clean }
+{% endhighlight %}
 
 
 
@@ -70,9 +119,9 @@ plugin = defaultPlugin {
 
 First and foremost a big shout out to all the contributors to GHC who have built a truly remarkable piece of technology we can all enjoy, learn from and be productive with.
 
-Of course, Joachim Breitner for devising and implementing `inspection-testing` [1]. I still remember the distinct feeling of my brain expanding against my skull after seeing his presentation at Zurihac 2017.
+Of course, Joachim Breitner for `inspection-testing` [1]. I still remember the distinct feeling of my brain expanding against my skull after seeing his presentation on this at Zurihac 2017.
 
-Next, I'd like to thank the good folks in the Haskell community for being kind and responsive even to my rather pedestrian questions on r/haskell, the ZuriHac discord server and stackoverflow. Li-yao Xia, Matthew Pickering, Daniel Diaz, David Feuer and others, thank you so much. Matthew has also written a paper [2] and curated a list of references for studying and developing GHC plugins , which I refer to extensively.
+Next, I'd like to thank the good folks in the Haskell community for being kind and responsive even to my rather pedestrian questions on r/haskell, the ZuriHac discord server and stackoverflow. Li-yao Xia, Matthew Pickering, Daniel Diaz, David Feuer and others, thank you so much. Matthew has also written a paper [2] and curated a list of references on GHC plugins , which I refer to extensively.
 
 Mark Karpov deserves lots of credit too for writing an excellent reference on template Haskell [3] with lots of worked examples, go and check it out.
 
