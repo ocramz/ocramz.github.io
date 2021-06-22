@@ -22,7 +22,7 @@ It turns out `inspection-testing` provides this functionality as part of its use
 
 A template-haskell [`Name`](https://hackage.haskell.org/package/template-haskell-2.17.0.0/docs/Language-Haskell-TH.html#t:Name) represents .. the name of declarations, expressions etc. in the syntax tree.
 
-Resolving a top-level declaration into its `Name` requires a little bit of metaprogramming, enabled by the `{-# LANGUAGE TemplateHaskell #-}` extension. With that, we can use the special syntax with a single or double quote to refer to values or types respectively (made famous by `lens` in [`makeLenses](https://hackage.haskell.org/package/lens-5.0.1/docs/Control-Lens-Combinators.html#v:makeLenses) ''Foo`).
+Resolving a top-level declaration into its `Name` requires a little bit of metaprogramming, enabled by the `{-# LANGUAGE TemplateHaskell #-}` extension. With that, we can use the special syntax with a single or double quote to refer to values or types respectively (made famous by `lens` in [`makeLenses`](https://hackage.haskell.org/package/lens-5.0.1/docs/Control-Lens-Combinators.html#v:makeLenses) ''Foo`).
 
 ## Passing `Name`s to later stages of the compilation pipeline
 
