@@ -76,10 +76,9 @@ extractTargets guts = (guts', xs)
   where
     (anns_clean, xs) = partitionMaybe findTargetAnn (mg_anns guts)
     guts' = guts { mg_anns = anns_clean }
-    findTargetAnn (Annotation _ payload)
-      | Just t <- fromSerialized deserializeWithData payload
-      = Just t
-    fintTargetAnn _ = Nothing
+    findTargetAnn = \case 
+      (Annotation _ payload) -> fromSerialized deserializeWithData payload
+      _ = Nothing
 {% endhighlight %}
 
 Next, we need to map `template-haskell` names to the internal GHC namespace, `thNameToGhcName` to the rescue :
