@@ -17,7 +17,9 @@ It turns out `inspection-testing` provides this functionality as part of its use
 
 This post will also introduce concepts from both the `ghc` and `template-haskell` libraries as needed, so it should be useful to those who, like me, had zero experience in compiler internals until the other day.
 
-Note on reproducibility : here I'm referring to GHC 9.0.1, some modules changed paths since GHC series 8.
+Note on reproducibility : here I'm referring to GHC 9.0.1, some modules changed paths since GHC series 8. I've only omitted a few easy imports and definitions from `base`, which you can fill in as an exercise ;)
+
+So, let's dive into the compiler !
 
 ## Finding the `Name` of declarations with template Haskell
 
@@ -78,7 +80,7 @@ extractTargets guts = (guts', xs)
     guts' = guts { mg_anns = anns_clean }
     findTargetAnn = \case 
       (Annotation _ payload) -> fromSerialized deserializeWithData payload
-      _ = Nothing
+      _ -> Nothing
 {% endhighlight %}
 
 Next, we need to map `template-haskell` names to the internal GHC namespace, `thNameToGhcName` to the rescue :
@@ -150,7 +152,7 @@ Here it's important to stress that `install` _appends_ our plugin pass to the on
 
 A GHC plugin can be imported as any other Haskell library in the `build-depends` section of the Cabal file. While developing a plugin, one should ensure that the test `hs-srcs-dirs` directory is distinct from that under which the plugin source is defined, so as not to form an import loop.
 
-With this, we can declare a minimal module that imports the TH helper `inspect` and the module as well:
+With this, we can declare a minimal module that imports the TH helper `inspect` and the plugin as well:
 
 {% highlight haskell %}
 {-# LANGUAGE TemplateHaskell #-}
@@ -163,6 +165,17 @@ f :: Double -> Double -> Double
 f = \x y -> sqrt x + y
 
 inspect 'f
+{% endhighlight %}
+
+The output of our custom compiler pass will be interleaved to the rest of the GHC output as part of a clean recompile (e.g. `stack clean && stack build`):
+
+{% highlight haskell %}
+[1 of 2] Compiling Main
+[2 of 2] Compiling PluginTest
+\ (x [Dmd=<S,1*U(U)>] :: Double) (y [Dmd=<S,1*U(U)>] :: Double) ->
+  case x of { D# x ->
+  case y of { D# y -> D# (+## (sqrtDouble# x) y) }
+  }
 {% endhighlight %}
 
 
