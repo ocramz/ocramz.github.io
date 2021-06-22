@@ -26,11 +26,24 @@ Resolving a top-level declaration into its `Name` requires a little bit of metap
 
 ## Passing `Name`s to later stages of the compilation pipeline
 
-This is the trick: the `Name` we just found (and any other metadata that might be interesting to our plugin), is packed and serialized into a GHC [ANNotation](http://downloads.haskell.org/~ghc/latest/docs/html/users_guide/extending_ghc.html#source-annotations) via [`liftData`](https://hackage.haskell.org/package/template-haskell-2.17.0.0/docs/Language-Haskell-TH-Syntax.html#v:liftData), which is inserted as a new top-level declaration by a template Haskell action (i.e. a function that returns in the `Q` monad).
+This is half of the trick: the `Name` we just found (and any other metadata that might be interesting to our plugin), is packed and serialized into a GHC [ANNotation](http://downloads.haskell.org/~ghc/latest/docs/html/users_guide/extending_ghc.html#source-annotations) via [`liftData`](https://hackage.haskell.org/package/template-haskell-2.17.0.0/docs/Language-Haskell-TH-Syntax.html#v:liftData), which is inserted as a new top-level declaration by a template Haskell action (i.e. a function that returns in the `Q` monad).
 
 Annotations can also be attached by the user to declarations, types and modules, but this method does so programmatically.
 
-## Picking out the annotation from within the plugin
+The resulting function has a type signature similar to this : `Name -> Q [Dec]`, i.e. given a `Name` it will produce a list of new declarations `Dec` at compile time.
+
+## Picking out our annotation from within the plugin
+
+The other half of the trick takes place within the plugin. Here we are interested in the compiler phase that produces Core IR, so we'll have to modify the `defaultPlugin` value provided by `ghc`:
+
+```
+plugin :: Plugin
+plugin = defaultPlugin {
+  installCoreToDos = install
+  , pluginRecompile = \_ -> pure NoForceRecompile
+                       }
+```
+
 
 
 
@@ -50,8 +63,8 @@ Mark Karpov deserves lots of credit too for writing an excellent reference on te
 
 ## References
 
-1) J. Breitner, `inspection-testing` https://github.com/nomeata/inspection-testing
+1) J. Breitner, [`inspection-testing`](https://github.com/nomeata/inspection-testing)
 
-2) M. Pickering et al, Working with source plugins - https://mpickering.github.io/papers/working-with-source-plugins.pdf
+2) M. Pickering et al, [Working with source plugins](https://mpickering.github.io/papers/working-with-source-plugins.pdf)
 
-3) M. Karpov, Template Haskell tutorial - https://markkarpov.com/tutorial/th.html
+3) M. Karpov, [Template Haskell tutorial](https://markkarpov.com/tutorial/th.html)

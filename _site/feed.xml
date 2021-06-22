@@ -6,8 +6,8 @@
 </description>
     <link>https://ocramz.github.io/</link>
     <atom:link href="https://ocramz.github.io/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Tue, 22 Jun 2021 14:31:30 +0200</pubDate>
-    <lastBuildDate>Tue, 22 Jun 2021 14:31:30 +0200</lastBuildDate>
+    <pubDate>Tue, 22 Jun 2021 14:36:28 +0200</pubDate>
+    <lastBuildDate>Tue, 22 Jun 2021 14:36:28 +0200</lastBuildDate>
     <generator>Jekyll v4.2.0</generator>
     
       <item>
@@ -32,11 +32,22 @@
 
 &lt;h2 id=&quot;passing-names-to-later-stages-of-the-compilation-pipeline&quot;&gt;Passing &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Name&lt;/code&gt;s to later stages of the compilation pipeline&lt;/h2&gt;
 
-&lt;p&gt;This is the trick: the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Name&lt;/code&gt; we just found (and any other metadata that might be interesting to our plugin), is packed and serialized into a GHC &lt;a href=&quot;http://downloads.haskell.org/~ghc/latest/docs/html/users_guide/extending_ghc.html#source-annotations&quot;&gt;ANNotation&lt;/a&gt; via &lt;a href=&quot;https://hackage.haskell.org/package/template-haskell-2.17.0.0/docs/Language-Haskell-TH-Syntax.html#v:liftData&quot;&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;liftData&lt;/code&gt;&lt;/a&gt;, which is inserted as a new top-level declaration by a template Haskell action (i.e. a function that returns in the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Q&lt;/code&gt; monad).&lt;/p&gt;
+&lt;p&gt;This is half of the trick: the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Name&lt;/code&gt; we just found (and any other metadata that might be interesting to our plugin), is packed and serialized into a GHC &lt;a href=&quot;http://downloads.haskell.org/~ghc/latest/docs/html/users_guide/extending_ghc.html#source-annotations&quot;&gt;ANNotation&lt;/a&gt; via &lt;a href=&quot;https://hackage.haskell.org/package/template-haskell-2.17.0.0/docs/Language-Haskell-TH-Syntax.html#v:liftData&quot;&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;liftData&lt;/code&gt;&lt;/a&gt;, which is inserted as a new top-level declaration by a template Haskell action (i.e. a function that returns in the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Q&lt;/code&gt; monad).&lt;/p&gt;
 
 &lt;p&gt;Annotations can also be attached by the user to declarations, types and modules, but this method does so programmatically.&lt;/p&gt;
 
-&lt;h2 id=&quot;picking-out-the-annotation-from-within-the-plugin&quot;&gt;Picking out the annotation from within the plugin&lt;/h2&gt;
+&lt;p&gt;The resulting function has a type signature similar to this : &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Name -&amp;gt; Q [Dec]&lt;/code&gt;, i.e. given a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Name&lt;/code&gt; it will produce a list of new declarations &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Dec&lt;/code&gt; at compile time.&lt;/p&gt;
+
+&lt;h2 id=&quot;picking-out-our-annotation-from-within-the-plugin&quot;&gt;Picking out our annotation from within the plugin&lt;/h2&gt;
+
+&lt;p&gt;The other half of the trick takes place within the plugin. Here we are interested in the compiler phase that produces Core IR, so we’ll have to modify the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;defaultPlugin&lt;/code&gt; value provided by &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ghc&lt;/code&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;plugin :: Plugin
+plugin = defaultPlugin {
+  installCoreToDos = install
+  , pluginRecompile = \_ -&amp;gt; pure NoForceRecompile
+                       }
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;h2 id=&quot;credits&quot;&gt;Credits&lt;/h2&gt;
 
@@ -50,11 +61,11 @@
 
 &lt;h2 id=&quot;references&quot;&gt;References&lt;/h2&gt;
 
-&lt;p&gt;1) J. Breitner, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;inspection-testing&lt;/code&gt; https://github.com/nomeata/inspection-testing&lt;/p&gt;
+&lt;p&gt;1) J. Breitner, &lt;a href=&quot;https://github.com/nomeata/inspection-testing&quot;&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;inspection-testing&lt;/code&gt;&lt;/a&gt;&lt;/p&gt;
 
-&lt;p&gt;2) M. Pickering et al, Working with source plugins - https://mpickering.github.io/papers/working-with-source-plugins.pdf&lt;/p&gt;
+&lt;p&gt;2) M. Pickering et al, &lt;a href=&quot;https://mpickering.github.io/papers/working-with-source-plugins.pdf&quot;&gt;Working with source plugins&lt;/a&gt;&lt;/p&gt;
 
-&lt;p&gt;3) M. Karpov, Template Haskell tutorial - https://markkarpov.com/tutorial/th.html&lt;/p&gt;
+&lt;p&gt;3) M. Karpov, &lt;a href=&quot;https://markkarpov.com/tutorial/th.html&quot;&gt;Template Haskell tutorial&lt;/a&gt;&lt;/p&gt;
 </description>
         <pubDate>Tue, 22 Jun 2021 00:00:00 +0200</pubDate>
         <link>https://ocramz.github.io/haskell/ghc/metaprogramming/2021/06/22/finding-core-th.html</link>
