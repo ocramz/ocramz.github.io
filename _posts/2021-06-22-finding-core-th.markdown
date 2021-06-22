@@ -79,10 +79,10 @@ plugin = defaultPlugin {
                        }
 {% endhighlight %}
 
-First, we need a function that looks up all the annotations from the module internals (aptly named `ModGuts` in ghc) and attempts to decode them via their Data interface. 
+First, we need a function that looks up all the annotations from the module internals (aptly named `ModGuts` in ghc) and attempts to decode them via their Data interface. Here we are using a custom `Target` type, which could carry additional metadata.
 
 {% highlight haskell %}
-extractAnns :: Data b => ModGuts -> (ModGuts, [b])
+extractAnns :: ModGuts -> (ModGuts, [Target])
 extractAnns guts = (guts', xs)
   where
     (anns_clean, xs) = partitionMaybe findTargetAnn (mg_anns guts)
@@ -102,16 +102,30 @@ fromTHName thn = thNameToGhcName thn >>= \case
         errorMsg $ text "Could not resolve TH name" <+> text (show thn)
         liftIO $ exitFailure -- kill the compiler. Is there a nicer way?
     Just n -> return n
-
--- | Try to decode all ANNotations into 'Target' values
-extractTargets :: ModGuts -> (ModGuts, [(ResultTarget, Target)])
-extractTargets guts = (guts', obligations)
-  where
-    (anns_clean, obligations) = partitionMaybe findTargetAnn (mg_anns guts)
-    guts' = guts { mg_anns = anns_clean }
 {% endhighlight %}
 
+As a minimal example plugin, let's pretty-print the Core expression corresponding to the `Name` we just found:
 
+{% highlight haskell %}
+-- | Print the Core representation of the expression that has the given Name
+printCore :: ModGuts -> TH.Name -> CoreM ()
+printCore guts thn = do
+  n <- fromTHName thn
+  case lookupNameInGuts guts n of
+    Just (_, coreexpr) -> do
+      dflags <- getDynFlags
+      putMsgS $ showSDoc dflags (ppr coreexpr)
+    Nothing -> do
+      errorMsg $ text "Cannot find name" <+> text (show thn)
+      
+-- | Look up the given GHC 'Name' within the list of binders in the module guts
+lookupNameInGuts :: ModGuts -> Name -> Maybe (Var, CoreExpr)
+lookupNameInGuts guts n = listToMaybe
+    [ (v,e)
+    | (v,e) <- flattenBinds (mg_binds guts)
+    , getName v == n
+    ]
+{% endhighlight %}
 
 
 
