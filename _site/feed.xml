@@ -6,23 +6,55 @@
 </description>
     <link>https://ocramz.github.io/</link>
     <atom:link href="https://ocramz.github.io/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Tue, 22 Jun 2021 11:41:21 +0200</pubDate>
-    <lastBuildDate>Tue, 22 Jun 2021 11:41:21 +0200</lastBuildDate>
+    <pubDate>Tue, 22 Jun 2021 14:31:30 +0200</pubDate>
+    <lastBuildDate>Tue, 22 Jun 2021 14:31:30 +0200</lastBuildDate>
     <generator>Jekyll v4.2.0</generator>
     
       <item>
-        <title>Finding the Core corresponding to a Template Haskell annotation</title>
+        <title>Finding the Core of an expression using Template Haskell</title>
         <description>&lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;/h2&gt;
 
-&lt;p&gt;&lt;a href=&quot;https://www.haskell.org/ghc/&quot;&gt;GHC&lt;/a&gt; is a wonderful &lt;del&gt;compiler&lt;/del&gt; platform for writing compilers and languages on. In addition to Haskell offering convenient syntactical abstractions for writing domain-specific languages with, the language itself and the internals of the compiler can be extended in many ways, letting users come up with mind-bending innovations in &lt;a href=&quot;http://conal.net/papers/compiling-to-categories/compiling-to-categories.pdf&quot;&gt;scientific computing&lt;/a&gt; and &lt;a href=&quot;https://haskellwingman.dev/&quot;&gt;code editing&lt;/a&gt;, among many other examples.&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;https://www.haskell.org/ghc/&quot;&gt;GHC&lt;/a&gt; is a wonderful &lt;del&gt;compiler&lt;/del&gt; platform for writing compilers and languages on. In addition to Haskell offering convenient syntactical abstractions for writing domain-specific languages with, the language itself and the internals of the compiler can be extended in many ways, letting users come up with mind-bending innovations in &lt;a href=&quot;http://conal.net/papers/compiling-to-categories/compiling-to-categories.pdf&quot;&gt;scientific computing&lt;/a&gt;, &lt;a href=&quot;https://hackage.haskell.org/package/inspection-testing&quot;&gt;testing&lt;/a&gt; and &lt;a href=&quot;https://haskellwingman.dev/&quot;&gt;code editing&lt;/a&gt;, among many other examples.&lt;/p&gt;
 
 &lt;p&gt;The compiler offers a &lt;a href=&quot;https://downloads.haskell.org/ghc/latest/docs/html/users_guide/extending_ghc.html#compiler-plugins&quot;&gt;plugin system&lt;/a&gt; that lets users customize various aspect of the syntax analysis, typechecking and compilation to imperative code, without having to rebuild the compiler itself.&lt;/p&gt;
 
 &lt;p&gt;While writing a GHC plugin that lets the user pinpoint a given declaration whose Core will be analyzed and transformed, I found myself in need of a specific bit of machinery: how can the user &lt;em&gt;tell&lt;/em&gt; the compiler which expression to look for?&lt;/p&gt;
 
-&lt;p&gt;At the top level, we talk about binders (e.g. in &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;squared x = x * x&lt;/code&gt; the function &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;\x -&amp;gt; x * x&lt;/code&gt; is said to be &lt;em&gt;bound&lt;/em&gt; to the name &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;squared&lt;/code&gt;), but the compiler uses a richer naming system internally.&lt;/p&gt;
+&lt;p&gt;At the top level, we talk about binders (e.g. in &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;squared x = x * x&lt;/code&gt; the function &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;\x -&amp;gt; x * x&lt;/code&gt; is said to be &lt;em&gt;bound&lt;/em&gt; to the name &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;squared&lt;/code&gt;), but the compiler uses a richer naming system internally. How to map user-facing terms to the internal representation used by the compiler?&lt;/p&gt;
 
-&lt;p&gt;It turns out &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;inspection-testing&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;It turns out &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;inspection-testing&lt;/code&gt; provides this functionality as part of its user interface, and I will document it here both not to forget it and so that others might learn from it in the future.&lt;/p&gt;
+
+&lt;h2 id=&quot;finding-the-name-of-declarations-with-template-haskell&quot;&gt;Finding the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Name&lt;/code&gt; of declarations with template Haskell&lt;/h2&gt;
+
+&lt;p&gt;A template-haskell &lt;a href=&quot;https://hackage.haskell.org/package/template-haskell-2.17.0.0/docs/Language-Haskell-TH.html#t:Name&quot;&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Name&lt;/code&gt;&lt;/a&gt; represents .. the name of declarations, expressions etc. in the syntax tree.&lt;/p&gt;
+
+&lt;p&gt;Resolving a top-level declaration into its &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Name&lt;/code&gt; requires a little bit of metaprogramming, enabled by the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;{-# LANGUAGE TemplateHaskell #-}&lt;/code&gt; extension. With that, we can use the special syntax with a single or double quote to refer to values or types respectively (made famous by &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;lens&lt;/code&gt; in [&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;makeLenses](https://hackage.haskell.org/package/lens-5.0.1/docs/Control-Lens-Combinators.html#v:makeLenses) ''Foo&lt;/code&gt;).&lt;/p&gt;
+
+&lt;h2 id=&quot;passing-names-to-later-stages-of-the-compilation-pipeline&quot;&gt;Passing &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Name&lt;/code&gt;s to later stages of the compilation pipeline&lt;/h2&gt;
+
+&lt;p&gt;This is the trick: the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Name&lt;/code&gt; we just found (and any other metadata that might be interesting to our plugin), is packed and serialized into a GHC &lt;a href=&quot;http://downloads.haskell.org/~ghc/latest/docs/html/users_guide/extending_ghc.html#source-annotations&quot;&gt;ANNotation&lt;/a&gt; via &lt;a href=&quot;https://hackage.haskell.org/package/template-haskell-2.17.0.0/docs/Language-Haskell-TH-Syntax.html#v:liftData&quot;&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;liftData&lt;/code&gt;&lt;/a&gt;, which is inserted as a new top-level declaration by a template Haskell action (i.e. a function that returns in the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Q&lt;/code&gt; monad).&lt;/p&gt;
+
+&lt;p&gt;Annotations can also be attached by the user to declarations, types and modules, but this method does so programmatically.&lt;/p&gt;
+
+&lt;h2 id=&quot;picking-out-the-annotation-from-within-the-plugin&quot;&gt;Picking out the annotation from within the plugin&lt;/h2&gt;
+
+&lt;h2 id=&quot;credits&quot;&gt;Credits&lt;/h2&gt;
+
+&lt;p&gt;First and foremost a big shout out to all the contributors to GHC who have built a truly remarkable piece of technology we can all enjoy, learn from and be productive with.&lt;/p&gt;
+
+&lt;p&gt;Of course, Joachim Breitner for devising and implementing &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;inspection-testing&lt;/code&gt; [1]. I still remember the distinct feeling of my brain expanding against my skull after seeing his presentation at Zurihac 2017.&lt;/p&gt;
+
+&lt;p&gt;Next, I’d like to thank the good folks in the Haskell community for being kind and responsive even to my rather pedestrian questions on r/haskell, the ZuriHac discord server and stackoverflow. Li-yao Xia, Matthew Pickering, Daniel Diaz, David Feuer and others, thank you so much. Matthew has also written a paper [2] and curated a list of references for studying and developing GHC plugins , which I refer to extensively.&lt;/p&gt;
+
+&lt;p&gt;Mark Karpov deserves lots of credit too for writing an excellent reference on template Haskell [3] with lots of worked examples, go and check it out.&lt;/p&gt;
+
+&lt;h2 id=&quot;references&quot;&gt;References&lt;/h2&gt;
+
+&lt;p&gt;1) J. Breitner, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;inspection-testing&lt;/code&gt; https://github.com/nomeata/inspection-testing&lt;/p&gt;
+
+&lt;p&gt;2) M. Pickering et al, Working with source plugins - https://mpickering.github.io/papers/working-with-source-plugins.pdf&lt;/p&gt;
+
+&lt;p&gt;3) M. Karpov, Template Haskell tutorial - https://markkarpov.com/tutorial/th.html&lt;/p&gt;
 </description>
         <pubDate>Tue, 22 Jun 2021 00:00:00 +0200</pubDate>
         <link>https://ocramz.github.io/haskell/ghc/metaprogramming/2021/06/22/finding-core-th.html</link>
