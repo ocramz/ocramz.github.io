@@ -67,11 +67,15 @@
   <article class="post-content">
     <h2 id="introduction">Introduction</h2>
 
-<p>GHC Haskell is a wonderful <del>compiler</del> platform for writing compilers and languages on. Both the surface language and the internals of the compiler can be interfaced and extended in many ways, letting users come up with mind-bending innovations in <a href="http://conal.net/papers/compiling-to-categories/compiling-to-categories.pdf">scientific computing</a> and <a href="https://haskellwingman.dev/">code editing</a>, among many other examples.</p>
+<p><a href="https://www.haskell.org/ghc/">GHC</a> is a wonderful <del>compiler</del> platform for writing compilers and languages on. In addition to Haskell offering convenient syntactical abstractions for writing domain-specific languages with, the language itself and the internals of the compiler can be extended in many ways, letting users come up with mind-bending innovations in <a href="http://conal.net/papers/compiling-to-categories/compiling-to-categories.pdf">scientific computing</a> and <a href="https://haskellwingman.dev/">code editing</a>, among many other examples.</p>
 
-<p>The compiler</p>
+<p>The compiler offers a <a href="https://downloads.haskell.org/ghc/latest/docs/html/users_guide/extending_ghc.html#compiler-plugins">plugin system</a> that lets users customize various aspect of the syntax analysis, typechecking and compilation to imperative code, without having to rebuild the compiler itself.</p>
 
-<p>While writing a <a href="https://downloads.haskell.org/ghc/latest/docs/html/users_guide/extending_ghc.html#compiler-plugins">GHC plugin</a> that lets the user pinpoint a given declaration whose Core will be analyzed and transformed, I found myself in need of a specific bit of machinery</p>
+<p>While writing a GHC plugin that lets the user pinpoint a given declaration whose Core will be analyzed and transformed, I found myself in need of a specific bit of machinery: how can the user <em>tell</em> the compiler which expression to look for?</p>
+
+<p>At the top level, we talk about binders (e.g. in <code class="language-plaintext highlighter-rouge">squared x = x * x</code> the function <code class="language-plaintext highlighter-rouge">\x -&gt; x * x</code> is said to be <em>bound</em> to the name <code class="language-plaintext highlighter-rouge">squared</code>), but the compiler uses a richer naming system internally.</p>
+
+<p>It turns out <code class="language-plaintext highlighter-rouge">inspection-testing</code></p>
 
   </article>
 

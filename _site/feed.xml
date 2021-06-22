@@ -6,19 +6,23 @@
 </description>
     <link>https://ocramz.github.io/</link>
     <atom:link href="https://ocramz.github.io/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Tue, 22 Jun 2021 10:54:31 +0200</pubDate>
-    <lastBuildDate>Tue, 22 Jun 2021 10:54:31 +0200</lastBuildDate>
+    <pubDate>Tue, 22 Jun 2021 11:41:21 +0200</pubDate>
+    <lastBuildDate>Tue, 22 Jun 2021 11:41:21 +0200</lastBuildDate>
     <generator>Jekyll v4.2.0</generator>
     
       <item>
         <title>Finding the Core corresponding to a Template Haskell annotation</title>
         <description>&lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;/h2&gt;
 
-&lt;p&gt;GHC Haskell is a wonderful &lt;del&gt;compiler&lt;/del&gt; platform for writing compilers and languages on. Both the surface language and the internals of the compiler can be interfaced and extended in many ways, letting users come up with mind-bending innovations in &lt;a href=&quot;http://conal.net/papers/compiling-to-categories/compiling-to-categories.pdf&quot;&gt;scientific computing&lt;/a&gt; and &lt;a href=&quot;https://haskellwingman.dev/&quot;&gt;code editing&lt;/a&gt;, among many other examples.&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;https://www.haskell.org/ghc/&quot;&gt;GHC&lt;/a&gt; is a wonderful &lt;del&gt;compiler&lt;/del&gt; platform for writing compilers and languages on. In addition to Haskell offering convenient syntactical abstractions for writing domain-specific languages with, the language itself and the internals of the compiler can be extended in many ways, letting users come up with mind-bending innovations in &lt;a href=&quot;http://conal.net/papers/compiling-to-categories/compiling-to-categories.pdf&quot;&gt;scientific computing&lt;/a&gt; and &lt;a href=&quot;https://haskellwingman.dev/&quot;&gt;code editing&lt;/a&gt;, among many other examples.&lt;/p&gt;
 
-&lt;p&gt;The compiler&lt;/p&gt;
+&lt;p&gt;The compiler offers a &lt;a href=&quot;https://downloads.haskell.org/ghc/latest/docs/html/users_guide/extending_ghc.html#compiler-plugins&quot;&gt;plugin system&lt;/a&gt; that lets users customize various aspect of the syntax analysis, typechecking and compilation to imperative code, without having to rebuild the compiler itself.&lt;/p&gt;
 
-&lt;p&gt;While writing a &lt;a href=&quot;https://downloads.haskell.org/ghc/latest/docs/html/users_guide/extending_ghc.html#compiler-plugins&quot;&gt;GHC plugin&lt;/a&gt; that lets the user pinpoint a given declaration whose Core will be analyzed and transformed, I found myself in need of a specific bit of machinery&lt;/p&gt;
+&lt;p&gt;While writing a GHC plugin that lets the user pinpoint a given declaration whose Core will be analyzed and transformed, I found myself in need of a specific bit of machinery: how can the user &lt;em&gt;tell&lt;/em&gt; the compiler which expression to look for?&lt;/p&gt;
+
+&lt;p&gt;At the top level, we talk about binders (e.g. in &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;squared x = x * x&lt;/code&gt; the function &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;\x -&amp;gt; x * x&lt;/code&gt; is said to be &lt;em&gt;bound&lt;/em&gt; to the name &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;squared&lt;/code&gt;), but the compiler uses a richer naming system internally.&lt;/p&gt;
+
+&lt;p&gt;It turns out &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;inspection-testing&lt;/code&gt;&lt;/p&gt;
 </description>
         <pubDate>Tue, 22 Jun 2021 00:00:00 +0200</pubDate>
         <link>https://ocramz.github.io/haskell/ghc/metaprogramming/2021/06/22/finding-core-th.html</link>
