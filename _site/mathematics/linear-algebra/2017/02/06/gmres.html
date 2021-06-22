@@ -66,55 +66,55 @@
 
   <article class="post-content">
     <p>The generalized minimal-residual method (GMRES) was introduced by Saad and Schultz in 1986 and to this day it is one of the more popular iterative algorithms for solving large linear systems; it is very versatile (works on general, i.e. non-Hermitian systems) and has a relatively simple derivation, which I will try to convey in this post.
-In the following, I will restrict the notation to the special case in which all vectors have real components, because the complex-valued case just involves exchanging <script type="math/tex">\mathbb{R}</script> with <script type="math/tex">\mathbb{C}</script>.</p>
+In the following, I will restrict the notation to the special case in which all vectors have real components, because the complex-valued case just involves exchanging \(\mathbb{R}\) with \(\mathbb{C}\).</p>
 
-<p>At each iteration, GMRES provides an increasingly more accurate approximation <script type="math/tex">\tilde{x}</script> to the solution of a linear system <script type="math/tex">A x = b</script>, in the sense of the <script type="math/tex">L_2</script> norm (i.e. a “minimal-residual” solution):</p>
+<p>At each iteration, GMRES provides an increasingly more accurate approximation \(\tilde{x}\) to the solution of a linear system \(A x = b\), in the sense of the \(L_2\) norm (i.e. a “minimal-residual” solution):</p>
 
-<script type="math/tex; mode=display">\tilde{x} = \underset{x}{\arg \min} \| A x - b \|,</script>
+\[\tilde{x} = \underset{x}{\arg \min} \| A x - b \|,\]
 
-<p>where <script type="math/tex">A \in \mathbb{R}^{m \times n}</script> is (assumed to be) of full rank (i.e. invertible), <script type="math/tex">x \in \mathbb{R}^n</script> and <script type="math/tex">b \in \mathbb{R}^m</script>.</p>
+<p>where \(A \in \mathbb{R}^{m \times n}\) is (assumed to be) of full rank (i.e. invertible), \(x \in \mathbb{R}^n\) and \(b \in \mathbb{R}^m\).</p>
 
-<p>The approximate solution is sought in spaces of increasing dimensionality; in other words, at iteration <script type="math/tex">i \in {1 .. m}</script> the solution <script type="math/tex">\tilde{x}_i</script> will be a vector in <script type="math/tex">\mathbb{R}^i</script>.</p>
+<p>The approximate solution is sought in spaces of increasing dimensionality; in other words, at iteration \(i \in {1 .. m}\) the solution \(\tilde{x}_i\) will be a vector in \(\mathbb{R}^i\).</p>
 
-<p>This means that we need a series of vector bases (“Krylov subspaces”) that map from <script type="math/tex">\mathbb{R}^i</script> to <script type="math/tex">\mathbb{R}^m</script>; the <a href="https://ocramz.github.io/mathematics/tutorials/2016/11/09/arnoldi-alt.html">Arnoldi process</a> provides these as by-products.</p>
+<p>This means that we need a series of vector bases (“Krylov subspaces”) that map from \(\mathbb{R}^i\) to \(\mathbb{R}^m\); the <a href="https://ocramz.github.io/mathematics/tutorials/2016/11/09/arnoldi-alt.html">Arnoldi process</a> provides these as by-products.</p>
 
-<p>At iteration <script type="math/tex">i</script>, the Krylov subspace approximation <script type="math/tex">y</script> to a vector <script type="math/tex">x \in \mathbb{R}^n</script> can be written as <script type="math/tex">x = Q_i y</script>, in which the <script type="math/tex">Q</script> matrices satisfy the Arnoldi recursion <script type="math/tex">A Q_i = Q_{i+1} H_i</script>. Recall that <script type="math/tex">Q_i</script> is shorthand for a set of <script type="math/tex">i</script> orthonormal vectors in <script type="math/tex">\mathbb{R}^n</script> (i.e. that appear as the matrix columns).</p>
+<p>At iteration \(i\), the Krylov subspace approximation \(y\) to a vector \(x \in \mathbb{R}^n\) can be written as \(x = Q_i y\), in which the \(Q\) matrices satisfy the Arnoldi recursion \(A Q_i = Q_{i+1} H_i\). Recall that \(Q_i\) is shorthand for a set of \(i\) orthonormal vectors in \(\mathbb{R}^n\) (i.e. that appear as the matrix columns).</p>
 
 <p>We can now plug in the Krylov approximation and the Arnoldi identity into the residual equation to re-formulate the minimal residual problem:</p>
 
-<script type="math/tex; mode=display">\|A x - b\| = \|A Q_i y - b\| = \|Q_{i+1} H_i y -b\|</script>
+\[\|A x - b\| = \|A Q_i y - b\| = \|Q_{i+1} H_i y -b\|\]
 
-<p>Since the columns of the <script type="math/tex">Q_i</script> matrices are orthogonal, if <script type="math/tex">Q_i v = w</script> then <script type="math/tex">v = Q_i^\dagger w</script>; this lets us rewrite the residual as follows:</p>
+<p>Since the columns of the \(Q_i\) matrices are orthogonal, if \(Q_i v = w\) then \(v = Q_i^\dagger w\); this lets us rewrite the residual as follows:</p>
 
-<script type="math/tex; mode=display">\|H_i y - Q_{i+1}^\dagger b\|</script>
+\[\|H_i y - Q_{i+1}^\dagger b\|\]
 
-<p>We notice that <script type="math/tex">Q_{i+1}^\dagger b</script> rotates back the <script type="math/tex">b</script> vector to the canonical basis, which can be written as <script type="math/tex">\|b\| e_1 =: b_0</script>.</p>
+<p>We notice that \(Q_{i+1}^\dagger b\) rotates back the \(b\) vector to the canonical basis, which can be written as \(\|b\| e_1 =: b_0\).</p>
 
-<p>At this point we focus on the Hessenberg matrix <script type="math/tex">H_i</script> (specifically this is an <em>upper-Hessenberg</em> matrix, because all the elements <em>below</em> the first sub-diagonal are identically zero). This is convenient from a computational point of view, as we will see shortly.</p>
+<p>At this point we focus on the Hessenberg matrix \(H_i\) (specifically this is an <em>upper-Hessenberg</em> matrix, because all the elements <em>below</em> the first sub-diagonal are identically zero). This is convenient from a computational point of view, as we will see shortly.</p>
 
-<p>Let us denote the QR factorization of <script type="math/tex">H_i</script> as <script type="math/tex">O_i U_i</script> (where <script type="math/tex">O_i</script> is orthonormal and <script type="math/tex">U_i</script> is upper triangular). Since the QR factorization operates on the sub-diagonal nonzero elements of its input matrix, applying it to a Hessenberg matrix means that only at most <script type="math/tex">i-2</script> rotations will be required in order to produce its answer.</p>
+<p>Let us denote the QR factorization of \(H_i\) as \(O_i U_i\) (where \(O_i\) is orthonormal and \(U_i\) is upper triangular). Since the QR factorization operates on the sub-diagonal nonzero elements of its input matrix, applying it to a Hessenberg matrix means that only at most \(i-2\) rotations will be required in order to produce its answer.</p>
 
 <p>At this point we are ready to write the GMRES problem in its final form</p>
 
-<script type="math/tex; mode=display">\|A x - b\| = \left\|U_i y - O_i^\dagger b_0 \right\| \underset{y}{\rightarrow} min</script>
+\[\|A x - b\| = \left\|U_i y - O_i^\dagger b_0 \right\| \underset{y}{\rightarrow} min\]
 
-<p>which can be efficiently solved by back-substitution since <script type="math/tex">U_i</script> is upper triangular.</p>
+<p>which can be efficiently solved by back-substitution since \(U_i\) is upper triangular.</p>
 
 <h2 id="conclusions-and-some-optimizations">Conclusions and some optimizations</h2>
 
-<p>To recap, at step <script type="math/tex">i</script> the GMRES algorithm requires:</p>
+<p>To recap, at step \(i\) the GMRES algorithm requires:</p>
 
-<p>1) applying the Arnoldi process to obtain a Krylov base for <script type="math/tex">\{A, b\}</script> in <script type="math/tex">\mathbb{R}^i</script>,</p>
+<p>1) applying the Arnoldi process to obtain a Krylov base for \(\{A, b\}\) in \(\mathbb{R}^i\),</p>
 
 <p>2) factorizing the Hessenberg matrix obtained at step 1) in its QR factors,</p>
 
-<p>3) solving for the minimal-residual vector <script type="math/tex">y</script> using a triangular solver (i.e. back-substitution),</p>
+<p>3) solving for the minimal-residual vector \(y\) using a triangular solver (i.e. back-substitution),</p>
 
-<p>4) retrieving the full-space solution using the Krylov relation <script type="math/tex">\tilde{x} = Q_i y</script>.</p>
+<p>4) retrieving the full-space solution using the Krylov relation \(\tilde{x} = Q_i y\).</p>
 
-<p>The version of GMRES I have implemented in <a href="https://hackage.haskell.org/package/sparse-linear-algebra">sparse-linear-algebra</a> does not carry out steps 1-4 repeatedly, but simply finds the “largest” Krylov subspace (i.e. carries out Arnoldi until it breaks down, that is, until the norm of the <script type="math/tex">i</script>th orthogonal vector is found to be almost 0) and then proceeds with steps 2-4. I found this simpler solution to work quite well in practice.</p>
+<p>The version of GMRES I have implemented in <a href="https://hackage.haskell.org/package/sparse-linear-algebra">sparse-linear-algebra</a> does not carry out steps 1-4 repeatedly, but simply finds the “largest” Krylov subspace (i.e. carries out Arnoldi until it breaks down, that is, until the norm of the \(i\)th orthogonal vector is found to be almost 0) and then proceeds with steps 2-4. I found this simpler solution to work quite well in practice.</p>
 
-<p>A popular optimization is to interleave the Arnoldi process with the QR factorization; in particular, the first <script type="math/tex">i</script> columns of <script type="math/tex">H_{i+1}</script> are exactly <script type="math/tex">H_i</script>, so computing the QR factorization of <script type="math/tex">H_{i+1}</script> only requires applying one additional Givens’ rotation, and can recycle the QR factors of <script type="math/tex">H_i</script> (appropriately padded).</p>
+<p>A popular optimization is to interleave the Arnoldi process with the QR factorization; in particular, the first \(i\) columns of \(H_{i+1}\) are exactly \(H_i\), so computing the QR factorization of \(H_{i+1}\) only requires applying one additional Givens’ rotation, and can recycle the QR factors of \(H_i\) (appropriately padded).</p>
 
 <h2 id="references">References</h2>
 

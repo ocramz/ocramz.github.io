@@ -67,63 +67,60 @@
   <article class="post-content">
     <p>Many reference implementations of the singular value decomposition (SVD) use bidiagonalization as a fundamental preprocessing step. Like the <a href="https://ocramz.github.io/mathematics/tutorials/2016/11/09/arnoldi-alt.html">Arnoldi algorithm</a>, it is very closely related to the Gram-Schmidt orthogonalization process, since it multiplies the operand matrix with a series of projection matrices that zero out one or more of its components at each application.</p>
 
-<p>In this blog post I will explain the Golub-Kahan-Lanczos bidiagonalization, which applies two projections, <script type="math/tex">P \in \mathbb{R}^{m \times n}</script> and <script type="math/tex">Q \in \mathbb{R}^{n \times n}</script>, to the operand matrix <script type="math/tex">A \in \mathbb{R}^{m \times n}</script> to produce a matrix <script type="math/tex">B \in \mathbb{R}^{n \times n}</script> that is non-zero only on its main diagonal and first super-diagonal.</p>
+<p>In this blog post I will explain the Golub-Kahan-Lanczos bidiagonalization, which applies two projections, \(P \in \mathbb{R}^{m \times n}\) and \(Q \in \mathbb{R}^{n \times n}\), to the operand matrix \(A \in \mathbb{R}^{m \times n}\) to produce a matrix \(B \in \mathbb{R}^{n \times n}\) that is non-zero only on its main diagonal and first super-diagonal.</p>
 
-<script type="math/tex; mode=display">% <![CDATA[
-P^\dagger A Q = B =: \left[
+\[P^\dagger A Q = B =: \left[
 \begin{array}{c c c c c}
- \alpha_1 & \beta_1  &         & & \\
-          & \alpha_2 & \beta_2 & & \\
-	  & & \ddots & \ddots    & \\
-	  & & & \alpha_{n-1} & \beta_{n-1} \\
-          & & & & \alpha_n \\
+ \alpha_1 &amp; \beta_1  &amp;         &amp; &amp; \\
+          &amp; \alpha_2 &amp; \beta_2 &amp; &amp; \\
+	  &amp; &amp; \ddots &amp; \ddots    &amp; \\
+	  &amp; &amp; &amp; \alpha_{n-1} &amp; \beta_{n-1} \\
+          &amp; &amp; &amp; &amp; \alpha_n \\
 \end{array}
 \right]
-\label{eqn1} %]]></script>
+\label{eqn1}\]
 
-<p>The equation above requires us to find <em>two</em> sets of orthonormal vectors in order be fulfilled, i.e. the columns of <script type="math/tex">P</script> and <script type="math/tex">Q</script>. This means that there are effectively two sets of equations which we must solve iteratively to retrieve the factorization; these are obtained by applying <script type="math/tex">P</script> to Eq.1 and respectively transposing it and applying <script type="math/tex">Q</script> (and using the fact that <script type="math/tex">(U V)^\dagger = V^\dagger U^\dagger</script>):</p>
+<p>The equation above requires us to find <em>two</em> sets of orthonormal vectors in order be fulfilled, i.e. the columns of \(P\) and \(Q\). This means that there are effectively two sets of equations which we must solve iteratively to retrieve the factorization; these are obtained by applying \(P\) to Eq.1 and respectively transposing it and applying \(Q\) (and using the fact that \((U V)^\dagger = V^\dagger U^\dagger\)):</p>
 
-<script type="math/tex; mode=display">\begin{cases}
+\[\begin{cases}
 A Q = P B \\
 A^\dagger P = Q B^\dagger
-\end{cases}</script>
+\end{cases}\]
 
 <p>The algorithm directly follows by inspecting the two systems of equations written above in terms of their columns.</p>
 
-<p>As first step we must choose an arbitrary vector of unit norm and appropriate dimensions, <script type="math/tex">\mathbf{q}_1</script>, which is used to obtain <script type="math/tex">\mathbf{p}_1</script> and <script type="math/tex">\alpha_1</script>:</p>
+<p>As first step we must choose an arbitrary vector of unit norm and appropriate dimensions, \(\mathbf{q}_1\), which is used to obtain \(\mathbf{p}_1\) and \(\alpha_1\):</p>
 
-<script type="math/tex; mode=display">A \mathbf{q}_1 = \alpha_1 \mathbf{p}_1</script>
+\[A \mathbf{q}_1 = \alpha_1 \mathbf{p}_1\]
 
-<p>whereas <script type="math/tex">\mathbf{p}_2</script>, <script type="math/tex">\mathbf{q}_2</script> and <script type="math/tex">\beta_1</script> are obtained from the second system of equations:</p>
+<p>whereas \(\mathbf{p}_2\), \(\mathbf{q}_2\) and \(\beta_1\) are obtained from the second system of equations:</p>
 
-<script type="math/tex; mode=display">A^\dagger \mathbf{p}_1 = \alpha_1 \mathbf{q}_1 + \beta_1 \mathbf{q}_2</script>
+\[A^\dagger \mathbf{p}_1 = \alpha_1 \mathbf{q}_1 + \beta_1 \mathbf{q}_2\]
 
-<p>(NB: the <script type="math/tex">\alpha</script> and <script type="math/tex">\beta</script> coefficients are obtained in turn by prescribing the <script type="math/tex">\mathbf{p}</script> and <script type="math/tex">\mathbf{q}</script> vectors to have unit norm).</p>
+<p>(NB: the \(\alpha\) and \(\beta\) coefficients are obtained in turn by prescribing the \(\mathbf{p}\) and \(\mathbf{q}\) vectors to have unit norm).</p>
 
-<p>Subsequent steps are only minimally different; at step <script type="math/tex">j \in {2 .. n-1}</script> :</p>
+<p>Subsequent steps are only minimally different; at step \(j \in {2 .. n-1}\) :</p>
 
-<script type="math/tex; mode=display">% <![CDATA[
-\begin{array}{l l}
-(\mathrm{input} : \mathbf{q}_j, \beta_{j-1}, \mathbf{p}_{j-1} ) &\\
+\[\begin{array}{l l}
+(\mathrm{input} : \mathbf{q}_j, \beta_{j-1}, \mathbf{p}_{j-1} ) &amp;\\
 
-\mathbf{p}_{j} = (A \mathbf{q}_{j} - \beta_{j-1} \mathbf{p}_{j-1})/\alpha_j &\alpha_j =  \|A \mathbf{q}_{j} - \beta_{j-1} \mathbf{p}_{j-1}\|  \\
+\mathbf{p}_{j} = (A \mathbf{q}_{j} - \beta_{j-1} \mathbf{p}_{j-1})/\alpha_j &amp;\alpha_j =  \|A \mathbf{q}_{j} - \beta_{j-1} \mathbf{p}_{j-1}\|  \\
 
-\mathbf{q}_{j+1} = (A^\dagger \mathbf{p}_{j} - \alpha_{j} \mathbf{q}_{j})/\beta_j &\beta_j =  \|A^\dagger \mathbf{p}_{j} - \alpha_{j} \mathbf{q}_{j}\|  \\
+\mathbf{q}_{j+1} = (A^\dagger \mathbf{p}_{j} - \alpha_{j} \mathbf{q}_{j})/\beta_j &amp;\beta_j =  \|A^\dagger \mathbf{p}_{j} - \alpha_{j} \mathbf{q}_{j}\|  \\
 
-(\mathrm{output} : \mathbf{q}_{j+1}, \beta_{j}, \mathbf{p}_{j} )&
-\end{array} %]]></script>
+(\mathrm{output} : \mathbf{q}_{j+1}, \beta_{j}, \mathbf{p}_{j} )&amp;
+\end{array}\]
 
-<p>Note : of course also the coefficients <script type="math/tex">\alpha_i</script> are “outputs” to the iteration, but of the elements of <script type="math/tex">B</script> only <script type="math/tex">\beta_i</script> is required to compute the results of iteration <script type="math/tex">i+1</script>.</p>
+<p>Note : of course also the coefficients \(\alpha_i\) are “outputs” to the iteration, but of the elements of \(B\) only \(\beta_i\) is required to compute the results of iteration \(i+1\).</p>
 
-<p>The final step will be slightly different, again due to the structure of <script type="math/tex">B</script>:</p>
+<p>The final step will be slightly different, again due to the structure of \(B\):</p>
 
-<script type="math/tex; mode=display">% <![CDATA[
-\begin{array}{l l}
-A \mathbf{q}_n &= \alpha_n \mathbf{p}_n + \beta_{n-1} \mathbf{p}_{n-1} \\
-A^\dagger \mathbf{p}_n &= \alpha_n \mathbf{q}_n
-\end{array} %]]></script>
+\[\begin{array}{l l}
+A \mathbf{q}_n &amp;= \alpha_n \mathbf{p}_n + \beta_{n-1} \mathbf{p}_{n-1} \\
+A^\dagger \mathbf{p}_n &amp;= \alpha_n \mathbf{q}_n
+\end{array}\]
 
-<p>After this, the <script type="math/tex">\alpha</script> and <script type="math/tex">\beta</script> coefficients and the <script type="math/tex">\mathbf{p}_i</script> and <script type="math/tex">\mathbf{q}_i</script> vectors can be packed into matrices and used in subsequent computations.</p>
+<p>After this, the \(\alpha\) and \(\beta\) coefficients and the \(\mathbf{p}_i\) and \(\mathbf{q}_i\) vectors can be packed into matrices and used in subsequent computations.</p>
 
 <p>In <a href="https://hackage.haskell.org/package/sparse-linear-algebra">sparse-linear-algebra</a> I implemented this control flow using the <a href="https://hackage.haskell.org/package/mtl-2.2.1/docs/Control-Monad-State-Strict.html">State monad</a>, which makes the partial datastructures produced during iteration invisible to the rest of the program, by construction.</p>
 
