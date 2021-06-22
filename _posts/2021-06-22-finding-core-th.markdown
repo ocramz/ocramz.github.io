@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Finding the Core of an expression using Template Haskell
+title: Finding the Core of an expression using Template Haskell and a custom GHC Core plugin
 date: 2021-06-22
 categories: Haskell GHC metaprogramming
 ---
