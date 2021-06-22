@@ -41,12 +41,25 @@ import Data.Data (Data)
 import Language.Haskell.TH (Name, Loc, AnnTarget(..), Pragma(..), Dec(..), location, Q, Exp(..))
 import Language.Haskell.TH.Syntax (liftData)
 
-data Target = Target Name deriving (Data)
+-- our annotation payload type
+data Target = MkTarget Name deriving (Data)
 
-nameAnnotation :: Name -> Q [Dec]
-nameAnnotation n = do
+inspect :: Name -> Q [Dec]
+inspect n = do
   annExpr <- liftData (MkTarget n)
   pure [PragmaD (AnnP ModuleAnnotation annExpr)]
+{% endhighlight %}
+
+and `nameAnnotation` can be used as follows (in a separate module) :
+
+{% highlight haskell %}
+{-# language TemplateHaskell #-}
+...
+
+f :: Double -> Double -> Double
+f x y = sqrt x + y
+
+inspect 'f
 {% endhighlight %}
 
 
@@ -66,20 +79,10 @@ import qualified Language.Haskell.TH.Syntax as TH (Name)
 {% endhighlight %}
 
 
-{% highlight haskell %}
-{% endhighlight %}
 
-Here we are interested in the compiler phase that produces Core IR, so we'll have to modify the `defaultPlugin` value provided by `ghc` by passing a custom implementation of `installCoreToDos` :
 
-{% highlight haskell %}
-plugin :: Plugin
-plugin = defaultPlugin {
-  installCoreToDos = install -- see below
-  , pluginRecompile = \_ -> pure NoForceRecompile
-                       }
-{% endhighlight %}
 
-First, we need a function that looks up all the annotations from the module internals (aptly named `ModGuts` in ghc) and attempts to decode them via their Data interface. Here we are using a custom `Target` type, which could carry additional metadata.
+First, we need a function that looks up all the annotations from the module internals (aptly named `ModGuts` in ghc) and attempts to decode them via their Data interface. Here we are using a custom `Target` type defined above, which could carry additional metadata.
 
 {% highlight haskell %}
 extractAnns :: ModGuts -> (ModGuts, [Target])
@@ -104,7 +107,20 @@ fromTHName thn = thNameToGhcName thn >>= \case
     Just n -> return n
 {% endhighlight %}
 
-As a minimal example plugin, let's pretty-print the Core expression corresponding to the `Name` we just found:
+
+## A custom GHC Core plugin
+
+Here we are interested in the compiler phase that produces Core IR, so we'll have to modify the `defaultPlugin` value provided by `ghc` by passing a custom implementation of `installCoreToDos` :
+
+{% highlight haskell %}
+plugin :: Plugin
+plugin = defaultPlugin {
+  installCoreToDos = install -- see below
+  , pluginRecompile = \_ -> pure NoForceRecompile
+                       }
+{% endhighlight %}
+
+As a minimal example, let's pretty-print the Core expression corresponding to the `Name` we just found:
 
 {% highlight haskell %}
 -- | Print the Core representation of the expression that has the given Name
@@ -128,6 +144,23 @@ lookupNameInGuts guts n = listToMaybe
 {% endhighlight %}
 
 
+And that's it! All that's left is to package `printCore` into a plugin pass called `install`:
+
+{% highlight haskell %}
+-- | append a 'CoreDoPluginPass' at the _end_ of the 'CoreToDo' list
+install :: [CommandLineOption] -> [CoreToDo] -> CoreM [CoreToDo]
+install _ todos = pure (todos ++ [pass])
+  where
+    pass = CoreDoPluginPass pname $ \ guts -> do
+      let (guts', targets) = extractTargets guts
+      traverse_ (\(_, t) -> printCore guts' (tgName t)) targets
+      pure guts'
+    pname = "AD-Plugin"
+{% endhighlight %}
+
+Here it's important to stress that `install` _appends_ our plugin pass to the ones received as input from the upstream compilation pipeline. 
+
+
 
 ## Credits
 
@@ -141,6 +174,8 @@ Mark Karpov deserves lots of credit too for writing an excellent reference on te
 
 
 ## References
+
+0) [GHC annotations](https://gitlab.haskell.org/ghc/ghc/-/wikis/annotations)
 
 1) J. Breitner, [`inspection-testing`](https://github.com/nomeata/inspection-testing)
 
