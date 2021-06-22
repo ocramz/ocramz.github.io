@@ -22,7 +22,7 @@ It turns out `inspection-testing` provides this functionality as part of its use
 
 A template-haskell [`Name`](https://hackage.haskell.org/package/template-haskell-2.17.0.0/docs/Language-Haskell-TH.html#t:Name) represents .. the name of declarations, expressions etc. in the syntax tree.
 
-Resolving a top-level declaration into its `Name` requires a little bit of metaprogramming, enabled by the `{-# LANGUAGE TemplateHaskell #-}` extension. With that, we can use the special syntax with a single or double quote to refer to values or types respectively (made famous by `lens` in [`makeLenses`](https://hackage.haskell.org/package/lens-5.0.1/docs/Control-Lens-Combinators.html#v:makeLenses) ''Foo`).
+Resolving a top-level declaration into its `Name` requires a little bit of metaprogramming, enabled by the `{-# LANGUAGE TemplateHaskell #-}` extension. With that, we can use the special syntax with a single or double quote to refer to values or types respectively (made famous by `lens` in [`makeLenses`](https://hackage.haskell.org/package/lens-5.0.1/docs/Control-Lens-Combinators.html#v:makeLenses) ''Foo).
 
 ## Passing `Name`s to later stages of the compilation pipeline
 
@@ -34,15 +34,31 @@ The resulting function has a type signature similar to this : `Name -> Q [Dec]`,
 
 ## Picking out our annotation from within the plugin
 
-The other half of the trick takes place within the plugin. Here we are interested in the compiler phase that produces Core IR, so we'll have to modify the `defaultPlugin` value provided by `ghc`:
+The other half of the trick takes place within the plugin, so we'll need to import a bunch of modules from `ghc`-the-library (here I'm referring to GHC 9.0.1, some modules changed path since GHC series 8):
 
-```
+{% highlight haskell %}
+import GHC.Plugins (Plugin, defaultPlugin, CorePlugin, installCoreToDos, pluginRecompile, CommandLineOption, fromSerialized, deserializeWithData, ModGuts(..), Name, CoreExpr, Var, flattenBinds, getName, thNameToGhcName, PluginRecompile(..))
+import GHC.Core.Opt.Monad (CoreToDo(..), CorePluginPass, bindsOnlyPass, CoreM, putMsgS, getDynFlags, errorMsg)
+import GHC.Core (CoreProgram, CoreBind, Bind(..), Expr(..))
+import GHC.Types.Annotations (Annotation(..), AnnTarget(..))
+import GHC.Utils.Outputable (Outputable(..), SDoc, showSDoc, (<+>), ppr, text)
+{% endhighlight %}
+
+
+{% highlight haskell %}
+{% endhighlight %}
+
+Here we are interested in the compiler phase that produces Core IR, so we'll have to modify the `defaultPlugin` value provided by `ghc`:
+
+
+{% highlight haskell %}
 plugin :: Plugin
 plugin = defaultPlugin {
   installCoreToDos = install
   , pluginRecompile = \_ -> pure NoForceRecompile
                        }
-```
+{% endhighlight %}
+
 
 
 
