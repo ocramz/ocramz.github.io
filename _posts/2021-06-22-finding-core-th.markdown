@@ -7,15 +7,15 @@ categories: Haskell GHC metaprogramming
 
 ## Introduction
 
-[GHC](https://www.haskell.org/ghc/) is a wonderful ~~compiler~~ platform for writing compilers and languages on. In addition to Haskell offering convenient syntactical abstractions for writing domain-specific languages with, the language itself and the internals of the compiler can be extended in many ways, letting users come up with mind-bending innovations in [scientific computing](http://conal.net/papers/compiling-to-categories/compiling-to-categories.pdf), [testing](https://hackage.haskell.org/package/inspection-testing) and [code editing](https://haskellwingman.dev/), among many other examples.
+[GHC](https://www.haskell.org/ghc/) is a wonderful ~~compiler~~ platform for writing compilers and languages on. In addition to Haskell offering convenient syntactic abstractions for writing domain-specific languages with, the language itself and the internals of the compiler can be extended in many ways, which let users come up with mind-bending innovations in [scientific computing](http://conal.net/papers/compiling-to-categories/compiling-to-categories.pdf), [testing](https://hackage.haskell.org/package/inspection-testing) and [code editing](https://haskellwingman.dev/), among many other examples.
 
-The compiler offers a [plugin system](https://downloads.haskell.org/ghc/latest/docs/html/users_guide/extending_ghc.html#compiler-plugins) that lets users customize various aspect of the syntax analysis, typechecking and compilation to imperative code, without having to rebuild the compiler itself.
+The compiler offers a [plugin system](https://downloads.haskell.org/ghc/latest/docs/html/users_guide/extending_ghc.html#compiler-plugins) that lets users customize various aspects of the syntax analysis, typechecking and compilation phases, without having to rebuild the compiler itself.
 
 While writing a GHC plugin that lets the user analyze and transform the Core representation of certain Haskell expressions, I found myself in need of a specific bit of machinery: how can the user _tell_ the compiler which expression to look for? Moreover, how to map the names of user-defined terms to the internal representation used by the compiler?
 
-It turns out `inspection-testing` provides this functionality as part of its user interface, and I will document it here both not to forget it and so that others might learn from it in the future. 
+It turns out `inspection-testing` provides this functionality as part of its user interface, and I will document it here both to consolidate its details in my head and so that others might learn from it in the future. 
 
-This post will also introduce things from both the `ghc` and `template-haskell` libraries as needed, so it should be useful to people who, like me, had zero experience in compiler internals and metaprogramming until the other day.
+This post will also introduce concepts from both the `ghc` and `template-haskell` libraries as needed, so it should be useful to those who, like me, had zero experience in compiler internals until the other day.
 
 Note on reproducibility : here I'm referring to GHC 9.0.1, some modules changed paths since GHC series 8.
 
@@ -50,17 +50,6 @@ inspect n = do
   pure [PragmaD (AnnP ModuleAnnotation annExpr)]
 {% endhighlight %}
 
-and `inspect` can be used as follows (in a separate module) :
-
-{% highlight haskell %}
-{-# language TemplateHaskell #-}
-...
-
-f :: Double -> Double -> Double
-f x y = sqrt x + y
-
-inspect 'f
-{% endhighlight %}
 
 
 ## Picking out our annotation from within the plugin
@@ -131,7 +120,7 @@ printCore guts thn = do
     Nothing -> do
       errorMsg $ text "Cannot find name" <+> text (show thn)
       
--- | Look up the given GHC 'Name' within the list of binders in the module guts
+-- Look up the given GHC 'Name' within the list of binders in the module guts
 lookupNameInGuts :: ModGuts -> Name -> Maybe (Var, CoreExpr)
 lookupNameInGuts guts n = listToMaybe
     [ (v,e)
@@ -189,7 +178,7 @@ First and foremost a big shout out to all the contributors to GHC who have built
 
 Of course, Joachim Breitner for `inspection-testing` [1]. I still remember the distinct feeling of my brain expanding against my skull after seeing his presentation on this at Zurihac 2017.
 
-Next, I'd like to thank the good folks in the Haskell community for being kind and responsive even to my rather pedestrian questions on r/haskell, the ZuriHac discord server and stackoverflow. Li-yao Xia, Matthew Pickering, Daniel Diaz, David Feuer and others, thank you so much. Matthew has also written a paper [2] and curated a list of references on GHC plugins , which I refer to extensively.
+Next, I'd like to thank the good folks in the Haskell community for kindly giving exhaustive answers to my questions on r/haskell, the ZuriHac discord server and stackoverflow. Li-yao Xia, Matthew Pickering, Daniel Diaz, David Feuer and others. Matthew has also written a paper [2] and curated a list of references on GHC plugins , which I refer to extensively.
 
 Mark Karpov deserves lots of credit too for writing an excellent reference on template Haskell [3] with lots of worked examples, go and check it out.
 
