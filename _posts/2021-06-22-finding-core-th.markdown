@@ -133,7 +133,7 @@ lookupNameInGuts guts n = listToMaybe
 {% endhighlight %}
 
 
-And that's it! All that's left is to package `printCore` into a plugin pass called `install`:
+And that's it! All that's left is to package `printCore` into our custom implementation of `installCoreToDos`:
 
 {% highlight haskell %}
 -- append a 'CoreDoPluginPass' at the _end_ of the 'CoreToDo' list
