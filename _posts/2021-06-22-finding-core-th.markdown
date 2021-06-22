@@ -97,14 +97,14 @@ fromTHName thn = thNameToGhcName thn >>= \case
 
 ## A custom GHC Core plugin
 
-Here we are interested in the compiler phase that produces Core IR, so we'll have to modify the `defaultPlugin` value provided by `ghc` by passing a custom implementation of `installCoreToDos` :
+As noted above, a GHC plugin can customize many aspects of the compilation process. Here we are interested in the compiler phase that produces Core IR, so we'll only have to modify the `installCoreToDos` field of the `defaultPlugin` value provided by `ghc` by providing our own version :
 
 {% highlight haskell %}
 -- module MyPlugin
 
 plugin :: Plugin
 plugin = defaultPlugin {
-  installCoreToDos = install -- see below
+  installCoreToDos = install -- will be defined below
   , pluginRecompile = \_ -> pure NoForceRecompile
                        }
 {% endhighlight %}
@@ -133,7 +133,7 @@ lookupNameInGuts guts n = listToMaybe
 {% endhighlight %}
 
 
-And that's it! All that's left is to package `printCore` into our custom implementation of `installCoreToDos`:
+All that's left is to package `printCore` into our custom implementation of `installCoreToDos`:
 
 {% highlight haskell %}
 -- append a 'CoreDoPluginPass' at the _end_ of the 'CoreToDo' list
@@ -149,6 +149,7 @@ install _ todos = pure (todos ++ [pass])
 
 Here it's important to stress that `install` _appends_ our plugin pass to the ones received as input from the upstream compilation pipeline. 
 
+And that's it! We've customized the compiler (without breaking it !), how cool is that?
 
 ## Trying out our plugin
 
