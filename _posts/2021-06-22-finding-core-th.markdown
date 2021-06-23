@@ -149,7 +149,7 @@ install _ todos = pure (todos ++ [pass])
 
 Here it's important to stress that `install` _appends_ our plugin pass to the ones received as input from the upstream compilation pipeline. 
 
-And that's it! We've customized the compiler (without breaking it !), how cool is that?
+
 
 ## Trying out our plugin
 
@@ -182,9 +182,18 @@ The output of our custom compiler pass will be interleaved with the rest of the 
   }
 {% endhighlight %}
 
+If you squint a bit, you can still see the structure of the original expression `\x y = sqrt x + y`, enriched with additional annotations.
+For example: 
+
+* the `Dmd=<...>` parts are strictness/demand annotations computed for each variable
+
+* the `Double -> Double -> Double` expression has been made strict (the `case` branch expressions), and its parameters have been "unboxed" (`D#` stands for "unboxed double", i.e. containing the value itself, not a pointer to it)
+
+* correspondingly, both the addition and square root operators have been specialized to those operating on unboxed doubles.
 
 
 
+That's it! We've customized the compiler (without breaking it !), how cool is that?
 
 
 
