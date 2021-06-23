@@ -83,15 +83,23 @@ extractTargets guts = (guts', xs)
       _ -> Nothing
 {% endhighlight %}
 
-Next, we need to map `template-haskell` names to the internal GHC namespace, `thNameToGhcName` to the rescue :
+Next, we need to map `template-haskell` names to the internal GHC namespace, `thNameToGhcName` to the rescue. If the name can be resolved, `lookupTHName` will return the corresponding Core `Expr`ession (i.e. the abstract syntax tree corresponding to the name we picked in the beginning).
 
 {% highlight haskell %}
-fromTHName :: TH.Name -> CoreM Name
-fromTHName thn = thNameToGhcName thn >>= \case
-    Nothing -> do
-        errorMsg $ text "Could not resolve TH name" <+> text (show thn)
-        liftIO $ exitFailure -- kill the compiler. Is there a nicer way?
-    Just n -> return n
+-- Resolve the TH.Name into a GHC Name and look this up within the list of binders in the module guts
+lookupTHName :: ModGuts -> TH.Name -> CoreM (Maybe (Var, CoreExpr))
+lookupTHName guts thn = thNameToGhcName thn >>= \case
+  Nothing -> do
+    errorMsg $ text "Could not resolve TH name" <+> text (show thn)
+    pure Nothing
+  Just n -> pure $ lookupNameInGuts guts n
+  where
+    lookupNameInGuts :: ModGuts -> Name -> Maybe (Var, CoreExpr)
+    lookupNameInGuts guts n = listToMaybe
+                              [ (v,e)
+                              | (v,e) <- flattenBinds (mg_binds guts)
+                              , getName v == n
+                              ]
 {% endhighlight %}
 
 
@@ -115,21 +123,13 @@ As a minimal example, let's pretty-print the Core expression corresponding to th
 -- Print the Core representation of the expression that has the given Name
 printCore :: ModGuts -> TH.Name -> CoreM ()
 printCore guts thn = do
-  n <- fromTHName thn
-  case lookupNameInGuts guts n of
+  mn <- lookupTHName guts thn
+  case mn of
     Just (_, coreexpr) -> do
       dflags <- getDynFlags
-      putMsgS $ showSDoc dflags (ppr coreexpr)
+      putMsgS $ showSDoc dflags (ppr coreexpr) -- GHC pretty printer
     Nothing -> do
       errorMsg $ text "Cannot find name" <+> text (show thn)
-      
--- Look up the given GHC 'Name' within the list of binders in the module guts
-lookupNameInGuts :: ModGuts -> Name -> Maybe (Var, CoreExpr)
-lookupNameInGuts guts n = listToMaybe
-    [ (v,e)
-    | (v,e) <- flattenBinds (mg_binds guts)
-    , getName v == n
-    ]
 {% endhighlight %}
 
 
