@@ -6,8 +6,8 @@
 </description>
     <link>https://ocramz.github.io/</link>
     <atom:link href="https://ocramz.github.io/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Wed, 23 Jun 2021 10:05:23 +0200</pubDate>
-    <lastBuildDate>Wed, 23 Jun 2021 10:05:23 +0200</lastBuildDate>
+    <pubDate>Wed, 23 Jun 2021 10:10:19 +0200</pubDate>
+    <lastBuildDate>Wed, 23 Jun 2021 10:10:19 +0200</lastBuildDate>
     <generator>Jekyll v4.2.0</generator>
     
       <item>
@@ -175,7 +175,7 @@ For example:&lt;/p&gt;
     &lt;p&gt;the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Double -&amp;gt; Double -&amp;gt; Double&lt;/code&gt; expression has been made strict (the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;case&lt;/code&gt; branch expressions), and its parameters have been “unboxed” (&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;D#&lt;/code&gt; stands for “unboxed double”, i.e. containing the value itself, not a pointer to it)&lt;/p&gt;
   &lt;/li&gt;
   &lt;li&gt;
-    &lt;p&gt;correspondingly, both the addition and square root operators have been specialized to those operating on unboxed doubles.&lt;/p&gt;
+    &lt;p&gt;correspondingly, both the &lt;a href=&quot;https://hackage.haskell.org/package/base-4.15.0.0/docs/GHC-Exts.html#v:-43--35--35-&quot;&gt;addition&lt;/a&gt; and &lt;a href=&quot;https://hackage.haskell.org/package/base-4.15.0.0/docs/GHC-Exts.html#v:sqrtDouble-35-&quot;&gt;square root&lt;/a&gt; operators have been specialized to those operating on unboxed doubles.&lt;/p&gt;
   &lt;/li&gt;
 &lt;/ul&gt;
 

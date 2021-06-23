@@ -189,7 +189,7 @@ For example:
 
 * the `Double -> Double -> Double` expression has been made strict (the `case` branch expressions), and its parameters have been "unboxed" (`D#` stands for "unboxed double", i.e. containing the value itself, not a pointer to it)
 
-* correspondingly, both the addition and square root operators have been specialized to those operating on unboxed doubles.
+* correspondingly, both the [addition](https://hackage.haskell.org/package/base-4.15.0.0/docs/GHC-Exts.html#v:-43--35--35-) and [square root](https://hackage.haskell.org/package/base-4.15.0.0/docs/GHC-Exts.html#v:sqrtDouble-35-) operators have been specialized to those operating on unboxed doubles.
 
 
 
