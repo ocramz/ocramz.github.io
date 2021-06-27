@@ -142,7 +142,7 @@ install _ todos = pure (todos ++ [pass])
   where
     pass = CoreDoPluginPass pname $ \ guts -> do
       let (guts', targets) = extractTargets guts
-      traverse_ (\(_, t) -> printCore guts' (tgName t)) targets
+      traverse_ (\ t -> printCore guts' (tgName t)) targets
       pure guts'
     pname = "My-plugin"
 {% endhighlight %}
