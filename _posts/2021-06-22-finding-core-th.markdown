@@ -144,11 +144,12 @@ install _ todos = pure (todos ++ [pass])
       let (guts', targets) = extractTargets guts
       traverse_ (\ t -> printCore guts' (tgName t)) targets
       pure guts'
-    pname = "My-plugin"
+    pname = "MyPlugin"
 {% endhighlight %}
 
 Here it's important to stress that `install` _appends_ our plugin pass to the ones received as input from the upstream compilation pipeline. 
 
+Another crucial detail : the name string of the plugin as specified in `CoreDoPluginPass` _must_ be the full module name where the `plugin` value is declared.
 
 
 ## Trying out our plugin

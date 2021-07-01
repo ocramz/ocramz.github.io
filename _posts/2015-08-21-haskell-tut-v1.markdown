@@ -54,7 +54,6 @@ Starting from the very basics :
 
 > :t 1
 1 :: Num a => a
-
 {% endhighlight %}
 
 The two interactions above show an _evaluation_ and a _type query_, respectively. The former, being a constant expression, evaluates directly to its result (no surprises here), whereas the latter could be understood as "What is the type of `1`?" "The type of `1` is `a`, such that `a` is an instance of a numerical type (i.e. a number)."
