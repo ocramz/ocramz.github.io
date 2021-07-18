@@ -14,7 +14,7 @@ This post introduces
 Automatic differentiation is a family of techniques used to compute the parametric sensitivity of computer programs.
 
 
-![Multivariate chain rule](/ad-delcont-multi-chain-rule.png)
+![Multivariate chain rule](/images/ad-delcont-multi-chain-rule.png)
 
 
 http://www.math.ucsd.edu/~gptesler/20c/slides/20c_chainrule_f18-handout.pdf
