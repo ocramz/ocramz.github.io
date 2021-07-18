@@ -1,0 +1,20 @@
+I"]<h2 id="introduction">Introduction</h2>
+
+<p>This post introduces</p>
+
+<h2 id="automatic-differentiation">Automatic differentiation</h2>
+
+<p>Automatic differentiation is a family of techniques used to compute the parametric sensitivity of computer programs.</p>
+
+<p><img src="https://ocramz.github.io/images/ad-delcont-multi-chain-rule.png" /></p>
+
+<p>http://www.math.ucsd.edu/~gptesler/20c/slides/20c_chainrule_f18-handout.pdf</p>
+
+<h2 id="wang-et-al">Wang et al</h2>
+
+<h2 id="delimited-continuations">Delimited continuations</h2>
+
+<h2 id="ad-delcont">ad-delcont</h2>
+
+<h2 id="references">References</h2>
+:ET
