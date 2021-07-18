@@ -27,7 +27,7 @@ A numerical program is usually built up using the syntactic rules of the host la
 
 ## The chain rule
 
-Suppose we have a simple function 
+Suppose we have a simple function $$z(x, y)$$, with $$x(u, v)$$ and $$y(u, v)$$
 
 <img src="https://ocramz.github.io/images/ad-delcont-multi-chain-rule.png" alt="Multivariate chain rule" width="400"/>
 
