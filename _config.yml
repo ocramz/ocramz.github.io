@@ -10,7 +10,8 @@ github_username:  ocramz
 
 # Build settings
 markdown: kramdown
-# markdown: redcarpet
+kramdown:
+   math_engine: mathjax
 
 disqus:
     # Leave shortname blank to disable comments site-wide.

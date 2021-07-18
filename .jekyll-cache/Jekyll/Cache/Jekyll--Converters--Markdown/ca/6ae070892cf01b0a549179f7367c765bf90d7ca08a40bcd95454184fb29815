@@ -1,8 +1,0 @@
-I"2<h2 id="introduction">Introduction</h2>
-
-<p>GHC Haskell is a wonderful <del>compiler</del> platform for writing compilers and languages on. Both the surface language and the internals of the compiler can be interfaced and extended in many ways, letting users come up with mind-bending innovations in <a href="http://conal.net/papers/compiling-to-categories/compiling-to-categories.pdf">scientific computing</a> and <a href="https://haskellwingman.dev/">code editing</a>, among many other examples.</p>
-
-<p>The compiler</p>
-
-<p>While writing a <a href="https://downloads.haskell.org/ghc/latest/docs/html/users_guide/extending_ghc.html#compiler-plugins">GHC plugin</a> that lets the user pinpoint a given declaration whose Core will be analyzed and transformed, I found myself in need of a specific bit of machinery</p>
-:ET
