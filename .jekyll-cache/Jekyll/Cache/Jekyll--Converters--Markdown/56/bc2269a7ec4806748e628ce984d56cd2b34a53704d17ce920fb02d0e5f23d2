@@ -1,0 +1,32 @@
+I"^<h2 id="introduction">Introduction</h2>
+
+<p>A few days ago I stumbled upon a recent line of research that applies an old idea from functional programming languages (continuation passing) to an old idea from numerical computing (automatic differentiation, AD). The result is an elegant algorithm, which remains close to the textbook treatment of reverse-mode AD (“backpropagation”) and could rightly be considered as the “natural” implementation of this idea.</p>
+
+<p>In this post I will briefly introduce the theory and present a library I’ve published that implements it, <a href="https://hackage.haskell.org/package/ad-delcont">ad-delcont</a>.</p>
+
+<h2 id="automatic-differentiation">Automatic differentiation</h2>
+
+<p>Since the dawn of digital computers to today’s machine learning systems, finding the best allocation of resources or the parameters of a gigantic language model are fundamentally numerical optimization routines. Optimization is a vast and fascinating subject of applied mathematics, and there are many excellent introductory texts on it, which I recommend keeping at hand [1,2]</p>
+
+<p>Many real-world optimization problems require iterative approximation of a set of continuous parameters (a “parameter vector”), and are tackled with some form of gradient descent. Computing the gradient of a cost function implemented as a computer program is a fundamental and ubiquitous task.</p>
+
+<p>Automatic differentiation is a family of techniques that compute the parametric sensitivity of computer programs.</p>
+
+<p><img src="https://ocramz.github.io/images/ad-delcont-multi-chain-rule.png" alt="Multivariate chain rule" width="400" /></p>
+
+<p>Image from [1]</p>
+
+<h2 id="wang-et-al">Wang et al</h2>
+
+<h2 id="delimited-continuations">Delimited continuations</h2>
+
+<h2 id="ad-delcont">ad-delcont</h2>
+
+<h2 id="references">References</h2>
+
+<p>[1] Nocedal, Wright - Numerical Optimization</p>
+
+<p>[2] Boyd, Vanderberghe - Convex Optimization - https://web.stanford.edu/~boyd/cvxbook/</p>
+
+<p>[3] Multivariate chain rule - G. Tesler - http://www.math.ucsd.edu/~gptesler/20c/slides/20c_chainrule_f18-handout.pdf</p>
+:ET
