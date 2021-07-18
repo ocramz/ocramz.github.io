@@ -27,11 +27,13 @@ A numerical program is usually built up using the syntactic rules of the host la
 
 ## The chain rule
 
-Suppose we have a simple function $$z(x, y)$$, with $$x(u, v)$$ and $$y(u, v)$$
+Suppose we have a simple function $$z(x, y)$$, with $$x(u, v)$$ and $$y(u, v)$$. The dependencies between these variables can be drawn as a directed acyclic graph (a tree, specifically) :
 
 <img src="https://ocramz.github.io/images/ad-delcont-multi-chain-rule.png" alt="Multivariate chain rule" width="400"/>
 
 Image from [these slides](http://www.math.ucsd.edu/~gptesler/20c/slides/20c_chainrule_f18-handout.pdf).
+
+The sensitivity of output variable $$z$$ to input variable $$v$$ must account for all the possible "paths" taken while traversing from $$v$$ to $$z$$, i.e. $$\partial_v z = \partial_v x \partial_x z + \partial_v y \partial_y z $$.
 
 
 
