@@ -17,9 +17,9 @@ Since the dawn of digital computers to today's machine learning systems, finding
 
 Many real-world optimization problems require iterative approximation of a set of continuous parameters (a "parameter vector"), and are tackled with some form of gradient descent. Computing the gradient of a cost function implemented as a computer program is then a fundamental and ubiquitous task.
 
-Automatic differentiation is a family of techniques that compute the parametric sensitivity of computer programs, given a program that computes the cost function of interest. What's the _sensitivity_, one may ask?
+Automatic differentiation is a family of techniques that compute the gradient of computer programs, given a program that computes the cost function of interest. The /gradient/ is a vector in parameter space that points to the direction of fastest increase in the function of interest.
 
-AD can be achieved in two major ways, i.e. while the user program is compiled or as it runs. Source code transformation is an interesting approach that has yielded many successful implementations (from ADIFOR to PyTorch) but in this post I will focus on the latter formulation.
+This can be achieved in two major ways, i.e. while the user program is compiled or as it runs. Source code transformation is an interesting approach that has yielded many successful implementations (from ADIFOR to PyTorch) but in this post I will focus on the latter formulation.
 
 
 

@@ -6,8 +6,8 @@
 </description>
     <link>https://ocramz.github.io/</link>
     <atom:link href="https://ocramz.github.io/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Mon, 19 Jul 2021 00:12:42 +0200</pubDate>
-    <lastBuildDate>Mon, 19 Jul 2021 00:12:42 +0200</lastBuildDate>
+    <pubDate>Mon, 19 Jul 2021 00:16:13 +0200</pubDate>
+    <lastBuildDate>Mon, 19 Jul 2021 00:16:13 +0200</lastBuildDate>
     <generator>Jekyll v4.2.0</generator>
     
       <item>
@@ -24,9 +24,9 @@
 
 &lt;p&gt;Many real-world optimization problems require iterative approximation of a set of continuous parameters (a “parameter vector”), and are tackled with some form of gradient descent. Computing the gradient of a cost function implemented as a computer program is then a fundamental and ubiquitous task.&lt;/p&gt;
 
-&lt;p&gt;Automatic differentiation is a family of techniques that compute the parametric sensitivity of computer programs, given a program that computes the cost function of interest. What’s the &lt;em&gt;sensitivity&lt;/em&gt;, one may ask?&lt;/p&gt;
+&lt;p&gt;Automatic differentiation is a family of techniques that compute the gradient of computer programs, given a program that computes the cost function of interest. The /gradient/ is a vector in parameter space that points to the direction of fastest increase in the function of interest.&lt;/p&gt;
 
-&lt;p&gt;AD can be achieved in two major ways, i.e. while the user program is compiled or as it runs. Source code transformation is an interesting approach that has yielded many successful implementations (from ADIFOR to PyTorch) but in this post I will focus on the latter formulation.&lt;/p&gt;
+&lt;p&gt;This can be achieved in two major ways, i.e. while the user program is compiled or as it runs. Source code transformation is an interesting approach that has yielded many successful implementations (from ADIFOR to PyTorch) but in this post I will focus on the latter formulation.&lt;/p&gt;
 
 &lt;p&gt;&lt;img src=&quot;https://ocramz.github.io/images/ad-delcont-multi-chain-rule.png&quot; alt=&quot;Multivariate chain rule&quot; width=&quot;400&quot; /&gt;&lt;/p&gt;
 
