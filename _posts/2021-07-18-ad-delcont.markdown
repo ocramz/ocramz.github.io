@@ -39,8 +39,20 @@ The sensitivity of output variable $$z$$ to input variable $$v$$ must account fo
 
 
 
+
+
 ## Wang et al
 
+
+{% highlight scala %}
+class NumR (val x: Double, var d: Double) {
+  def + (that: NumR) = shift { (k: NumR => Unit) =>
+    val y = new NumR(this.x + that.x, 0.0);
+    k(y);
+    this.d += y.d; 
+    that.d += y.d
+  }
+{% endhighlight %}
 
 ## Delimited continuations
 
