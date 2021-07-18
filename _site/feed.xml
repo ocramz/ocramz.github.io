@@ -6,8 +6,8 @@
 </description>
     <link>https://ocramz.github.io/</link>
     <atom:link href="https://ocramz.github.io/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Mon, 19 Jul 2021 00:16:13 +0200</pubDate>
-    <lastBuildDate>Mon, 19 Jul 2021 00:16:13 +0200</lastBuildDate>
+    <pubDate>Mon, 19 Jul 2021 00:29:29 +0200</pubDate>
+    <lastBuildDate>Mon, 19 Jul 2021 00:29:29 +0200</lastBuildDate>
     <generator>Jekyll v4.2.0</generator>
     
       <item>
@@ -22,11 +22,15 @@
 
 &lt;p&gt;Since the dawn of digital computers to today’s machine learning systems, finding the best allocation of resources or the parameters of a gigantic language model are fundamentally numerical optimization routines. Optimization is a vast and fascinating subject of applied mathematics, and there are many excellent introductory texts on it, which I recommend keeping at hand [1,2].&lt;/p&gt;
 
-&lt;p&gt;Many real-world optimization problems require iterative approximation of a set of continuous parameters (a “parameter vector”), and are tackled with some form of gradient descent. Computing the gradient of a cost function implemented as a computer program is then a fundamental and ubiquitous task.&lt;/p&gt;
+&lt;p&gt;Many real-world optimization problems require iterative approximation of a set of continuous parameters (a “parameter vector”), and are tackled with some form of gradient descent. The /gradient/ is a vector in parameter space that points to the direction of fastest increase in the function at a given point. Computing the gradient of a cost function implemented as a computer program is then a fundamental and ubiquitous task.&lt;/p&gt;
 
-&lt;p&gt;Automatic differentiation is a family of techniques that compute the gradient of computer programs, given a program that computes the cost function of interest. The /gradient/ is a vector in parameter space that points to the direction of fastest increase in the function of interest.&lt;/p&gt;
+&lt;p&gt;Automatic differentiation is a family of techniques that compute the gradient of computer programs, given a program that computes the cost function of interest. This is achieved in two major ways, i.e. while the user program is compiled or as it runs. Source code transformation is an interesting approach that has yielded many successful implementations (from ADIFOR [3] to PyTorch [4]) but in this post I will focus on the latter formulation, for the sake of brevity.&lt;/p&gt;
 
-&lt;p&gt;This can be achieved in two major ways, i.e. while the user program is compiled or as it runs. Source code transformation is an interesting approach that has yielded many successful implementations (from ADIFOR to PyTorch) but in this post I will focus on the latter formulation.&lt;/p&gt;
+&lt;h2 id=&quot;differentiating-computer-programs&quot;&gt;Differentiating computer programs&lt;/h2&gt;
+
+&lt;p&gt;I emphasize “computer programs” because these contain control structures such as conditionals (“if .. then .. else”), loops (“while”) and numerous other features which do not appear in mathematical notation and must be accounted for in a dedicated way.&lt;/p&gt;
+
+&lt;p&gt;A numerical program is usually built up using the syntactic rules of the host language from a library of elementary functional building blocks (e.g. implementations of the exponential or sine function, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;exp()&lt;/code&gt;, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;sin()&lt;/code&gt;, and so on). This means that computing the overall sensitivity of this program must involve applying the (multivariate) chain rule of differentiation, while accounting for the program’s control flow as outlined above.&lt;/p&gt;
 
 &lt;p&gt;&lt;img src=&quot;https://ocramz.github.io/images/ad-delcont-multi-chain-rule.png&quot; alt=&quot;Multivariate chain rule&quot; width=&quot;400&quot; /&gt;&lt;/p&gt;
 
