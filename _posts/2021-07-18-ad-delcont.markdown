@@ -33,7 +33,7 @@ Suppose we have a simple function $$z(x, y)$$, with $$x(u, v)$$ and $$y(u, v)$$.
 
 Image from [these slides](http://www.math.ucsd.edu/~gptesler/20c/slides/20c_chainrule_f18-handout.pdf).
 
-The sensitivity of output variable $$z$$ to input variable $$v$$ must account for all the possible "paths" taken while traversing from $$v$$ to $$z$$, i.e. $$\partial_v z = \partial_v x \partial_x z + \partial_v y \partial_y z $$.
+The sensitivity of output variable $$z$$ to input variable $$v$$ must account for all the possible "paths" taken while traversing from $$v$$ to $$z$$, i.e. $$\partial_v z = \partial_v x \cdot \partial_x z + \partial_v y \cdot \partial_y z $$.
 
 
 
