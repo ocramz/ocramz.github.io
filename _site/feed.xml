@@ -6,9 +6,36 @@
 </description>
     <link>https://ocramz.github.io/</link>
     <atom:link href="https://ocramz.github.io/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Thu, 01 Jul 2021 11:51:48 +0200</pubDate>
-    <lastBuildDate>Thu, 01 Jul 2021 11:51:48 +0200</lastBuildDate>
+    <pubDate>Sun, 18 Jul 2021 23:09:41 +0200</pubDate>
+    <lastBuildDate>Sun, 18 Jul 2021 23:09:41 +0200</lastBuildDate>
     <generator>Jekyll v4.2.0</generator>
+    
+      <item>
+        <title>Reverse-mode automatic differentiation with delimited continuations</title>
+        <description>&lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;/h2&gt;
+
+&lt;h2 id=&quot;automatic-differentiation&quot;&gt;Automatic differentiation&lt;/h2&gt;
+
+&lt;p&gt;Automatic differentiation is a family of techniques used to compute the parametric sensitivity of computer programs.&lt;/p&gt;
+
+&lt;h2 id=&quot;wang-et-al&quot;&gt;Wang et al&lt;/h2&gt;
+
+&lt;h2 id=&quot;delimited-continuations&quot;&gt;Delimited continuations&lt;/h2&gt;
+
+&lt;h2 id=&quot;ad-delcont&quot;&gt;ad-delcont&lt;/h2&gt;
+
+&lt;h2 id=&quot;references&quot;&gt;References&lt;/h2&gt;
+</description>
+        <pubDate>Tue, 22 Jun 2021 00:00:00 +0200</pubDate>
+        <link>https://ocramz.github.io/haskell/automatic-differentiation/2021/06/22/ad-delcont.html</link>
+        <guid isPermaLink="true">https://ocramz.github.io/haskell/automatic-differentiation/2021/06/22/ad-delcont.html</guid>
+        
+        
+        <category>Haskell</category>
+        
+        <category>automatic-differentiation</category>
+        
+      </item>
     
       <item>
         <title>Finding the Core of an expression using Template Haskell and a custom GHC Core plugin</title>

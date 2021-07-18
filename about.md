@@ -5,12 +5,12 @@ permalink: /about/
 ---
 
 ## Marco Zocca
-_Applied mathematician / Computer scientist_
+_Applied mathematician / Computer scientist / Founder_
 
 
 -------
 
-I try to bring the robustness and beauty of functional programming to the realm of scientific computing.
+At the intersection of machine learning, scientific computing and functional programming languages.
 
 The road is narrow, fraught with perils and seldom traveled, but the view is breathtaking.
 
