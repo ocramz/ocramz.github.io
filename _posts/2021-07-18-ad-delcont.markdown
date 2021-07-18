@@ -13,17 +13,21 @@ In this post I will briefly introduce the theory and present a library I've publ
 
 ## Automatic differentiation
 
-Since the dawn of digital computers to today's machine learning systems, finding the best allocation of resources or the parameters of a gigantic language model are fundamentally numerical optimization routines. Optimization is a vast and fascinating subject of applied mathematics, and there are many excellent introductory texts on it, which I recommend keeping at hand [1,2]
+Since the dawn of digital computers to today's machine learning systems, finding the best allocation of resources or the parameters of a gigantic language model are fundamentally numerical optimization routines. Optimization is a vast and fascinating subject of applied mathematics, and there are many excellent introductory texts on it, which I recommend keeping at hand [1,2].
 
-Many real-world optimization problems require iterative approximation of a set of continuous parameters (a "parameter vector"), and are tackled with some form of gradient descent. Computing the gradient of a cost function implemented as a computer program is a fundamental and ubiquitous task.
+Many real-world optimization problems require iterative approximation of a set of continuous parameters (a "parameter vector"), and are tackled with some form of gradient descent. Computing the gradient of a cost function implemented as a computer program is then a fundamental and ubiquitous task.
 
-Automatic differentiation is a family of techniques that compute the parametric sensitivity of computer programs. 
+Automatic differentiation is a family of techniques that compute the parametric sensitivity of computer programs, given a program that computes the cost function of interest. What's the _sensitivity_, one may ask?
+
+AD can be achieved in two major ways, i.e. while the user program is compiled or as it runs. Source code transformation is an interesting approach that has yielded many successful implementations (from ADIFOR to PyTorch) but in this post I will focus on the latter formulation.
+
+
 
 
 <img src="https://ocramz.github.io/images/ad-delcont-multi-chain-rule.png" alt="Multivariate chain rule" width="400"/>
 
 
-Image from [1] 
+Image from [these slides](http://www.math.ucsd.edu/~gptesler/20c/slides/20c_chainrule_f18-handout.pdf)
 
 
 ## Wang et al
@@ -41,4 +45,6 @@ Image from [1]
 
 [2] Boyd, Vanderberghe - Convex Optimization - https://web.stanford.edu/~boyd/cvxbook/
 
-[3] Multivariate chain rule - G. Tesler - http://www.math.ucsd.edu/~gptesler/20c/slides/20c_chainrule_f18-handout.pdf
+[3] ADIFOR - https://www.anl.gov/partnerships/adifor-automatic-differentiation-of-fortran-77
+
+[4] PyTorch - https://pytorch.org/ 
