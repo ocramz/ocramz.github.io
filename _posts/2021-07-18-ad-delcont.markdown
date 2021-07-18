@@ -33,7 +33,9 @@ Suppose we have a simple function $$z(x, y)$$, with $$x(u, v)$$ and $$y(u, v)$$.
 
 Image from [these slides](http://www.math.ucsd.edu/~gptesler/20c/slides/20c_chainrule_f18-handout.pdf).
 
-The sensitivity of output variable $$z$$ to input variable $$v$$ must account for all the possible "paths" taken while traversing from $$v$$ to $$z$$, i.e. $$\partial_v z = \partial_v x \cdot \partial_x z + \partial_v y \cdot \partial_y z $$.
+The sensitivity of output variable $$z$$ to input variable $$v$$ must account for all the possible paths taken while "traversing" from $$v$$ to $$z$$, i.e. while applying the functions at the intermediate tree nodes to their arguments. The multivariate chain rule tells us to sum these contributions : $$\partial_v z = \partial_v x \cdot \partial_x z + \partial_v y \cdot \partial_y z $$. This leads to another insight : from the point of view of $$z$$, computing the sensitivity of a function to each of its parameters $$u$$ and $$v$$ is a form of "credit assignment".
+
+This is the essence of "reverse mode" AD : it's a way to assign, algorithmically, partial credit for the variation in $$z$$ to each of the expression inputs and intermediate variables.
 
 
 
