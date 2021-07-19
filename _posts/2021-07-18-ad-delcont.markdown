@@ -9,11 +9,13 @@ categories: Haskell automatic-differentiation machine-learning
 
 A few days ago I stumbled upon a recent line of research that applies an old idea from functional programming languages (continuation passing) to an old idea from numerical computing (automatic differentiation, AD). The result is an elegant algorithm, which remains close to the textbook treatment of reverse-mode AD ("backpropagation") and could rightly be considered its "natural" implementation.
 
-In this post I will briefly introduce the theory and present a library I've published that implements it, [ad-delcont](https://hackage.haskell.org/package/ad-delcont).
+In this post I will give an informal account of the theory and present a library I've published that implements it, [ad-delcont](https://hackage.haskell.org/package/ad-delcont).
 
 ## Automatic differentiation
 
 From allocating wartime resources at the dawn of digital computing in the 1940s, to fitting the parameters of today's gigantic language models, numerical optimization is an ever-present computational challenge. Optimization is nowadays a vast and fascinating subject of applied mathematics and computer science, and there are many excellent introductory texts on it, which I recommend keeping at hand [1,2].
+
+<img src="https://ocramz.github.io/images/ad-delcont-gd.png" alt="Gradient descent"/>
 
 Many real-world optimization problems require iterative approximation of a set of continuous parameters (a "parameter vector"), and are tackled with some form of gradient descent. The _gradient_ is a vector in parameter space that points to the direction of fastest increase in the function at a given point. Computing the gradient of a cost function implemented as a computer program is then a fundamental and ubiquitous task.
 
@@ -41,14 +43,15 @@ Image from [these slides](http://www.math.ucsd.edu/~gptesler/20c/slides/20c_chai
 
 The sensitivity of output variable $$z$$ to input variable $$v$$ must account for all the possible paths taken while "traversing" from $$v$$ to $$z$$, i.e. while applying the functions at the intermediate tree nodes to their arguments. The multivariate chain rule tells us to sum these contributions : $$\partial_v z = \partial_v x \cdot \partial_x z + \partial_v y \cdot \partial_y z $$. 
 
-## Forward vs. Reverse
+## Forward and Reverse
 
 Ignoring for the sake of exposition all AD approaches that rely on source code analysis and transformation, there remain essentially _two_ ways of computing the derivative of a composite function via "non-standard" evaluation (NSE). By NSE here we mean augmenting the expression variables with adjoint values (thus computing with "dual numbers" [6], i.e. a first-order Taylor approximation of the expression) and potentially modifying the program execution flow in order to accumulate these adjoints (the sensitivities we're interested in). This might sound esoteric but it's actually pretty straightforward as I hope I'll be able to show you.
 
 *Forward-mode AD* is the more intuitive of the two approaches : in this case both the expression value(s) at any intermediate expression node $$v_j$$ and the adjoints $$\partial_{x_i} v_j$$ are computed in the natural reduction order of the expression: by applying function values to their input arguments. Reduction of functions of dual values follows the familiar rules of derivative calculus. The algorithm computes one partial derivative at a time, by setting the dual part of the variable of interest to 1 and all others to 0. Once the expression is fully reduced, $$\partial_{x_i} z$$ can be read off the dual part of the result. The computational cost of this algorithm is one full expression evaluation per input variable.
 
-*Reverse-mode AD* achieves the same result by tracking the reduction order while reducing the expression ("forward"), initializing all duals to $$0$$, and accumulating the adjoints "backwards" from the output variable $$z$$, which is initialized with the trivial adjoint $$\partial_z z = 1$$. Each expression node represents a function, and it is augmented ("overloaded", in programming language terminology) with a "pullback" [7] that computes how input sensitivities change as a function of output sensitivities. Upon returning to a given expression node $$v_i$$, its adjoints are summed over (following the multivariate chain rule shown above).
+*Reverse-mode AD* achieves the same result by tracking the reduction order while reducing the expression ("forward"), initializing all duals to $$0$$, and accumulating the adjoints "backwards" from the output variable $$z$$, which is initialized with the trivial adjoint $$\partial_z z = 1$$. Each expression node represents a function, and it is augmented ("overloaded", in programming language terminology) with a "pullback" [7] that computes how input sensitivities change as a function of output sensitivities. Upon returning to a given expression node $$v_i$$, its adjoints are summed over (following the multivariate chain rule shown above). In this case, all parameter sensitivities are computed at once at the end of the backwards sweep. The cost of reverse-mode AD is two full expression evaluations per _output_ variable, which might save a lot of work when applied to expressions with many more input variables, as often happens in optimization and machine learning.
 
+Both AD modes have a long history of successful implementations. Many implementations of reverse-mode AD "reify" the user function into a data structure that tracks the execution history and the functional dependencies (a "Wengert tape"), in order to play the program backwards when accumulating the adjoints.
 
 
 
