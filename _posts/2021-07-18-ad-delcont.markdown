@@ -7,11 +7,11 @@ categories: Haskell automatic-differentiation
 
 ## Introduction
 
-A few days ago I stumbled upon a recent line of research that applies an old idea from functional programming languages (continuation passing) to an old idea from numerical computing (automatic differentiation, AD). The result is an elegant algorithm, which remains close to the textbook treatment of reverse-mode AD ("backpropagation") and could rightly be considered its "natural" implementation.
+A few days ago I stumbled upon a recent line of research that applies an old and somewhat obscure idea from functional programming languages (delimited continuation-passing) to an old but very much alive idea from numerical computing (automatic differentiation, AD). The result is an elegant algorithm, which remains close to the textbook treatment of reverse-mode AD ("backpropagation") and could rightly be considered its "natural" implementation.
 
 I will first "read aloud" the reference Scala implementation from the original paper [1], and then do the same for the corresponding parts of a Haskell library I've written that implements its ideas, [ad-delcont](https://hackage.haskell.org/package/ad-delcont). In the Haskell version all effects are made explicit and tracked at the type level without relying on any compiler plugin.
 
-Along the way I'll also walk through an elementary example that helped me understand how delimited continuations operate.
+Along the way I'll also walk through an elementary example that hopefully clarifies how delimited continuations work in general.
 
 In a [previous post](http://ocramz.github.io/automatic-differentiation/machine-learning/2021/07/18/ad.html) I illustrated the fundamentals of automatic differentiation, as implemented in most imperative programming languages. It turns out, a computational tape is not the only available option for inverting control flow, in sufficiently advanced programming languages. How can we implement reverse-mode automatic differentiation in a purely-functional setting? Read on!
 

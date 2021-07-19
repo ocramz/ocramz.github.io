@@ -6,19 +6,19 @@
 </description>
     <link>https://ocramz.github.io/</link>
     <atom:link href="https://ocramz.github.io/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Mon, 19 Jul 2021 17:48:39 +0200</pubDate>
-    <lastBuildDate>Mon, 19 Jul 2021 17:48:39 +0200</lastBuildDate>
+    <pubDate>Mon, 19 Jul 2021 17:55:35 +0200</pubDate>
+    <lastBuildDate>Mon, 19 Jul 2021 17:55:35 +0200</lastBuildDate>
     <generator>Jekyll v4.2.0</generator>
     
       <item>
         <title>Purely-functional reverse-mode automatic differentiation with delimited continuations</title>
         <description>&lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;/h2&gt;
 
-&lt;p&gt;A few days ago I stumbled upon a recent line of research that applies an old idea from functional programming languages (continuation passing) to an old idea from numerical computing (automatic differentiation, AD). The result is an elegant algorithm, which remains close to the textbook treatment of reverse-mode AD (“backpropagation”) and could rightly be considered its “natural” implementation.&lt;/p&gt;
+&lt;p&gt;A few days ago I stumbled upon a recent line of research that applies an old and somewhat obscure idea from functional programming languages (delimited continuation-passing) to an old but very much alive idea from numerical computing (automatic differentiation, AD). The result is an elegant algorithm, which remains close to the textbook treatment of reverse-mode AD (“backpropagation”) and could rightly be considered its “natural” implementation.&lt;/p&gt;
 
 &lt;p&gt;I will first “read aloud” the reference Scala implementation from the original paper [1], and then do the same for the corresponding parts of a Haskell library I’ve written that implements its ideas, &lt;a href=&quot;https://hackage.haskell.org/package/ad-delcont&quot;&gt;ad-delcont&lt;/a&gt;. In the Haskell version all effects are made explicit and tracked at the type level without relying on any compiler plugin.&lt;/p&gt;
 
-&lt;p&gt;Along the way I’ll also walk through an elementary example that helped me understand how delimited continuations operate.&lt;/p&gt;
+&lt;p&gt;Along the way I’ll also walk through an elementary example that hopefully clarifies how delimited continuations work in general.&lt;/p&gt;
 
 &lt;p&gt;In a &lt;a href=&quot;http://ocramz.github.io/automatic-differentiation/machine-learning/2021/07/18/ad.html&quot;&gt;previous post&lt;/a&gt; I illustrated the fundamentals of automatic differentiation, as implemented in most imperative programming languages. It turns out, a computational tape is not the only available option for inverting control flow, in sufficiently advanced programming languages. How can we implement reverse-mode automatic differentiation in a purely-functional setting? Read on!&lt;/p&gt;
 
