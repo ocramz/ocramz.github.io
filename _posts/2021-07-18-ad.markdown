@@ -20,7 +20,7 @@ In this post I will give a rather informal account of AD techniques, along with 
 
 ## The chain rule
 
-At the highest level of abstraction, a numerical program maps computes one or more output values from a set of input variables. In the absence of computational "side effects" (e.g. downloading data, querying for user input) and ignoring non-termination, the program can be considered a "pure" function, and its derivatives are readily understood with the tools of elementary calculus.
+At the highest level of abstraction, a numerical program computes one or more output values from a set of input variables. In the absence of computational "side effects" (e.g. downloading data, querying for user input) and ignoring non-termination, the program can be considered a "pure" function, and its derivatives are readily understood with the tools of elementary calculus.
 
 Suppose we are looking at a composite function $$z(x, y)$$, with $$x(u, v)$$ and $$y(u, v)$$, in which all components are differentiable at least once. The dependencies between these variables can be drawn as a directed acyclic graph :
 

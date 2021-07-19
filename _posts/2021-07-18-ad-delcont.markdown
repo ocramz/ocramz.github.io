@@ -106,6 +106,43 @@ Pretty mind-bending the first time I saw it.
 
 ## ad-delcont
 
+As it turns out, this non-local control flow (i.e. delegating to a continuation, doing something and returning to the starting point with the results) is well suited to implementing the forward-backward computation needed in reverse-mode automatic differentiation.
+
+In order to convince myself of this, I've implemented the ideas of [1] in a [Haskell library](https://hackage.haskell.org/package/ad-delcont). Overall, I find the result pretty satisfying both from a theoretical and ergonomic standpoint.
+
+
+{% highlight haskell %}
+op1_ :: db -- ^ zero
+     -> (da -> da -> da) -- ^ plus
+     -> (a -> (b, db -> da)) -- ^ returns : (function result, pullback)
+     -> ContT x (ST s) (DVar s a da)
+     -> ContT x (ST s) (DVar s b db)
+op1_ zero plusa f ioa = do
+  ra <- ioa
+  (D xa _) <- lift $ readSTRef ra
+  let (xb, g) = f xa -- 1)
+  shiftT $ \ k -> lift $ do
+    rb <- var xb zero -- 2)
+    ry <- k rb -- 3)
+    (D _ yd) <- readSTRef rb -- 4)
+    modifySTRef' ra (withD (\rda0 -> rda0 `plusa` g yd)) -- 5)
+    pure ry
+{% endhighlight %}
+
+The above is a pretty faithful port of the Scala version (for a unary function such as $$\sqrt{ \cdot }$$ to reduce clutter), in which the major differences are the explicit tracking of the effects (mutation and continuation) at the type level. How does this work ?
+
+1) Compute the function result and bind the function inputs to the adjoint updating function (the "pullback")
+
+2) Allocate a fresh STRef @rb@ with the function result and @zero@ adjoint part
+
+3) @rb@ is passed downstream as an argument to the continuation @k@, with the expectation that the STRef will be mutated
+
+4) Upon returning from the @k@ (bouncing from the boundary of @resetT@), the mutated STRef is read back in
+
+5) The adjoint part of the input variable is updated using @rb@ and the result of the continuation is returned.
+
+
+
 
 ## References
 
