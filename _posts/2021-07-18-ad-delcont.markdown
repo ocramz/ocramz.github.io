@@ -21,7 +21,7 @@ Automatic differentiation is a family of techniques that compute the gradient of
 
 ## Differentiating computer programs
 
-I emphasize "computer programs" because these contain control structures such as conditionals ("if .. then .. else"), loops ("while") and numerous other features which do not appear in mathematical notation and must be accounted for in a dedicated way.
+I emphasize "computer programs" because these contain control structures such as conditionals (`if` .. `then` .. `else`), loops (`while`) and numerous other features which do not appear in mathematical notation and must be accounted for in a dedicated way.
 
 A numerical program is usually built up using the syntactic rules of the host language from a library of elementary functional building blocks (e.g. implementations of the exponential or sine function, `exp()`, `sin()`, and so on). This means that computing the overall sensitivity of this program must involve applying the (multivariate) chain rule of differentiation, while accounting for the program's control flow as outlined above.
 
@@ -33,7 +33,7 @@ Interested readers might want to read [5] for a thorough overview of the design 
 
 ## The chain rule
 
-Suppose we have a composite function $$z(x, y)$$, with $$x(u, v)$$ and $$y(u, v)$$, in which all components are differentiable at least once. The dependencies between these variables can be drawn as a directed acyclic graph (a tree, specifically) :
+Suppose we have a composite function $$z(x, y)$$, with $$x(u, v)$$ and $$y(u, v)$$, in which all components are differentiable at least once. The dependencies between these variables can be drawn as a directed acyclic graph :
 
 <img src="https://ocramz.github.io/images/ad-delcont-multi-chain-rule.png" alt="Multivariate chain rule" width="400"/>
 
@@ -45,9 +45,9 @@ The sensitivity of output variable $$z$$ to input variable $$v$$ must account fo
 
 Ignoring for the sake of exposition all AD approaches that rely on source code analysis and transformation, there remain essentially _two_ ways of computing the derivative of a composite function via "non-standard" evaluation (NSE). By NSE here we mean augmenting the expression variables with adjoint values (thus computing with "dual numbers" [6], i.e. a first-order Taylor approximation of the expression) and potentially modifying the program execution flow in order to accumulate these adjoints (the sensitivities we're interested in). This might sound esoteric but it's actually pretty straightforward as I hope I'll be able to show you.
 
-Forward-mode AD is the more intuitive of the two approaches : in this case both the expression value(s) at any intermediate expression node $$v_j$$ and the adjoints $$\partial_{x_i} v_j$$ are computed in the "natural" reduction order of the expression: by applying function values to their input arguments. The algorithm computes one partial derivative at a time, by setting the dual part of the variable of interest to 1 and all others to 0. Once the expression is fully reduced, $$\partial_{x_i} z$$ can be read off the dual part of the result. The computational cost of this algorithm is one full expression evaluation per input variable.
+*Forward-mode AD* is the more intuitive of the two approaches : in this case both the expression value(s) at any intermediate expression node $$v_j$$ and the adjoints $$\partial_{x_i} v_j$$ are computed in the natural reduction order of the expression: by applying function values to their input arguments. Reduction of functions of dual values follows the familiar rules of derivative calculus. The algorithm computes one partial derivative at a time, by setting the dual part of the variable of interest to 1 and all others to 0. Once the expression is fully reduced, $$\partial_{x_i} z$$ can be read off the dual part of the result. The computational cost of this algorithm is one full expression evaluation per input variable.
 
-Reverse-mode AD achieves the same result by tracking the reduction order while reducing the expression ("forward") and accumulating the adjoints "backwards" from the output variable $$z$$, which is initialized with the trivial adjoint $$\partial_z z = 1$$.
+*Reverse-mode AD* achieves the same result by tracking the reduction order while reducing the expression ("forward"), initializing all duals to $$0$$, and accumulating the adjoints "backwards" from the output variable $$z$$, which is initialized with the trivial adjoint $$\partial_z z = 1$$. Each expression node represents a function, and it is augmented ("overloaded", in programming language terminology) with a "pullback" [7] that computes how input sensitivities change as a function of output sensitivities. Upon returning to a given expression node $$v_i$$, its adjoints are summed over (following the multivariate chain rule shown above).
 
 
 
@@ -84,3 +84,5 @@ class NumR (val x: Double, var d: Double) {
 [5] Baydin, Pearlmutter - Automatic differentiation of machine learning algorithms - https://arxiv.org/abs/1404.7456
 
 [6] Shan - Differentiating regions - http://conway.rutgers.edu/~ccshan/wiki/blog/posts/Differentiation/ 
+
+[7] Innes - Don't unroll adjoint : Differentiating SSA-form programs - https://arxiv.org/abs/1810.07951 
