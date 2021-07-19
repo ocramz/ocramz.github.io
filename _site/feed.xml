@@ -6,8 +6,8 @@
 </description>
     <link>https://ocramz.github.io/</link>
     <atom:link href="https://ocramz.github.io/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Mon, 19 Jul 2021 17:47:47 +0200</pubDate>
-    <lastBuildDate>Mon, 19 Jul 2021 17:47:47 +0200</lastBuildDate>
+    <pubDate>Mon, 19 Jul 2021 17:48:39 +0200</pubDate>
+    <lastBuildDate>Mon, 19 Jul 2021 17:48:39 +0200</lastBuildDate>
     <generator>Jekyll v4.2.0</generator>
     
       <item>
@@ -175,17 +175,13 @@
 &lt;p&gt;[2] Launchbury, Peyton Jones - Lazy Functional State Threads - PLDI 1994 &lt;a href=&quot;https://www.microsoft.com/en-us/research/wp-content/uploads/1994/06/lazy-functional-state-threads.pdf&quot;&gt;https://www.microsoft.com/en-us/research/wp-content/uploads/1994/06/lazy-functional-state-threads.pdf&lt;/a&gt;&lt;/p&gt;
 </description>
         <pubDate>Mon, 19 Jul 2021 00:00:00 +0200</pubDate>
-        <link>https://ocramz.github.io/haskell/automatic-differentiation/machine-learning/scala/2021/07/19/ad-delcont.html</link>
-        <guid isPermaLink="true">https://ocramz.github.io/haskell/automatic-differentiation/machine-learning/scala/2021/07/19/ad-delcont.html</guid>
+        <link>https://ocramz.github.io/haskell/automatic-differentiation/2021/07/19/ad-delcont.html</link>
+        <guid isPermaLink="true">https://ocramz.github.io/haskell/automatic-differentiation/2021/07/19/ad-delcont.html</guid>
         
         
         <category>Haskell</category>
         
         <category>automatic-differentiation</category>
-        
-        <category>machine-learning</category>
-        
-        <category>Scala</category>
         
       </item>
     

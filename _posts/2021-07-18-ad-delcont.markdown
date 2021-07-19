@@ -2,7 +2,7 @@
 layout: post
 title: Purely-functional reverse-mode automatic differentiation with delimited continuations
 date: 2021-07-19
-categories: Haskell automatic-differentiation machine-learning Scala
+categories: Haskell automatic-differentiation
 ---
 
 ## Introduction
