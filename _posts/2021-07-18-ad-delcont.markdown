@@ -9,7 +9,7 @@ categories: Haskell automatic-differentiation machine-learning
 
 A few days ago I stumbled upon a recent line of research that applies an old idea from functional programming languages (continuation passing) to an old idea from numerical computing (automatic differentiation, AD). The result is an elegant algorithm, which remains close to the textbook treatment of reverse-mode AD ("backpropagation") and could rightly be considered its "natural" implementation.
 
-In this post I will give an informal account of the theory and present a library I've published that implements it, [ad-delcont](https://hackage.haskell.org/package/ad-delcont).
+In this post I will give an informal but thorough account of the theory and present a library I've published that implements it, [ad-delcont](https://hackage.haskell.org/package/ad-delcont).
 
 ## Optimization
 
@@ -53,10 +53,12 @@ Ignoring for the sake of exposition all AD approaches that rely on source code a
 
 Both AD modes have a long history of successful implementations. Many implementations of reverse-mode AD "reify" the user function into a data structure that tracks the execution history and the functional dependencies (a "Wengert tape"), in order to play the program backwards when accumulating the adjoints.
 
+It turns out, a computational tape is not the only available option for inverting control flow, in sufficiently advanced programming languages. Read on !
 
 
-## Wang et al
+## Reverse-mode AD with delimited continuations
 
+The long introduction was meant to set the stage for two short code snippet that originally appeared in [8]. 
 
 {% highlight scala %}
 class NumR (val x: Double, var d: Double) {
@@ -68,6 +70,37 @@ class NumR (val x: Double, var d: Double) {
   }
 {% endhighlight %}
 
+This is a Scala implementation of an "overloaded" summing function over dual numbers that relies on delimited continuations to achieve non-local control flow and specify what to do when a continuation returns. My Scala is pretty rusty so this has been a head scratcher for a while. I'll first document how my train of thought went while reading this code, and then try to break it down more formally.
+
+1) First we declare a dual number type `NumR`, which has fields `.x` and `.d` for the primal and adjoint respectively. 
+
+2) The implementation of the `+` method is bracketed within a mysterious `shift` higher-order function, which declares a continuation `k`, to be used later. 
+
+3) A temporary variable `y` is declared, having 0 dual value. 
+
+4) `k` is then applied to `y`, and the return value of `k` is discarded (?!). This must mean that `y` itself is mutated within the execution of `k`. 
+
+5) Upon returning from `k`, the dual part of the mutated value of `y` is used to update by accumulation (see multivariate chain rule section above) the dual parts of the input variables `x` and `y`.
+
+The other interesting snippet is where the adjoint accumulation process kicks off and the gradient is redurned:
+
+{% highlight scala %}
+def grad(f: NumR => NumR @cps[Unit] )(x: Double) = {
+  val z = new NumR(x, 0.0)
+  reset  { 
+    f(z).d = 1.0 }
+  z.d
+  }
+{% endhighlight %}
+
+1) `grad` is a higher-order function that takes the function to be differentiated as a parameter (`f: NumR => NumR`, overloaded to act upon dual numbers `NumR`), and an evaluation point `x`.
+
+2) A temporary variable `z` is declared, having 0 adjoint part and primal part corresponding to the point of interest `x`.
+
+3) Within another mysterious bracket `reset`, the function `f` is evaluated at `z`
+
+
+
 ## Delimited continuations
 
 
@@ -78,14 +111,16 @@ class NumR (val x: Double, var d: Double) {
 
 [1] Nocedal, Wright - Numerical Optimization
 
-[2] Boyd, Vanderberghe - Convex Optimization - https://web.stanford.edu/~boyd/cvxbook/
+[2] Boyd, Vanderberghe - Convex Optimization - [https://web.stanford.edu/~boyd/cvxbook/](https://web.stanford.edu/~boyd/cvxbook/)
 
-[3] ADIFOR - https://www.anl.gov/partnerships/adifor-automatic-differentiation-of-fortran-77
+[3] ADIFOR - [https://www.anl.gov/partnerships/adifor-automatic-differentiation-of-fortran-77](https://www.anl.gov/partnerships/adifor-automatic-differentiation-of-fortran-77)
 
-[4] Jax - https://github.com/google/jax
+[4] Jax - [https://github.com/google/jax](https://github.com/google/jax)
 
-[5] Baydin, Pearlmutter - Automatic differentiation of machine learning algorithms - https://arxiv.org/abs/1404.7456
+[5] Baydin, Pearlmutter - Automatic differentiation of machine learning algorithms - [https://arxiv.org/abs/1404.7456](https://arxiv.org/abs/1404.7456)
 
-[6] Shan - Differentiating regions - http://conway.rutgers.edu/~ccshan/wiki/blog/posts/Differentiation/ 
+[6] Shan - Differentiating regions - [http://conway.rutgers.edu/~ccshan/wiki/blog/posts/Differentiation/](http://conway.rutgers.edu/~ccshan/wiki/blog/posts/Differentiation/) 
 
-[7] Innes - Don't unroll adjoint : Differentiating SSA-form programs - https://arxiv.org/abs/1810.07951 
+[7] Innes - Don't unroll adjoint : Differentiating SSA-form programs - [https://arxiv.org/abs/1810.07951](https://arxiv.org/abs/1810.07951 )
+
+[8] Wang, Rompf - A Language and Compiler View on Differentiable Programming - ICLR 2018 [https://openreview.net/forum?id=SJxJtYkPG](https://openreview.net/forum?id=SJxJtYkPG)

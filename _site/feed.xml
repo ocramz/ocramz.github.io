@@ -6,8 +6,8 @@
 </description>
     <link>https://ocramz.github.io/</link>
     <atom:link href="https://ocramz.github.io/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Mon, 19 Jul 2021 12:14:54 +0200</pubDate>
-    <lastBuildDate>Mon, 19 Jul 2021 12:14:54 +0200</lastBuildDate>
+    <pubDate>Mon, 19 Jul 2021 12:43:37 +0200</pubDate>
+    <lastBuildDate>Mon, 19 Jul 2021 12:43:37 +0200</lastBuildDate>
     <generator>Jekyll v4.2.0</generator>
     
       <item>
@@ -16,7 +16,7 @@
 
 &lt;p&gt;A few days ago I stumbled upon a recent line of research that applies an old idea from functional programming languages (continuation passing) to an old idea from numerical computing (automatic differentiation, AD). The result is an elegant algorithm, which remains close to the textbook treatment of reverse-mode AD (“backpropagation”) and could rightly be considered its “natural” implementation.&lt;/p&gt;
 
-&lt;p&gt;In this post I will give an informal account of the theory and present a library I’ve published that implements it, &lt;a href=&quot;https://hackage.haskell.org/package/ad-delcont&quot;&gt;ad-delcont&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;In this post I will give an informal but thorough account of the theory and present a library I’ve published that implements it, &lt;a href=&quot;https://hackage.haskell.org/package/ad-delcont&quot;&gt;ad-delcont&lt;/a&gt;.&lt;/p&gt;
 
 &lt;h2 id=&quot;optimization&quot;&gt;Optimization&lt;/h2&gt;
 
@@ -60,7 +60,11 @@
 
 &lt;p&gt;Both AD modes have a long history of successful implementations. Many implementations of reverse-mode AD “reify” the user function into a data structure that tracks the execution history and the functional dependencies (a “Wengert tape”), in order to play the program backwards when accumulating the adjoints.&lt;/p&gt;
 
-&lt;h2 id=&quot;wang-et-al&quot;&gt;Wang et al&lt;/h2&gt;
+&lt;p&gt;It turns out, a computational tape is not the only available option for inverting control flow, in sufficiently advanced programming languages. Read on !&lt;/p&gt;
+
+&lt;h2 id=&quot;reverse-mode-ad-with-delimited-continuations&quot;&gt;Reverse-mode AD with delimited continuations&lt;/h2&gt;
+
+&lt;p&gt;The long introduction was meant to set the stage for two short code snippet that originally appeared in [8].&lt;/p&gt;
 
 &lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-scala&quot; data-lang=&quot;scala&quot;&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;NumR&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Double&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;d&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Double&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
   &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;that&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;NumR&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;shift&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;k&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;NumR&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Unit&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;=&amp;gt;&lt;/span&gt;
@@ -70,6 +74,33 @@
     &lt;span class=&quot;nv&quot;&gt;that&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;py&quot;&gt;d&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+=&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;y&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;py&quot;&gt;d&lt;/span&gt;
   &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
+&lt;p&gt;This is a Scala implementation of an “overloaded” summing function over dual numbers that relies on delimited continuations to achieve non-local control flow and specify what to do when a continuation returns. My Scala is pretty rusty so this has been a head scratcher for a while. I’ll first document how my train of thought went while reading this code, and then try to break it down more formally.&lt;/p&gt;
+
+&lt;p&gt;1) First we declare a dual number type &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;NumR&lt;/code&gt;, which has fields &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;.x&lt;/code&gt; and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;.d&lt;/code&gt; for the primal and adjoint respectively.&lt;/p&gt;
+
+&lt;p&gt;2) The implementation of the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;+&lt;/code&gt; method is bracketed within a mysterious &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;shift&lt;/code&gt; higher-order function, which declares a continuation &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;k&lt;/code&gt;, to be used later.&lt;/p&gt;
+
+&lt;p&gt;3) A temporary variable &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;y&lt;/code&gt; is declared, having 0 dual value.&lt;/p&gt;
+
+&lt;p&gt;4) &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;k&lt;/code&gt; is then applied to &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;y&lt;/code&gt;, and the return value of &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;k&lt;/code&gt; is discarded (?!). This must mean that &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;y&lt;/code&gt; itself is mutated within the execution of &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;k&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;5) Upon returning from &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;k&lt;/code&gt;, the dual part of the mutated value of &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;y&lt;/code&gt; is used to update by accumulation (see multivariate chain rule section above) the dual parts of the input variables &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;x&lt;/code&gt; and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;y&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;The other interesting snippet is where the adjoint accumulation process kicks off and the gradient is redurned:&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-scala&quot; data-lang=&quot;scala&quot;&gt;&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;grad&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;f&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;NumR&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;NumR&lt;/span&gt; &lt;span class=&quot;nd&quot;&gt;@cps&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;Unit&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;)(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Double&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;z&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;NumR&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mf&quot;&gt;0.0&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;reset&lt;/span&gt;  &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt; 
+    &lt;span class=&quot;nf&quot;&gt;f&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;z&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;py&quot;&gt;d&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mf&quot;&gt;1.0&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+  &lt;span class=&quot;nv&quot;&gt;z&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;py&quot;&gt;d&lt;/span&gt;
+  &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;1) &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;grad&lt;/code&gt; is a higher-order function that takes the function to be differentiated as a parameter (&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;f: NumR =&amp;gt; NumR&lt;/code&gt;, overloaded to act upon dual numbers &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;NumR&lt;/code&gt;), and an evaluation point &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;x&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;2) A temporary variable &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;z&lt;/code&gt; is declared, having 0 adjoint part and primal part corresponding to the point of interest &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;x&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;3) Within another mysterious bracket &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;reset&lt;/code&gt;, the function &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;f&lt;/code&gt; is evaluated at &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;z&lt;/code&gt;&lt;/p&gt;
+
 &lt;h2 id=&quot;delimited-continuations&quot;&gt;Delimited continuations&lt;/h2&gt;
 
 &lt;h2 id=&quot;ad-delcont&quot;&gt;ad-delcont&lt;/h2&gt;
@@ -78,17 +109,19 @@
 
 &lt;p&gt;[1] Nocedal, Wright - Numerical Optimization&lt;/p&gt;
 
-&lt;p&gt;[2] Boyd, Vanderberghe - Convex Optimization - https://web.stanford.edu/~boyd/cvxbook/&lt;/p&gt;
+&lt;p&gt;[2] Boyd, Vanderberghe - Convex Optimization - &lt;a href=&quot;https://web.stanford.edu/~boyd/cvxbook/&quot;&gt;https://web.stanford.edu/~boyd/cvxbook/&lt;/a&gt;&lt;/p&gt;
 
-&lt;p&gt;[3] ADIFOR - https://www.anl.gov/partnerships/adifor-automatic-differentiation-of-fortran-77&lt;/p&gt;
+&lt;p&gt;[3] ADIFOR - &lt;a href=&quot;https://www.anl.gov/partnerships/adifor-automatic-differentiation-of-fortran-77&quot;&gt;https://www.anl.gov/partnerships/adifor-automatic-differentiation-of-fortran-77&lt;/a&gt;&lt;/p&gt;
 
-&lt;p&gt;[4] Jax - https://github.com/google/jax&lt;/p&gt;
+&lt;p&gt;[4] Jax - &lt;a href=&quot;https://github.com/google/jax&quot;&gt;https://github.com/google/jax&lt;/a&gt;&lt;/p&gt;
 
-&lt;p&gt;[5] Baydin, Pearlmutter - Automatic differentiation of machine learning algorithms - https://arxiv.org/abs/1404.7456&lt;/p&gt;
+&lt;p&gt;[5] Baydin, Pearlmutter - Automatic differentiation of machine learning algorithms - &lt;a href=&quot;https://arxiv.org/abs/1404.7456&quot;&gt;https://arxiv.org/abs/1404.7456&lt;/a&gt;&lt;/p&gt;
 
-&lt;p&gt;[6] Shan - Differentiating regions - http://conway.rutgers.edu/~ccshan/wiki/blog/posts/Differentiation/&lt;/p&gt;
+&lt;p&gt;[6] Shan - Differentiating regions - &lt;a href=&quot;http://conway.rutgers.edu/~ccshan/wiki/blog/posts/Differentiation/&quot;&gt;http://conway.rutgers.edu/~ccshan/wiki/blog/posts/Differentiation/&lt;/a&gt;&lt;/p&gt;
 
-&lt;p&gt;[7] Innes - Don’t unroll adjoint : Differentiating SSA-form programs - https://arxiv.org/abs/1810.07951&lt;/p&gt;
+&lt;p&gt;[7] Innes - Don’t unroll adjoint : Differentiating SSA-form programs - &lt;a href=&quot;https://arxiv.org/abs/1810.07951&quot;&gt;https://arxiv.org/abs/1810.07951&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;[8] Wang, Rompf - A Language and Compiler View on Differentiable Programming - ICLR 2018 &lt;a href=&quot;https://openreview.net/forum?id=SJxJtYkPG&quot;&gt;https://openreview.net/forum?id=SJxJtYkPG&lt;/a&gt;&lt;/p&gt;
 </description>
         <pubDate>Mon, 19 Jul 2021 00:00:00 +0200</pubDate>
         <link>https://ocramz.github.io/haskell/automatic-differentiation/machine-learning/2021/07/19/ad-delcont.html</link>
