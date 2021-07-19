@@ -11,6 +11,8 @@ A few days ago I stumbled upon a recent line of research that applies an old ide
 
 I will first "read aloud" the reference Scala implementation from the original paper [1] and then present a Haskell library I've written that implements its ideas, [ad-delcont](https://hackage.haskell.org/package/ad-delcont).
 
+Along the way I'll also show a worked example that helped me understand how delimited continuations work.
+
 In a [previous post](http://ocramz.github.io/automatic-differentiation/machine-learning/2021/07/18/ad.html) I illustrated the fundamentals of automatic differentiation, as implemented in most imperative programming languages. It turns out, a computational tape is not the only available option for inverting control flow, in sufficiently advanced programming languages. Read on !
 
 
@@ -76,13 +78,13 @@ t1 = resetT $ do
     x = 1 -- input
     cons w = lift $ modify (w :)
   r <- shiftT $ \k -> do
-    cons x -- initial state uses the input
-    let y = succ x -- compute a function of the input
-    z <- lift $ k y -- delegate to the continuation k
-    cons z -- mutate state with the return value of k
-    pure y
-  cons 0
-  pure r
+    cons x
+    let y = x + 1
+    z <- lift $ k y -- 1)
+    cons z -- 4)
+    pure y -- 5)
+  cons 0 -- 2)
+  pure r -- 3)
 {% endhighlight %}
 
 Running the example above elucidates how the _order_ of variable mutation is affected :
@@ -104,7 +106,7 @@ Running the example above elucidates how the _order_ of variable mutation is aff
 
 Pretty mind-bending the first time I saw it.
 
-## ad-delcont
+## Introducing `ad-delcont`
 
 As it turns out, this non-local control flow (i.e. delegating to a continuation, doing something and returning to the starting point with the results) is well suited to implementing the forward-backward computation needed in reverse-mode automatic differentiation.
 
@@ -112,20 +114,19 @@ In order to convince myself of this, I've implemented the ideas of [1] in a [Has
 
 
 {% highlight haskell %}
-op1_ :: db -- ^ zero
-     -> (da -> da -> da) -- ^ plus
-     -> (a -> (b, db -> da)) -- ^ returns : (function result, pullback)
-     -> ContT x (ST s) (DVar s a da)
-     -> ContT x (ST s) (DVar s b db)
-op1_ zero plusa f ioa = do
+op1 :: (Num da, Num db) =>
+       (a -> (b, db -> da)) -- ^ returns : (function result, pullback)
+    -> ContT x (ST s) (DVar s a da)
+    -> ContT x (ST s) (DVar s a db)  
+op1 f ioa = do
   ra <- ioa
   (D xa _) <- lift $ readSTRef ra
   let (xb, g) = f xa -- 1)
   shiftT $ \ k -> lift $ do
-    rb <- var xb zero -- 2)
+    rb <- var xb 0 -- 2)
     ry <- k rb -- 3)
     (D _ yd) <- readSTRef rb -- 4)
-    modifySTRef' ra (withD (\rda0 -> rda0 `plusa` g yd)) -- 5)
+    modifySTRef' ra (withD (\rda0 -> rda0 + g yd)) -- 5)
     pure ry
 {% endhighlight %}
 
@@ -133,17 +134,42 @@ The above is a pretty faithful port of the Scala version (for a unary function s
 
 1) Compute the function result and bind the function inputs to the adjoint updating function (the "pullback")
 
-2) Allocate a fresh STRef @rb@ with the function result and @zero@ adjoint part
+2) Allocate a fresh STRef `rb` with the function result and 0 adjoint part
 
-3) @rb@ is passed downstream as an argument to the continuation @k@, with the expectation that the STRef will be mutated
+3) `rb` is passed downstream as an argument to the continuation `k`, with the expectation that the STRef will be mutated
 
-4) Upon returning from the @k@ (bouncing from the boundary of @resetT@), the mutated STRef is read back in
+4) Upon returning from the `k` (bouncing from the boundary of `resetT`), the mutated STRef is read back in
 
-5) The adjoint part of the input variable is updated using @rb@ and the result of the continuation is returned.
+5) The adjoint part of the input variable is updated using `rb` (accumulating the adjoints by summing them together, as this variable might be used in more than one program branch) and the result of the continuation is returned.
 
+In the Haskell case, we pass mutable references to dual variables within the `ST` monad (introduced in [2] and readily available in the Haskell standard library at `Control.Monad.ST`)
 
+The code computing the gradient is correspondingly succint :
+
+{% highlight haskell %}
+rad1 :: (Num a, Num b) =>
+        (forall s . AD' s a -> AD' s b) -- ^ function to be differentiated
+     -> a -- ^ function argument
+     -> (b, a) -- ^ (result, adjoint)
+rad1 f x = runST $ do
+  xr <- var x 0
+  zr' <- evalContT $
+    resetT $ do
+      let
+        z = f (AD (pure xr))
+      zr <- unAD z
+      lift $ modifySTRef' zr (withD (const 1))
+      pure zr
+  (D z _) <- readSTRef zr'
+  (D _ x_bar) <- readSTRef xr
+  pure (z, x_bar)
+{% endhighlight %}
+
+`AD` is just a newtype wrapper around `ContT .. (ST s) .. `, in which the return variables are `STRef`s containing our dual variables.
 
 
 ## References
 
 [1] Wang, Rompf - A Language and Compiler View on Differentiable Programming - ICLR 2018 [https://openreview.net/forum?id=SJxJtYkPG](https://openreview.net/forum?id=SJxJtYkPG)
+
+[2] Launchbury, Peyton Jones - Lazy Functional State Threads - PLDI 1994 [https://www.microsoft.com/en-us/research/wp-content/uploads/1994/06/lazy-functional-state-threads.pdf](https://www.microsoft.com/en-us/research/wp-content/uploads/1994/06/lazy-functional-state-threads.pdf)
