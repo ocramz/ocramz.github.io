@@ -12,7 +12,11 @@ From allocating wartime resources at the dawn of digital computing in the 1940s,
 
 <img src="https://ocramz.github.io/images/ad-delcont-gd.png" alt="Gradient descent"/>
 
-Many real-world optimization problems require iterative improvement of a set of continuous parameters (a "parameter vector") with respect to a chosen cost function, and are tackled with some form of gradient descent. The _gradient_ is a vector in parameter space that points to the direction of fastest increase in the function at a given point. The picture above shows a two-parameter cost function $$J(\theta_0, \theta_1)$$ evaluated at a fine grid of points and a possible evolution of the gradient descent algorithm. It's worth stressing that many practical cost functions are very costly to evaluate, and often have many more parameters, making full visualization impossible in all but toy examples such as the one above. Computing the gradient of a cost function implemented as a computer program is then a fundamental and ubiquitous task.
+Many real-world optimization problems cannot be solved in closed form, therefore they require iterative improvement of a set of continuous parameters (a _parameter vector_) with respect to a chosen _cost function_, and are tackled with some form of _gradient descent_. The _gradient_ is a vector in parameter space that points to the direction of fastest increase in the function at a given point. The picture above shows a two-parameter cost function $$J(\theta_0, \theta_1)$$ evaluated at a fine grid of points and a possible evolution of the gradient descent algorithm. 
+
+It's worth emphasizing that most cost functions of interest are very costly to evaluate, and often have many more parameters than two, making visualization impossible in all but toy examples such as the one above. Computing, and following, the gradient of a cost function implemented as a computer program is then a fundamental and ubiquitous task.
+
+In this post I will give a rather informal account of AD techniques, along with some pointers to literature.
 
 ## The chain rule
 
@@ -28,30 +32,33 @@ The sensitivity of output variable $$z$$ to input variable $$v$$ must account fo
 
 ## Differentiating computer programs
 
-Automatic differentiation (AD) is a family of techniques that compute the gradient of computer programs, given a program that computes the cost function of interest. This is achieved in two major ways, i.e. while the user program is compiled or as it runs. Source code transformation is an interesting approach that has yielded many successful implementations (from ADIFOR [3] to Jax [4]) but in this post I will focus on the latter formulation, for the sake of brevity. 
+Automatic differentiation (AD) is a family of techniques that compute the gradient of computer programs, given a program that computes the cost function of interest. This is achieved in two major ways, i.e. while the user program is compiled or as it runs. Source code transformation is an interesting approach that has yielded many successful implementations (from ADIFOR [3] to Jax [4]) but in this post I will focus on the latter formulation. 
 
-I emphasize "computer programs" because these contain control structures such as conditionals (`if` .. `then` .. `else`), loops (`while`) and numerous other features which do not appear in mathematical notation and must be accounted for in a dedicated way.
+I emphasize "computer programs" because these contain control structures such as conditionals (`if` .. `then` .. `else`), loops (`while`), variable mutation and numerous other features which do not appear in mathematical notation and must be accounted for in a dedicated way.
 
-A numerical program is usually built up using the syntactic rules of the host language from a library of elementary functional building blocks (e.g. implementations of the exponential or sine function, `exp()`, `sin()`, and so on). This means that computing the overall sensitivity of this program must involve applying the (multivariate) chain rule of differentiation, while accounting for the program's control flow as outlined above.
+A numerical program is usually built up using the syntactic rules of the host language from a library of elementary functional building blocks (e.g. implementations of the exponential or sine function, `exp()`, `sin()`, and so on). This means that computing the overall sensitivity of this program must involve applying the (multivariate) chain rule of differentiation, while accounting for the semantics of the programming language, as outlined above.
 
 When turning theory into practice, one is confronted with multiple implementation details, summarised in this diagram (from [5]) :
 
 <img src="https://ocramz.github.io/images/ad-delcont-overview.png" alt="Differentiation of mathematical code"/>
 
-Interested readers who are dissatisfied with my handwaving might want to refer to [5] for a thorough overview of the design choices that go into an AD system (symbolic vs. numerical vs. algorithmic, forward vs. reverse, etc.).
-
-
+Interested readers who are dissatisfied with my handwaving (there are lots of details under the hood!) might want to refer to [5] for a overview of the design choices that go into an AD system (symbolic vs. numerical vs. algorithmic, compile-time vs. interpreted, forward vs. reverse, etc.).
 
 ## Forward and Reverse
 
-Ignoring for the sake of exposition all AD approaches that rely on source code analysis and transformation, there remain essentially _two_ ways of computing the derivative of a composite function via "non-standard" evaluation (NSE). By NSE here we mean augmenting the expression variables with adjoint values (thus computing with "dual numbers" [6], i.e. a first-order Taylor approximation of the expression) and potentially modifying the program execution flow in order to accumulate these adjoints (the sensitivities we're interested in). This might sound esoteric but it's actually pretty straightforward as I hope I'll be able to show you.
+Ignoring for the sake of brevity all AD approaches that rely on source code transformation, there remain essentially _two_ ways of computing the derivative of a composite function via _non-standard evaluation_ (NSE). By NSE here we mean augmenting the expression variables with adjoint values (thus computing with "dual numbers" [6], i.e. a first-order Taylor approximation of the expression) and potentially modifying the program execution flow in order to accumulate these adjoints (the sensitivities we're interested in).
 
 *Forward-mode AD* is the more intuitive of the two approaches : in this case both the expression value(s) at any intermediate expression node $$v_j$$ and the adjoints $$\partial_{x_i} v_j$$ are computed in the natural reduction order of the expression: by applying function values to their input arguments. Reduction of functions of dual values follows the familiar rules of derivative calculus. The algorithm computes one partial derivative at a time, by setting the dual part of the variable of interest to 1 and all others to 0. Once the expression is fully reduced, $$\partial_{x_i} z$$ can be read off the dual part of the result. The computational cost of this algorithm is one full expression evaluation per input variable.
 
-*Reverse-mode AD* (also called "backpropagation" in the neural networks literature) achieves the same result by tracking the reduction order while reducing the expression ("forward"), initializing all duals to $$0$$, and accumulating the adjoints "backwards" from the output variable $$z$$, which is initialized with the trivial adjoint $$\partial_z z = 1$$. Each expression node represents a function, and it is augmented ("overloaded", in programming language terminology) with a _pullback_ [7] that computes how input sensitivities change as a function of output sensitivities. Upon returning to a given expression node $$v_i$$, its adjoints are summed over (following the multivariate chain rule shown above). In this case, all parameter sensitivities are computed at once at the end of the backwards sweep. The cost of reverse-mode AD is two full expression evaluations per _output_ variable, which might save a lot of work when applied to expressions with many more input variables, as often happens in optimization and machine learning.
+*Reverse-mode AD* (also called "backpropagation" in the neural networks literature) achieves the same result by tracking the reduction order while reducing the expression ("forward"), initializing all duals to $$0$$, and accumulating the adjoints "backwards" from the output variable $$z$$, which is initialized with the trivial adjoint $$\partial_z z = 1$$. Each expression node represents a function, and it is augmented ("overloaded", in programming language terminology) with a _pullback_ [7] that computes how input sensitivities change as a function of output sensitivities. Upon returning to a given expression node $$v_i$$, its adjoints are summed over (following the multivariate chain rule shown in a previous paragraph). In this case, all parameter sensitivities are computed at once at the end of the backwards sweep. The cost of reverse-mode AD is two full expression evaluations per _output_ variable, which might save a lot of work when applied to expressions with many more input variables, as often happens in optimization and machine learning.
 
 Both AD modes have a long history of successful implementations. Many implementations of reverse-mode AD "reify" the user function into a data structure that tracks the execution history and the functional dependencies (a "Wengert tape"), in order to play the program backwards when accumulating the adjoints.
 
+Program reification is not the only way to implement reverse-mode AD. In an upcoming blog post I will show a purely-functional approach based on delimited continuations which is both elegant and efficient.
+
+## Discussion
+
+Automatic differentiation gained widespread adoption in the recent years; it embodies relatively simple ideas but requires some care in implementation. I hope this post has clarified (or at least demystified) the principles behind these tools, and can serve to inspire the next generation of AD frameworks. 
 
 ## References
 

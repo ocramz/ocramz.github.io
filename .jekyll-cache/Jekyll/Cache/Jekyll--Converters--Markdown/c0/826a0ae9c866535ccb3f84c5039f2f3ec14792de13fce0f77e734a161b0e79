@@ -1,0 +1,61 @@
+I"j$<h2 id="introduction">Introduction</h2>
+
+<p>A few days ago I stumbled upon a recent line of research that applies an old idea from functional programming languages (continuation passing) to an old idea from numerical computing (automatic differentiation, AD). The result is an elegant algorithm, which remains close to the textbook treatment of reverse-mode AD (“backpropagation”) and could rightly be considered its “natural” implementation.</p>
+
+<p>I will first “read aloud” the reference Scala implementation from the original paper [1] and then present a Haskell library I’ve written that implements its ideas, <a href="https://hackage.haskell.org/package/ad-delcont">ad-delcont</a>.</p>
+
+<p>In a <a href="http://ocramz.github.io/automatic-differentiation/machine-learning/2021/07/18/ad.html">previous post</a> I illustrated the fundamentals of automatic differentiation, as implemented in most imperative programming languages. It turns out, a computational tape is not the only available option for inverting control flow, in sufficiently advanced programming languages. Read on !</p>
+
+<h2 id="staring-at-higher-order-scala-code">Staring at higher-order Scala code</h2>
+
+<p>Here are two short code snippets that originally appeared in [1].</p>
+
+<figure class="highlight"><pre><code class="language-scala" data-lang="scala"><span class="k">class</span> <span class="nc">NumR</span> <span class="o">(</span><span class="k">val</span> <span class="nv">x</span><span class="k">:</span> <span class="kt">Double</span><span class="o">,</span> <span class="k">var</span> <span class="n">d</span><span class="k">:</span> <span class="kt">Double</span><span class="o">)</span> <span class="o">{</span>
+  <span class="k">def</span> <span class="nf">+</span> <span class="o">(</span><span class="n">that</span><span class="k">:</span> <span class="kt">NumR</span><span class="o">)</span> <span class="k">=</span> <span class="n">shift</span> <span class="o">{</span> <span class="o">(</span><span class="n">k</span><span class="k">:</span> <span class="kt">NumR</span> <span class="o">=&gt;</span> <span class="nc">Unit</span><span class="o">)</span> <span class="k">=&gt;</span>
+    <span class="k">val</span> <span class="nv">y</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">NumR</span><span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="py">x</span> <span class="o">+</span> <span class="nv">that</span><span class="o">.</span><span class="py">x</span><span class="o">,</span> <span class="mf">0.0</span><span class="o">);</span>
+    <span class="nf">k</span><span class="o">(</span><span class="n">y</span><span class="o">);</span>
+    <span class="k">this</span><span class="o">.</span><span class="py">d</span> <span class="o">+=</span> <span class="nv">y</span><span class="o">.</span><span class="py">d</span><span class="o">;</span> 
+    <span class="nv">that</span><span class="o">.</span><span class="py">d</span> <span class="o">+=</span> <span class="nv">y</span><span class="o">.</span><span class="py">d</span>
+  <span class="o">}</span></code></pre></figure>
+
+<p>This is a Scala implementation of a “plus” function that sums dual numbers. It relies on delimited continuations to achieve non-local control flow and specify what to do when a continuation returns. My Scala is pretty rusty so this has been a head scratcher for a while. I’ll first document how my train of thought went while reading this code, and then try to break it down more formally.</p>
+
+<p>1) First we declare a dual number type <code class="language-plaintext highlighter-rouge">NumR</code>, which has fields <code class="language-plaintext highlighter-rouge">.x</code> and <code class="language-plaintext highlighter-rouge">.d</code> for the primal and adjoint respectively.</p>
+
+<p>2) The implementation of the <code class="language-plaintext highlighter-rouge">+</code> method is bracketed within a mysterious <code class="language-plaintext highlighter-rouge">shift</code> higher-order function, which declares a continuation <code class="language-plaintext highlighter-rouge">k</code>, to be used later.</p>
+
+<p>3) A temporary variable <code class="language-plaintext highlighter-rouge">y</code> is declared, having 0 dual value.</p>
+
+<p>4) <code class="language-plaintext highlighter-rouge">k</code> is then applied to <code class="language-plaintext highlighter-rouge">y</code>, and the return value of <code class="language-plaintext highlighter-rouge">k</code> is discarded (?!). This must mean that <code class="language-plaintext highlighter-rouge">y</code> itself is mutated within the execution of <code class="language-plaintext highlighter-rouge">k</code>.</p>
+
+<p>5) Upon returning from <code class="language-plaintext highlighter-rouge">k</code>, the dual part of the mutated value of <code class="language-plaintext highlighter-rouge">y</code> is used to update by accumulation (see multivariate chain rule section above) the dual parts of the input variables <code class="language-plaintext highlighter-rouge">x</code> and <code class="language-plaintext highlighter-rouge">y</code>.</p>
+
+<p>The other interesting snippet is where the adjoint accumulation process kicks off and the gradient is redurned:</p>
+
+<figure class="highlight"><pre><code class="language-scala" data-lang="scala"><span class="k">def</span> <span class="nf">grad</span><span class="o">(</span><span class="n">f</span><span class="k">:</span> <span class="kt">NumR</span> <span class="o">=&gt;</span> <span class="nc">NumR</span> <span class="nd">@cps</span><span class="o">[</span><span class="kt">Unit</span><span class="o">]</span> <span class="o">)(</span><span class="n">x</span><span class="k">:</span> <span class="kt">Double</span><span class="o">)</span> <span class="k">=</span> <span class="o">{</span>
+  <span class="k">val</span> <span class="nv">z</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">NumR</span><span class="o">(</span><span class="n">x</span><span class="o">,</span> <span class="mf">0.0</span><span class="o">)</span>
+  <span class="n">reset</span>  <span class="o">{</span> 
+    <span class="nf">f</span><span class="o">(</span><span class="n">z</span><span class="o">).</span><span class="py">d</span> <span class="k">=</span> <span class="mf">1.0</span> <span class="o">}</span>
+  <span class="nv">z</span><span class="o">.</span><span class="py">d</span>
+  <span class="o">}</span></code></pre></figure>
+
+<p>1) <code class="language-plaintext highlighter-rouge">grad</code> is a higher-order function that takes the function to be differentiated as a parameter (<code class="language-plaintext highlighter-rouge">f: NumR =&gt; NumR</code>, overloaded to act upon dual numbers <code class="language-plaintext highlighter-rouge">NumR</code>), and an evaluation point <code class="language-plaintext highlighter-rouge">x</code>.</p>
+
+<p>2) A temporary variable <code class="language-plaintext highlighter-rouge">z</code> is declared, having 0 adjoint part and primal part corresponding to the point of interest <code class="language-plaintext highlighter-rouge">x</code>. <code class="language-plaintext highlighter-rouge">z</code> will accumulate the partial derivative of <code class="language-plaintext highlighter-rouge">f</code> with respect to <code class="language-plaintext highlighter-rouge">x</code>.</p>
+
+<p>3) Within another mysterious bracket called <code class="language-plaintext highlighter-rouge">reset</code>, the function <code class="language-plaintext highlighter-rouge">f</code> is evaluated at <code class="language-plaintext highlighter-rouge">z</code>, then its adjoint part is set to 1.</p>
+
+<p>4) Upon exiting from the <code class="language-plaintext highlighter-rouge">reset</code> block, the adjoint part of <code class="language-plaintext highlighter-rouge">z</code> is returned : the partial derivative \(\partial_x f\) we are interested in.</p>
+
+<h2 id="delimited-continuations-with-shiftreset">Delimited continuations with <code class="language-plaintext highlighter-rouge">shift</code>/<code class="language-plaintext highlighter-rouge">reset</code></h2>
+
+<p>The <code class="language-plaintext highlighter-rouge">shift</code> and <code class="language-plaintext highlighter-rouge">reset</code> operators are one variant of a notion of <a href="https://en.wikipedia.org/wiki/Delimited_continuation">“delimited continuations”</a>, which originated in the Lisp community in the late 80s: the scope of a continuation is made explicit, thus control can “bounce back” at points specified by the programmer. More specifically, <code class="language-plaintext highlighter-rouge">shift</code> “captures” a continuation, and <code class="language-plaintext highlighter-rouge">reset</code> delimits it.</p>
+
+<p>I’m not a programming languages researcher so diving into the original publications didn’t exactly help. Fortunately, a bit of tinkering can save us hours of poring over old papers.</p>
+
+<h2 id="ad-delcont">ad-delcont</h2>
+
+<h2 id="references">References</h2>
+
+<p>[1] Wang, Rompf - A Language and Compiler View on Differentiable Programming - ICLR 2018 <a href="https://openreview.net/forum?id=SJxJtYkPG">https://openreview.net/forum?id=SJxJtYkPG</a></p>
+:ET

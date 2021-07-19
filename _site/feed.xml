@@ -6,8 +6,8 @@
 </description>
     <link>https://ocramz.github.io/</link>
     <atom:link href="https://ocramz.github.io/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Mon, 19 Jul 2021 15:28:21 +0200</pubDate>
-    <lastBuildDate>Mon, 19 Jul 2021 15:28:21 +0200</lastBuildDate>
+    <pubDate>Mon, 19 Jul 2021 16:18:44 +0200</pubDate>
+    <lastBuildDate>Mon, 19 Jul 2021 16:18:44 +0200</lastBuildDate>
     <generator>Jekyll v4.2.0</generator>
     
       <item>
@@ -16,13 +16,13 @@
 
 &lt;p&gt;A few days ago I stumbled upon a recent line of research that applies an old idea from functional programming languages (continuation passing) to an old idea from numerical computing (automatic differentiation, AD). The result is an elegant algorithm, which remains close to the textbook treatment of reverse-mode AD (“backpropagation”) and could rightly be considered its “natural” implementation.&lt;/p&gt;
 
-&lt;p&gt;In this post I will give an informal but thorough account of the theory and present a library I’ve published that implements it, &lt;a href=&quot;https://hackage.haskell.org/package/ad-delcont&quot;&gt;ad-delcont&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;I will first “read aloud” the reference Scala implementation from the original paper [1] and then present a Haskell library I’ve written that implements its ideas, &lt;a href=&quot;https://hackage.haskell.org/package/ad-delcont&quot;&gt;ad-delcont&lt;/a&gt;.&lt;/p&gt;
 
-&lt;p&gt;It turns out, a computational tape is not the only available option for inverting control flow, in sufficiently advanced programming languages. Read on !&lt;/p&gt;
+&lt;p&gt;In a &lt;a href=&quot;http://ocramz.github.io/automatic-differentiation/machine-learning/2021/07/18/ad.html&quot;&gt;previous post&lt;/a&gt; I illustrated the fundamentals of automatic differentiation, as implemented in most imperative programming languages. It turns out, a computational tape is not the only available option for inverting control flow, in sufficiently advanced programming languages. Read on !&lt;/p&gt;
 
-&lt;h2 id=&quot;reverse-mode-ad-with-delimited-continuations&quot;&gt;Reverse-mode AD with delimited continuations&lt;/h2&gt;
+&lt;h2 id=&quot;staring-at-higher-order-scala-code&quot;&gt;Staring at higher-order Scala code&lt;/h2&gt;
 
-&lt;p&gt;The long introduction was meant to set the stage for two short code snippet that originally appeared in [1].&lt;/p&gt;
+&lt;p&gt;Here are two short code snippets that originally appeared in [1].&lt;/p&gt;
 
 &lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-scala&quot; data-lang=&quot;scala&quot;&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;NumR&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Double&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;d&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Double&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
   &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;that&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;NumR&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;shift&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;k&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;NumR&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Unit&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;=&amp;gt;&lt;/span&gt;
@@ -32,7 +32,7 @@
     &lt;span class=&quot;nv&quot;&gt;that&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;py&quot;&gt;d&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+=&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;y&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;py&quot;&gt;d&lt;/span&gt;
   &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
-&lt;p&gt;This is a Scala implementation of an “overloaded” summing function over dual numbers that relies on delimited continuations to achieve non-local control flow and specify what to do when a continuation returns. My Scala is pretty rusty so this has been a head scratcher for a while. I’ll first document how my train of thought went while reading this code, and then try to break it down more formally.&lt;/p&gt;
+&lt;p&gt;This is a Scala implementation of a “plus” function that sums dual numbers. It relies on delimited continuations to achieve non-local control flow and specify what to do when a continuation returns. My Scala is pretty rusty so this has been a head scratcher for a while. I’ll first document how my train of thought went while reading this code, and then try to break it down more formally.&lt;/p&gt;
 
 &lt;p&gt;1) First we declare a dual number type &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;NumR&lt;/code&gt;, which has fields &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;.x&lt;/code&gt; and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;.d&lt;/code&gt; for the primal and adjoint respectively.&lt;/p&gt;
 
@@ -55,11 +55,17 @@
 
 &lt;p&gt;1) &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;grad&lt;/code&gt; is a higher-order function that takes the function to be differentiated as a parameter (&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;f: NumR =&amp;gt; NumR&lt;/code&gt;, overloaded to act upon dual numbers &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;NumR&lt;/code&gt;), and an evaluation point &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;x&lt;/code&gt;.&lt;/p&gt;
 
-&lt;p&gt;2) A temporary variable &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;z&lt;/code&gt; is declared, having 0 adjoint part and primal part corresponding to the point of interest &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;x&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;2) A temporary variable &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;z&lt;/code&gt; is declared, having 0 adjoint part and primal part corresponding to the point of interest &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;x&lt;/code&gt;. &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;z&lt;/code&gt; will accumulate the partial derivative of &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;f&lt;/code&gt; with respect to &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;x&lt;/code&gt;.&lt;/p&gt;
 
-&lt;p&gt;3) Within another mysterious bracket &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;reset&lt;/code&gt;, the function &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;f&lt;/code&gt; is evaluated at &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;z&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;3) Within another mysterious bracket called &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;reset&lt;/code&gt;, the function &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;f&lt;/code&gt; is evaluated at &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;z&lt;/code&gt;, then its adjoint part is set to 1.&lt;/p&gt;
 
-&lt;h2 id=&quot;delimited-continuations&quot;&gt;Delimited continuations&lt;/h2&gt;
+&lt;p&gt;4) Upon exiting from the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;reset&lt;/code&gt; block, the adjoint part of &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;z&lt;/code&gt; is returned : the partial derivative \(\partial_x f\) we are interested in.&lt;/p&gt;
+
+&lt;h2 id=&quot;delimited-continuations-with-shiftreset&quot;&gt;Delimited continuations with &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;shift&lt;/code&gt;/&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;reset&lt;/code&gt;&lt;/h2&gt;
+
+&lt;p&gt;The &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;shift&lt;/code&gt; and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;reset&lt;/code&gt; operators are one variant of a notion of &lt;a href=&quot;https://en.wikipedia.org/wiki/Delimited_continuation&quot;&gt;“delimited continuations”&lt;/a&gt;, which originated in the Lisp community in the late 80s: the scope of a continuation is made explicit, thus control can “bounce back” at points specified by the programmer. More specifically, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;shift&lt;/code&gt; “captures” a continuation, and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;reset&lt;/code&gt; delimits it.&lt;/p&gt;
+
+&lt;p&gt;I’m not a programming languages researcher so diving into the original publications didn’t exactly help. Fortunately, a bit of tinkering can save us hours of poring over old papers.&lt;/p&gt;
 
 &lt;h2 id=&quot;ad-delcont&quot;&gt;ad-delcont&lt;/h2&gt;
 
@@ -68,8 +74,8 @@
 &lt;p&gt;[1] Wang, Rompf - A Language and Compiler View on Differentiable Programming - ICLR 2018 &lt;a href=&quot;https://openreview.net/forum?id=SJxJtYkPG&quot;&gt;https://openreview.net/forum?id=SJxJtYkPG&lt;/a&gt;&lt;/p&gt;
 </description>
         <pubDate>Mon, 19 Jul 2021 00:00:00 +0200</pubDate>
-        <link>https://ocramz.github.io/haskell/automatic-differentiation/machine-learning/2021/07/19/ad-delcont.html</link>
-        <guid isPermaLink="true">https://ocramz.github.io/haskell/automatic-differentiation/machine-learning/2021/07/19/ad-delcont.html</guid>
+        <link>https://ocramz.github.io/haskell/automatic-differentiation/machine-learning/scala/2021/07/19/ad-delcont.html</link>
+        <guid isPermaLink="true">https://ocramz.github.io/haskell/automatic-differentiation/machine-learning/scala/2021/07/19/ad-delcont.html</guid>
         
         
         <category>Haskell</category>
@@ -77,6 +83,8 @@
         <category>automatic-differentiation</category>
         
         <category>machine-learning</category>
+        
+        <category>Scala</category>
         
       </item>
     
@@ -88,7 +96,11 @@
 
 &lt;p&gt;&lt;img src=&quot;https://ocramz.github.io/images/ad-delcont-gd.png&quot; alt=&quot;Gradient descent&quot; /&gt;&lt;/p&gt;
 
-&lt;p&gt;Many real-world optimization problems require iterative improvement of a set of continuous parameters (a “parameter vector”) with respect to a chosen cost function, and are tackled with some form of gradient descent. The &lt;em&gt;gradient&lt;/em&gt; is a vector in parameter space that points to the direction of fastest increase in the function at a given point. The picture above shows a two-parameter cost function \(J(\theta_0, \theta_1)\) evaluated at a fine grid of points and a possible evolution of the gradient descent algorithm. It’s worth stressing that many practical cost functions are very costly to evaluate, and often have many more parameters, making full visualization impossible in all but toy examples such as the one above. Computing the gradient of a cost function implemented as a computer program is then a fundamental and ubiquitous task.&lt;/p&gt;
+&lt;p&gt;Many real-world optimization problems cannot be solved in closed form, therefore they require iterative improvement of a set of continuous parameters (a &lt;em&gt;parameter vector&lt;/em&gt;) with respect to a chosen &lt;em&gt;cost function&lt;/em&gt;, and are tackled with some form of &lt;em&gt;gradient descent&lt;/em&gt;. The &lt;em&gt;gradient&lt;/em&gt; is a vector in parameter space that points to the direction of fastest increase in the function at a given point. The picture above shows a two-parameter cost function \(J(\theta_0, \theta_1)\) evaluated at a fine grid of points and a possible evolution of the gradient descent algorithm.&lt;/p&gt;
+
+&lt;p&gt;It’s worth emphasizing that most cost functions of interest are very costly to evaluate, and often have many more parameters than two, making visualization impossible in all but toy examples such as the one above. Computing, and following, the gradient of a cost function implemented as a computer program is then a fundamental and ubiquitous task.&lt;/p&gt;
+
+&lt;p&gt;In this post I will give a rather informal account of AD techniques, along with some pointers to literature.&lt;/p&gt;
 
 &lt;h2 id=&quot;the-chain-rule&quot;&gt;The chain rule&lt;/h2&gt;
 
@@ -104,27 +116,33 @@
 
 &lt;h2 id=&quot;differentiating-computer-programs&quot;&gt;Differentiating computer programs&lt;/h2&gt;
 
-&lt;p&gt;Automatic differentiation (AD) is a family of techniques that compute the gradient of computer programs, given a program that computes the cost function of interest. This is achieved in two major ways, i.e. while the user program is compiled or as it runs. Source code transformation is an interesting approach that has yielded many successful implementations (from ADIFOR [3] to Jax [4]) but in this post I will focus on the latter formulation, for the sake of brevity.&lt;/p&gt;
+&lt;p&gt;Automatic differentiation (AD) is a family of techniques that compute the gradient of computer programs, given a program that computes the cost function of interest. This is achieved in two major ways, i.e. while the user program is compiled or as it runs. Source code transformation is an interesting approach that has yielded many successful implementations (from ADIFOR [3] to Jax [4]) but in this post I will focus on the latter formulation.&lt;/p&gt;
 
-&lt;p&gt;I emphasize “computer programs” because these contain control structures such as conditionals (&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;if&lt;/code&gt; .. &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;then&lt;/code&gt; .. &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;else&lt;/code&gt;), loops (&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;while&lt;/code&gt;) and numerous other features which do not appear in mathematical notation and must be accounted for in a dedicated way.&lt;/p&gt;
+&lt;p&gt;I emphasize “computer programs” because these contain control structures such as conditionals (&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;if&lt;/code&gt; .. &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;then&lt;/code&gt; .. &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;else&lt;/code&gt;), loops (&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;while&lt;/code&gt;), variable mutation and numerous other features which do not appear in mathematical notation and must be accounted for in a dedicated way.&lt;/p&gt;
 
-&lt;p&gt;A numerical program is usually built up using the syntactic rules of the host language from a library of elementary functional building blocks (e.g. implementations of the exponential or sine function, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;exp()&lt;/code&gt;, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;sin()&lt;/code&gt;, and so on). This means that computing the overall sensitivity of this program must involve applying the (multivariate) chain rule of differentiation, while accounting for the program’s control flow as outlined above.&lt;/p&gt;
+&lt;p&gt;A numerical program is usually built up using the syntactic rules of the host language from a library of elementary functional building blocks (e.g. implementations of the exponential or sine function, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;exp()&lt;/code&gt;, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;sin()&lt;/code&gt;, and so on). This means that computing the overall sensitivity of this program must involve applying the (multivariate) chain rule of differentiation, while accounting for the semantics of the programming language, as outlined above.&lt;/p&gt;
 
 &lt;p&gt;When turning theory into practice, one is confronted with multiple implementation details, summarised in this diagram (from [5]) :&lt;/p&gt;
 
 &lt;p&gt;&lt;img src=&quot;https://ocramz.github.io/images/ad-delcont-overview.png&quot; alt=&quot;Differentiation of mathematical code&quot; /&gt;&lt;/p&gt;
 
-&lt;p&gt;Interested readers who are dissatisfied with my handwaving might want to refer to [5] for a thorough overview of the design choices that go into an AD system (symbolic vs. numerical vs. algorithmic, forward vs. reverse, etc.).&lt;/p&gt;
+&lt;p&gt;Interested readers who are dissatisfied with my handwaving (there are lots of details under the hood!) might want to refer to [5] for a overview of the design choices that go into an AD system (symbolic vs. numerical vs. algorithmic, compile-time vs. interpreted, forward vs. reverse, etc.).&lt;/p&gt;
 
 &lt;h2 id=&quot;forward-and-reverse&quot;&gt;Forward and Reverse&lt;/h2&gt;
 
-&lt;p&gt;Ignoring for the sake of exposition all AD approaches that rely on source code analysis and transformation, there remain essentially &lt;em&gt;two&lt;/em&gt; ways of computing the derivative of a composite function via “non-standard” evaluation (NSE). By NSE here we mean augmenting the expression variables with adjoint values (thus computing with “dual numbers” [6], i.e. a first-order Taylor approximation of the expression) and potentially modifying the program execution flow in order to accumulate these adjoints (the sensitivities we’re interested in). This might sound esoteric but it’s actually pretty straightforward as I hope I’ll be able to show you.&lt;/p&gt;
+&lt;p&gt;Ignoring for the sake of brevity all AD approaches that rely on source code transformation, there remain essentially &lt;em&gt;two&lt;/em&gt; ways of computing the derivative of a composite function via &lt;em&gt;non-standard evaluation&lt;/em&gt; (NSE). By NSE here we mean augmenting the expression variables with adjoint values (thus computing with “dual numbers” [6], i.e. a first-order Taylor approximation of the expression) and potentially modifying the program execution flow in order to accumulate these adjoints (the sensitivities we’re interested in).&lt;/p&gt;
 
 &lt;p&gt;&lt;em&gt;Forward-mode AD&lt;/em&gt; is the more intuitive of the two approaches : in this case both the expression value(s) at any intermediate expression node \(v_j\) and the adjoints \(\partial_{x_i} v_j\) are computed in the natural reduction order of the expression: by applying function values to their input arguments. Reduction of functions of dual values follows the familiar rules of derivative calculus. The algorithm computes one partial derivative at a time, by setting the dual part of the variable of interest to 1 and all others to 0. Once the expression is fully reduced, \(\partial_{x_i} z\) can be read off the dual part of the result. The computational cost of this algorithm is one full expression evaluation per input variable.&lt;/p&gt;
 
-&lt;p&gt;&lt;em&gt;Reverse-mode AD&lt;/em&gt; (also called “backpropagation” in the neural networks literature) achieves the same result by tracking the reduction order while reducing the expression (“forward”), initializing all duals to \(0\), and accumulating the adjoints “backwards” from the output variable \(z\), which is initialized with the trivial adjoint \(\partial_z z = 1\). Each expression node represents a function, and it is augmented (“overloaded”, in programming language terminology) with a &lt;em&gt;pullback&lt;/em&gt; [7] that computes how input sensitivities change as a function of output sensitivities. Upon returning to a given expression node \(v_i\), its adjoints are summed over (following the multivariate chain rule shown above). In this case, all parameter sensitivities are computed at once at the end of the backwards sweep. The cost of reverse-mode AD is two full expression evaluations per &lt;em&gt;output&lt;/em&gt; variable, which might save a lot of work when applied to expressions with many more input variables, as often happens in optimization and machine learning.&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;Reverse-mode AD&lt;/em&gt; (also called “backpropagation” in the neural networks literature) achieves the same result by tracking the reduction order while reducing the expression (“forward”), initializing all duals to \(0\), and accumulating the adjoints “backwards” from the output variable \(z\), which is initialized with the trivial adjoint \(\partial_z z = 1\). Each expression node represents a function, and it is augmented (“overloaded”, in programming language terminology) with a &lt;em&gt;pullback&lt;/em&gt; [7] that computes how input sensitivities change as a function of output sensitivities. Upon returning to a given expression node \(v_i\), its adjoints are summed over (following the multivariate chain rule shown in a previous paragraph). In this case, all parameter sensitivities are computed at once at the end of the backwards sweep. The cost of reverse-mode AD is two full expression evaluations per &lt;em&gt;output&lt;/em&gt; variable, which might save a lot of work when applied to expressions with many more input variables, as often happens in optimization and machine learning.&lt;/p&gt;
 
 &lt;p&gt;Both AD modes have a long history of successful implementations. Many implementations of reverse-mode AD “reify” the user function into a data structure that tracks the execution history and the functional dependencies (a “Wengert tape”), in order to play the program backwards when accumulating the adjoints.&lt;/p&gt;
+
+&lt;p&gt;Program reification is not the only way to implement reverse-mode AD. In an upcoming blog post I will show a purely-functional approach based on delimited continuations which is both elegant and efficient.&lt;/p&gt;
+
+&lt;h2 id=&quot;discussion&quot;&gt;Discussion&lt;/h2&gt;
+
+&lt;p&gt;Automatic differentiation gained widespread adoption in the recent years; it embodies relatively simple ideas but requires some care in implementation. I hope this post has clarified (or at least demystified) the principles behind these tools, and can serve to inspire the next generation of AD frameworks.&lt;/p&gt;
 
 &lt;h2 id=&quot;references&quot;&gt;References&lt;/h2&gt;
 
