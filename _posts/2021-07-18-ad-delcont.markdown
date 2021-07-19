@@ -67,7 +67,7 @@ I'm not a programming languages researcher so diving into the original publicati
 
 `shift`/`reset` are readily available in the [`transformers`](https://hackage.haskell.org/package/transformers) Haskell library, within module `Control.Monad.Trans.Cont`.
 
-Here's a minimal snippet to use both `shift` and `reset`, composed with variable "mutation" in the `State` monad, to elucidate how the _order_ of variable mutation is affected :
+Here's a minimal snippet to use both `shift` and `reset`, composed with variable "mutation" in the `State` monad. To be precise we will use the continuation _monad transformer_ `ContT`, and its corresponding operators `shiftT` and `resetT`, to compose other "effects" together with continuations:
 
 {% highlight haskell %}
 t1 :: ContT Int (State [Int]) Int
@@ -85,11 +85,24 @@ t1 = resetT $ do
   pure r
 {% endhighlight %}
 
+Running the example above elucidates how the _order_ of variable mutation is affected :
+
 {% highlight haskell %}
 λ> flip runState [] $ evalContT t1
 (2,[2,0,1])
 {% endhighlight %}
 
+1) As soon as the continuation `k` is invoked (applied to value `y = 2`), control _exits_ from the `shiftT` block,
+
+2) continues at the next line (in this case appending a `0` to the list used as state variable),
+
+3) and when the "boundary" defined by the lexical scope enclosed by `resetT` is encountered, control _returns_ to the next line after the one that called `k`.
+
+4) At this point (within `shiftT`) `z` is bound to whatever was returned by the `resetT` block, which in turn is the value `k` was applied to, i.e. `y = 2`. This is why the next appended value is a 2.
+
+5) Since `k` was resolved by a matching `resetT`, there's nothing else to do and execution terminates.
+
+Pretty mind-bending the first time I saw it.
 
 ## ad-delcont
 

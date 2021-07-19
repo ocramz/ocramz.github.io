@@ -6,8 +6,8 @@
 </description>
     <link>https://ocramz.github.io/</link>
     <atom:link href="https://ocramz.github.io/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Mon, 19 Jul 2021 16:27:37 +0200</pubDate>
-    <lastBuildDate>Mon, 19 Jul 2021 16:27:37 +0200</lastBuildDate>
+    <pubDate>Mon, 19 Jul 2021 16:41:14 +0200</pubDate>
+    <lastBuildDate>Mon, 19 Jul 2021 16:41:14 +0200</lastBuildDate>
     <generator>Jekyll v4.2.0</generator>
     
       <item>
@@ -69,7 +69,7 @@
 
 &lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;shift&lt;/code&gt;/&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;reset&lt;/code&gt; are readily available in the &lt;a href=&quot;https://hackage.haskell.org/package/transformers&quot;&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;transformers&lt;/code&gt;&lt;/a&gt; Haskell library, within module &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Control.Monad.Trans.Cont&lt;/code&gt;.&lt;/p&gt;
 
-&lt;p&gt;Here’s a minimal snippet to use both &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;shift&lt;/code&gt; and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;reset&lt;/code&gt;, composed with variable “mutation” in the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;State&lt;/code&gt; monad, to elucidate how the &lt;em&gt;order&lt;/em&gt; of variable mutation is affected :&lt;/p&gt;
+&lt;p&gt;Here’s a minimal snippet to use both &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;shift&lt;/code&gt; and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;reset&lt;/code&gt;, composed with variable “mutation” in the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;State&lt;/code&gt; monad. To be precise we will use the continuation &lt;em&gt;monad transformer&lt;/em&gt; &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ContT&lt;/code&gt;, and its corresponding operators &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;shiftT&lt;/code&gt; and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;resetT&lt;/code&gt;, to compose other “effects” together with continuations:&lt;/p&gt;
 
 &lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-haskell&quot; data-lang=&quot;haskell&quot;&gt;&lt;span class=&quot;n&quot;&gt;t1&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;::&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;ContT&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Int&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;State&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;Int&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;])&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Int&lt;/span&gt;
 &lt;span class=&quot;n&quot;&gt;t1&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;resetT&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;$&lt;/span&gt; &lt;span class=&quot;kr&quot;&gt;do&lt;/span&gt;
@@ -85,8 +85,22 @@
   &lt;span class=&quot;n&quot;&gt;cons&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;
   &lt;span class=&quot;n&quot;&gt;pure&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;r&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
+&lt;p&gt;Running the example above elucidates how the &lt;em&gt;order&lt;/em&gt; of variable mutation is affected :&lt;/p&gt;
+
 &lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-haskell&quot; data-lang=&quot;haskell&quot;&gt;&lt;span class=&quot;err&quot;&gt;λ&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;flip&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;runState&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;[]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;$&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;evalContT&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;t1&lt;/span&gt;
 &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;])&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;1) As soon as the continuation &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;k&lt;/code&gt; is invoked (applied to value &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;y = 2&lt;/code&gt;), control &lt;em&gt;exits&lt;/em&gt; from the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;shiftT&lt;/code&gt; block,&lt;/p&gt;
+
+&lt;p&gt;2) continues at the next line (in this case appending a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;0&lt;/code&gt; to the list used as state variable),&lt;/p&gt;
+
+&lt;p&gt;3) and when the “boundary” defined by the lexical scope enclosed by &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;resetT&lt;/code&gt; is encountered, control &lt;em&gt;returns&lt;/em&gt; to the next line after the one that called &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;k&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;4) At this point (within &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;shiftT&lt;/code&gt;) &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;z&lt;/code&gt; is bound to whatever was returned by the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;resetT&lt;/code&gt; block, which in turn is the value &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;k&lt;/code&gt; was applied to, i.e. &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;y = 2&lt;/code&gt;. This is why the next appended value is a 2.&lt;/p&gt;
+
+&lt;p&gt;5) Since &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;k&lt;/code&gt; was resolved by a matching &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;resetT&lt;/code&gt;, there’s nothing else to do and execution terminates.&lt;/p&gt;
+
+&lt;p&gt;Pretty mind-bending the first time I saw it.&lt;/p&gt;
 
 &lt;h2 id=&quot;ad-delcont&quot;&gt;ad-delcont&lt;/h2&gt;
 
