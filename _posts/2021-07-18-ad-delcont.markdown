@@ -11,17 +11,17 @@ A few days ago I stumbled upon a recent line of research that applies an old ide
 
 In this post I will give an informal account of the theory and present a library I've published that implements it, [ad-delcont](https://hackage.haskell.org/package/ad-delcont).
 
-## Automatic differentiation
+## Optimization
 
 From allocating wartime resources at the dawn of digital computing in the 1940s, to fitting the parameters of today's gigantic language models, numerical optimization is an ever-present computational challenge. Optimization is nowadays a vast and fascinating subject of applied mathematics and computer science, and there are many excellent introductory texts on it, which I recommend keeping at hand [1,2].
 
 <img src="https://ocramz.github.io/images/ad-delcont-gd.png" alt="Gradient descent"/>
 
-Many real-world optimization problems require iterative approximation of a set of continuous parameters (a "parameter vector"), and are tackled with some form of gradient descent. The _gradient_ is a vector in parameter space that points to the direction of fastest increase in the function at a given point. Computing the gradient of a cost function implemented as a computer program is then a fundamental and ubiquitous task.
-
-Automatic differentiation is a family of techniques that compute the gradient of computer programs, given a program that computes the cost function of interest. This is achieved in two major ways, i.e. while the user program is compiled or as it runs. Source code transformation is an interesting approach that has yielded many successful implementations (from ADIFOR [3] to Jax [4]) but in this post I will focus on the latter formulation, for the sake of brevity. 
+Many real-world optimization problems require iterative improvement of a set of continuous parameters (a "parameter vector") with respect to a chosen cost function, and are tackled with some form of gradient descent. The _gradient_ is a vector in parameter space that points to the direction of fastest increase in the function at a given point. The picture above shows a two-parameter cost function $$J(\theta_0, \theta_1)$$ evaluated at a fine grid of points and a possible evolution of the gradient descent algorithm. It's worth stressing that many practical cost functions are very costly to evaluate, and often have many more parameters, making full visualization impossible in all but toy examples such as the one above. Computing the gradient of a cost function implemented as a computer program is then a fundamental and ubiquitous task.
 
 ## Differentiating computer programs
+
+Automatic differentiation is a family of techniques that compute the gradient of computer programs, given a program that computes the cost function of interest. This is achieved in two major ways, i.e. while the user program is compiled or as it runs. Source code transformation is an interesting approach that has yielded many successful implementations (from ADIFOR [3] to Jax [4]) but in this post I will focus on the latter formulation, for the sake of brevity. 
 
 I emphasize "computer programs" because these contain control structures such as conditionals (`if` .. `then` .. `else`), loops (`while`) and numerous other features which do not appear in mathematical notation and must be accounted for in a dedicated way.
 
