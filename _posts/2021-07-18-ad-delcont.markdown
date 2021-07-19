@@ -34,7 +34,7 @@ This is a Scala implementation of a "plus" function that sums dual numbers. It r
 
 2) The implementation of the `+` method is bracketed within a mysterious `shift` higher-order function, which declares a continuation `k`, to be used later. 
 
-3) A temporary variable `y` is declared, having 0 dual value. 
+3) A temporary variable `y` is declared, having 0 dual value and primal value set to the function result. 
 
 4) `k` is then applied to `y`, and the return value of `k` is discarded (?!). This must mean that `y` itself is mutated within the execution of `k`. 
 
@@ -59,12 +59,36 @@ def grad(f: NumR => NumR @cps[Unit] )(x: Double) = {
 
 4) Upon exiting from the `reset` block, the adjoint part of `z` is returned : the partial derivative $$\partial_x f$$ we are interested in.
 
-## Delimited continuations with `shift`/`reset`
+## Delimited continuations in Haskell with `shift`/`reset`
 
 The `shift` and `reset` operators are one variant of a notion of ["delimited continuations"](https://en.wikipedia.org/wiki/Delimited_continuation), which originated in the Lisp community in the late 80s: the scope of a continuation is made explicit, thus control can "bounce back" at points specified by the programmer. More specifically, `shift` "captures" a continuation, and `reset` delimits it. 
 
 I'm not a programming languages researcher so diving into the original publications didn't exactly help. Fortunately, a bit of tinkering can save us hours of poring over old papers.
 
+`shift`/`reset` are readily available in the [`transformers`](https://hackage.haskell.org/package/transformers) Haskell library, within module `Control.Monad.Trans.Cont`.
+
+Here's a minimal snippet to use both `shift` and `reset`, composed with variable "mutation" in the `State` monad, to elucidate how the _order_ of variable mutation is affected :
+
+{% highlight haskell %}
+t1 :: ContT Int (State [Int]) Int
+t1 = resetT $ do
+  let
+    x = 1 -- input
+    cons w = lift $ modify (w :)
+  r <- shiftT $ \k -> do
+    cons x -- initial state uses the input
+    let y = succ x -- compute a function of the input
+    z <- lift $ k y -- delegate to the continuation k
+    cons z -- mutate state with the return value of k
+    pure y
+  cons 0
+  pure r
+{% endhighlight %}
+
+{% highlight haskell %}
+λ> flip runState [] $ evalContT t1
+(2,[2,0,1])
+{% endhighlight %}
 
 
 ## ad-delcont
