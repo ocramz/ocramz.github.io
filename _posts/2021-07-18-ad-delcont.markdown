@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Reverse-mode automatic differentiation with delimited continuations
-date: 2021-06-22
+date: 2021-07-19
 categories: Haskell automatic-differentiation machine-learning
 ---
 
@@ -17,7 +17,7 @@ From allocating wartime resources at the dawn of digital computing in the 1940s,
 
 Many real-world optimization problems require iterative approximation of a set of continuous parameters (a "parameter vector"), and are tackled with some form of gradient descent. The _gradient_ is a vector in parameter space that points to the direction of fastest increase in the function at a given point. Computing the gradient of a cost function implemented as a computer program is then a fundamental and ubiquitous task.
 
-Automatic differentiation is a family of techniques that compute the gradient of computer programs, given a program that computes the cost function of interest. This is achieved in two major ways, i.e. while the user program is compiled or as it runs. Source code transformation is an interesting approach that has yielded many successful implementations (from ADIFOR [3] to PyTorch [4]) but in this post I will focus on the latter formulation, for the sake of brevity.
+Automatic differentiation is a family of techniques that compute the gradient of computer programs, given a program that computes the cost function of interest. This is achieved in two major ways, i.e. while the user program is compiled or as it runs. Source code transformation is an interesting approach that has yielded many successful implementations (from ADIFOR [3] to Jax [4]) but in this post I will focus on the latter formulation, for the sake of brevity. 
 
 ## Differentiating computer programs
 
@@ -27,17 +27,17 @@ A numerical program is usually built up using the syntactic rules of the host la
 
 ## The chain rule
 
-Suppose we have a simple function $$z(x, y)$$, with $$x(u, v)$$ and $$y(u, v)$$. The dependencies between these variables can be drawn as a directed acyclic graph (a tree, specifically) :
+Suppose we have a composite function $$z(x, y)$$, with $$x(u, v)$$ and $$y(u, v)$$, in which all components are differentiable at least once. The dependencies between these variables can be drawn as a directed acyclic graph (a tree, specifically) :
 
 <img src="https://ocramz.github.io/images/ad-delcont-multi-chain-rule.png" alt="Multivariate chain rule" width="400"/>
 
 Image from [these slides](http://www.math.ucsd.edu/~gptesler/20c/slides/20c_chainrule_f18-handout.pdf).
 
-The sensitivity of output variable $$z$$ to input variable $$v$$ must account for all the possible paths taken while "traversing" from $$v$$ to $$z$$, i.e. while applying the functions at the intermediate tree nodes to their arguments. The multivariate chain rule tells us to sum these contributions : $$\partial_v z = \partial_v x \cdot \partial_x z + \partial_v y \cdot \partial_y z $$. This leads to another insight : from the point of view of $$z$$, computing the sensitivity of a function to each of its parameters $$u$$ and $$v$$ is a form of "credit assignment".
+The sensitivity of output variable $$z$$ to input variable $$v$$ must account for all the possible paths taken while "traversing" from $$v$$ to $$z$$, i.e. while applying the functions at the intermediate tree nodes to their arguments. The multivariate chain rule tells us to sum these contributions : $$\partial_v z = \partial_v x \cdot \partial_x z + \partial_v y \cdot \partial_y z $$. At this point, a practitioner is faced with multiple implementation choices, summarised in this diagram:
 
-This is the essence of "reverse mode" AD : it's a way to assign, algorithmically, partial credit for the variation in $$z$$ to each of the expression inputs and intermediate variables.
+<img src="https://ocramz.github.io/images/ad-delcont-overview.png" alt="Differentiation of mathematical code"/>
 
-
+Interested readers might want to refer to [5] for a thorough overview of the design choices that go into an AD system (symbolic vs. numerical vs. algorithmic, forward vs. reverse, etc.).
 
 
 
@@ -70,4 +70,8 @@ class NumR (val x: Double, var d: Double) {
 
 [3] ADIFOR - https://www.anl.gov/partnerships/adifor-automatic-differentiation-of-fortran-77
 
-[4] PyTorch - https://pytorch.org/ 
+[4] Jax - https://github.com/google/jax
+
+[5] Baydin, Pearlmutter - Automatic differentiation of machine learning algorithms - https://arxiv.org/abs/1404.7456
+
+
