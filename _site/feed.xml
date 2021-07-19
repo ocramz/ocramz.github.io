@@ -6,8 +6,8 @@
 </description>
     <link>https://ocramz.github.io/</link>
     <atom:link href="https://ocramz.github.io/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Mon, 19 Jul 2021 12:43:37 +0200</pubDate>
-    <lastBuildDate>Mon, 19 Jul 2021 12:43:37 +0200</lastBuildDate>
+    <pubDate>Mon, 19 Jul 2021 15:28:21 +0200</pubDate>
+    <lastBuildDate>Mon, 19 Jul 2021 15:28:21 +0200</lastBuildDate>
     <generator>Jekyll v4.2.0</generator>
     
       <item>
@@ -18,53 +18,11 @@
 
 &lt;p&gt;In this post I will give an informal but thorough account of the theory and present a library I’ve published that implements it, &lt;a href=&quot;https://hackage.haskell.org/package/ad-delcont&quot;&gt;ad-delcont&lt;/a&gt;.&lt;/p&gt;
 
-&lt;h2 id=&quot;optimization&quot;&gt;Optimization&lt;/h2&gt;
-
-&lt;p&gt;From allocating wartime resources at the dawn of digital computing in the 1940s, to fitting the parameters of today’s gigantic language models, numerical optimization is an ever-present computational challenge. Optimization is nowadays a vast and fascinating subject of applied mathematics and computer science, and there are many excellent introductory texts on it, which I recommend keeping at hand [1,2].&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://ocramz.github.io/images/ad-delcont-gd.png&quot; alt=&quot;Gradient descent&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Many real-world optimization problems require iterative improvement of a set of continuous parameters (a “parameter vector”) with respect to a chosen cost function, and are tackled with some form of gradient descent. The &lt;em&gt;gradient&lt;/em&gt; is a vector in parameter space that points to the direction of fastest increase in the function at a given point. The picture above shows a two-parameter cost function \(J(\theta_0, \theta_1)\) evaluated at a fine grid of points and a possible evolution of the gradient descent algorithm. It’s worth stressing that many practical cost functions are very costly to evaluate, and often have many more parameters, making full visualization impossible in all but toy examples such as the one above. Computing the gradient of a cost function implemented as a computer program is then a fundamental and ubiquitous task.&lt;/p&gt;
-
-&lt;h2 id=&quot;differentiating-computer-programs&quot;&gt;Differentiating computer programs&lt;/h2&gt;
-
-&lt;p&gt;Automatic differentiation is a family of techniques that compute the gradient of computer programs, given a program that computes the cost function of interest. This is achieved in two major ways, i.e. while the user program is compiled or as it runs. Source code transformation is an interesting approach that has yielded many successful implementations (from ADIFOR [3] to Jax [4]) but in this post I will focus on the latter formulation, for the sake of brevity.&lt;/p&gt;
-
-&lt;p&gt;I emphasize “computer programs” because these contain control structures such as conditionals (&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;if&lt;/code&gt; .. &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;then&lt;/code&gt; .. &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;else&lt;/code&gt;), loops (&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;while&lt;/code&gt;) and numerous other features which do not appear in mathematical notation and must be accounted for in a dedicated way.&lt;/p&gt;
-
-&lt;p&gt;A numerical program is usually built up using the syntactic rules of the host language from a library of elementary functional building blocks (e.g. implementations of the exponential or sine function, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;exp()&lt;/code&gt;, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;sin()&lt;/code&gt;, and so on). This means that computing the overall sensitivity of this program must involve applying the (multivariate) chain rule of differentiation, while accounting for the program’s control flow as outlined above.&lt;/p&gt;
-
-&lt;p&gt;At this point, a practitioner is faced with multiple implementation details, summarised in this diagram (from [5]) :&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://ocramz.github.io/images/ad-delcont-overview.png&quot; alt=&quot;Differentiation of mathematical code&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Interested readers might want to read [5] for a thorough overview of the design choices that go into an AD system (symbolic vs. numerical vs. algorithmic, forward vs. reverse, etc.).&lt;/p&gt;
-
-&lt;h2 id=&quot;the-chain-rule&quot;&gt;The chain rule&lt;/h2&gt;
-
-&lt;p&gt;Suppose we have a composite function \(z(x, y)\), with \(x(u, v)\) and \(y(u, v)\), in which all components are differentiable at least once. The dependencies between these variables can be drawn as a directed acyclic graph :&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://ocramz.github.io/images/ad-delcont-multi-chain-rule.png&quot; alt=&quot;Multivariate chain rule&quot; width=&quot;400&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Image from &lt;a href=&quot;http://www.math.ucsd.edu/~gptesler/20c/slides/20c_chainrule_f18-handout.pdf&quot;&gt;these slides&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;The sensitivity of output variable \(z\) to input variable \(v\) must account for all the possible paths taken while “traversing” from \(v\) to \(z\), i.e. while applying the functions at the intermediate tree nodes to their arguments. The multivariate chain rule tells us to sum these contributions : \(\partial_v z = \partial_v x \cdot \partial_x z + \partial_v y \cdot \partial_y z\).&lt;/p&gt;
-
-&lt;h2 id=&quot;forward-and-reverse&quot;&gt;Forward and Reverse&lt;/h2&gt;
-
-&lt;p&gt;Ignoring for the sake of exposition all AD approaches that rely on source code analysis and transformation, there remain essentially &lt;em&gt;two&lt;/em&gt; ways of computing the derivative of a composite function via “non-standard” evaluation (NSE). By NSE here we mean augmenting the expression variables with adjoint values (thus computing with “dual numbers” [6], i.e. a first-order Taylor approximation of the expression) and potentially modifying the program execution flow in order to accumulate these adjoints (the sensitivities we’re interested in). This might sound esoteric but it’s actually pretty straightforward as I hope I’ll be able to show you.&lt;/p&gt;
-
-&lt;p&gt;&lt;em&gt;Forward-mode AD&lt;/em&gt; is the more intuitive of the two approaches : in this case both the expression value(s) at any intermediate expression node \(v_j\) and the adjoints \(\partial_{x_i} v_j\) are computed in the natural reduction order of the expression: by applying function values to their input arguments. Reduction of functions of dual values follows the familiar rules of derivative calculus. The algorithm computes one partial derivative at a time, by setting the dual part of the variable of interest to 1 and all others to 0. Once the expression is fully reduced, \(\partial_{x_i} z\) can be read off the dual part of the result. The computational cost of this algorithm is one full expression evaluation per input variable.&lt;/p&gt;
-
-&lt;p&gt;&lt;em&gt;Reverse-mode AD&lt;/em&gt; achieves the same result by tracking the reduction order while reducing the expression (“forward”), initializing all duals to \(0\), and accumulating the adjoints “backwards” from the output variable \(z\), which is initialized with the trivial adjoint \(\partial_z z = 1\). Each expression node represents a function, and it is augmented (“overloaded”, in programming language terminology) with a “pullback” [7] that computes how input sensitivities change as a function of output sensitivities. Upon returning to a given expression node \(v_i\), its adjoints are summed over (following the multivariate chain rule shown above). In this case, all parameter sensitivities are computed at once at the end of the backwards sweep. The cost of reverse-mode AD is two full expression evaluations per &lt;em&gt;output&lt;/em&gt; variable, which might save a lot of work when applied to expressions with many more input variables, as often happens in optimization and machine learning.&lt;/p&gt;
-
-&lt;p&gt;Both AD modes have a long history of successful implementations. Many implementations of reverse-mode AD “reify” the user function into a data structure that tracks the execution history and the functional dependencies (a “Wengert tape”), in order to play the program backwards when accumulating the adjoints.&lt;/p&gt;
-
 &lt;p&gt;It turns out, a computational tape is not the only available option for inverting control flow, in sufficiently advanced programming languages. Read on !&lt;/p&gt;
 
 &lt;h2 id=&quot;reverse-mode-ad-with-delimited-continuations&quot;&gt;Reverse-mode AD with delimited continuations&lt;/h2&gt;
 
-&lt;p&gt;The long introduction was meant to set the stage for two short code snippet that originally appeared in [8].&lt;/p&gt;
+&lt;p&gt;The long introduction was meant to set the stage for two short code snippet that originally appeared in [1].&lt;/p&gt;
 
 &lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-scala&quot; data-lang=&quot;scala&quot;&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;NumR&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Double&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;d&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Double&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
   &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;that&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;NumR&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;shift&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;k&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;NumR&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Unit&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;=&amp;gt;&lt;/span&gt;
@@ -107,6 +65,69 @@
 
 &lt;h2 id=&quot;references&quot;&gt;References&lt;/h2&gt;
 
+&lt;p&gt;[1] Wang, Rompf - A Language and Compiler View on Differentiable Programming - ICLR 2018 &lt;a href=&quot;https://openreview.net/forum?id=SJxJtYkPG&quot;&gt;https://openreview.net/forum?id=SJxJtYkPG&lt;/a&gt;&lt;/p&gt;
+</description>
+        <pubDate>Mon, 19 Jul 2021 00:00:00 +0200</pubDate>
+        <link>https://ocramz.github.io/haskell/automatic-differentiation/machine-learning/2021/07/19/ad-delcont.html</link>
+        <guid isPermaLink="true">https://ocramz.github.io/haskell/automatic-differentiation/machine-learning/2021/07/19/ad-delcont.html</guid>
+        
+        
+        <category>Haskell</category>
+        
+        <category>automatic-differentiation</category>
+        
+        <category>machine-learning</category>
+        
+      </item>
+    
+      <item>
+        <title>An introduction to automatic differentiation</title>
+        <description>&lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;/h2&gt;
+
+&lt;p&gt;From allocating wartime resources at the dawn of digital computing in the 1940s, to fitting the parameters of today’s enormous language models, numerical optimization is an ever-present computational challenge. Optimization is nowadays a vast and fascinating subject of applied mathematics and computer science, and there are many excellent introductory texts on it, which I recommend keeping at hand [1,2].&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://ocramz.github.io/images/ad-delcont-gd.png&quot; alt=&quot;Gradient descent&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Many real-world optimization problems require iterative improvement of a set of continuous parameters (a “parameter vector”) with respect to a chosen cost function, and are tackled with some form of gradient descent. The &lt;em&gt;gradient&lt;/em&gt; is a vector in parameter space that points to the direction of fastest increase in the function at a given point. The picture above shows a two-parameter cost function \(J(\theta_0, \theta_1)\) evaluated at a fine grid of points and a possible evolution of the gradient descent algorithm. It’s worth stressing that many practical cost functions are very costly to evaluate, and often have many more parameters, making full visualization impossible in all but toy examples such as the one above. Computing the gradient of a cost function implemented as a computer program is then a fundamental and ubiquitous task.&lt;/p&gt;
+
+&lt;h2 id=&quot;the-chain-rule&quot;&gt;The chain rule&lt;/h2&gt;
+
+&lt;p&gt;At the highest level of abstraction, a numerical program maps computes one or more output values from a set of input variables. In the absence of computational “side effects” (e.g. downloading data, querying for user input) and ignoring non-termination, the program can be considered a “pure” function, and its derivatives are readily understood with the tools of elementary calculus.&lt;/p&gt;
+
+&lt;p&gt;Suppose we are looking at a composite function \(z(x, y)\), with \(x(u, v)\) and \(y(u, v)\), in which all components are differentiable at least once. The dependencies between these variables can be drawn as a directed acyclic graph :&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://ocramz.github.io/images/ad-delcont-multi-chain-rule.png&quot; alt=&quot;Multivariate chain rule&quot; width=&quot;400&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Image from &lt;a href=&quot;http://www.math.ucsd.edu/~gptesler/20c/slides/20c_chainrule_f18-handout.pdf&quot;&gt;these slides&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;The sensitivity of output variable \(z\) to input variable \(v\) must account for all the possible paths taken while “traversing” from \(v\) to \(z\), i.e. while applying the functions at the intermediate tree nodes to their arguments. The multivariate chain rule tells us to sum these contributions : \(\partial_v z = \partial_v x \cdot \partial_x z + \partial_v y \cdot \partial_y z\).&lt;/p&gt;
+
+&lt;h2 id=&quot;differentiating-computer-programs&quot;&gt;Differentiating computer programs&lt;/h2&gt;
+
+&lt;p&gt;Automatic differentiation (AD) is a family of techniques that compute the gradient of computer programs, given a program that computes the cost function of interest. This is achieved in two major ways, i.e. while the user program is compiled or as it runs. Source code transformation is an interesting approach that has yielded many successful implementations (from ADIFOR [3] to Jax [4]) but in this post I will focus on the latter formulation, for the sake of brevity.&lt;/p&gt;
+
+&lt;p&gt;I emphasize “computer programs” because these contain control structures such as conditionals (&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;if&lt;/code&gt; .. &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;then&lt;/code&gt; .. &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;else&lt;/code&gt;), loops (&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;while&lt;/code&gt;) and numerous other features which do not appear in mathematical notation and must be accounted for in a dedicated way.&lt;/p&gt;
+
+&lt;p&gt;A numerical program is usually built up using the syntactic rules of the host language from a library of elementary functional building blocks (e.g. implementations of the exponential or sine function, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;exp()&lt;/code&gt;, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;sin()&lt;/code&gt;, and so on). This means that computing the overall sensitivity of this program must involve applying the (multivariate) chain rule of differentiation, while accounting for the program’s control flow as outlined above.&lt;/p&gt;
+
+&lt;p&gt;When turning theory into practice, one is confronted with multiple implementation details, summarised in this diagram (from [5]) :&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://ocramz.github.io/images/ad-delcont-overview.png&quot; alt=&quot;Differentiation of mathematical code&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Interested readers who are dissatisfied with my handwaving might want to refer to [5] for a thorough overview of the design choices that go into an AD system (symbolic vs. numerical vs. algorithmic, forward vs. reverse, etc.).&lt;/p&gt;
+
+&lt;h2 id=&quot;forward-and-reverse&quot;&gt;Forward and Reverse&lt;/h2&gt;
+
+&lt;p&gt;Ignoring for the sake of exposition all AD approaches that rely on source code analysis and transformation, there remain essentially &lt;em&gt;two&lt;/em&gt; ways of computing the derivative of a composite function via “non-standard” evaluation (NSE). By NSE here we mean augmenting the expression variables with adjoint values (thus computing with “dual numbers” [6], i.e. a first-order Taylor approximation of the expression) and potentially modifying the program execution flow in order to accumulate these adjoints (the sensitivities we’re interested in). This might sound esoteric but it’s actually pretty straightforward as I hope I’ll be able to show you.&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;Forward-mode AD&lt;/em&gt; is the more intuitive of the two approaches : in this case both the expression value(s) at any intermediate expression node \(v_j\) and the adjoints \(\partial_{x_i} v_j\) are computed in the natural reduction order of the expression: by applying function values to their input arguments. Reduction of functions of dual values follows the familiar rules of derivative calculus. The algorithm computes one partial derivative at a time, by setting the dual part of the variable of interest to 1 and all others to 0. Once the expression is fully reduced, \(\partial_{x_i} z\) can be read off the dual part of the result. The computational cost of this algorithm is one full expression evaluation per input variable.&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;Reverse-mode AD&lt;/em&gt; (also called “backpropagation” in the neural networks literature) achieves the same result by tracking the reduction order while reducing the expression (“forward”), initializing all duals to \(0\), and accumulating the adjoints “backwards” from the output variable \(z\), which is initialized with the trivial adjoint \(\partial_z z = 1\). Each expression node represents a function, and it is augmented (“overloaded”, in programming language terminology) with a &lt;em&gt;pullback&lt;/em&gt; [7] that computes how input sensitivities change as a function of output sensitivities. Upon returning to a given expression node \(v_i\), its adjoints are summed over (following the multivariate chain rule shown above). In this case, all parameter sensitivities are computed at once at the end of the backwards sweep. The cost of reverse-mode AD is two full expression evaluations per &lt;em&gt;output&lt;/em&gt; variable, which might save a lot of work when applied to expressions with many more input variables, as often happens in optimization and machine learning.&lt;/p&gt;
+
+&lt;p&gt;Both AD modes have a long history of successful implementations. Many implementations of reverse-mode AD “reify” the user function into a data structure that tracks the execution history and the functional dependencies (a “Wengert tape”), in order to play the program backwards when accumulating the adjoints.&lt;/p&gt;
+
+&lt;h2 id=&quot;references&quot;&gt;References&lt;/h2&gt;
+
 &lt;p&gt;[1] Nocedal, Wright - Numerical Optimization&lt;/p&gt;
 
 &lt;p&gt;[2] Boyd, Vanderberghe - Convex Optimization - &lt;a href=&quot;https://web.stanford.edu/~boyd/cvxbook/&quot;&gt;https://web.stanford.edu/~boyd/cvxbook/&lt;/a&gt;&lt;/p&gt;
@@ -120,15 +141,11 @@
 &lt;p&gt;[6] Shan - Differentiating regions - &lt;a href=&quot;http://conway.rutgers.edu/~ccshan/wiki/blog/posts/Differentiation/&quot;&gt;http://conway.rutgers.edu/~ccshan/wiki/blog/posts/Differentiation/&lt;/a&gt;&lt;/p&gt;
 
 &lt;p&gt;[7] Innes - Don’t unroll adjoint : Differentiating SSA-form programs - &lt;a href=&quot;https://arxiv.org/abs/1810.07951&quot;&gt;https://arxiv.org/abs/1810.07951&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;[8] Wang, Rompf - A Language and Compiler View on Differentiable Programming - ICLR 2018 &lt;a href=&quot;https://openreview.net/forum?id=SJxJtYkPG&quot;&gt;https://openreview.net/forum?id=SJxJtYkPG&lt;/a&gt;&lt;/p&gt;
 </description>
-        <pubDate>Mon, 19 Jul 2021 00:00:00 +0200</pubDate>
-        <link>https://ocramz.github.io/haskell/automatic-differentiation/machine-learning/2021/07/19/ad-delcont.html</link>
-        <guid isPermaLink="true">https://ocramz.github.io/haskell/automatic-differentiation/machine-learning/2021/07/19/ad-delcont.html</guid>
+        <pubDate>Sun, 18 Jul 2021 00:00:00 +0200</pubDate>
+        <link>https://ocramz.github.io/automatic-differentiation/machine-learning/2021/07/18/ad.html</link>
+        <guid isPermaLink="true">https://ocramz.github.io/automatic-differentiation/machine-learning/2021/07/18/ad.html</guid>
         
-        
-        <category>Haskell</category>
         
         <category>automatic-differentiation</category>
         
