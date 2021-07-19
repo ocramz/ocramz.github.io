@@ -67,7 +67,7 @@ The `shift` and `reset` operators are one variant of a notion of ["delimited con
 
 I'm not a programming languages researcher so diving into the original publications didn't exactly help. Fortunately, a bit of tinkering can save us hours of poring over old papers.
 
-`shift`/`reset` are readily available in the [`transformers`](https://hackage.haskell.org/package/transformers) Haskell library, within module `Control.Monad.Trans.Cont`.
+`shift`/`reset` are readily available in the [`transformers`](https://hackage.haskell.org/package/transformers) Haskell library, within module [`Control.Monad.Trans.Cont`](https://hackage.haskell.org/package/transformers/docs/Control-Monad-Trans-Cont.html).
 
 Here's a minimal snippet to use both `shift` and `reset`, composed with variable "mutation" in the `State` monad. To be precise we will use the continuation _monad transformer_ `ContT`, and its corresponding operators `shiftT` and `resetT`, to compose other "effects" together with continuations:
 
@@ -130,7 +130,7 @@ op1 f ioa = do
     pure ry
 {% endhighlight %}
 
-The above is a pretty faithful port of the Scala version (for a unary function such as $$\sqrt{ \cdot }$$ to reduce clutter), in which the major differences are the explicit tracking of the effects (mutation and continuation) at the type level. How does this work ?
+The above is a pretty faithful port of the Scala version (for a unary function such as $$\sqrt{ \cdot }$$ to reduce clutter), in which the major differences are the explicit tracking of the effects (mutation and continuation) at the type level. How does this work ? Pretty much like its Scala counterpart : 
 
 1) Compute the function result and bind the function inputs to the adjoint updating function (the "pullback")
 

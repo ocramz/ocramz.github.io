@@ -6,8 +6,8 @@
 </description>
     <link>https://ocramz.github.io/</link>
     <atom:link href="https://ocramz.github.io/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Mon, 19 Jul 2021 17:55:35 +0200</pubDate>
-    <lastBuildDate>Mon, 19 Jul 2021 17:55:35 +0200</lastBuildDate>
+    <pubDate>Mon, 19 Jul 2021 17:58:40 +0200</pubDate>
+    <lastBuildDate>Mon, 19 Jul 2021 17:58:40 +0200</lastBuildDate>
     <generator>Jekyll v4.2.0</generator>
     
       <item>
@@ -69,7 +69,7 @@
 
 &lt;p&gt;I’m not a programming languages researcher so diving into the original publications didn’t exactly help. Fortunately, a bit of tinkering can save us hours of poring over old papers.&lt;/p&gt;
 
-&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;shift&lt;/code&gt;/&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;reset&lt;/code&gt; are readily available in the &lt;a href=&quot;https://hackage.haskell.org/package/transformers&quot;&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;transformers&lt;/code&gt;&lt;/a&gt; Haskell library, within module &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Control.Monad.Trans.Cont&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;shift&lt;/code&gt;/&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;reset&lt;/code&gt; are readily available in the &lt;a href=&quot;https://hackage.haskell.org/package/transformers&quot;&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;transformers&lt;/code&gt;&lt;/a&gt; Haskell library, within module &lt;a href=&quot;https://hackage.haskell.org/package/transformers/docs/Control-Monad-Trans-Cont.html&quot;&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Control.Monad.Trans.Cont&lt;/code&gt;&lt;/a&gt;.&lt;/p&gt;
 
 &lt;p&gt;Here’s a minimal snippet to use both &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;shift&lt;/code&gt; and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;reset&lt;/code&gt;, composed with variable “mutation” in the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;State&lt;/code&gt; monad. To be precise we will use the continuation &lt;em&gt;monad transformer&lt;/em&gt; &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ContT&lt;/code&gt;, and its corresponding operators &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;shiftT&lt;/code&gt; and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;resetT&lt;/code&gt;, to compose other “effects” together with continuations:&lt;/p&gt;
 
@@ -125,7 +125,7 @@
     &lt;span class=&quot;n&quot;&gt;modifySTRef'&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ra&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;withD&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;rda0&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;rda0&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;g&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;yd&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;-- 5)&lt;/span&gt;
     &lt;span class=&quot;n&quot;&gt;pure&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ry&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
-&lt;p&gt;The above is a pretty faithful port of the Scala version (for a unary function such as \(\sqrt{ \cdot }\) to reduce clutter), in which the major differences are the explicit tracking of the effects (mutation and continuation) at the type level. How does this work ?&lt;/p&gt;
+&lt;p&gt;The above is a pretty faithful port of the Scala version (for a unary function such as \(\sqrt{ \cdot }\) to reduce clutter), in which the major differences are the explicit tracking of the effects (mutation and continuation) at the type level. How does this work ? Pretty much like its Scala counterpart :&lt;/p&gt;
 
 &lt;p&gt;1) Compute the function result and bind the function inputs to the adjoint updating function (the “pullback”)&lt;/p&gt;
 
