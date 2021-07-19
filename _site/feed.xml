@@ -6,8 +6,8 @@
 </description>
     <link>https://ocramz.github.io/</link>
     <atom:link href="https://ocramz.github.io/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Mon, 19 Jul 2021 17:30:09 +0200</pubDate>
-    <lastBuildDate>Mon, 19 Jul 2021 17:30:09 +0200</lastBuildDate>
+    <pubDate>Mon, 19 Jul 2021 17:43:58 +0200</pubDate>
+    <lastBuildDate>Mon, 19 Jul 2021 17:43:58 +0200</lastBuildDate>
     <generator>Jekyll v4.2.0</generator>
     
       <item>
@@ -139,7 +139,7 @@
 
 &lt;p&gt;In the Haskell case, we pass mutable references to dual variables within the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ST&lt;/code&gt; monad (introduced in [2] and readily available in the Haskell standard library at &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Control.Monad.ST&lt;/code&gt;)&lt;/p&gt;
 
-&lt;p&gt;The code computing the gradient is correspondingly succint :&lt;/p&gt;
+&lt;p&gt;The code computing the gradient is correspondingly succint and maps almost exactly (modulo “lifting” and mutation in &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ST&lt;/code&gt;) to its Scala counterpart :&lt;/p&gt;
 
 &lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-haskell&quot; data-lang=&quot;haskell&quot;&gt;&lt;span class=&quot;n&quot;&gt;rad1&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;::&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;Num&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Num&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt;
         &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;forall&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;s&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;AD'&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;s&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;AD'&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;s&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;-- ^ function to be differentiated&lt;/span&gt;
@@ -158,7 +158,15 @@
   &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;D&lt;/span&gt; &lt;span class=&quot;kr&quot;&gt;_&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x_bar&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;readSTRef&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;xr&lt;/span&gt;
   &lt;span class=&quot;n&quot;&gt;pure&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;z&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x_bar&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
-&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;AD&lt;/code&gt; is just a newtype wrapper around &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ContT .. (ST s) .. &lt;/code&gt;, in which the return variables are &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;STRef&lt;/code&gt;s containing our dual variables.&lt;/p&gt;
+&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;AD&lt;/code&gt; is just a newtype wrapper around &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ContT .. (ST s) .. &lt;/code&gt;, in which the return variables are &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;STRef&lt;/code&gt;s containing our dual variables; it implements the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Num&lt;/code&gt;, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Fractional&lt;/code&gt;, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Floating&lt;/code&gt; interface and the library provides combinators for implementing new typeclasses as well.&lt;/p&gt;
+
+&lt;h2 id=&quot;discussion&quot;&gt;Discussion&lt;/h2&gt;
+
+&lt;p&gt;This was a rather long and technical post. I hope I suceeded in showing how delimited continuations can be put to work to implement a purely-functional version of reverse-mode AD. This is a crucial component in the modern machine learning toolbox, and I find its functional version to be particularly pleasing. Time permitting, I will devise proper benchmarks for it.&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ad-delcont&lt;/code&gt; is a small but fully functional library. It’s lightweight (fits anywhere you use &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;transformers&lt;/code&gt;) and easily extensible as shown in its documentation, e.g. by specializing it to different number-like types. I’m looking forward to see what people will use it for!&lt;/p&gt;
+
+&lt;p&gt;Feel free to contact me on &lt;a href=&quot;https://github.com/ocramz&quot;&gt;github&lt;/a&gt; or &lt;a href=&quot;https://twitter.com/ocramz_yo&quot;&gt;twitter&lt;/a&gt; with feedback or just to have a chat on these and related things!&lt;/p&gt;
 
 &lt;h2 id=&quot;references&quot;&gt;References&lt;/h2&gt;
 

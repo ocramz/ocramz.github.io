@@ -144,7 +144,7 @@ The above is a pretty faithful port of the Scala version (for a unary function s
 
 In the Haskell case, we pass mutable references to dual variables within the `ST` monad (introduced in [2] and readily available in the Haskell standard library at `Control.Monad.ST`)
 
-The code computing the gradient is correspondingly succint :
+The code computing the gradient is correspondingly succint and maps almost exactly (modulo "lifting" and mutation in `ST`) to its Scala counterpart :
 
 {% highlight haskell %}
 rad1 :: (Num a, Num b) =>
@@ -165,7 +165,15 @@ rad1 f x = runST $ do
   pure (z, x_bar)
 {% endhighlight %}
 
-`AD` is just a newtype wrapper around `ContT .. (ST s) .. `, in which the return variables are `STRef`s containing our dual variables.
+`AD` is just a newtype wrapper around `ContT .. (ST s) .. `, in which the return variables are `STRef`s containing our dual variables; it implements the `Num`, `Fractional`, `Floating` interface and the library provides combinators for implementing new typeclasses as well.
+
+## Discussion
+
+This was a rather long and technical post. I hope I suceeded in showing how delimited continuations can be put to work to implement a purely-functional version of reverse-mode AD. This is a crucial component in the modern machine learning toolbox, and I find its functional version to be particularly pleasing. Time permitting, I will devise proper benchmarks for it.
+
+`ad-delcont` is a small but fully functional library. It's lightweight (fits anywhere you use `transformers`) and easily extensible as shown in its documentation, e.g. by specializing it to different number-like types. I'm looking forward to see what people will use it for!
+
+Feel free to contact me on [github](https://github.com/ocramz) or [twitter](https://twitter.com/ocramz_yo) with feedback or just to have a chat on these and related things!
 
 
 ## References
