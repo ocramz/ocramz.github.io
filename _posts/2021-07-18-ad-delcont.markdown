@@ -169,7 +169,7 @@ rad1 f x = runST $ do
 
 ## Discussion
 
-This was a rather long and technical post. I hope I suceeded in showing how delimited continuations can be put to work to implement a purely-functional version of reverse-mode AD. This is a crucial component in the modern machine learning toolbox, and I find its functional version to be particularly pleasing.
+This was a rather long and technical post. I hope I suceeded in showing how delimited continuations can be put to work to implement a purely-functional version of reverse-mode AD. This is a crucial component in the modern optimization and machine learning toolbox, and I find its functional version to be particularly pleasing.
 
 [`ad-delcont`](https://hackage.haskell.org/package/ad-delcont) is a small but fully functional library. It's lightweight (fits anywhere you use `transformers`) and easily extensible as shown in its documentation, e.g. by specializing it to different number-like types. I'm looking forward to see what people will use it for!
 

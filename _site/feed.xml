@@ -6,8 +6,8 @@
 </description>
     <link>https://ocramz.github.io/</link>
     <atom:link href="https://ocramz.github.io/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Mon, 19 Jul 2021 17:47:18 +0200</pubDate>
-    <lastBuildDate>Mon, 19 Jul 2021 17:47:18 +0200</lastBuildDate>
+    <pubDate>Mon, 19 Jul 2021 17:47:47 +0200</pubDate>
+    <lastBuildDate>Mon, 19 Jul 2021 17:47:47 +0200</lastBuildDate>
     <generator>Jekyll v4.2.0</generator>
     
       <item>
@@ -162,7 +162,7 @@
 
 &lt;h2 id=&quot;discussion&quot;&gt;Discussion&lt;/h2&gt;
 
-&lt;p&gt;This was a rather long and technical post. I hope I suceeded in showing how delimited continuations can be put to work to implement a purely-functional version of reverse-mode AD. This is a crucial component in the modern machine learning toolbox, and I find its functional version to be particularly pleasing.&lt;/p&gt;
+&lt;p&gt;This was a rather long and technical post. I hope I suceeded in showing how delimited continuations can be put to work to implement a purely-functional version of reverse-mode AD. This is a crucial component in the modern optimization and machine learning toolbox, and I find its functional version to be particularly pleasing.&lt;/p&gt;
 
 &lt;p&gt;&lt;a href=&quot;https://hackage.haskell.org/package/ad-delcont&quot;&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ad-delcont&lt;/code&gt;&lt;/a&gt; is a small but fully functional library. It’s lightweight (fits anywhere you use &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;transformers&lt;/code&gt;) and easily extensible as shown in its documentation, e.g. by specializing it to different number-like types. I’m looking forward to see what people will use it for!&lt;/p&gt;
 

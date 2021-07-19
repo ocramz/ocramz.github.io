@@ -1,0 +1,162 @@
+I"�c<h2 id="introduction">Introduction</h2>
+
+<p>A few days ago I stumbled upon a recent line of research that applies an old idea from functional programming languages (continuation passing) to an old idea from numerical computing (automatic differentiation, AD). The result is an elegant algorithm, which remains close to the textbook treatment of reverse-mode AD (“backpropagation”) and could rightly be considered its “natural” implementation.</p>
+
+<p>I will first “read aloud” the reference Scala implementation from the original paper [1], and then do the same for the corresponding parts of a Haskell library I’ve written that implements its ideas, <a href="https://hackage.haskell.org/package/ad-delcont">ad-delcont</a>. In the Haskell version all effects are made explicit and tracked at the type level without relying on any compiler plugin.</p>
+
+<p>Along the way I’ll also walk through an elementary example that helped me understand how delimited continuations operate.</p>
+
+<p>In a <a href="http://ocramz.github.io/automatic-differentiation/machine-learning/2021/07/18/ad.html">previous post</a> I illustrated the fundamentals of automatic differentiation, as implemented in most imperative programming languages. It turns out, a computational tape is not the only available option for inverting control flow, in sufficiently advanced programming languages. How can we implement reverse-mode automatic differentiation in a purely-functional setting? Read on!</p>
+
+<h2 id="staring-at-higher-order-scala-code">Staring at higher-order Scala code</h2>
+
+<p>Here are two short code snippets that originally appeared in [1].</p>
+
+<figure class="highlight"><pre><code class="language-scala" data-lang="scala"><span class="k">class</span> <span class="nc">NumR</span> <span class="o">(</span><span class="k">val</span> <span class="nv">x</span><span class="k">:</span> <span class="kt">Double</span><span class="o">,</span> <span class="k">var</span> <span class="n">d</span><span class="k">:</span> <span class="kt">Double</span><span class="o">)</span> <span class="o">{</span>
+  <span class="k">def</span> <span class="nf">+</span> <span class="o">(</span><span class="n">that</span><span class="k">:</span> <span class="kt">NumR</span><span class="o">)</span> <span class="k">=</span> <span class="n">shift</span> <span class="o">{</span> <span class="o">(</span><span class="n">k</span><span class="k">:</span> <span class="kt">NumR</span> <span class="o">=&gt;</span> <span class="nc">Unit</span><span class="o">)</span> <span class="k">=&gt;</span>
+    <span class="k">val</span> <span class="nv">y</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">NumR</span><span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="py">x</span> <span class="o">+</span> <span class="nv">that</span><span class="o">.</span><span class="py">x</span><span class="o">,</span> <span class="mf">0.0</span><span class="o">);</span>
+    <span class="nf">k</span><span class="o">(</span><span class="n">y</span><span class="o">);</span>
+    <span class="k">this</span><span class="o">.</span><span class="py">d</span> <span class="o">+=</span> <span class="nv">y</span><span class="o">.</span><span class="py">d</span><span class="o">;</span> 
+    <span class="nv">that</span><span class="o">.</span><span class="py">d</span> <span class="o">+=</span> <span class="nv">y</span><span class="o">.</span><span class="py">d</span>
+  <span class="o">}</span></code></pre></figure>
+
+<p>This is a Scala implementation of a “plus” function that sums dual numbers. It relies on delimited continuations to achieve non-local control flow and specify what to do when a continuation returns. My Scala is pretty rusty so this has been a head scratcher for a while. I’ll first document how my train of thought went while reading this code, and then try to break it down more formally.</p>
+
+<p>1) First we declare a dual number type <code class="language-plaintext highlighter-rouge">NumR</code>, which has fields <code class="language-plaintext highlighter-rouge">.x</code> and <code class="language-plaintext highlighter-rouge">.d</code> for the primal and adjoint respectively.</p>
+
+<p>2) The implementation of the <code class="language-plaintext highlighter-rouge">+</code> method is bracketed within a mysterious <code class="language-plaintext highlighter-rouge">shift</code> higher-order function, which declares a continuation <code class="language-plaintext highlighter-rouge">k</code>, to be used later.</p>
+
+<p>3) A temporary variable <code class="language-plaintext highlighter-rouge">y</code> is declared, having 0 dual value and primal value set to the function result.</p>
+
+<p>4) <code class="language-plaintext highlighter-rouge">k</code> is then applied to <code class="language-plaintext highlighter-rouge">y</code>, and the return value of <code class="language-plaintext highlighter-rouge">k</code> is discarded (?!). This must mean that <code class="language-plaintext highlighter-rouge">y</code> itself is mutated within the execution of <code class="language-plaintext highlighter-rouge">k</code>.</p>
+
+<p>5) Upon returning from <code class="language-plaintext highlighter-rouge">k</code>, the dual part of the mutated value of <code class="language-plaintext highlighter-rouge">y</code> is used to update by accumulation the dual parts of the input variables <code class="language-plaintext highlighter-rouge">x</code> and <code class="language-plaintext highlighter-rouge">y</code>.</p>
+
+<p>The other interesting snippet is where all the work happens : the function value is computed, the adjoint accumulation process kicks off (in the “backwards” sweep) and the gradient is returned:</p>
+
+<figure class="highlight"><pre><code class="language-scala" data-lang="scala"><span class="k">def</span> <span class="nf">grad</span><span class="o">(</span><span class="n">f</span><span class="k">:</span> <span class="kt">NumR</span> <span class="o">=&gt;</span> <span class="nc">NumR</span> <span class="nd">@cps</span><span class="o">[</span><span class="kt">Unit</span><span class="o">]</span> <span class="o">)(</span><span class="n">x</span><span class="k">:</span> <span class="kt">Double</span><span class="o">)</span> <span class="k">=</span> <span class="o">{</span>
+  <span class="k">val</span> <span class="nv">z</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">NumR</span><span class="o">(</span><span class="n">x</span><span class="o">,</span> <span class="mf">0.0</span><span class="o">)</span>
+  <span class="n">reset</span>  <span class="o">{</span> 
+    <span class="nf">f</span><span class="o">(</span><span class="n">z</span><span class="o">).</span><span class="py">d</span> <span class="k">=</span> <span class="mf">1.0</span> <span class="o">}</span>
+  <span class="nv">z</span><span class="o">.</span><span class="py">d</span>
+  <span class="o">}</span></code></pre></figure>
+
+<p>1) <code class="language-plaintext highlighter-rouge">grad</code> is a higher-order function that takes the function to be differentiated as a parameter (<code class="language-plaintext highlighter-rouge">f: NumR =&gt; NumR</code>, overloaded to act upon dual numbers <code class="language-plaintext highlighter-rouge">NumR</code>), and an evaluation point <code class="language-plaintext highlighter-rouge">x</code>.</p>
+
+<p>2) A temporary variable <code class="language-plaintext highlighter-rouge">z</code> is declared, having 0 adjoint part and primal part corresponding to the point of interest <code class="language-plaintext highlighter-rouge">x</code>. <code class="language-plaintext highlighter-rouge">z</code> will accumulate the partial derivative of <code class="language-plaintext highlighter-rouge">f</code> with respect to <code class="language-plaintext highlighter-rouge">x</code>.</p>
+
+<p>3) Within another mysterious bracket called <code class="language-plaintext highlighter-rouge">reset</code>, the function <code class="language-plaintext highlighter-rouge">f</code> is evaluated at <code class="language-plaintext highlighter-rouge">z</code>, then its adjoint part is set to 1.</p>
+
+<p>4) Upon exiting from the <code class="language-plaintext highlighter-rouge">reset</code> block, the adjoint part of <code class="language-plaintext highlighter-rouge">z</code> is returned : the partial derivative \(\partial_x f\) we are interested in.</p>
+
+<h2 id="delimited-continuations-in-haskell-with-shiftreset">Delimited continuations in Haskell with <code class="language-plaintext highlighter-rouge">shift</code>/<code class="language-plaintext highlighter-rouge">reset</code></h2>
+
+<p>The <code class="language-plaintext highlighter-rouge">shift</code> and <code class="language-plaintext highlighter-rouge">reset</code> operators are one variant of a notion of <a href="https://en.wikipedia.org/wiki/Delimited_continuation">“delimited continuations”</a>, which originated in the Lisp community in the late 80s: the scope of a continuation is made explicit, thus control can “bounce back” at points specified by the programmer. More specifically, <code class="language-plaintext highlighter-rouge">shift</code> “captures” a continuation, and <code class="language-plaintext highlighter-rouge">reset</code> delimits it.</p>
+
+<p>I’m not a programming languages researcher so diving into the original publications didn’t exactly help. Fortunately, a bit of tinkering can save us hours of poring over old papers.</p>
+
+<p><code class="language-plaintext highlighter-rouge">shift</code>/<code class="language-plaintext highlighter-rouge">reset</code> are readily available in the <a href="https://hackage.haskell.org/package/transformers"><code class="language-plaintext highlighter-rouge">transformers</code></a> Haskell library, within module <code class="language-plaintext highlighter-rouge">Control.Monad.Trans.Cont</code>.</p>
+
+<p>Here’s a minimal snippet to use both <code class="language-plaintext highlighter-rouge">shift</code> and <code class="language-plaintext highlighter-rouge">reset</code>, composed with variable “mutation” in the <code class="language-plaintext highlighter-rouge">State</code> monad. To be precise we will use the continuation <em>monad transformer</em> <code class="language-plaintext highlighter-rouge">ContT</code>, and its corresponding operators <code class="language-plaintext highlighter-rouge">shiftT</code> and <code class="language-plaintext highlighter-rouge">resetT</code>, to compose other “effects” together with continuations:</p>
+
+<figure class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="n">t1</span> <span class="o">::</span> <span class="kt">ContT</span> <span class="kt">Int</span> <span class="p">(</span><span class="kt">State</span> <span class="p">[</span><span class="kt">Int</span><span class="p">])</span> <span class="kt">Int</span>
+<span class="n">t1</span> <span class="o">=</span> <span class="n">resetT</span> <span class="o">$</span> <span class="kr">do</span>
+  <span class="kr">let</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="mi">1</span> <span class="c1">-- input</span>
+    <span class="n">cons</span> <span class="n">w</span> <span class="o">=</span> <span class="n">lift</span> <span class="o">$</span> <span class="n">modify</span> <span class="p">(</span><span class="n">w</span> <span class="o">:</span><span class="p">)</span>
+  <span class="n">r</span> <span class="o">&lt;-</span> <span class="n">shiftT</span> <span class="o">$</span> <span class="nf">\</span><span class="n">k</span> <span class="o">-&gt;</span> <span class="kr">do</span>
+    <span class="n">cons</span> <span class="n">x</span>
+    <span class="kr">let</span> <span class="n">y</span> <span class="o">=</span> <span class="n">x</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="n">z</span> <span class="o">&lt;-</span> <span class="n">lift</span> <span class="o">$</span> <span class="n">k</span> <span class="n">y</span> <span class="c1">-- 1)</span>
+    <span class="n">cons</span> <span class="n">z</span> <span class="c1">-- 4)</span>
+    <span class="n">pure</span> <span class="n">y</span> <span class="c1">-- 5)</span>
+  <span class="n">cons</span> <span class="mi">0</span> <span class="c1">-- 2)</span>
+  <span class="n">pure</span> <span class="n">r</span> <span class="c1">-- 3)</span></code></pre></figure>
+
+<p>Running the example above elucidates how the <em>order</em> of variable mutation is affected :</p>
+
+<figure class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="err">λ</span><span class="o">&gt;</span> <span class="n">flip</span> <span class="n">runState</span> <span class="kt">[]</span> <span class="o">$</span> <span class="n">evalContT</span> <span class="n">t1</span>
+<span class="p">(</span><span class="mi">2</span><span class="p">,[</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span></code></pre></figure>
+
+<p>1) As soon as the continuation <code class="language-plaintext highlighter-rouge">k</code> is invoked (applied to value <code class="language-plaintext highlighter-rouge">y = 2</code>), control <em>exits</em> from the <code class="language-plaintext highlighter-rouge">shiftT</code> block,</p>
+
+<p>2) continues at the next line (in this case appending a <code class="language-plaintext highlighter-rouge">0</code> to the list used as state variable),</p>
+
+<p>3) and when the “boundary” defined by the lexical scope enclosed by <code class="language-plaintext highlighter-rouge">resetT</code> is encountered, control <em>returns</em> to the next line after the one that called <code class="language-plaintext highlighter-rouge">k</code>.</p>
+
+<p>4) At this point (within <code class="language-plaintext highlighter-rouge">shiftT</code>) <code class="language-plaintext highlighter-rouge">z</code> is bound to whatever was returned by the <code class="language-plaintext highlighter-rouge">resetT</code> block, which in turn is the value <code class="language-plaintext highlighter-rouge">k</code> was applied to, i.e. <code class="language-plaintext highlighter-rouge">y = 2</code>. This is why the next appended value is a 2.</p>
+
+<p>5) Since <code class="language-plaintext highlighter-rouge">k</code> was resolved by a matching <code class="language-plaintext highlighter-rouge">resetT</code>, there’s nothing else to do and execution terminates.</p>
+
+<p>Pretty mind-bending the first time I saw it.</p>
+
+<h2 id="introducing-ad-delcont">Introducing <code class="language-plaintext highlighter-rouge">ad-delcont</code></h2>
+
+<p>As it turns out, this non-local control flow (i.e. delegating to a continuation, doing something and returning to the starting point with the results) is well suited to implementing the forward-backward computation needed in reverse-mode automatic differentiation.</p>
+
+<p>In order to convince myself of this, I’ve implemented the ideas of [1] in a <a href="https://hackage.haskell.org/package/ad-delcont">Haskell library</a>. Overall, I find the result pretty satisfying both from a theoretical and ergonomic standpoint.</p>
+
+<figure class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="n">op1</span> <span class="o">::</span> <span class="p">(</span><span class="kt">Num</span> <span class="n">da</span><span class="p">,</span> <span class="kt">Num</span> <span class="n">db</span><span class="p">)</span> <span class="o">=&gt;</span>
+       <span class="p">(</span><span class="n">a</span> <span class="o">-&gt;</span> <span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">db</span> <span class="o">-&gt;</span> <span class="n">da</span><span class="p">))</span> <span class="c1">-- ^ returns : (function result, pullback)</span>
+    <span class="o">-&gt;</span> <span class="kt">ContT</span> <span class="n">x</span> <span class="p">(</span><span class="kt">ST</span> <span class="n">s</span><span class="p">)</span> <span class="p">(</span><span class="kt">DVar</span> <span class="n">s</span> <span class="n">a</span> <span class="n">da</span><span class="p">)</span>
+    <span class="o">-&gt;</span> <span class="kt">ContT</span> <span class="n">x</span> <span class="p">(</span><span class="kt">ST</span> <span class="n">s</span><span class="p">)</span> <span class="p">(</span><span class="kt">DVar</span> <span class="n">s</span> <span class="n">a</span> <span class="n">db</span><span class="p">)</span>  
+<span class="n">op1</span> <span class="n">f</span> <span class="n">ioa</span> <span class="o">=</span> <span class="kr">do</span>
+  <span class="n">ra</span> <span class="o">&lt;-</span> <span class="n">ioa</span>
+  <span class="p">(</span><span class="kt">D</span> <span class="n">xa</span> <span class="kr">_</span><span class="p">)</span> <span class="o">&lt;-</span> <span class="n">lift</span> <span class="o">$</span> <span class="n">readSTRef</span> <span class="n">ra</span>
+  <span class="kr">let</span> <span class="p">(</span><span class="n">xb</span><span class="p">,</span> <span class="n">g</span><span class="p">)</span> <span class="o">=</span> <span class="n">f</span> <span class="n">xa</span> <span class="c1">-- 1)</span>
+  <span class="n">shiftT</span> <span class="o">$</span> <span class="nf">\</span> <span class="n">k</span> <span class="o">-&gt;</span> <span class="n">lift</span> <span class="o">$</span> <span class="kr">do</span>
+    <span class="n">rb</span> <span class="o">&lt;-</span> <span class="n">var</span> <span class="n">xb</span> <span class="mi">0</span> <span class="c1">-- 2)</span>
+    <span class="n">ry</span> <span class="o">&lt;-</span> <span class="n">k</span> <span class="n">rb</span> <span class="c1">-- 3)</span>
+    <span class="p">(</span><span class="kt">D</span> <span class="kr">_</span> <span class="n">yd</span><span class="p">)</span> <span class="o">&lt;-</span> <span class="n">readSTRef</span> <span class="n">rb</span> <span class="c1">-- 4)</span>
+    <span class="n">modifySTRef'</span> <span class="n">ra</span> <span class="p">(</span><span class="n">withD</span> <span class="p">(</span><span class="nf">\</span><span class="n">rda0</span> <span class="o">-&gt;</span> <span class="n">rda0</span> <span class="o">+</span> <span class="n">g</span> <span class="n">yd</span><span class="p">))</span> <span class="c1">-- 5)</span>
+    <span class="n">pure</span> <span class="n">ry</span></code></pre></figure>
+
+<p>The above is a pretty faithful port of the Scala version (for a unary function such as \(\sqrt{ \cdot }\) to reduce clutter), in which the major differences are the explicit tracking of the effects (mutation and continuation) at the type level. How does this work ?</p>
+
+<p>1) Compute the function result and bind the function inputs to the adjoint updating function (the “pullback”)</p>
+
+<p>2) Allocate a fresh STRef <code class="language-plaintext highlighter-rouge">rb</code> with the function result and 0 adjoint part</p>
+
+<p>3) <code class="language-plaintext highlighter-rouge">rb</code> is passed downstream as an argument to the continuation <code class="language-plaintext highlighter-rouge">k</code>, with the expectation that the STRef will be mutated</p>
+
+<p>4) Upon returning from the <code class="language-plaintext highlighter-rouge">k</code> (bouncing from the boundary of <code class="language-plaintext highlighter-rouge">resetT</code>), the mutated STRef is read back in</p>
+
+<p>5) The adjoint part of the input variable is updated using <code class="language-plaintext highlighter-rouge">rb</code> (accumulating the adjoints by summing them together, as this variable might be used in more than one program branch) and the result of the continuation is returned.</p>
+
+<p>In the Haskell case, we pass mutable references to dual variables within the <code class="language-plaintext highlighter-rouge">ST</code> monad (introduced in [2] and readily available in the Haskell standard library at <code class="language-plaintext highlighter-rouge">Control.Monad.ST</code>)</p>
+
+<p>The code computing the gradient is correspondingly succint and maps almost exactly (modulo “lifting” and mutation in <code class="language-plaintext highlighter-rouge">ST</code>) to its Scala counterpart :</p>
+
+<figure class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="n">rad1</span> <span class="o">::</span> <span class="p">(</span><span class="kt">Num</span> <span class="n">a</span><span class="p">,</span> <span class="kt">Num</span> <span class="n">b</span><span class="p">)</span> <span class="o">=&gt;</span>
+        <span class="p">(</span><span class="n">forall</span> <span class="n">s</span> <span class="o">.</span> <span class="kt">AD'</span> <span class="n">s</span> <span class="n">a</span> <span class="o">-&gt;</span> <span class="kt">AD'</span> <span class="n">s</span> <span class="n">b</span><span class="p">)</span> <span class="c1">-- ^ function to be differentiated</span>
+     <span class="o">-&gt;</span> <span class="n">a</span> <span class="c1">-- ^ function argument</span>
+     <span class="o">-&gt;</span> <span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span> <span class="c1">-- ^ (result, adjoint)</span>
+<span class="n">rad1</span> <span class="n">f</span> <span class="n">x</span> <span class="o">=</span> <span class="n">runST</span> <span class="o">$</span> <span class="kr">do</span>
+  <span class="n">xr</span> <span class="o">&lt;-</span> <span class="n">var</span> <span class="n">x</span> <span class="mi">0</span>
+  <span class="n">zr'</span> <span class="o">&lt;-</span> <span class="n">evalContT</span> <span class="o">$</span>
+    <span class="n">resetT</span> <span class="o">$</span> <span class="kr">do</span>
+      <span class="kr">let</span>
+        <span class="n">z</span> <span class="o">=</span> <span class="n">f</span> <span class="p">(</span><span class="kt">AD</span> <span class="p">(</span><span class="n">pure</span> <span class="n">xr</span><span class="p">))</span>
+      <span class="n">zr</span> <span class="o">&lt;-</span> <span class="n">unAD</span> <span class="n">z</span>
+      <span class="n">lift</span> <span class="o">$</span> <span class="n">modifySTRef'</span> <span class="n">zr</span> <span class="p">(</span><span class="n">withD</span> <span class="p">(</span><span class="n">const</span> <span class="mi">1</span><span class="p">))</span>
+      <span class="n">pure</span> <span class="n">zr</span>
+  <span class="p">(</span><span class="kt">D</span> <span class="n">z</span> <span class="kr">_</span><span class="p">)</span> <span class="o">&lt;-</span> <span class="n">readSTRef</span> <span class="n">zr'</span>
+  <span class="p">(</span><span class="kt">D</span> <span class="kr">_</span> <span class="n">x_bar</span><span class="p">)</span> <span class="o">&lt;-</span> <span class="n">readSTRef</span> <span class="n">xr</span>
+  <span class="n">pure</span> <span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">x_bar</span><span class="p">)</span></code></pre></figure>
+
+<p><code class="language-plaintext highlighter-rouge">AD</code> is just a newtype wrapper around <code class="language-plaintext highlighter-rouge">ContT .. (ST s) .. </code>, in which the return variables are <code class="language-plaintext highlighter-rouge">STRef</code>s containing our dual variables; it implements the <code class="language-plaintext highlighter-rouge">Num</code>, <code class="language-plaintext highlighter-rouge">Fractional</code>, <code class="language-plaintext highlighter-rouge">Floating</code> interface and the library provides combinators for implementing new typeclasses as well.</p>
+
+<h2 id="discussion">Discussion</h2>
+
+<p>This was a rather long and technical post. I hope I suceeded in showing how delimited continuations can be put to work to implement a purely-functional version of reverse-mode AD. This is a crucial component in the modern optimization and machine learning toolbox, and I find its functional version to be particularly pleasing.</p>
+
+<p><a href="https://hackage.haskell.org/package/ad-delcont"><code class="language-plaintext highlighter-rouge">ad-delcont</code></a> is a small but fully functional library. It’s lightweight (fits anywhere you use <code class="language-plaintext highlighter-rouge">transformers</code>) and easily extensible as shown in its documentation, e.g. by specializing it to different number-like types. I’m looking forward to see what people will use it for!</p>
+
+<p>Feel free to contact me on <a href="https://github.com/ocramz">github</a> or <a href="https://twitter.com/ocramz_yo">twitter</a> with feedback or just to have a chat on these and related things!</p>
+
+<h2 id="references">References</h2>
+
+<p>[1] Wang, Rompf - A Language and Compiler View on Differentiable Programming - ICLR 2018 <a href="https://openreview.net/forum?id=SJxJtYkPG">https://openreview.net/forum?id=SJxJtYkPG</a></p>
+
+<p>[2] Launchbury, Peyton Jones - Lazy Functional State Threads - PLDI 1994 <a href="https://www.microsoft.com/en-us/research/wp-content/uploads/1994/06/lazy-functional-state-threads.pdf">https://www.microsoft.com/en-us/research/wp-content/uploads/1994/06/lazy-functional-state-threads.pdf</a></p>
+:ET
