@@ -87,9 +87,9 @@ I submitted a short paper to AIPLANS (Staged compilation of tensor expressions -
 
 * Weiss - Thinking like Transformers
 
-Title | Authors | Conference | Link
----|---|---
-A Formal Hierarchy of RNN Architectures | | | https://aclanthology.org/2020.acl-main.43/
+| Title | Authors | Conference | Link |
+|---|---|---|
+|A Formal Hierarchy of RNN Architectures | | | https://aclanthology.org/2020.acl-main.43/ |
 
 * Tenenbaum - Building machines that learn and think like people by learning to write programs
 
