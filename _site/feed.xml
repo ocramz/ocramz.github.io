@@ -6,9 +6,170 @@
 </description>
     <link>https://ocramz.github.io/</link>
     <atom:link href="https://ocramz.github.io/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Mon, 19 Jul 2021 17:58:40 +0200</pubDate>
-    <lastBuildDate>Mon, 19 Jul 2021 17:58:40 +0200</lastBuildDate>
+    <pubDate>Wed, 15 Dec 2021 10:53:51 +0100</pubDate>
+    <lastBuildDate>Wed, 15 Dec 2021 10:53:51 +0100</lastBuildDate>
     <generator>Jekyll v4.2.0</generator>
+    
+      <item>
+        <title></title>
+        <description>&lt;h1 id=&quot;introduction&quot;&gt;Introduction&lt;/h1&gt;
+
+&lt;p&gt;Neural Information Processing Systems (NeurIPS) is nowadays one of the foremost conference on machine learning, with thousands of attendees and accepted contributions (papers, talks, tutorials, social events, panels, demonstrations, challenges and so on). It’s a wonderful event, powered by a loving and ever-growing community. The size of the event can also be somewhat overwhelming if you don’t carefully allocate your time if you happen (like I do) to have an even passing interest in more than one presented topic.&lt;/p&gt;
+
+&lt;p&gt;Here I collect some notes on my 2021 experience as an attendee and author, as well as all the links I could record on the fly. I could only attend a fraction of the talks I’m interested in, but fortunately all the talks are recorded for posterity.&lt;/p&gt;
+
+&lt;h1 id=&quot;dec-6&quot;&gt;Dec 6&lt;/h1&gt;
+
+&lt;h2 id=&quot;tutorial--pay-attention-to-what-you-need-do-structural-priors-still-matter-in-the-age-of-billion-parameter-models&quot;&gt;Tutorial : Pay Attention to What You Need: Do Structural Priors Still Matter in the Age of Billion Parameter Models?&lt;/h2&gt;
+
+&lt;p&gt;https://neurips.cc/virtual/2021/tutorial/21891&lt;/p&gt;
+
+&lt;p&gt;The recent empirical success (and theoretical systematization) of graph learning is making us reflect on the role of structure (relationships, grammar, ontologies, syntax) in inference. The field of AI is also coming full-circle (once again) and re-assessing “symbolic” approaches, after their premature demise at the hand of connectionist methods in the late ’90s.
+This tutorial touches on a few fundamentals such as the connections between group theory and differential geometry (by Seb Racaniere), as well as giving perspective on their role towards better domain-specific inference models for dealing with point clouds, relational models, graphs and so on.&lt;/p&gt;
+
+&lt;h2 id=&quot;tutorial--machine-learning-and-statistics-for-climate-science&quot;&gt;Tutorial : Machine Learning and Statistics for Climate Science&lt;/h2&gt;
+
+&lt;p&gt;slides - https://neurips.cc/media/neurips-2021/Slides/21893_0Ue6ONI.pdf&lt;/p&gt;
+
+&lt;p&gt;Unfortunately I couldn’t attend this workshop but it’s very dear to my heart so I intend to return to it at a later time.&lt;/p&gt;
+
+&lt;h1 id=&quot;dec-7&quot;&gt;Dec 7&lt;/h1&gt;
+
+&lt;h2 id=&quot;tutorial--self-supervised-learning-self-prediction-and-contrastive-learning&quot;&gt;Tutorial : Self-Supervised Learning: Self-Prediction and Contrastive Learning&lt;/h2&gt;
+
+&lt;p&gt;https://neurips.cc/virtual/2021/tutorial/21895&lt;/p&gt;
+
+&lt;p&gt;Self-supervision is a very interesting family of techniques for producing data labels via a generative process : the dataset is “augmented” by distorting the data instances in various ways, e.g. rotating or blurring images, or masking parts of a sentence in the case of text. Classifiers are then trained on this augmented data, which has shown to improve performance in a number of downstream tasks.&lt;/p&gt;
+
+&lt;p&gt;How we can produce data augmentations that are meaningful to the data and task at hand is one of the open research questions.&lt;/p&gt;
+
+&lt;h2 id=&quot;keynote--how-duolingo-uses-ai-to-assess-engage-and-teach-better&quot;&gt;Keynote : How Duolingo Uses AI to Assess, Engage and Teach Better&lt;/h2&gt;
+
+&lt;p&gt;Luis von Ahn is one of the founders of Duolingo, a mobile app for learning language. He showed how the app makes heavy use of A/B testing and analyzes systematically all learning sessions to produce a comfortable yet challenging learning experience with spaced repetition, well-placed nudges etc. They have an ML team that made fundamental advances in active learning and multi-armed bandits.&lt;/p&gt;
+
+&lt;h1 id=&quot;dec-8&quot;&gt;Dec 8&lt;/h1&gt;
+
+&lt;h2 id=&quot;social--bigscience&quot;&gt;Social : BigScience&lt;/h2&gt;
+
+&lt;p&gt;https://bigscience.huggingface.co/&lt;/p&gt;
+
+&lt;p&gt;BigScience is a year-long collaborative experiment on large multilingual models and datasets, aka the “LHC of NLP”. I was not directly involved but find it a very meaningful initiative to activate academia and society towards understanding and improving natural language processing for everybody.&lt;/p&gt;
+
+&lt;h1 id=&quot;dec-9&quot;&gt;Dec 9&lt;/h1&gt;
+
+&lt;h2 id=&quot;keynote--optimal-transport-past-present-and-future&quot;&gt;Keynote : Optimal Transport: Past, Present, and Future&lt;/h2&gt;
+
+&lt;p&gt;Optimal transport (“what is the optimal way to transport a distribution into another one?”) is one of those topics that seemingly pops up everywhere from operations research to biology to high-dimensional learning.&lt;/p&gt;
+
+&lt;h2 id=&quot;dec-10&quot;&gt;Dec 10&lt;/h2&gt;
+
+&lt;h1 id=&quot;dec-13---workshops-1&quot;&gt;Dec 13 - Workshops 1&lt;/h1&gt;
+
+&lt;h1 id=&quot;dec-14---workshops-2&quot;&gt;Dec 14 - Workshops 2&lt;/h1&gt;
+
+&lt;h2 id=&quot;data-centric-ai&quot;&gt;Data-centric AI&lt;/h2&gt;
+
+&lt;p&gt;https://neurips.cc/virtual/2021/workshop/21860&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Ratner, Re - The future of data-centric AI&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;I’ve been very intrigued by the Snorkel project and weak labeling/supervision in general since learning about them a few years back. Their approach (based on programmatic labeling functions) will likely prove popular and effective within the private sector and in particular among highly-regulated industries where data movement is either hard or impossible.&lt;/p&gt;
+
+&lt;h2 id=&quot;advances-in-programming-languages-and-neurosymbolic-systems---aiplans21&quot;&gt;Advances in programming languages and neurosymbolic systems - AIPLANS’21&lt;/h2&gt;
+
+&lt;p&gt;https://aiplans.github.io/&lt;/p&gt;
+
+&lt;p&gt;This workshop’s ambitious program was to bring together researchers from the AI and programming languages communities, and create a dialogue around the interplay of domain-specific languages and mechanical reasoning. The talks spanned formal logic, machine learning techniques, theorem proving and more, showing what’s possible when machines are made to collaborate with humans.&lt;/p&gt;
+
+&lt;p&gt;I submitted a short paper to AIPLANS (Staged compilation of tensor expressions - https://openreview.net/forum?id=5TCfWXk2waG), with an early experiment on applying meta-programming techniques to a tensor contraction DSL for Haskell.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Weiss - Thinking like Transformers&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;Title&lt;/th&gt;
+      &lt;th&gt;Authors&lt;/th&gt;
+      &lt;th&gt;Conference&lt;/th&gt;
+      &lt;th&gt;Link&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;A Formal Hierarchy of RNN Architectures&lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt;https://aclanthology.org/2020.acl-main.43/&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Tenenbaum - Building machines that learn and think like people by learning to write programs&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Prof Tenenbaum is an established scientist and gifted speaker, and gave one of his inspiring talks on his group’s recent results. Namely, his research strives to replicate the flexibility of general intelligence using generative models of the world (in this case mediated by programs).&lt;/p&gt;
+
+&lt;p&gt;Title | Authors | Conference/Journal | Link
+—|—|—
+The child as hacker | Rule et al | Trends in CogSci | http://colala.berkeley.edu/papers/rule2020child.pdf
+Learning Task-General Representations with Generative Neuro-Symbolic Modeling | | ICLR’21 | https://openreview.net/forum?id=qzBUIzq5XR2 
+Learning to learn generative programs with Memoised Wake-Sleep | Hewitt et al | UAI’20 | http://proceedings.mlr.press/v124/hewitt20a.html
+DreamCoder : Growing generalizable, interpretable knowledge with wake-sleep Bayesian program learning | | | https://arxiv.org/abs/2006.08381 
+Leveraging Language to Learn Program Abstractions and Search Heuristics - Wong et al - ICML’21 https://arxiv.org/abs/2106.11053
+Communicating Natural Programs to Humans and Machines | | |  https://arxiv.org/abs/2106.07824 (+ the associated LARC dataset https://github.com/samacqua/LARC  )&lt;/p&gt;
+
+&lt;p&gt;Related links :&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;Title&lt;/th&gt;
+      &lt;th&gt;Authors&lt;/th&gt;
+      &lt;th&gt;Conference/Journal&lt;/th&gt;
+      &lt;th&gt;Link&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;The Abstraction and Reasoning Corpus (ARC)&lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt;https://github.com/fchollet/ARC&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Planning domain definition language (PDDL)&lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt;https://en.wikipedia.org/wiki/Planning_Domain_Definition_Language&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Duvenaud - Dex tutorial&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Dex is an experimental array-based programming language (https://github.com/google-research/dex-lang) and David gave us a live-coding tutorial as well as his (very relatable) recollections as a scientific programmer and researchers (starting from buggy Matlab scripts and their consequences on research), to Python, to type-checked functional languages such as Dex and its underlying Haskell.&lt;/p&gt;
+
+&lt;p&gt;Dex supports checked mutation using an effect system taken from Koka (https://koka-lang.github.io/koka/doc/index.html).&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Rush - Differential inference&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Sasha gave an introduction to the use of automatic differentiation for doing Bayesian inference on networks of discrete random variables , based on the theory from Darwiche https://arxiv.org/abs/1301.3847&lt;/p&gt;
+</description>
+        <pubDate>Wed, 15 Dec 2021 10:53:51 +0100</pubDate>
+        <link>https://ocramz.github.io/2021/12/15/2021-12-15-neurips-retro.html</link>
+        <guid isPermaLink="true">https://ocramz.github.io/2021/12/15/2021-12-15-neurips-retro.html</guid>
+        
+        
+      </item>
     
       <item>
         <title>Purely-functional reverse-mode automatic differentiation with delimited continuations</title>
@@ -125,7 +286,7 @@
     &lt;span class=&quot;n&quot;&gt;modifySTRef'&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ra&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;withD&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;rda0&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;rda0&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;g&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;yd&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;-- 5)&lt;/span&gt;
     &lt;span class=&quot;n&quot;&gt;pure&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ry&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
-&lt;p&gt;The above is a pretty faithful port of the Scala version (for a unary function such as \(\sqrt{ \cdot }\) to reduce clutter), in which the major differences are the explicit tracking of the effects (mutation and continuation) at the type level. How does this work ? Pretty much like its Scala counterpart :&lt;/p&gt;
+&lt;p&gt;The above is a pretty faithful port of the Scala version (for a unary function such as \(\sqrt{ \cdot }\) to reduce clutter), in which the major differences are the explicit tracking of the effects (mutation and continuation) at the type level. How does this work ?&lt;/p&gt;
 
 &lt;p&gt;1) Compute the function result and bind the function inputs to the adjoint updating function (the “pullback”)&lt;/p&gt;
 
@@ -139,7 +300,7 @@
 
 &lt;p&gt;In the Haskell case, we pass mutable references to dual variables within the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ST&lt;/code&gt; monad (introduced in [2] and readily available in the Haskell standard library at &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Control.Monad.ST&lt;/code&gt;)&lt;/p&gt;
 
-&lt;p&gt;The code computing the gradient is correspondingly succint and maps almost exactly (modulo “lifting” and mutation in &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ST&lt;/code&gt;) to its Scala counterpart :&lt;/p&gt;
+&lt;p&gt;The code computing the gradient is correspondingly succint and maps almost exactly (modulo “lifting” and mutation in &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ST&lt;/code&gt;) to its Scala counterpart from [1]:&lt;/p&gt;
 
 &lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-haskell&quot; data-lang=&quot;haskell&quot;&gt;&lt;span class=&quot;n&quot;&gt;rad1&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;::&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;Num&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Num&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt;
         &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;forall&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;s&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;AD'&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;s&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;AD'&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;s&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;-- ^ function to be differentiated&lt;/span&gt;
@@ -1987,29 +2148,6 @@ If a datatype is an instance of one or more classes, it “inherits” the funct
         <category>Haskell</category>
         
         <category>tutorials</category>
-        
-      </item>
-    
-      <item>
-        <title>Test</title>
-        <description>&lt;p&gt;A couple lines of Haskell&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-haskell&quot; data-lang=&quot;haskell&quot;&gt;&lt;span class=&quot;n&quot;&gt;main&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;::&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;IO&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;()&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;main&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 
-  &lt;span class=&quot;n&quot;&gt;putStrLn&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;test&quot;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;Cauchy’s integral theorem:&lt;/p&gt;
-
-\[f(a) = \frac{1}{2\pi\iota} \oint_\gamma \frac{f(z)}{z-a} dz\]
-
-&lt;p&gt;Yay interwebs 2.0 !&lt;/p&gt;
-</description>
-        <pubDate>Thu, 20 Aug 2015 15:23:00 +0200</pubDate>
-        <link>https://ocramz.github.io/tests/2015/08/20/haskell-test.html</link>
-        <guid isPermaLink="true">https://ocramz.github.io/tests/2015/08/20/haskell-test.html</guid>
-        
-        
-        <category>tests</category>
         
       </item>
     
