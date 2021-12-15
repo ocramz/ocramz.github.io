@@ -1,6 +1,6 @@
 ---
 layout: post
-title: NeurIPS 2021 : a personal retrospective
+title: NeurIPS 2021, a personal retrospective
 date: 2021-12-15
 categories: machine-learning events
 ---

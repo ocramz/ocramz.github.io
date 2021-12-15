@@ -6,12 +6,12 @@
 </description>
     <link>https://ocramz.github.io/</link>
     <atom:link href="https://ocramz.github.io/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Wed, 15 Dec 2021 10:54:09 +0100</pubDate>
-    <lastBuildDate>Wed, 15 Dec 2021 10:54:09 +0100</lastBuildDate>
+    <pubDate>Wed, 15 Dec 2021 10:54:29 +0100</pubDate>
+    <lastBuildDate>Wed, 15 Dec 2021 10:54:29 +0100</lastBuildDate>
     <generator>Jekyll v4.2.0</generator>
     
       <item>
-        <title></title>
+        <title>NeurIPS 2021, a personal retrospective</title>
         <description>&lt;h1 id=&quot;introduction&quot;&gt;Introduction&lt;/h1&gt;
 
 &lt;p&gt;Neural Information Processing Systems (NeurIPS) is nowadays one of the foremost conference on machine learning, with thousands of attendees and accepted contributions (papers, talks, tutorials, social events, panels, demonstrations, challenges and so on). It’s a wonderful event, powered by a loving and ever-growing community. The size of the event can also be somewhat overwhelming if you don’t carefully allocate your time if you happen (like I do) to have an even passing interest in more than one presented topic.&lt;/p&gt;
@@ -164,10 +164,14 @@ Communicating Natural Programs to Humans and Machines | | |  https://arxiv.org/a
 
 &lt;p&gt;Sasha gave an introduction to the use of automatic differentiation for doing Bayesian inference on networks of discrete random variables , based on the theory from Darwiche https://arxiv.org/abs/1301.3847&lt;/p&gt;
 </description>
-        <pubDate>Wed, 15 Dec 2021 10:54:09 +0100</pubDate>
-        <link>https://ocramz.github.io/2021/12/15/2021-12-15-neurips-retro.html</link>
-        <guid isPermaLink="true">https://ocramz.github.io/2021/12/15/2021-12-15-neurips-retro.html</guid>
+        <pubDate>Wed, 15 Dec 2021 00:00:00 +0100</pubDate>
+        <link>https://ocramz.github.io/machine-learning/events/2021/12/15/neurips-retro.html</link>
+        <guid isPermaLink="true">https://ocramz.github.io/machine-learning/events/2021/12/15/neurips-retro.html</guid>
         
+        
+        <category>machine-learning</category>
+        
+        <category>events</category>
         
       </item>
     
