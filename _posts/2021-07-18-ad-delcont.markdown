@@ -130,7 +130,7 @@ op1 f ioa = do
     pure ry
 {% endhighlight %}
 
-The above is a pretty faithful port of the Scala version (for a unary function such as $$\sqrt{ \cdot }$$ to reduce clutter), in which the major differences are the explicit tracking of the effects (mutation and continuation) at the type level. How does this work ? Pretty much like its Scala counterpart : 
+The above is a pretty faithful port of the Scala version (for a unary function such as $$\sqrt{ \cdot }$$ to reduce clutter), in which the major differences are the explicit tracking of the effects (mutation and continuation) at the type level. How does this work ? 
 
 1) Compute the function result and bind the function inputs to the adjoint updating function (the "pullback")
 
@@ -144,7 +144,7 @@ The above is a pretty faithful port of the Scala version (for a unary function s
 
 In the Haskell case, we pass mutable references to dual variables within the `ST` monad (introduced in [2] and readily available in the Haskell standard library at `Control.Monad.ST`)
 
-The code computing the gradient is correspondingly succint and maps almost exactly (modulo "lifting" and mutation in `ST`) to its Scala counterpart :
+The code computing the gradient is correspondingly succint and maps almost exactly (modulo "lifting" and mutation in `ST`) to its Scala counterpart from [1]:
 
 {% highlight haskell %}
 rad1 :: (Num a, Num b) =>
