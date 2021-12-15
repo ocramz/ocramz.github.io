@@ -6,12 +6,12 @@
 </description>
     <link>https://ocramz.github.io/</link>
     <atom:link href="https://ocramz.github.io/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Wed, 15 Dec 2021 10:54:29 +0100</pubDate>
-    <lastBuildDate>Wed, 15 Dec 2021 10:54:29 +0100</lastBuildDate>
+    <pubDate>Wed, 15 Dec 2021 10:55:10 +0100</pubDate>
+    <lastBuildDate>Wed, 15 Dec 2021 10:55:10 +0100</lastBuildDate>
     <generator>Jekyll v4.2.0</generator>
     
       <item>
-        <title>NeurIPS 2021, a personal retrospective</title>
+        <title>A personal retrospective on NeurIPS'21</title>
         <description>&lt;h1 id=&quot;introduction&quot;&gt;Introduction&lt;/h1&gt;
 
 &lt;p&gt;Neural Information Processing Systems (NeurIPS) is nowadays one of the foremost conference on machine learning, with thousands of attendees and accepted contributions (papers, talks, tutorials, social events, panels, demonstrations, challenges and so on). It’s a wonderful event, powered by a loving and ever-growing community. The size of the event can also be somewhat overwhelming if you don’t carefully allocate your time if you happen (like I do) to have an even passing interest in more than one presented topic.&lt;/p&gt;
