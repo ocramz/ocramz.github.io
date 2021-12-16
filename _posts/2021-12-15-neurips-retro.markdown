@@ -15,7 +15,7 @@ Personally, what I'm most interested in falls roughly in two categories: AI as a
 
 * Data programming, weak supervision, learning on relational data, federated learning all fall in this bin; on one hand they let us make sense of complex, real-world signals, and hopefully make better decisions. On the other they promise to empower smaller entities than the usual tech titans, by re-distributing the economic returns of data ownership.
 
-* The study of intelligence for its own sake is as old as the field and we're nowhere close to even formulating a well-posed question. However, careful cognitive experiments and generative, neuro-symbolic approaches like those advocated by Tenenbaum and collaborators are a source of great insight and better questions, which is ultimately what matters in science.
+* The study of intelligence for its own sake is as old as philosophy itself but we're nowhere close to even formulating a well-posed question. However, careful cognitive experiments and generative, neuro-symbolic approaches like those advocated by Tenenbaum and collaborators are a source of great insight and better questions, which is ultimately what matters in science.
 
 In what follows I collect some loose notes on my 2021 NeurIPS experience as an attendee and author, as well as all the links I could record on the fly. I could only attend a fraction of the live events, but fortunately all the talks are recorded for posterity.
 
