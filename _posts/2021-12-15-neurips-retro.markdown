@@ -13,13 +13,11 @@ Here I collect some notes on my 2021 experience as an attendee and author, as we
 
 
 
-# Dec 6
+# December 6
 
 **[Tutorial : Pay Attention to What You Need: Do Structural Priors Still Matter in the Age of Billion Parameter Models?](https://neurips.cc/virtual/2021/tutorial/21891)**
 
-
-
-The recent empirical success (and theoretical systematization) of graph learning is making us reflect on the role of structure (relationships, grammar, ontologies, syntax) in inference. The field of AI is also coming full-circle (once again) and re-assessing "symbolic" approaches, after their premature demise at the hand of connectionist methods in the late '90s.
+The recent empirical success and theoretical systematization of graph learning is making us reflect on the role of structure (relationships, grammar, ontologies, syntax) in inference. The field of AI is also coming full-circle (once again) and re-assessing "symbolic" approaches, after their premature demise at the hand of connectionist methods in the late '90s.
 This tutorial touches on a few fundamentals such as the connections between group theory and differential geometry (by Seb Racaniere), as well as giving perspective on their role towards better domain-specific inference models for dealing with point clouds, relational models, graphs and so on.
 
 **Tutorial : Machine Learning and Statistics for Climate Science**
@@ -29,11 +27,9 @@ This tutorial touches on a few fundamentals such as the connections between grou
 Unfortunately I couldn't attend this workshop but it's very dear to my heart so I intend to return to it at a later time.
 
 
-# Dec 7
+# December 7
 
 **[Tutorial : Self-Supervised Learning: Self-Prediction and Contrastive Learning](https://neurips.cc/virtual/2021/tutorial/21895)**
-
-
 
 Self-supervision is a very interesting family of techniques for producing data labels via a generative process : the dataset is "augmented" by distorting the data instances in various ways, e.g. rotating or blurring images, or masking parts of a sentence in the case of text. Classifiers are then trained on this augmented data, which has shown to improve performance in a number of downstream tasks.
 
@@ -44,7 +40,7 @@ How we can produce data augmentations that are meaningful to the data and task a
 Luis von Ahn is one of the founders of Duolingo, a mobile app for learning language. He showed how the app makes heavy use of A/B testing and analyzes systematically all learning sessions to produce a comfortable yet challenging learning experience with spaced repetition, well-placed nudges etc. They have an ML team that made fundamental advances in active learning and multi-armed bandits.
 
 
-# Dec 8
+# December 8
 
 **[Social : BigScience](https://bigscience.huggingface.co/)**
 
@@ -52,24 +48,23 @@ Luis von Ahn is one of the founders of Duolingo, a mobile app for learning langu
 
 BigScience is a year-long collaborative experiment on large multilingual models and datasets, aka the "LHC of NLP". I was not directly involved but find it a very meaningful initiative to activate academia and society towards understanding and improving natural language processing for everybody.
 
-# Dec 9
+# December 9
 
 **Keynote : Optimal Transport: Past, Present, and Future**
 
 Optimal transport ("what is the optimal way to transport a distribution into another one?") is one of those topics that seemingly pops up everywhere from operations research to biology to high-dimensional learning.
 
-## Dec 10 
+# December 10 
 
 
-# Dec 13 - Workshops 1
+# December 13 - Workshops 1
 
 
 
-# Dec 14 - Workshops 2
+# December 14 - Workshops 2
 
 
 **[Data-centric AI](https://neurips.cc/virtual/2021/workshop/21860)**
-
 
 
 * Ratner, Re - The future of data-centric AI
@@ -79,17 +74,15 @@ Optimal transport ("what is the optimal way to transport a distribution into ano
 
 **[Advances in programming languages and neurosymbolic systems - AIPLANS'21](https://aiplans.github.io/)**
 
-
-
 This workshop's ambitious program was to bring together researchers from the AI and programming languages communities, and create a dialogue around the interplay of domain-specific languages and mechanical reasoning. The talks spanned formal logic, machine learning techniques, theorem proving and more, showing what's possible when machines are made to collaborate with humans.
 
 I submitted a short paper to AIPLANS ( [Staged compilation of tensor expressions](https://openreview.net/forum?id=5TCfWXk2waG) ), with an early experiment on applying meta-programming techniques to a tensor contraction DSL for Haskell.
 
 * Weiss - Thinking like Transformers
 
-    Link
----
-[A Formal Hierarchy of RNN Architectures](https://aclanthology.org/2020.acl-main.43/)
+    Gail introduced us to a programming language that reproduces the semantics of a transformer architecture. This comparison made everybody's brain gears spin very quickly and questions arose about the expressivity of this language and a possible Chomsky hierarchy of deep language models, to which Gail promptly replied with an ACL'20 article she co-wrote :
+
+    [A Formal Hierarchy of RNN Architectures](https://aclanthology.org/2020.acl-main.43/)
 
 * Tenenbaum - Building machines that learn and think like people by learning to write programs
 

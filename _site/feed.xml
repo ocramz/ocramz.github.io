@@ -6,8 +6,8 @@
 </description>
     <link>https://ocramz.github.io/</link>
     <atom:link href="https://ocramz.github.io/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Thu, 16 Dec 2021 11:26:30 +0100</pubDate>
-    <lastBuildDate>Thu, 16 Dec 2021 11:26:30 +0100</lastBuildDate>
+    <pubDate>Thu, 16 Dec 2021 12:11:32 +0100</pubDate>
+    <lastBuildDate>Thu, 16 Dec 2021 12:11:32 +0100</lastBuildDate>
     <generator>Jekyll v4.2.0</generator>
     
       <item>
@@ -18,11 +18,11 @@
 
 &lt;p&gt;Here I collect some notes on my 2021 experience as an attendee and author, as well as all the links I could record on the fly. I could only attend a fraction of the talks I’m interested in, but fortunately all the talks are recorded for posterity.&lt;/p&gt;
 
-&lt;h1 id=&quot;dec-6&quot;&gt;Dec 6&lt;/h1&gt;
+&lt;h1 id=&quot;december-6&quot;&gt;December 6&lt;/h1&gt;
 
 &lt;p&gt;&lt;strong&gt;&lt;a href=&quot;https://neurips.cc/virtual/2021/tutorial/21891&quot;&gt;Tutorial : Pay Attention to What You Need: Do Structural Priors Still Matter in the Age of Billion Parameter Models?&lt;/a&gt;&lt;/strong&gt;&lt;/p&gt;
 
-&lt;p&gt;The recent empirical success (and theoretical systematization) of graph learning is making us reflect on the role of structure (relationships, grammar, ontologies, syntax) in inference. The field of AI is also coming full-circle (once again) and re-assessing “symbolic” approaches, after their premature demise at the hand of connectionist methods in the late ’90s.
+&lt;p&gt;The recent empirical success and theoretical systematization of graph learning is making us reflect on the role of structure (relationships, grammar, ontologies, syntax) in inference. The field of AI is also coming full-circle (once again) and re-assessing “symbolic” approaches, after their premature demise at the hand of connectionist methods in the late ’90s.
 This tutorial touches on a few fundamentals such as the connections between group theory and differential geometry (by Seb Racaniere), as well as giving perspective on their role towards better domain-specific inference models for dealing with point clouds, relational models, graphs and so on.&lt;/p&gt;
 
 &lt;p&gt;&lt;strong&gt;Tutorial : Machine Learning and Statistics for Climate Science&lt;/strong&gt;&lt;/p&gt;
@@ -31,7 +31,7 @@ This tutorial touches on a few fundamentals such as the connections between grou
 
 &lt;p&gt;Unfortunately I couldn’t attend this workshop but it’s very dear to my heart so I intend to return to it at a later time.&lt;/p&gt;
 
-&lt;h1 id=&quot;dec-7&quot;&gt;Dec 7&lt;/h1&gt;
+&lt;h1 id=&quot;december-7&quot;&gt;December 7&lt;/h1&gt;
 
 &lt;p&gt;&lt;strong&gt;&lt;a href=&quot;https://neurips.cc/virtual/2021/tutorial/21895&quot;&gt;Tutorial : Self-Supervised Learning: Self-Prediction and Contrastive Learning&lt;/a&gt;&lt;/strong&gt;&lt;/p&gt;
 
@@ -43,23 +43,23 @@ This tutorial touches on a few fundamentals such as the connections between grou
 
 &lt;p&gt;Luis von Ahn is one of the founders of Duolingo, a mobile app for learning language. He showed how the app makes heavy use of A/B testing and analyzes systematically all learning sessions to produce a comfortable yet challenging learning experience with spaced repetition, well-placed nudges etc. They have an ML team that made fundamental advances in active learning and multi-armed bandits.&lt;/p&gt;
 
-&lt;h1 id=&quot;dec-8&quot;&gt;Dec 8&lt;/h1&gt;
+&lt;h1 id=&quot;december-8&quot;&gt;December 8&lt;/h1&gt;
 
 &lt;p&gt;&lt;strong&gt;&lt;a href=&quot;https://bigscience.huggingface.co/&quot;&gt;Social : BigScience&lt;/a&gt;&lt;/strong&gt;&lt;/p&gt;
 
 &lt;p&gt;BigScience is a year-long collaborative experiment on large multilingual models and datasets, aka the “LHC of NLP”. I was not directly involved but find it a very meaningful initiative to activate academia and society towards understanding and improving natural language processing for everybody.&lt;/p&gt;
 
-&lt;h1 id=&quot;dec-9&quot;&gt;Dec 9&lt;/h1&gt;
+&lt;h1 id=&quot;december-9&quot;&gt;December 9&lt;/h1&gt;
 
 &lt;p&gt;&lt;strong&gt;Keynote : Optimal Transport: Past, Present, and Future&lt;/strong&gt;&lt;/p&gt;
 
 &lt;p&gt;Optimal transport (“what is the optimal way to transport a distribution into another one?”) is one of those topics that seemingly pops up everywhere from operations research to biology to high-dimensional learning.&lt;/p&gt;
 
-&lt;h2 id=&quot;dec-10&quot;&gt;Dec 10&lt;/h2&gt;
+&lt;h1 id=&quot;december-10&quot;&gt;December 10&lt;/h1&gt;
 
-&lt;h1 id=&quot;dec-13---workshops-1&quot;&gt;Dec 13 - Workshops 1&lt;/h1&gt;
+&lt;h1 id=&quot;december-13---workshops-1&quot;&gt;December 13 - Workshops 1&lt;/h1&gt;
 
-&lt;h1 id=&quot;dec-14---workshops-2&quot;&gt;Dec 14 - Workshops 2&lt;/h1&gt;
+&lt;h1 id=&quot;december-14---workshops-2&quot;&gt;December 14 - Workshops 2&lt;/h1&gt;
 
 &lt;p&gt;&lt;strong&gt;&lt;a href=&quot;https://neurips.cc/virtual/2021/workshop/21860&quot;&gt;Data-centric AI&lt;/a&gt;&lt;/strong&gt;&lt;/p&gt;
 
@@ -81,7 +81,8 @@ This tutorial touches on a few fundamentals such as the connections between grou
   &lt;li&gt;
     &lt;p&gt;Weiss - Thinking like Transformers&lt;/p&gt;
 
-    &lt;h2 id=&quot;link&quot;&gt;Link&lt;/h2&gt;
+    &lt;p&gt;Gail introduced us to a programming language that reproduces the semantics of a transformer architecture. This comparison made everybody’s brain gears spin very quickly and questions arose about the expressivity of this language and a possible Chomsky hierarchy of deep language models, to which Gail promptly replied with an ACL’20 article she co-wrote :&lt;/p&gt;
+
     &lt;p&gt;&lt;a href=&quot;https://aclanthology.org/2020.acl-main.43/&quot;&gt;A Formal Hierarchy of RNN Architectures&lt;/a&gt;&lt;/p&gt;
   &lt;/li&gt;
   &lt;li&gt;
