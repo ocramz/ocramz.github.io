@@ -63,7 +63,13 @@ Optimal transport ("what is the optimal way to transport a distribution into ano
 
 * Pentland - Building a New Economy: Federated Learning and Beyond
 
+    Data ownership, individual and collective. Value of individual data points vs data in aggregate
+
+    Knowing flows (money, people) allows better planning
+
     Community-owned data (real-time census) : employment, disease control, public transit, economic growth
+    
+    NRECA : cooperatives (not companies or the state) built 56% of US electric grid
     
     [Atlas of opportunity](https://opportunity.mit.edu/)
 
