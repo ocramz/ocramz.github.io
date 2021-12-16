@@ -6,8 +6,8 @@
 </description>
     <link>https://ocramz.github.io/</link>
     <atom:link href="https://ocramz.github.io/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Thu, 16 Dec 2021 11:13:22 +0100</pubDate>
-    <lastBuildDate>Thu, 16 Dec 2021 11:13:22 +0100</lastBuildDate>
+    <pubDate>Thu, 16 Dec 2021 11:16:55 +0100</pubDate>
+    <lastBuildDate>Thu, 16 Dec 2021 11:16:55 +0100</lastBuildDate>
     <generator>Jekyll v4.2.0</generator>
     
       <item>
@@ -123,49 +123,47 @@ Learning to learn generative programs with Memoised Wake-Sleep | Hewitt et al | 
 DreamCoder : Growing generalizable, interpretable knowledge with wake-sleep Bayesian program learning | | | https://arxiv.org/abs/2006.08381 
 Leveraging Language to Learn Program Abstractions and Search Heuristics - Wong et al - ICML’21 https://arxiv.org/abs/2106.11053
 Communicating Natural Programs to Humans and Machines | | |  https://arxiv.org/abs/2106.07824 (+ the associated LARC dataset https://github.com/samacqua/LARC  )&lt;/p&gt;
+
+    &lt;p&gt;Related links :&lt;/p&gt;
+
+    &lt;table&gt;
+      &lt;thead&gt;
+        &lt;tr&gt;
+          &lt;th&gt;Title&lt;/th&gt;
+          &lt;th&gt;Authors&lt;/th&gt;
+          &lt;th&gt;Conference/Journal&lt;/th&gt;
+          &lt;th&gt;Link&lt;/th&gt;
+        &lt;/tr&gt;
+      &lt;/thead&gt;
+      &lt;tbody&gt;
+        &lt;tr&gt;
+          &lt;td&gt;The Abstraction and Reasoning Corpus (ARC)&lt;/td&gt;
+          &lt;td&gt; &lt;/td&gt;
+          &lt;td&gt; &lt;/td&gt;
+          &lt;td&gt;https://github.com/fchollet/ARC&lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+          &lt;td&gt;Planning domain definition language (PDDL)&lt;/td&gt;
+          &lt;td&gt; &lt;/td&gt;
+          &lt;td&gt; &lt;/td&gt;
+          &lt;td&gt;https://en.wikipedia.org/wiki/Planning_Domain_Definition_Language&lt;/td&gt;
+        &lt;/tr&gt;
+      &lt;/tbody&gt;
+    &lt;/table&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Duvenaud - Dex tutorial&lt;/p&gt;
+
+    &lt;p&gt;Dex is an experimental array-based programming language (https://github.com/google-research/dex-lang) and David gave us a live-coding tutorial as well as his (very relatable) recollections as a scientific programmer and researchers (starting from buggy Matlab scripts and their consequences on research), to Python, to type-checked functional languages such as Dex and its underlying Haskell.&lt;/p&gt;
+
+    &lt;p&gt;Dex supports checked mutation using an effect system taken from Koka (https://koka-lang.github.io/koka/doc/index.html).&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Rush - Differential inference&lt;/p&gt;
+
+    &lt;p&gt;Sasha gave an introduction to the use of automatic differentiation for doing Bayesian inference on networks of discrete random variables , based on the theory from Darwiche https://arxiv.org/abs/1301.3847&lt;/p&gt;
   &lt;/li&gt;
 &lt;/ul&gt;
-
-&lt;p&gt;Related links :&lt;/p&gt;
-
-&lt;table&gt;
-  &lt;thead&gt;
-    &lt;tr&gt;
-      &lt;th&gt;Title&lt;/th&gt;
-      &lt;th&gt;Authors&lt;/th&gt;
-      &lt;th&gt;Conference/Journal&lt;/th&gt;
-      &lt;th&gt;Link&lt;/th&gt;
-    &lt;/tr&gt;
-  &lt;/thead&gt;
-  &lt;tbody&gt;
-    &lt;tr&gt;
-      &lt;td&gt;The Abstraction and Reasoning Corpus (ARC)&lt;/td&gt;
-      &lt;td&gt; &lt;/td&gt;
-      &lt;td&gt; &lt;/td&gt;
-      &lt;td&gt;https://github.com/fchollet/ARC&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;Planning domain definition language (PDDL)&lt;/td&gt;
-      &lt;td&gt; &lt;/td&gt;
-      &lt;td&gt; &lt;/td&gt;
-      &lt;td&gt;https://en.wikipedia.org/wiki/Planning_Domain_Definition_Language&lt;/td&gt;
-    &lt;/tr&gt;
-  &lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Duvenaud - Dex tutorial&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Dex is an experimental array-based programming language (https://github.com/google-research/dex-lang) and David gave us a live-coding tutorial as well as his (very relatable) recollections as a scientific programmer and researchers (starting from buggy Matlab scripts and their consequences on research), to Python, to type-checked functional languages such as Dex and its underlying Haskell.&lt;/p&gt;
-
-&lt;p&gt;Dex supports checked mutation using an effect system taken from Koka (https://koka-lang.github.io/koka/doc/index.html).&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Rush - Differential inference&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Sasha gave an introduction to the use of automatic differentiation for doing Bayesian inference on networks of discrete random variables , based on the theory from Darwiche https://arxiv.org/abs/1301.3847&lt;/p&gt;
 </description>
         <pubDate>Wed, 15 Dec 2021 00:00:00 +0100</pubDate>
         <link>https://ocramz.github.io/machine-learning/events/2021/12/15/neurips-retro.html</link>

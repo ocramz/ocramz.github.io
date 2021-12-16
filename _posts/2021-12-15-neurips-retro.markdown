@@ -104,19 +104,19 @@ DreamCoder : Growing generalizable, interpretable knowledge with wake-sleep Baye
 Leveraging Language to Learn Program Abstractions and Search Heuristics - Wong et al - ICML'21 https://arxiv.org/abs/2106.11053
 Communicating Natural Programs to Humans and Machines | | |  https://arxiv.org/abs/2106.07824 (+ the associated LARC dataset https://github.com/samacqua/LARC  )
 
-Related links : 
+    Related links : 
 
-Title | Authors | Conference/Journal | Link
+    Title | Authors | Conference/Journal | Link
 ---|---|---
 The Abstraction and Reasoning Corpus (ARC) | | | https://github.com/fchollet/ARC
 Planning domain definition language (PDDL) | | | https://en.wikipedia.org/wiki/Planning_Domain_Definition_Language
 
 * Duvenaud - Dex tutorial 
 
-Dex is an experimental array-based programming language (https://github.com/google-research/dex-lang) and David gave us a live-coding tutorial as well as his (very relatable) recollections as a scientific programmer and researchers (starting from buggy Matlab scripts and their consequences on research), to Python, to type-checked functional languages such as Dex and its underlying Haskell.
+    Dex is an experimental array-based programming language (https://github.com/google-research/dex-lang) and David gave us a live-coding tutorial as well as his (very relatable) recollections as a scientific programmer and researchers (starting from buggy Matlab scripts and their consequences on research), to Python, to type-checked functional languages such as Dex and its underlying Haskell.
 
-Dex supports checked mutation using an effect system taken from Koka (https://koka-lang.github.io/koka/doc/index.html).
+    Dex supports checked mutation using an effect system taken from Koka (https://koka-lang.github.io/koka/doc/index.html).
 
 * Rush - Differential inference
 
-Sasha gave an introduction to the use of automatic differentiation for doing Bayesian inference on networks of discrete random variables , based on the theory from Darwiche https://arxiv.org/abs/1301.3847
+    Sasha gave an introduction to the use of automatic differentiation for doing Bayesian inference on networks of discrete random variables , based on the theory from Darwiche https://arxiv.org/abs/1301.3847
