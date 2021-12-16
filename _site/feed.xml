@@ -6,8 +6,8 @@
 </description>
     <link>https://ocramz.github.io/</link>
     <atom:link href="https://ocramz.github.io/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Thu, 16 Dec 2021 11:24:54 +0100</pubDate>
-    <lastBuildDate>Thu, 16 Dec 2021 11:24:54 +0100</lastBuildDate>
+    <pubDate>Thu, 16 Dec 2021 11:26:30 +0100</pubDate>
+    <lastBuildDate>Thu, 16 Dec 2021 11:26:30 +0100</lastBuildDate>
     <generator>Jekyll v4.2.0</generator>
     
       <item>
@@ -94,43 +94,35 @@ This tutorial touches on a few fundamentals such as the connections between grou
         &lt;tr&gt;
           &lt;th&gt;Title&lt;/th&gt;
           &lt;th&gt; &lt;/th&gt;
-          &lt;th&gt; &lt;/th&gt;
         &lt;/tr&gt;
       &lt;/thead&gt;
       &lt;tbody&gt;
         &lt;tr&gt;
           &lt;td&gt;&lt;a href=&quot;http://colala.berkeley.edu/papers/rule2020child.pdf&quot;&gt;The child as hacker&lt;/a&gt;&lt;/td&gt;
-          &lt;td&gt;Rule et al&lt;/td&gt;
           &lt;td&gt;Trends in CogSci&lt;/td&gt;
         &lt;/tr&gt;
         &lt;tr&gt;
           &lt;td&gt;&lt;a href=&quot;https://openreview.net/forum?id=qzBUIzq5XR2&quot;&gt;Learning Task-General Representations with Generative Neuro-Symbolic Modeling&lt;/a&gt;&lt;/td&gt;
-          &lt;td&gt; &lt;/td&gt;
           &lt;td&gt;ICLR’21&lt;/td&gt;
         &lt;/tr&gt;
         &lt;tr&gt;
           &lt;td&gt;&lt;a href=&quot;http://proceedings.mlr.press/v124/hewitt20a.html&quot;&gt;Learning to learn generative programs with Memoised Wake-Sleep&lt;/a&gt;&lt;/td&gt;
-          &lt;td&gt;Hewitt et al&lt;/td&gt;
           &lt;td&gt;UAI’20&lt;/td&gt;
         &lt;/tr&gt;
         &lt;tr&gt;
           &lt;td&gt;&lt;a href=&quot;https://arxiv.org/abs/2006.08381&quot;&gt;DreamCoder : Growing generalizable, interpretable knowledge with wake-sleep Bayesian program learning&lt;/a&gt;&lt;/td&gt;
           &lt;td&gt; &lt;/td&gt;
-          &lt;td&gt; &lt;/td&gt;
         &lt;/tr&gt;
         &lt;tr&gt;
           &lt;td&gt;&lt;a href=&quot;https://arxiv.org/abs/2106.11053&quot;&gt;Leveraging Language to Learn Program Abstractions and Search Heuristics&lt;/a&gt;&lt;/td&gt;
-          &lt;td&gt;Wong et al&lt;/td&gt;
           &lt;td&gt;ICML’21&lt;/td&gt;
         &lt;/tr&gt;
         &lt;tr&gt;
           &lt;td&gt;&lt;a href=&quot;https://arxiv.org/abs/2106.07824&quot;&gt;Communicating Natural Programs to Humans and Machines&lt;/a&gt;&lt;/td&gt;
           &lt;td&gt; &lt;/td&gt;
-          &lt;td&gt; &lt;/td&gt;
         &lt;/tr&gt;
         &lt;tr&gt;
           &lt;td&gt;&lt;a href=&quot;https://github.com/samacqua/LARC&quot;&gt;LARC dataset&lt;/a&gt;&lt;/td&gt;
-          &lt;td&gt; &lt;/td&gt;
           &lt;td&gt; &lt;/td&gt;
         &lt;/tr&gt;
       &lt;/tbody&gt;
@@ -138,9 +130,9 @@ This tutorial touches on a few fundamentals such as the connections between grou
 
     &lt;p&gt;Related links :&lt;/p&gt;
 
-    &lt;h2 id=&quot;link-1&quot;&gt;Link&lt;/h2&gt;
-    &lt;p&gt;&lt;a href=&quot;https://github.com/fchollet/ARC&quot;&gt;The Abstraction and Reasoning Corpus (ARC)&lt;/a&gt;
-&lt;a href=&quot;https://en.wikipedia.org/wiki/Planning_Domain_Definition_Language&quot;&gt;Planning domain definition language (PDDL)&lt;/a&gt;&lt;/p&gt;
+    &lt;p&gt;&lt;a href=&quot;https://github.com/fchollet/ARC&quot;&gt;The Abstraction and Reasoning Corpus (ARC)&lt;/a&gt;&lt;/p&gt;
+
+    &lt;p&gt;&lt;a href=&quot;https://en.wikipedia.org/wiki/Planning_Domain_Definition_Language&quot;&gt;Planning domain definition language (PDDL)&lt;/a&gt;&lt;/p&gt;
   &lt;/li&gt;
   &lt;li&gt;
     &lt;p&gt;Duvenaud - Dex tutorial&lt;/p&gt;

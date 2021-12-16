@@ -95,22 +95,21 @@ I submitted a short paper to AIPLANS ( [Staged compilation of tensor expressions
 
     Prof Tenenbaum is an established scientist and gifted speaker, and gave one of his inspiring talks on his group's recent results. Namely, his research strives to replicate the flexibility of general intelligence using generative models of the world (in this case mediated by programs).
 
-    Title | | 
----|---|---
-[The child as hacker](http://colala.berkeley.edu/papers/rule2020child.pdf) | Rule et al | Trends in CogSci 
-[Learning Task-General Representations with Generative Neuro-Symbolic Modeling](https://openreview.net/forum?id=qzBUIzq5XR2) | | ICLR'21 
-[Learning to learn generative programs with Memoised Wake-Sleep](http://proceedings.mlr.press/v124/hewitt20a.html) | Hewitt et al | UAI'20 
-[DreamCoder : Growing generalizable, interpretable knowledge with wake-sleep Bayesian program learning](https://arxiv.org/abs/2006.08381 ) | |
-[Leveraging Language to Learn Program Abstractions and Search Heuristics](https://arxiv.org/abs/2106.11053) | Wong et al | ICML'21 
-[Communicating Natural Programs to Humans and Machines](https://arxiv.org/abs/2106.07824) | |
-[LARC dataset](https://github.com/samacqua/LARC) | |
+    Title | 
+--- | ---
+[The child as hacker](http://colala.berkeley.edu/papers/rule2020child.pdf) | Trends in CogSci 
+[Learning Task-General Representations with Generative Neuro-Symbolic Modeling](https://openreview.net/forum?id=qzBUIzq5XR2) | ICLR'21 
+[Learning to learn generative programs with Memoised Wake-Sleep](http://proceedings.mlr.press/v124/hewitt20a.html) | UAI'20 
+[DreamCoder : Growing generalizable, interpretable knowledge with wake-sleep Bayesian program learning](https://arxiv.org/abs/2006.08381 ) |
+[Leveraging Language to Learn Program Abstractions and Search Heuristics](https://arxiv.org/abs/2106.11053) | ICML'21 
+[Communicating Natural Programs to Humans and Machines](https://arxiv.org/abs/2106.07824) |
+[LARC dataset](https://github.com/samacqua/LARC) | 
 
     Related links : 
 
-    Link
----
-[The Abstraction and Reasoning Corpus (ARC)](https://github.com/fchollet/ARC)
-[Planning domain definition language (PDDL)](https://en.wikipedia.org/wiki/Planning_Domain_Definition_Language)
+    [The Abstraction and Reasoning Corpus (ARC)](https://github.com/fchollet/ARC)
+    
+    [Planning domain definition language (PDDL)](https://en.wikipedia.org/wiki/Planning_Domain_Definition_Language)
 
 * Duvenaud - Dex tutorial 
 

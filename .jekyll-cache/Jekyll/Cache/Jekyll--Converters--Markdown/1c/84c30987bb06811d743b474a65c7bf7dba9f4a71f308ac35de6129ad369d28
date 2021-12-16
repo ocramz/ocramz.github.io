@@ -1,0 +1,136 @@
+I""<h1 id="introduction">Introduction</h1>
+
+<p>Neural Information Processing Systems (NeurIPS) is nowadays one of the foremost conference on machine learning, with thousands of attendees and accepted contributions (papers, talks, tutorials, social events, panels, demonstrations, challenges and so on). It’s a wonderful event, powered by a loving and ever-growing community. The size of the event can also be somewhat overwhelming if you don’t carefully allocate your time if you happen (like I do) to have an even passing interest in more than one presented topic.</p>
+
+<p>Here I collect some notes on my 2021 experience as an attendee and author, as well as all the links I could record on the fly. I could only attend a fraction of the talks I’m interested in, but fortunately all the talks are recorded for posterity.</p>
+
+<h1 id="dec-6">Dec 6</h1>
+
+<p><strong><a href="https://neurips.cc/virtual/2021/tutorial/21891">Tutorial : Pay Attention to What You Need: Do Structural Priors Still Matter in the Age of Billion Parameter Models?</a></strong></p>
+
+<p>The recent empirical success (and theoretical systematization) of graph learning is making us reflect on the role of structure (relationships, grammar, ontologies, syntax) in inference. The field of AI is also coming full-circle (once again) and re-assessing “symbolic” approaches, after their premature demise at the hand of connectionist methods in the late ’90s.
+This tutorial touches on a few fundamentals such as the connections between group theory and differential geometry (by Seb Racaniere), as well as giving perspective on their role towards better domain-specific inference models for dealing with point clouds, relational models, graphs and so on.</p>
+
+<p><strong>Tutorial : Machine Learning and Statistics for Climate Science</strong></p>
+
+<p><a href="https://neurips.cc/media/neurips-2021/Slides/21893_0Ue6ONI.pdf">slides</a></p>
+
+<p>Unfortunately I couldn’t attend this workshop but it’s very dear to my heart so I intend to return to it at a later time.</p>
+
+<h1 id="dec-7">Dec 7</h1>
+
+<p><strong><a href="https://neurips.cc/virtual/2021/tutorial/21895">Tutorial : Self-Supervised Learning: Self-Prediction and Contrastive Learning</a></strong></p>
+
+<p>Self-supervision is a very interesting family of techniques for producing data labels via a generative process : the dataset is “augmented” by distorting the data instances in various ways, e.g. rotating or blurring images, or masking parts of a sentence in the case of text. Classifiers are then trained on this augmented data, which has shown to improve performance in a number of downstream tasks.</p>
+
+<p>How we can produce data augmentations that are meaningful to the data and task at hand is one of the open research questions.</p>
+
+<p><strong>Keynote : How Duolingo Uses AI to Assess, Engage and Teach Better</strong></p>
+
+<p>Luis von Ahn is one of the founders of Duolingo, a mobile app for learning language. He showed how the app makes heavy use of A/B testing and analyzes systematically all learning sessions to produce a comfortable yet challenging learning experience with spaced repetition, well-placed nudges etc. They have an ML team that made fundamental advances in active learning and multi-armed bandits.</p>
+
+<h1 id="dec-8">Dec 8</h1>
+
+<p><strong><a href="https://bigscience.huggingface.co/">Social : BigScience</a></strong></p>
+
+<p>BigScience is a year-long collaborative experiment on large multilingual models and datasets, aka the “LHC of NLP”. I was not directly involved but find it a very meaningful initiative to activate academia and society towards understanding and improving natural language processing for everybody.</p>
+
+<h1 id="dec-9">Dec 9</h1>
+
+<p><strong>Keynote : Optimal Transport: Past, Present, and Future</strong></p>
+
+<p>Optimal transport (“what is the optimal way to transport a distribution into another one?”) is one of those topics that seemingly pops up everywhere from operations research to biology to high-dimensional learning.</p>
+
+<h2 id="dec-10">Dec 10</h2>
+
+<h1 id="dec-13---workshops-1">Dec 13 - Workshops 1</h1>
+
+<h1 id="dec-14---workshops-2">Dec 14 - Workshops 2</h1>
+
+<p><strong><a href="https://neurips.cc/virtual/2021/workshop/21860">Data-centric AI</a></strong></p>
+
+<ul>
+  <li>
+    <p>Ratner, Re - The future of data-centric AI</p>
+
+    <p>I’ve been very intrigued by the Snorkel project and weak labeling/supervision in general since learning about them a few years back. Their approach (based on programmatic labeling functions) will likely prove popular and effective within the private sector and in particular among highly-regulated industries where data movement is either hard or impossible.</p>
+  </li>
+</ul>
+
+<p><strong><a href="https://aiplans.github.io/">Advances in programming languages and neurosymbolic systems - AIPLANS’21</a></strong></p>
+
+<p>This workshop’s ambitious program was to bring together researchers from the AI and programming languages communities, and create a dialogue around the interplay of domain-specific languages and mechanical reasoning. The talks spanned formal logic, machine learning techniques, theorem proving and more, showing what’s possible when machines are made to collaborate with humans.</p>
+
+<p>I submitted a short paper to AIPLANS ( <a href="https://openreview.net/forum?id=5TCfWXk2waG">Staged compilation of tensor expressions</a> ), with an early experiment on applying meta-programming techniques to a tensor contraction DSL for Haskell.</p>
+
+<ul>
+  <li>
+    <p>Weiss - Thinking like Transformers</p>
+
+    <h2 id="link">Link</h2>
+    <p><a href="https://aclanthology.org/2020.acl-main.43/">A Formal Hierarchy of RNN Architectures</a></p>
+  </li>
+  <li>
+    <p>Tenenbaum - Building machines that learn and think like people by learning to write programs</p>
+
+    <p>Prof Tenenbaum is an established scientist and gifted speaker, and gave one of his inspiring talks on his group’s recent results. Namely, his research strives to replicate the flexibility of general intelligence using generative models of the world (in this case mediated by programs).</p>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Title</th>
+          <th> </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><a href="http://colala.berkeley.edu/papers/rule2020child.pdf">The child as hacker</a></td>
+          <td>Trends in CogSci</td>
+        </tr>
+        <tr>
+          <td><a href="https://openreview.net/forum?id=qzBUIzq5XR2">Learning Task-General Representations with Generative Neuro-Symbolic Modeling</a></td>
+          <td>ICLR’21</td>
+        </tr>
+        <tr>
+          <td><a href="http://proceedings.mlr.press/v124/hewitt20a.html">Learning to learn generative programs with Memoised Wake-Sleep</a></td>
+          <td>UAI’20</td>
+        </tr>
+        <tr>
+          <td><a href="https://arxiv.org/abs/2006.08381">DreamCoder : Growing generalizable, interpretable knowledge with wake-sleep Bayesian program learning</a></td>
+          <td> </td>
+        </tr>
+        <tr>
+          <td><a href="https://arxiv.org/abs/2106.11053">Leveraging Language to Learn Program Abstractions and Search Heuristics</a></td>
+          <td>ICML’21</td>
+        </tr>
+        <tr>
+          <td><a href="https://arxiv.org/abs/2106.07824">Communicating Natural Programs to Humans and Machines</a></td>
+          <td> </td>
+        </tr>
+        <tr>
+          <td><a href="https://github.com/samacqua/LARC">LARC dataset</a></td>
+          <td> </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p>Related links :</p>
+
+    <p><a href="https://github.com/fchollet/ARC">The Abstraction and Reasoning Corpus (ARC)</a></p>
+
+    <p><a href="https://en.wikipedia.org/wiki/Planning_Domain_Definition_Language">Planning domain definition language (PDDL)</a></p>
+  </li>
+  <li>
+    <p>Duvenaud - Dex tutorial</p>
+
+    <p>Dex is an experimental array-based programming language (https://github.com/google-research/dex-lang) and David gave us a live-coding tutorial as well as his (very relatable) recollections as a scientific programmer and researchers (starting from buggy Matlab scripts and their consequences on research), to Python, to type-checked functional languages such as Dex and its underlying Haskell.</p>
+
+    <p>Dex supports checked mutation using an effect system taken from Koka (https://koka-lang.github.io/koka/doc/index.html).</p>
+  </li>
+  <li>
+    <p>Rush - Differential inference</p>
+
+    <p>Sasha gave an introduction to the use of automatic differentiation for doing Bayesian inference on networks of discrete random variables , based on the theory from Darwiche https://arxiv.org/abs/1301.3847</p>
+  </li>
+</ul>
+:ET
