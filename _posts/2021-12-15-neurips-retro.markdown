@@ -9,9 +9,12 @@ categories: machine-learning events
 
 Neural Information Processing Systems (NeurIPS) is nowadays one of the foremost conference on machine learning, with thousands of attendees and accepted contributions (papers, talks, tutorials, social events, panels, demonstrations, challenges and so on). It's a wonderful event, powered by a loving and ever-growing community. The size of the event can also be somewhat overwhelming if you don't carefully allocate your time if you happen (like I do) to have an even passing interest in more than one presented topic.
 
-Here I collect some notes on my 2021 experience as an attendee and author, as well as all the links I could record on the fly. I could only attend a fraction of the talks I'm interested in, but fortunately all the talks are recorded for posterity.
+It's hard to do justice to the whole conference in a few sentences; what we can see from a great height is that machine learning has come of age, and new applications that act either as economic enablers or instruments of oppression appear on a daily basis. The NeurIPS community expanded to include many more voices than just the technical contributions, and that's a very good thing.
+
+Here I collect some loose notes on my 2021 experience as an attendee and author, as well as all the links I could record on the fly. I could only attend a fraction of the live events, but fortunately all the talks are recorded for posterity.
 
 
+---
 
 # December 6
 
@@ -26,6 +29,7 @@ This tutorial touches on a few fundamentals such as the connections between grou
 
 Unfortunately I couldn't attend this workshop but it's very dear to my heart so I intend to return to it at a later time.
 
+---
 
 # December 7
 
@@ -39,6 +43,7 @@ How we can produce data augmentations that are meaningful to the data and task a
 
 Luis von Ahn is one of the founders of Duolingo, a mobile app for learning language. He showed how the app makes heavy use of A/B testing and analyzes systematically all learning sessions to produce a comfortable yet challenging learning experience with spaced repetition, well-placed nudges etc. They have an ML team that made fundamental advances in active learning and multi-armed bandits.
 
+---
 
 # December 8
 
@@ -48,14 +53,19 @@ Luis von Ahn is one of the founders of Duolingo, a mobile app for learning langu
 
 BigScience is a year-long collaborative experiment on large multilingual models and datasets, aka the "LHC of NLP". I was not directly involved but find it a very meaningful initiative to activate academia and society towards understanding and improving natural language processing for everybody.
 
+---
+
 # December 9
 
 **Keynote : Optimal Transport: Past, Present, and Future**
 
-Optimal transport ("what is the optimal way to transport a distribution into another one?") is one of those topics that seemingly pops up everywhere from operations research to biology to high-dimensional learning.
+Optimal transport ("what is the optimal way to transport a distribution into another one?") is one of those topics that seemingly pops up everywhere from operations research to biology to high-dimensional learning. Alessio Figalli recently won a Fields medal on the subject, and he gave a good (albeit somewhat dry) overview on the history and application of the optimal transport problem.
+
+---
 
 # December 10 
 
+---
 
 # December 13 - Workshops 1
 
@@ -77,7 +87,7 @@ Optimal transport ("what is the optimal way to transport a distribution into ano
 
 Automatic differentiation has become ubiquitous, many languages adopt it either as a library or a first-class primitive. As a result, complex physical models have become differentiable (in some sense), and the workshop showcased the effect of this on molecular dynamics, climate and weather prediction, etc.
 
-
+---
 
 # December 14 - Workshops 2
 
@@ -104,7 +114,7 @@ I submitted a short paper to AIPLANS ( [Staged compilation of tensor expressions
 
 * Tenenbaum - Building machines that learn and think like people by learning to write programs
 
-    Prof Tenenbaum is an established scientist and gifted speaker, and gave one of his inspiring talks on his group's recent results. Namely, his research strives to replicate the flexibility of general intelligence using generative models of the world (in this case mediated by programs).
+    Prof Tenenbaum is an established scientist and gifted speaker, and gave one of his inspiring talks on his group's recent results. Namely, his research strives to replicate the flexibility of general intelligence (learning in babies, in fact) using generative models of the world (in this case mediated by programs).
 
     Title | 
 --- | ---

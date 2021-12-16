@@ -6,8 +6,8 @@
 </description>
     <link>https://ocramz.github.io/</link>
     <atom:link href="https://ocramz.github.io/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Thu, 16 Dec 2021 12:29:10 +0100</pubDate>
-    <lastBuildDate>Thu, 16 Dec 2021 12:29:10 +0100</lastBuildDate>
+    <pubDate>Thu, 16 Dec 2021 12:53:31 +0100</pubDate>
+    <lastBuildDate>Thu, 16 Dec 2021 12:53:31 +0100</lastBuildDate>
     <generator>Jekyll v4.2.0</generator>
     
       <item>
@@ -16,7 +16,11 @@
 
 &lt;p&gt;Neural Information Processing Systems (NeurIPS) is nowadays one of the foremost conference on machine learning, with thousands of attendees and accepted contributions (papers, talks, tutorials, social events, panels, demonstrations, challenges and so on). It’s a wonderful event, powered by a loving and ever-growing community. The size of the event can also be somewhat overwhelming if you don’t carefully allocate your time if you happen (like I do) to have an even passing interest in more than one presented topic.&lt;/p&gt;
 
-&lt;p&gt;Here I collect some notes on my 2021 experience as an attendee and author, as well as all the links I could record on the fly. I could only attend a fraction of the talks I’m interested in, but fortunately all the talks are recorded for posterity.&lt;/p&gt;
+&lt;p&gt;It’s hard to do justice to the whole conference in a few sentences; what we can see from a great height is that machine learning has come of age, and new applications that act either as economic enablers or instruments of oppression appear on a daily basis. The NeurIPS community expanded to include many more voices than just the technical contributions, and that’s a very good thing.&lt;/p&gt;
+
+&lt;p&gt;Here I collect some loose notes on my 2021 experience as an attendee and author, as well as all the links I could record on the fly. I could only attend a fraction of the live events, but fortunately all the talks are recorded for posterity.&lt;/p&gt;
+
+&lt;hr /&gt;
 
 &lt;h1 id=&quot;december-6&quot;&gt;December 6&lt;/h1&gt;
 
@@ -31,6 +35,8 @@ This tutorial touches on a few fundamentals such as the connections between grou
 
 &lt;p&gt;Unfortunately I couldn’t attend this workshop but it’s very dear to my heart so I intend to return to it at a later time.&lt;/p&gt;
 
+&lt;hr /&gt;
+
 &lt;h1 id=&quot;december-7&quot;&gt;December 7&lt;/h1&gt;
 
 &lt;p&gt;&lt;strong&gt;&lt;a href=&quot;https://neurips.cc/virtual/2021/tutorial/21895&quot;&gt;Tutorial : Self-Supervised Learning: Self-Prediction and Contrastive Learning&lt;/a&gt;&lt;/strong&gt;&lt;/p&gt;
@@ -43,19 +49,27 @@ This tutorial touches on a few fundamentals such as the connections between grou
 
 &lt;p&gt;Luis von Ahn is one of the founders of Duolingo, a mobile app for learning language. He showed how the app makes heavy use of A/B testing and analyzes systematically all learning sessions to produce a comfortable yet challenging learning experience with spaced repetition, well-placed nudges etc. They have an ML team that made fundamental advances in active learning and multi-armed bandits.&lt;/p&gt;
 
+&lt;hr /&gt;
+
 &lt;h1 id=&quot;december-8&quot;&gt;December 8&lt;/h1&gt;
 
 &lt;p&gt;&lt;strong&gt;&lt;a href=&quot;https://bigscience.huggingface.co/&quot;&gt;Social : BigScience&lt;/a&gt;&lt;/strong&gt;&lt;/p&gt;
 
 &lt;p&gt;BigScience is a year-long collaborative experiment on large multilingual models and datasets, aka the “LHC of NLP”. I was not directly involved but find it a very meaningful initiative to activate academia and society towards understanding and improving natural language processing for everybody.&lt;/p&gt;
 
+&lt;hr /&gt;
+
 &lt;h1 id=&quot;december-9&quot;&gt;December 9&lt;/h1&gt;
 
 &lt;p&gt;&lt;strong&gt;Keynote : Optimal Transport: Past, Present, and Future&lt;/strong&gt;&lt;/p&gt;
 
-&lt;p&gt;Optimal transport (“what is the optimal way to transport a distribution into another one?”) is one of those topics that seemingly pops up everywhere from operations research to biology to high-dimensional learning.&lt;/p&gt;
+&lt;p&gt;Optimal transport (“what is the optimal way to transport a distribution into another one?”) is one of those topics that seemingly pops up everywhere from operations research to biology to high-dimensional learning. Alessio Figalli recently won a Fields medal on the subject, and he gave a good (albeit somewhat dry) overview on the history and application of the optimal transport problem.&lt;/p&gt;
+
+&lt;hr /&gt;
 
 &lt;h1 id=&quot;december-10&quot;&gt;December 10&lt;/h1&gt;
+
+&lt;hr /&gt;
 
 &lt;h1 id=&quot;december-13---workshops-1&quot;&gt;December 13 - Workshops 1&lt;/h1&gt;
 
@@ -80,6 +94,8 @@ This tutorial touches on a few fundamentals such as the connections between grou
 &lt;p&gt;&lt;strong&gt;&lt;a href=&quot;https://neurips.cc/virtual/2021/workshop/21882&quot;&gt;Differentiable programming&lt;/a&gt;&lt;/strong&gt;&lt;/p&gt;
 
 &lt;p&gt;Automatic differentiation has become ubiquitous, many languages adopt it either as a library or a first-class primitive. As a result, complex physical models have become differentiable (in some sense), and the workshop showcased the effect of this on molecular dynamics, climate and weather prediction, etc.&lt;/p&gt;
+
+&lt;hr /&gt;
 
 &lt;h1 id=&quot;december-14---workshops-2&quot;&gt;December 14 - Workshops 2&lt;/h1&gt;
 
@@ -110,7 +126,7 @@ This tutorial touches on a few fundamentals such as the connections between grou
   &lt;li&gt;
     &lt;p&gt;Tenenbaum - Building machines that learn and think like people by learning to write programs&lt;/p&gt;
 
-    &lt;p&gt;Prof Tenenbaum is an established scientist and gifted speaker, and gave one of his inspiring talks on his group’s recent results. Namely, his research strives to replicate the flexibility of general intelligence using generative models of the world (in this case mediated by programs).&lt;/p&gt;
+    &lt;p&gt;Prof Tenenbaum is an established scientist and gifted speaker, and gave one of his inspiring talks on his group’s recent results. Namely, his research strives to replicate the flexibility of general intelligence (learning in babies, in fact) using generative models of the world (in this case mediated by programs).&lt;/p&gt;
 
     &lt;table&gt;
       &lt;thead&gt;
