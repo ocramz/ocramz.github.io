@@ -6,8 +6,8 @@
 </description>
     <link>https://ocramz.github.io/</link>
     <atom:link href="https://ocramz.github.io/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Thu, 16 Dec 2021 12:11:32 +0100</pubDate>
-    <lastBuildDate>Thu, 16 Dec 2021 12:11:32 +0100</lastBuildDate>
+    <pubDate>Thu, 16 Dec 2021 12:26:01 +0100</pubDate>
+    <lastBuildDate>Thu, 16 Dec 2021 12:26:01 +0100</lastBuildDate>
     <generator>Jekyll v4.2.0</generator>
     
       <item>
@@ -58,6 +58,22 @@ This tutorial touches on a few fundamentals such as the connections between grou
 &lt;h1 id=&quot;december-10&quot;&gt;December 10&lt;/h1&gt;
 
 &lt;h1 id=&quot;december-13---workshops-1&quot;&gt;December 13 - Workshops 1&lt;/h1&gt;
+
+&lt;p&gt;&lt;strong&gt;&lt;a href=&quot;https://neurips.cc/virtual/2021/workshop/21829&quot;&gt;New Frontiers in Federated Learning: Privacy, Fairness, Robustness, Personalization and Data Ownership &lt;/a&gt;&lt;/strong&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;Pentland - Building a New Economy: Federated Learning and Beyond&lt;/p&gt;
+
+    &lt;p&gt;Community-owned data (real-time census) : employment, disease control, public transit, economic growth&lt;/p&gt;
+
+    &lt;p&gt;&lt;a href=&quot;https://opportunity.mit.edu/&quot;&gt;Atlas of opportunity&lt;/a&gt;&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;strong&gt;&lt;a href=&quot;https://neurips.cc/virtual/2021/workshop/21882&quot;&gt;Differentiable programming&lt;/a&gt;&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;Automatic differentiation has become ubiquitous, many languages adopt it either as a library or a first-class primitive. As a result, complex physical models have become differentiable (in some sense), and the workshop showcased the effect of this on molecular dynamics, climate and weather prediction, etc.&lt;/p&gt;
 
 &lt;h1 id=&quot;december-14---workshops-2&quot;&gt;December 14 - Workshops 2&lt;/h1&gt;
 
@@ -138,14 +154,14 @@ This tutorial touches on a few fundamentals such as the connections between grou
   &lt;li&gt;
     &lt;p&gt;Duvenaud - Dex tutorial&lt;/p&gt;
 
-    &lt;p&gt;Dex is an experimental array-based programming language (https://github.com/google-research/dex-lang) and David gave us a live-coding tutorial as well as his (very relatable) recollections as a scientific programmer and researchers (starting from buggy Matlab scripts and their consequences on research), to Python, to type-checked functional languages such as Dex and its underlying Haskell.&lt;/p&gt;
+    &lt;p&gt;&lt;a href=&quot;https://github.com/google-research/dex-lang&quot;&gt;Dex&lt;/a&gt; is an experimental array-based programming language  and David gave us a live-coding tutorial as well as his (very relatable) recollections as a scientific programmer and researchers (starting from buggy Matlab scripts and their consequences on research), to Python, to type-checked functional languages such as Dex and its underlying Haskell.&lt;/p&gt;
 
-    &lt;p&gt;Dex supports checked mutation using an effect system taken from Koka (https://koka-lang.github.io/koka/doc/index.html).&lt;/p&gt;
+    &lt;p&gt;Dex supports checked mutation using an effect system taken from &lt;a href=&quot;https://koka-lang.github.io/koka/doc/index.html&quot;&gt;Koka&lt;/a&gt;.&lt;/p&gt;
   &lt;/li&gt;
   &lt;li&gt;
     &lt;p&gt;Rush - Differential inference&lt;/p&gt;
 
-    &lt;p&gt;Sasha gave an introduction to the use of automatic differentiation for doing Bayesian inference on networks of discrete random variables , based on the theory from Darwiche https://arxiv.org/abs/1301.3847&lt;/p&gt;
+    &lt;p&gt;Sasha gave an introduction to the use of automatic differentiation for doing Bayesian inference on networks of discrete random variables , based on the theory from Darwiche &lt;a href=&quot;https://arxiv.org/abs/1301.3847&quot;&gt;A Differential Approach to Inference in Bayesian Networks&lt;/a&gt;.&lt;/p&gt;
   &lt;/li&gt;
 &lt;/ul&gt;
 </description>

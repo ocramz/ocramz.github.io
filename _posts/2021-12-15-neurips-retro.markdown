@@ -59,6 +59,18 @@ Optimal transport ("what is the optimal way to transport a distribution into ano
 
 # December 13 - Workshops 1
 
+**[New Frontiers in Federated Learning: Privacy, Fairness, Robustness, Personalization and Data Ownership ](https://neurips.cc/virtual/2021/workshop/21829)**
+
+* Pentland - Building a New Economy: Federated Learning and Beyond
+
+    Community-owned data (real-time census) : employment, disease control, public transit, economic growth
+    
+    [Atlas of opportunity](https://opportunity.mit.edu/)
+
+**[Differentiable programming](https://neurips.cc/virtual/2021/workshop/21882)**
+
+Automatic differentiation has become ubiquitous, many languages adopt it either as a library or a first-class primitive. As a result, complex physical models have become differentiable (in some sense), and the workshop showcased the effect of this on molecular dynamics, climate and weather prediction, etc.
+
 
 
 # December 14 - Workshops 2
@@ -106,10 +118,10 @@ I submitted a short paper to AIPLANS ( [Staged compilation of tensor expressions
 
 * Duvenaud - Dex tutorial 
 
-    Dex is an experimental array-based programming language (https://github.com/google-research/dex-lang) and David gave us a live-coding tutorial as well as his (very relatable) recollections as a scientific programmer and researchers (starting from buggy Matlab scripts and their consequences on research), to Python, to type-checked functional languages such as Dex and its underlying Haskell.
+    [Dex](https://github.com/google-research/dex-lang) is an experimental array-based programming language  and David gave us a live-coding tutorial as well as his (very relatable) recollections as a scientific programmer and researchers (starting from buggy Matlab scripts and their consequences on research), to Python, to type-checked functional languages such as Dex and its underlying Haskell.
 
-    Dex supports checked mutation using an effect system taken from Koka (https://koka-lang.github.io/koka/doc/index.html).
+    Dex supports checked mutation using an effect system taken from [Koka](https://koka-lang.github.io/koka/doc/index.html).
 
 * Rush - Differential inference
 
-    Sasha gave an introduction to the use of automatic differentiation for doing Bayesian inference on networks of discrete random variables , based on the theory from Darwiche https://arxiv.org/abs/1301.3847
+    Sasha gave an introduction to the use of automatic differentiation for doing Bayesian inference on networks of discrete random variables , based on the theory from Darwiche [A Differential Approach to Inference in Bayesian Networks](https://arxiv.org/abs/1301.3847).
