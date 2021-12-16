@@ -15,7 +15,7 @@ Here I collect some notes on my 2021 experience as an attendee and author, as we
 
 # Dec 6
 
-### Tutorial : Pay Attention to What You Need: Do Structural Priors Still Matter in the Age of Billion Parameter Models? 
+<h2>Tutorial : Pay Attention to What You Need: Do Structural Priors Still Matter in the Age of Billion Parameter Models? </h2>
 
 https://neurips.cc/virtual/2021/tutorial/21891
 
