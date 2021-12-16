@@ -11,13 +11,13 @@ categories: machine-learning events
 
 It's hard to do justice to the whole conference in a few sentences. What we can notice from a great height is that machine learning has come of age, and new applications that act either as economic enablers or instruments of oppression appear on a daily basis. The NeurIPS community expanded to include many more voices than just the technical contributions, and that's a very good thing.
 
-Personally, what I enjoyed the most falls roughly in two categories: AI as a social and economic enabler and the study of intelligence _per se_.
+Personally, what I'm most interested in falls roughly in two categories: AI as a social and economic enabler and the study of intelligence _per se_.
 
-* Data programming, learning on relational data, federated learning all fall in this bin; on one hand they let us make sense of complex, real-world signals, and hopefully make better decisions. On the other they promise to empower smaller entities than the usual tech titans, by re-distributing the economic returns of data ownership.
+* Data programming, weak supervision, learning on relational data, federated learning all fall in this bin; on one hand they let us make sense of complex, real-world signals, and hopefully make better decisions. On the other they promise to empower smaller entities than the usual tech titans, by re-distributing the economic returns of data ownership.
 
-* The study of intelligence for its own sake is as old as the field and we're nowhere close to even formulating a well-posed question for this. However generative, neuro-symbolic approaches like those advocated by Tenenbaum and collaborators are a source of great insight and better questions, which is ultimately what matters in science.
+* The study of intelligence for its own sake is as old as the field and we're nowhere close to even formulating a well-posed question. However, careful cognitive experiments and generative, neuro-symbolic approaches like those advocated by Tenenbaum and collaborators are a source of great insight and better questions, which is ultimately what matters in science.
 
-Here I collect some loose notes on my 2021 experience as an attendee and author, as well as all the links I could record on the fly. I could only attend a fraction of the live events, but fortunately all the talks are recorded for posterity.
+In what follows I collect some loose notes on my 2021 NeurIPS experience as an attendee and author, as well as all the links I could record on the fly. I could only attend a fraction of the live events, but fortunately all the talks are recorded for posterity.
 
 
 ---
@@ -75,7 +75,7 @@ Optimal transport ("what is the optimal way to transport a distribution into ano
 
 # December 11
 
-**[Generative modeling](https://neurips.cc/virtual/2021/session/44855)
+**[Generative modeling](https://neurips.cc/virtual/2021/session/44855)**
 
 * Rozen - Moser Flow: Divergence-based Generative Modeling on Manifolds
 
