@@ -6,8 +6,8 @@
 </description>
     <link>https://ocramz.github.io/</link>
     <atom:link href="https://ocramz.github.io/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Thu, 16 Dec 2021 11:16:55 +0100</pubDate>
-    <lastBuildDate>Thu, 16 Dec 2021 11:16:55 +0100</lastBuildDate>
+    <pubDate>Thu, 16 Dec 2021 11:23:40 +0100</pubDate>
+    <lastBuildDate>Thu, 16 Dec 2021 11:23:40 +0100</lastBuildDate>
     <generator>Jekyll v4.2.0</generator>
     
       <item>
@@ -67,9 +67,7 @@ This tutorial touches on a few fundamentals such as the connections between grou
 
 &lt;h1 id=&quot;dec-14---workshops-2&quot;&gt;Dec 14 - Workshops 2&lt;/h1&gt;
 
-&lt;p&gt;&lt;strong&gt;Data-centric AI&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;https://neurips.cc/virtual/2021/workshop/21860&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;&lt;a href=&quot;https://neurips.cc/virtual/2021/workshop/21860&quot;&gt;Data-centric AI&lt;/a&gt;&lt;/strong&gt;&lt;/p&gt;
 
 &lt;ul&gt;
   &lt;li&gt;
@@ -79,77 +77,76 @@ This tutorial touches on a few fundamentals such as the connections between grou
   &lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;h2 id=&quot;advances-in-programming-languages-and-neurosymbolic-systems---aiplans21&quot;&gt;Advances in programming languages and neurosymbolic systems - AIPLANS’21&lt;/h2&gt;
-
-&lt;p&gt;https://aiplans.github.io/&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;&lt;a href=&quot;https://aiplans.github.io/&quot;&gt;Advances in programming languages and neurosymbolic systems - AIPLANS’21&lt;/a&gt;&lt;/strong&gt;&lt;/p&gt;
 
 &lt;p&gt;This workshop’s ambitious program was to bring together researchers from the AI and programming languages communities, and create a dialogue around the interplay of domain-specific languages and mechanical reasoning. The talks spanned formal logic, machine learning techniques, theorem proving and more, showing what’s possible when machines are made to collaborate with humans.&lt;/p&gt;
 
-&lt;p&gt;I submitted a short paper to AIPLANS (Staged compilation of tensor expressions - https://openreview.net/forum?id=5TCfWXk2waG), with an early experiment on applying meta-programming techniques to a tensor contraction DSL for Haskell.&lt;/p&gt;
+&lt;p&gt;I submitted a short paper to AIPLANS ( &lt;a href=&quot;https://openreview.net/forum?id=5TCfWXk2waG&quot;&gt;Staged compilation of tensor expressions&lt;/a&gt; ), with an early experiment on applying meta-programming techniques to a tensor contraction DSL for Haskell.&lt;/p&gt;
 
 &lt;ul&gt;
   &lt;li&gt;
     &lt;p&gt;Weiss - Thinking like Transformers&lt;/p&gt;
 
-    &lt;table&gt;
-      &lt;thead&gt;
-        &lt;tr&gt;
-          &lt;th&gt;Title&lt;/th&gt;
-          &lt;th&gt;Authors&lt;/th&gt;
-          &lt;th&gt;Conference&lt;/th&gt;
-          &lt;th&gt;Link&lt;/th&gt;
-        &lt;/tr&gt;
-      &lt;/thead&gt;
-      &lt;tbody&gt;
-        &lt;tr&gt;
-          &lt;td&gt;A Formal Hierarchy of RNN Architectures&lt;/td&gt;
-          &lt;td&gt; &lt;/td&gt;
-          &lt;td&gt; &lt;/td&gt;
-          &lt;td&gt;https://aclanthology.org/2020.acl-main.43/&lt;/td&gt;
-        &lt;/tr&gt;
-      &lt;/tbody&gt;
-    &lt;/table&gt;
+    &lt;h2 id=&quot;link&quot;&gt;Link&lt;/h2&gt;
+    &lt;p&gt;&lt;a href=&quot;https://aclanthology.org/2020.acl-main.43/&quot;&gt;A Formal Hierarchy of RNN Architectures&lt;/a&gt;&lt;/p&gt;
   &lt;/li&gt;
   &lt;li&gt;
     &lt;p&gt;Tenenbaum - Building machines that learn and think like people by learning to write programs&lt;/p&gt;
 
     &lt;p&gt;Prof Tenenbaum is an established scientist and gifted speaker, and gave one of his inspiring talks on his group’s recent results. Namely, his research strives to replicate the flexibility of general intelligence using generative models of the world (in this case mediated by programs).&lt;/p&gt;
 
-    &lt;p&gt;Title | Authors | Conference/Journal | Link
-—|—|—
-The child as hacker | Rule et al | Trends in CogSci | http://colala.berkeley.edu/papers/rule2020child.pdf
-Learning Task-General Representations with Generative Neuro-Symbolic Modeling | | ICLR’21 | https://openreview.net/forum?id=qzBUIzq5XR2 
-Learning to learn generative programs with Memoised Wake-Sleep | Hewitt et al | UAI’20 | http://proceedings.mlr.press/v124/hewitt20a.html
-DreamCoder : Growing generalizable, interpretable knowledge with wake-sleep Bayesian program learning | | | https://arxiv.org/abs/2006.08381 
-Leveraging Language to Learn Program Abstractions and Search Heuristics - Wong et al - ICML’21 https://arxiv.org/abs/2106.11053
-Communicating Natural Programs to Humans and Machines | | |  https://arxiv.org/abs/2106.07824 (+ the associated LARC dataset https://github.com/samacqua/LARC  )&lt;/p&gt;
-
-    &lt;p&gt;Related links :&lt;/p&gt;
-
     &lt;table&gt;
       &lt;thead&gt;
         &lt;tr&gt;
           &lt;th&gt;Title&lt;/th&gt;
-          &lt;th&gt;Authors&lt;/th&gt;
-          &lt;th&gt;Conference/Journal&lt;/th&gt;
-          &lt;th&gt;Link&lt;/th&gt;
+          &lt;th&gt; &lt;/th&gt;
+          &lt;th&gt; &lt;/th&gt;
         &lt;/tr&gt;
       &lt;/thead&gt;
       &lt;tbody&gt;
         &lt;tr&gt;
-          &lt;td&gt;The Abstraction and Reasoning Corpus (ARC)&lt;/td&gt;
-          &lt;td&gt; &lt;/td&gt;
-          &lt;td&gt; &lt;/td&gt;
-          &lt;td&gt;https://github.com/fchollet/ARC&lt;/td&gt;
+          &lt;td&gt;&lt;a href=&quot;http://colala.berkeley.edu/papers/rule2020child.pdf&quot;&gt;The child as hacker&lt;/a&gt;&lt;/td&gt;
+          &lt;td&gt;Rule et al&lt;/td&gt;
+          &lt;td&gt;Trends in CogSci&lt;/td&gt;
         &lt;/tr&gt;
         &lt;tr&gt;
-          &lt;td&gt;Planning domain definition language (PDDL)&lt;/td&gt;
+          &lt;td&gt;&lt;a href=&quot;https://openreview.net/forum?id=qzBUIzq5XR2&quot;&gt;Learning Task-General Representations with Generative Neuro-Symbolic Modeling&lt;/a&gt;&lt;/td&gt;
+          &lt;td&gt; &lt;/td&gt;
+          &lt;td&gt;ICLR’21&lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+          &lt;td&gt;&lt;a href=&quot;http://proceedings.mlr.press/v124/hewitt20a.html&quot;&gt;Learning to learn generative programs with Memoised Wake-Sleep&lt;/a&gt;&lt;/td&gt;
+          &lt;td&gt;Hewitt et al&lt;/td&gt;
+          &lt;td&gt;UAI’20&lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+          &lt;td&gt;&lt;a href=&quot;https://arxiv.org/abs/2006.08381&quot;&gt;DreamCoder : Growing generalizable, interpretable knowledge with wake-sleep Bayesian program learning&lt;/a&gt;&lt;/td&gt;
           &lt;td&gt; &lt;/td&gt;
           &lt;td&gt; &lt;/td&gt;
-          &lt;td&gt;https://en.wikipedia.org/wiki/Planning_Domain_Definition_Language&lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+          &lt;td&gt;&lt;a href=&quot;https://arxiv.org/abs/2106.11053&quot;&gt;Leveraging Language to Learn Program Abstractions and Search Heuristics&lt;/a&gt;&lt;/td&gt;
+          &lt;td&gt;Wong et al&lt;/td&gt;
+          &lt;td&gt;ICML’21&lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+          &lt;td&gt;&lt;a href=&quot;https://arxiv.org/abs/2106.07824&quot;&gt;Communicating Natural Programs to Humans and Machines&lt;/a&gt;&lt;/td&gt;
+          &lt;td&gt; &lt;/td&gt;
+          &lt;td&gt; &lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+          &lt;td&gt;&lt;a href=&quot;https://github.com/samacqua/LARC&quot;&gt;LARC dataset&lt;/a&gt;&lt;/td&gt;
+          &lt;td&gt; &lt;/td&gt;
+          &lt;td&gt; &lt;/td&gt;
         &lt;/tr&gt;
       &lt;/tbody&gt;
     &lt;/table&gt;
+
+    &lt;p&gt;Related links :&lt;/p&gt;
+
+    &lt;h2 id=&quot;link-1&quot;&gt;Link&lt;/h2&gt;
+    &lt;p&gt;&lt;a href=&quot;https://github.com/fchollet/ARC&quot;&gt;The Abstraction and Reasoning Corpus (ARC)&lt;/a&gt;
+&lt;a href=&quot;https://en.wikipedia.org/wiki/Planning_Domain_Definition_Language&quot;&gt;Planning domain definition language (PDDL)&lt;/a&gt;&lt;/p&gt;
   &lt;/li&gt;
   &lt;li&gt;
     &lt;p&gt;Duvenaud - Dex tutorial&lt;/p&gt;
