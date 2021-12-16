@@ -6,8 +6,8 @@
 </description>
     <link>https://ocramz.github.io/</link>
     <atom:link href="https://ocramz.github.io/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Thu, 16 Dec 2021 11:10:52 +0100</pubDate>
-    <lastBuildDate>Thu, 16 Dec 2021 11:10:52 +0100</lastBuildDate>
+    <pubDate>Thu, 16 Dec 2021 11:13:22 +0100</pubDate>
+    <lastBuildDate>Thu, 16 Dec 2021 11:13:22 +0100</lastBuildDate>
     <generator>Jekyll v4.2.0</generator>
     
       <item>
@@ -20,14 +20,14 @@
 
 &lt;h1 id=&quot;dec-6&quot;&gt;Dec 6&lt;/h1&gt;
 
-&lt;h3 id=&quot;tutorial--pay-attention-to-what-you-need-do-structural-priors-still-matter-in-the-age-of-billion-parameter-models&quot;&gt;Tutorial : Pay Attention to What You Need: Do Structural Priors Still Matter in the Age of Billion Parameter Models?&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;Tutorial : Pay Attention to What You Need: Do Structural Priors Still Matter in the Age of Billion Parameter Models?&lt;/strong&gt;&lt;/p&gt;
 
 &lt;p&gt;https://neurips.cc/virtual/2021/tutorial/21891&lt;/p&gt;
 
 &lt;p&gt;The recent empirical success (and theoretical systematization) of graph learning is making us reflect on the role of structure (relationships, grammar, ontologies, syntax) in inference. The field of AI is also coming full-circle (once again) and re-assessing “symbolic” approaches, after their premature demise at the hand of connectionist methods in the late ’90s.
 This tutorial touches on a few fundamentals such as the connections between group theory and differential geometry (by Seb Racaniere), as well as giving perspective on their role towards better domain-specific inference models for dealing with point clouds, relational models, graphs and so on.&lt;/p&gt;
 
-&lt;h2 id=&quot;tutorial--machine-learning-and-statistics-for-climate-science&quot;&gt;Tutorial : Machine Learning and Statistics for Climate Science&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;Tutorial : Machine Learning and Statistics for Climate Science&lt;/strong&gt;&lt;/p&gt;
 
 &lt;p&gt;slides - https://neurips.cc/media/neurips-2021/Slides/21893_0Ue6ONI.pdf&lt;/p&gt;
 
@@ -35,7 +35,7 @@ This tutorial touches on a few fundamentals such as the connections between grou
 
 &lt;h1 id=&quot;dec-7&quot;&gt;Dec 7&lt;/h1&gt;
 
-&lt;h2 id=&quot;tutorial--self-supervised-learning-self-prediction-and-contrastive-learning&quot;&gt;Tutorial : Self-Supervised Learning: Self-Prediction and Contrastive Learning&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;Tutorial : Self-Supervised Learning: Self-Prediction and Contrastive Learning&lt;/strong&gt;&lt;/p&gt;
 
 &lt;p&gt;https://neurips.cc/virtual/2021/tutorial/21895&lt;/p&gt;
 
@@ -43,13 +43,13 @@ This tutorial touches on a few fundamentals such as the connections between grou
 
 &lt;p&gt;How we can produce data augmentations that are meaningful to the data and task at hand is one of the open research questions.&lt;/p&gt;
 
-&lt;h2 id=&quot;keynote--how-duolingo-uses-ai-to-assess-engage-and-teach-better&quot;&gt;Keynote : How Duolingo Uses AI to Assess, Engage and Teach Better&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;Keynote : How Duolingo Uses AI to Assess, Engage and Teach Better&lt;/strong&gt;&lt;/p&gt;
 
 &lt;p&gt;Luis von Ahn is one of the founders of Duolingo, a mobile app for learning language. He showed how the app makes heavy use of A/B testing and analyzes systematically all learning sessions to produce a comfortable yet challenging learning experience with spaced repetition, well-placed nudges etc. They have an ML team that made fundamental advances in active learning and multi-armed bandits.&lt;/p&gt;
 
 &lt;h1 id=&quot;dec-8&quot;&gt;Dec 8&lt;/h1&gt;
 
-&lt;h2 id=&quot;social--bigscience&quot;&gt;Social : BigScience&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;Social : BigScience&lt;/strong&gt;&lt;/p&gt;
 
 &lt;p&gt;https://bigscience.huggingface.co/&lt;/p&gt;
 
@@ -57,7 +57,7 @@ This tutorial touches on a few fundamentals such as the connections between grou
 
 &lt;h1 id=&quot;dec-9&quot;&gt;Dec 9&lt;/h1&gt;
 
-&lt;h2 id=&quot;keynote--optimal-transport-past-present-and-future&quot;&gt;Keynote : Optimal Transport: Past, Present, and Future&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;Keynote : Optimal Transport: Past, Present, and Future&lt;/strong&gt;&lt;/p&gt;
 
 &lt;p&gt;Optimal transport (“what is the optimal way to transport a distribution into another one?”) is one of those topics that seemingly pops up everywhere from operations research to biology to high-dimensional learning.&lt;/p&gt;
 
@@ -67,15 +67,17 @@ This tutorial touches on a few fundamentals such as the connections between grou
 
 &lt;h1 id=&quot;dec-14---workshops-2&quot;&gt;Dec 14 - Workshops 2&lt;/h1&gt;
 
-&lt;h2 id=&quot;data-centric-ai&quot;&gt;Data-centric AI&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;Data-centric AI&lt;/strong&gt;&lt;/p&gt;
 
 &lt;p&gt;https://neurips.cc/virtual/2021/workshop/21860&lt;/p&gt;
 
 &lt;ul&gt;
-  &lt;li&gt;Ratner, Re - The future of data-centric AI&lt;/li&gt;
-&lt;/ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;Ratner, Re - The future of data-centric AI&lt;/p&gt;
 
-&lt;p&gt;I’ve been very intrigued by the Snorkel project and weak labeling/supervision in general since learning about them a few years back. Their approach (based on programmatic labeling functions) will likely prove popular and effective within the private sector and in particular among highly-regulated industries where data movement is either hard or impossible.&lt;/p&gt;
+    &lt;p&gt;I’ve been very intrigued by the Snorkel project and weak labeling/supervision in general since learning about them a few years back. Their approach (based on programmatic labeling functions) will likely prove popular and effective within the private sector and in particular among highly-regulated industries where data movement is either hard or impossible.&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
 
 &lt;h2 id=&quot;advances-in-programming-languages-and-neurosymbolic-systems---aiplans21&quot;&gt;Advances in programming languages and neurosymbolic systems - AIPLANS’21&lt;/h2&gt;
 
@@ -86,35 +88,34 @@ This tutorial touches on a few fundamentals such as the connections between grou
 &lt;p&gt;I submitted a short paper to AIPLANS (Staged compilation of tensor expressions - https://openreview.net/forum?id=5TCfWXk2waG), with an early experiment on applying meta-programming techniques to a tensor contraction DSL for Haskell.&lt;/p&gt;
 
 &lt;ul&gt;
-  &lt;li&gt;Weiss - Thinking like Transformers&lt;/li&gt;
-&lt;/ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;Weiss - Thinking like Transformers&lt;/p&gt;
 
-&lt;table&gt;
-  &lt;thead&gt;
-    &lt;tr&gt;
-      &lt;th&gt;Title&lt;/th&gt;
-      &lt;th&gt;Authors&lt;/th&gt;
-      &lt;th&gt;Conference&lt;/th&gt;
-      &lt;th&gt;Link&lt;/th&gt;
-    &lt;/tr&gt;
-  &lt;/thead&gt;
-  &lt;tbody&gt;
-    &lt;tr&gt;
-      &lt;td&gt;A Formal Hierarchy of RNN Architectures&lt;/td&gt;
-      &lt;td&gt; &lt;/td&gt;
-      &lt;td&gt; &lt;/td&gt;
-      &lt;td&gt;https://aclanthology.org/2020.acl-main.43/&lt;/td&gt;
-    &lt;/tr&gt;
-  &lt;/tbody&gt;
-&lt;/table&gt;
+    &lt;table&gt;
+      &lt;thead&gt;
+        &lt;tr&gt;
+          &lt;th&gt;Title&lt;/th&gt;
+          &lt;th&gt;Authors&lt;/th&gt;
+          &lt;th&gt;Conference&lt;/th&gt;
+          &lt;th&gt;Link&lt;/th&gt;
+        &lt;/tr&gt;
+      &lt;/thead&gt;
+      &lt;tbody&gt;
+        &lt;tr&gt;
+          &lt;td&gt;A Formal Hierarchy of RNN Architectures&lt;/td&gt;
+          &lt;td&gt; &lt;/td&gt;
+          &lt;td&gt; &lt;/td&gt;
+          &lt;td&gt;https://aclanthology.org/2020.acl-main.43/&lt;/td&gt;
+        &lt;/tr&gt;
+      &lt;/tbody&gt;
+    &lt;/table&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Tenenbaum - Building machines that learn and think like people by learning to write programs&lt;/p&gt;
 
-&lt;ul&gt;
-  &lt;li&gt;Tenenbaum - Building machines that learn and think like people by learning to write programs&lt;/li&gt;
-&lt;/ul&gt;
+    &lt;p&gt;Prof Tenenbaum is an established scientist and gifted speaker, and gave one of his inspiring talks on his group’s recent results. Namely, his research strives to replicate the flexibility of general intelligence using generative models of the world (in this case mediated by programs).&lt;/p&gt;
 
-&lt;p&gt;Prof Tenenbaum is an established scientist and gifted speaker, and gave one of his inspiring talks on his group’s recent results. Namely, his research strives to replicate the flexibility of general intelligence using generative models of the world (in this case mediated by programs).&lt;/p&gt;
-
-&lt;p&gt;Title | Authors | Conference/Journal | Link
+    &lt;p&gt;Title | Authors | Conference/Journal | Link
 —|—|—
 The child as hacker | Rule et al | Trends in CogSci | http://colala.berkeley.edu/papers/rule2020child.pdf
 Learning Task-General Representations with Generative Neuro-Symbolic Modeling | | ICLR’21 | https://openreview.net/forum?id=qzBUIzq5XR2 
@@ -122,6 +123,8 @@ Learning to learn generative programs with Memoised Wake-Sleep | Hewitt et al | 
 DreamCoder : Growing generalizable, interpretable knowledge with wake-sleep Bayesian program learning | | | https://arxiv.org/abs/2006.08381 
 Leveraging Language to Learn Program Abstractions and Search Heuristics - Wong et al - ICML’21 https://arxiv.org/abs/2106.11053
 Communicating Natural Programs to Humans and Machines | | |  https://arxiv.org/abs/2106.07824 (+ the associated LARC dataset https://github.com/samacqua/LARC  )&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
 
 &lt;p&gt;Related links :&lt;/p&gt;
 

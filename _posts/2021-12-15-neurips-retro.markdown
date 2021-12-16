@@ -15,14 +15,14 @@ Here I collect some notes on my 2021 experience as an attendee and author, as we
 
 # Dec 6
 
-### Tutorial : Pay Attention to What You Need: Do Structural Priors Still Matter in the Age of Billion Parameter Models?
+**Tutorial : Pay Attention to What You Need: Do Structural Priors Still Matter in the Age of Billion Parameter Models?**
 
 https://neurips.cc/virtual/2021/tutorial/21891
 
 The recent empirical success (and theoretical systematization) of graph learning is making us reflect on the role of structure (relationships, grammar, ontologies, syntax) in inference. The field of AI is also coming full-circle (once again) and re-assessing "symbolic" approaches, after their premature demise at the hand of connectionist methods in the late '90s.
 This tutorial touches on a few fundamentals such as the connections between group theory and differential geometry (by Seb Racaniere), as well as giving perspective on their role towards better domain-specific inference models for dealing with point clouds, relational models, graphs and so on.
 
-## Tutorial : Machine Learning and Statistics for Climate Science
+**Tutorial : Machine Learning and Statistics for Climate Science**
 
 slides - https://neurips.cc/media/neurips-2021/Slides/21893_0Ue6ONI.pdf
 
@@ -31,7 +31,7 @@ Unfortunately I couldn't attend this workshop but it's very dear to my heart so 
 
 # Dec 7
 
-## Tutorial : Self-Supervised Learning: Self-Prediction and Contrastive Learning 
+**Tutorial : Self-Supervised Learning: Self-Prediction and Contrastive Learning**
 
 https://neurips.cc/virtual/2021/tutorial/21895
 
@@ -39,14 +39,14 @@ Self-supervision is a very interesting family of techniques for producing data l
 
 How we can produce data augmentations that are meaningful to the data and task at hand is one of the open research questions.
 
-## Keynote : How Duolingo Uses AI to Assess, Engage and Teach Better
+**Keynote : How Duolingo Uses AI to Assess, Engage and Teach Better**
 
 Luis von Ahn is one of the founders of Duolingo, a mobile app for learning language. He showed how the app makes heavy use of A/B testing and analyzes systematically all learning sessions to produce a comfortable yet challenging learning experience with spaced repetition, well-placed nudges etc. They have an ML team that made fundamental advances in active learning and multi-armed bandits.
 
 
 # Dec 8
 
-## Social : BigScience
+**Social : BigScience**
 
 https://bigscience.huggingface.co/
 
@@ -54,7 +54,7 @@ BigScience is a year-long collaborative experiment on large multilingual models 
 
 # Dec 9
 
-## Keynote : Optimal Transport: Past, Present, and Future
+**Keynote : Optimal Transport: Past, Present, and Future**
 
 Optimal transport ("what is the optimal way to transport a distribution into another one?") is one of those topics that seemingly pops up everywhere from operations research to biology to high-dimensional learning.
 
@@ -68,13 +68,13 @@ Optimal transport ("what is the optimal way to transport a distribution into ano
 # Dec 14 - Workshops 2
 
 
-## Data-centric AI 
+**Data-centric AI**
 
 https://neurips.cc/virtual/2021/workshop/21860
 
 * Ratner, Re - The future of data-centric AI
 
-I've been very intrigued by the Snorkel project and weak labeling/supervision in general since learning about them a few years back. Their approach (based on programmatic labeling functions) will likely prove popular and effective within the private sector and in particular among highly-regulated industries where data movement is either hard or impossible.
+    I've been very intrigued by the Snorkel project and weak labeling/supervision in general since learning about them a few years back. Their approach (based on programmatic labeling functions) will likely prove popular and effective within the private sector and in particular among highly-regulated industries where data movement is either hard or impossible.
 
 
 ## Advances in programming languages and neurosymbolic systems - AIPLANS'21 
@@ -87,15 +87,15 @@ I submitted a short paper to AIPLANS (Staged compilation of tensor expressions -
 
 * Weiss - Thinking like Transformers
 
-| Title | Authors | Conference | Link |
+    | Title | Authors | Conference | Link |
 |---|---|---|
 |A Formal Hierarchy of RNN Architectures | | | https://aclanthology.org/2020.acl-main.43/ |
 
 * Tenenbaum - Building machines that learn and think like people by learning to write programs
 
-Prof Tenenbaum is an established scientist and gifted speaker, and gave one of his inspiring talks on his group's recent results. Namely, his research strives to replicate the flexibility of general intelligence using generative models of the world (in this case mediated by programs).
+    Prof Tenenbaum is an established scientist and gifted speaker, and gave one of his inspiring talks on his group's recent results. Namely, his research strives to replicate the flexibility of general intelligence using generative models of the world (in this case mediated by programs).
 
-Title | Authors | Conference/Journal | Link
+    Title | Authors | Conference/Journal | Link
 ---|---|---
 The child as hacker | Rule et al | Trends in CogSci | http://colala.berkeley.edu/papers/rule2020child.pdf
 Learning Task-General Representations with Generative Neuro-Symbolic Modeling | | ICLR'21 | https://openreview.net/forum?id=qzBUIzq5XR2 
