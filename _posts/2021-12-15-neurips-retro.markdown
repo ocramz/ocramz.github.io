@@ -7,9 +7,15 @@ categories: machine-learning events
 
 # Introduction
 
-Neural Information Processing Systems (NeurIPS) is nowadays one of the foremost conference on machine learning, with thousands of attendees and accepted contributions (papers, talks, tutorials, social events, panels, demonstrations, challenges and so on). It's a wonderful event, powered by a loving and ever-growing community. The size of the event can also be somewhat overwhelming if you don't carefully allocate your time if you happen (like I do) to have an even passing interest in more than one presented topic.
+[Neural Information Processing Systems (NeurIPS)](https://neurips.cc/) is nowadays one of the foremost conferences on machine learning, with thousands of attendees and accepted contributions (papers, talks, tutorials, social events, panels, demonstrations, challenges and so on). It's a wonderful event, powered by a loving and ever-growing community. The size of the event can also be somewhat overwhelming if you don't carefully allocate your time if you happen (like I do) to have an even passing interest in more than one presented topic.
 
-It's hard to do justice to the whole conference in a few sentences; what we can see from a great height is that machine learning has come of age, and new applications that act either as economic enablers or instruments of oppression appear on a daily basis. The NeurIPS community expanded to include many more voices than just the technical contributions, and that's a very good thing.
+It's hard to do justice to the whole conference in a few sentences. What we can notice from a great height is that machine learning has come of age, and new applications that act either as economic enablers or instruments of oppression appear on a daily basis. The NeurIPS community expanded to include many more voices than just the technical contributions, and that's a very good thing.
+
+Personally, what I enjoyed the most falls roughly in two categories: AI as a social and economic enabler and the study of intelligence _per se_.
+
+* Data programming, learning on relational data, federated learning all fall in this bin; on one hand they let us make sense of complex, real-world signals, and hopefully make better decisions. On the other they promise to empower smaller entities than the usual tech titans, by re-distributing the economic returns of data ownership.
+
+* The study of intelligence for its own sake is as old as the field and we're nowhere close to even formulating a well-posed question for this. However generative, neuro-symbolic approaches like those advocated by Tenenbaum and collaborators are a source of great insight and better questions, which is ultimately what matters in science.
 
 Here I collect some loose notes on my 2021 experience as an attendee and author, as well as all the links I could record on the fly. I could only attend a fraction of the live events, but fortunately all the talks are recorded for posterity.
 
@@ -35,9 +41,15 @@ Unfortunately I couldn't attend this workshop but it's very dear to my heart so 
 
 **[Tutorial : Self-Supervised Learning: Self-Prediction and Contrastive Learning](https://neurips.cc/virtual/2021/tutorial/21895)**
 
+[slides](https://neurips.cc/media/neurips-2021/Slides/21895.pdf)
+
 Self-supervision is a very interesting family of techniques for producing data labels via a generative process : the dataset is "augmented" by distorting the data instances in various ways, e.g. rotating or blurring images, or masking parts of a sentence in the case of text. Classifiers are then trained on this augmented data, which has shown to improve performance in a number of downstream tasks.
 
 How we can produce data augmentations that are meaningful to the data and task at hand is one of the open research questions.
+
+**Joint Affinity poster session**
+
+This was the first poster session of the conference; I will only say that while GatherTown is a nice platform for simulating spatially-distributed conversations like those that would happen in an in-person conference, it's _too_ accurate as a replica. You waste minutes just making your avatar walk around the venue, which is sadly mostly empty. I think navigation and visual summarization could still be improved.
 
 **Keynote : How Duolingo Uses AI to Assess, Engage and Teach Better**
 
@@ -48,8 +60,6 @@ Luis von Ahn is one of the founders of Duolingo, a mobile app for learning langu
 # December 8
 
 **[Social : BigScience](https://bigscience.huggingface.co/)**
-
-
 
 BigScience is a year-long collaborative experiment on large multilingual models and datasets, aka the "LHC of NLP". I was not directly involved but find it a very meaningful initiative to activate academia and society towards understanding and improving natural language processing for everybody.
 
@@ -63,7 +73,13 @@ Optimal transport ("what is the optimal way to transport a distribution into ano
 
 ---
 
-# December 10 
+# December 11
+
+**[Generative modeling](https://neurips.cc/virtual/2021/session/44855)
+
+* Rozen - Moser Flow: Divergence-based Generative Modeling on Manifolds
+
+A recent breakthrough on a universal density approximator process for general manifolds (spheres, tori, etc.), demonastrated with examples from climate science.
 
 ---
 
