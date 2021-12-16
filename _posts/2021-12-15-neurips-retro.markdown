@@ -15,25 +15,25 @@ Here I collect some notes on my 2021 experience as an attendee and author, as we
 
 # Dec 6
 
-**Tutorial : Pay Attention to What You Need: Do Structural Priors Still Matter in the Age of Billion Parameter Models?**
+**[Tutorial : Pay Attention to What You Need: Do Structural Priors Still Matter in the Age of Billion Parameter Models?](https://neurips.cc/virtual/2021/tutorial/21891)**
 
-https://neurips.cc/virtual/2021/tutorial/21891
+
 
 The recent empirical success (and theoretical systematization) of graph learning is making us reflect on the role of structure (relationships, grammar, ontologies, syntax) in inference. The field of AI is also coming full-circle (once again) and re-assessing "symbolic" approaches, after their premature demise at the hand of connectionist methods in the late '90s.
 This tutorial touches on a few fundamentals such as the connections between group theory and differential geometry (by Seb Racaniere), as well as giving perspective on their role towards better domain-specific inference models for dealing with point clouds, relational models, graphs and so on.
 
 **Tutorial : Machine Learning and Statistics for Climate Science**
 
-slides - https://neurips.cc/media/neurips-2021/Slides/21893_0Ue6ONI.pdf
+[slides](https://neurips.cc/media/neurips-2021/Slides/21893_0Ue6ONI.pdf)
 
 Unfortunately I couldn't attend this workshop but it's very dear to my heart so I intend to return to it at a later time.
 
 
 # Dec 7
 
-**Tutorial : Self-Supervised Learning: Self-Prediction and Contrastive Learning**
+**[Tutorial : Self-Supervised Learning: Self-Prediction and Contrastive Learning](https://neurips.cc/virtual/2021/tutorial/21895)**
 
-https://neurips.cc/virtual/2021/tutorial/21895
+
 
 Self-supervision is a very interesting family of techniques for producing data labels via a generative process : the dataset is "augmented" by distorting the data instances in various ways, e.g. rotating or blurring images, or masking parts of a sentence in the case of text. Classifiers are then trained on this augmented data, which has shown to improve performance in a number of downstream tasks.
 
@@ -46,9 +46,9 @@ Luis von Ahn is one of the founders of Duolingo, a mobile app for learning langu
 
 # Dec 8
 
-**Social : BigScience**
+**[Social : BigScience](https://bigscience.huggingface.co/)**
 
-https://bigscience.huggingface.co/
+
 
 BigScience is a year-long collaborative experiment on large multilingual models and datasets, aka the "LHC of NLP". I was not directly involved but find it a very meaningful initiative to activate academia and society towards understanding and improving natural language processing for everybody.
 

@@ -6,8 +6,8 @@
 </description>
     <link>https://ocramz.github.io/</link>
     <atom:link href="https://ocramz.github.io/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Thu, 16 Dec 2021 11:23:40 +0100</pubDate>
-    <lastBuildDate>Thu, 16 Dec 2021 11:23:40 +0100</lastBuildDate>
+    <pubDate>Thu, 16 Dec 2021 11:24:54 +0100</pubDate>
+    <lastBuildDate>Thu, 16 Dec 2021 11:24:54 +0100</lastBuildDate>
     <generator>Jekyll v4.2.0</generator>
     
       <item>
@@ -20,24 +20,20 @@
 
 &lt;h1 id=&quot;dec-6&quot;&gt;Dec 6&lt;/h1&gt;
 
-&lt;p&gt;&lt;strong&gt;Tutorial : Pay Attention to What You Need: Do Structural Priors Still Matter in the Age of Billion Parameter Models?&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;https://neurips.cc/virtual/2021/tutorial/21891&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;&lt;a href=&quot;https://neurips.cc/virtual/2021/tutorial/21891&quot;&gt;Tutorial : Pay Attention to What You Need: Do Structural Priors Still Matter in the Age of Billion Parameter Models?&lt;/a&gt;&lt;/strong&gt;&lt;/p&gt;
 
 &lt;p&gt;The recent empirical success (and theoretical systematization) of graph learning is making us reflect on the role of structure (relationships, grammar, ontologies, syntax) in inference. The field of AI is also coming full-circle (once again) and re-assessing “symbolic” approaches, after their premature demise at the hand of connectionist methods in the late ’90s.
 This tutorial touches on a few fundamentals such as the connections between group theory and differential geometry (by Seb Racaniere), as well as giving perspective on their role towards better domain-specific inference models for dealing with point clouds, relational models, graphs and so on.&lt;/p&gt;
 
 &lt;p&gt;&lt;strong&gt;Tutorial : Machine Learning and Statistics for Climate Science&lt;/strong&gt;&lt;/p&gt;
 
-&lt;p&gt;slides - https://neurips.cc/media/neurips-2021/Slides/21893_0Ue6ONI.pdf&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;https://neurips.cc/media/neurips-2021/Slides/21893_0Ue6ONI.pdf&quot;&gt;slides&lt;/a&gt;&lt;/p&gt;
 
 &lt;p&gt;Unfortunately I couldn’t attend this workshop but it’s very dear to my heart so I intend to return to it at a later time.&lt;/p&gt;
 
 &lt;h1 id=&quot;dec-7&quot;&gt;Dec 7&lt;/h1&gt;
 
-&lt;p&gt;&lt;strong&gt;Tutorial : Self-Supervised Learning: Self-Prediction and Contrastive Learning&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;https://neurips.cc/virtual/2021/tutorial/21895&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;&lt;a href=&quot;https://neurips.cc/virtual/2021/tutorial/21895&quot;&gt;Tutorial : Self-Supervised Learning: Self-Prediction and Contrastive Learning&lt;/a&gt;&lt;/strong&gt;&lt;/p&gt;
 
 &lt;p&gt;Self-supervision is a very interesting family of techniques for producing data labels via a generative process : the dataset is “augmented” by distorting the data instances in various ways, e.g. rotating or blurring images, or masking parts of a sentence in the case of text. Classifiers are then trained on this augmented data, which has shown to improve performance in a number of downstream tasks.&lt;/p&gt;
 
@@ -49,9 +45,7 @@ This tutorial touches on a few fundamentals such as the connections between grou
 
 &lt;h1 id=&quot;dec-8&quot;&gt;Dec 8&lt;/h1&gt;
 
-&lt;p&gt;&lt;strong&gt;Social : BigScience&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;https://bigscience.huggingface.co/&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;&lt;a href=&quot;https://bigscience.huggingface.co/&quot;&gt;Social : BigScience&lt;/a&gt;&lt;/strong&gt;&lt;/p&gt;
 
 &lt;p&gt;BigScience is a year-long collaborative experiment on large multilingual models and datasets, aka the “LHC of NLP”. I was not directly involved but find it a very meaningful initiative to activate academia and society towards understanding and improving natural language processing for everybody.&lt;/p&gt;
 
