@@ -6,8 +6,8 @@
 </description>
     <link>https://ocramz.github.io/</link>
     <atom:link href="https://ocramz.github.io/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Thu, 16 Dec 2021 11:09:43 +0100</pubDate>
-    <lastBuildDate>Thu, 16 Dec 2021 11:09:43 +0100</lastBuildDate>
+    <pubDate>Thu, 16 Dec 2021 11:10:52 +0100</pubDate>
+    <lastBuildDate>Thu, 16 Dec 2021 11:10:52 +0100</lastBuildDate>
     <generator>Jekyll v4.2.0</generator>
     
       <item>
@@ -20,7 +20,7 @@
 
 &lt;h1 id=&quot;dec-6&quot;&gt;Dec 6&lt;/h1&gt;
 
-&lt;p&gt;&lt;strong&gt;Tutorial : Pay Attention to What You Need: Do Structural Priors Still Matter in the Age of Billion Parameter Models?&lt;/strong&gt;&lt;/p&gt;
+&lt;h3 id=&quot;tutorial--pay-attention-to-what-you-need-do-structural-priors-still-matter-in-the-age-of-billion-parameter-models&quot;&gt;Tutorial : Pay Attention to What You Need: Do Structural Priors Still Matter in the Age of Billion Parameter Models?&lt;/h3&gt;
 
 &lt;p&gt;https://neurips.cc/virtual/2021/tutorial/21891&lt;/p&gt;
 
