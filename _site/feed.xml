@@ -6,8 +6,8 @@
 </description>
     <link>https://ocramz.github.io/</link>
     <atom:link href="https://ocramz.github.io/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sat, 12 Feb 2022 13:19:15 +0100</pubDate>
-    <lastBuildDate>Sat, 12 Feb 2022 13:19:15 +0100</lastBuildDate>
+    <pubDate>Sat, 12 Feb 2022 13:24:43 +0100</pubDate>
+    <lastBuildDate>Sat, 12 Feb 2022 13:24:43 +0100</lastBuildDate>
     <generator>Jekyll v4.2.0</generator>
     
       <item>
@@ -80,10 +80,15 @@
 
 &lt;p&gt;The &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;String&lt;/code&gt; input to the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Field&lt;/code&gt; constructors is shorthand for a unique reference that will be used to lookup the form inputs from the frontend request body.&lt;/p&gt;
 
-&lt;p&gt;We can then declare “smart constructors” for the form elements, that will be labeled with the respective output type :&lt;/p&gt;
+&lt;p&gt;We can then declare “smart constructors” for the form elements, that will be labeled with the respective output type,&lt;/p&gt;
 
 &lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-haskell&quot; data-lang=&quot;haskell&quot;&gt;&lt;span class=&quot;n&quot;&gt;switch&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;::&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;String&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Form&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Bool&lt;/span&gt;
 &lt;span class=&quot;n&quot;&gt;switch&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ref&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;FormField&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;$&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Switch&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ref&lt;/span&gt; &lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;such that a form that made of two switches can be built up using Applicative operators as follows :&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-haskell&quot; data-lang=&quot;haskell&quot;&gt;&lt;span class=&quot;n&quot;&gt;form&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;::&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Form&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;Bool&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Bool&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;form&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(,)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;$&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;switch&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;s0&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;*&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;switch&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;s1&quot;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
 &lt;h2 id=&quot;viewing-and-evaluating-forms&quot;&gt;Viewing and evaluating forms&lt;/h2&gt;
 

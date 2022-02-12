@@ -86,11 +86,18 @@ data Field a where
 
 The `String` input to the `Field` constructors is shorthand for a unique reference that will be used to lookup the form inputs from the frontend request body.
 
-We can then declare "smart constructors" for the form elements, that will be labeled with the respective output type : 
+We can then declare "smart constructors" for the form elements, that will be labeled with the respective output type,
 
 {% highlight haskell %}
 switch :: String -> Form Bool
 switch ref = FormField $ Switch ref 
+{% endhighlight %}
+
+such that a form that made of two switches can be built up using Applicative operators as follows :
+
+{% highlight haskell %}
+form :: Form (Bool, Bool)
+form = (,) <$> switch "s0" <*> switch "s1"
 {% endhighlight %}
 
 
