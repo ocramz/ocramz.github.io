@@ -1,0 +1,43 @@
+I"�<h2 id="introduction">Introduction</h2>
+
+<p>Interactive web applications feature a complex exchange of information between user, frontend and backend; in time the focus of this complexity has shifted from the backend (remember CGI scripts?) to the frontend (javascript, perhaps webassembly one day) and back.</p>
+
+<p>Form-based interaction is an interesting subset of this problem since the input data is well structured and the problem can be formalized somewhat generally.</p>
+
+<p>What’s a web form? It’s really two things : an (HTML) view and a callback that will process the inputs submitted via that view, and possibly produce a new view as a result.</p>
+
+<p>Schematically, <code class="language-plaintext highlighter-rouge">(view, input -&gt; Maybe view')</code></p>
+
+<p>We would like this notion to be <em>composable</em> : forms are arrays of typed inputs (e.g. strings, booleans, numbers, dates), and we expect to parse the input into a corresponding arrays of output values.</p>
+
+<h2 id="applicative-formlets">Applicative formlets</h2>
+
+<p>In functional programming languages the notion of <code class="language-plaintext highlighter-rouge">Applicative</code> functor represents a property of functions that perform more than one independent computation.</p>
+
+<p>Example : say we want to validate a street address, composed of a street name and number and a postal code. We can think of a few rules that a good street address must satisfy : the street name should be formatted in a certain way, the number should be a positive integer and the postal code made of 5 digits. If we write these rules as little validation functions, how can we compose these functions together back into one that validates the address as a whole?</p>
+
+<p>In code :</p>
+
+<figure class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="n">validStreetName</span> <span class="o">::</span> <span class="kt">String</span> <span class="o">-&gt;</span> <span class="kt">Maybe</span> <span class="kt">Street</span>
+
+<span class="n">validStreetNo</span> <span class="o">::</span> <span class="kt">String</span> <span class="o">-&gt;</span> <span class="kt">Maybe</span> <span class="kt">N</span>
+
+<span class="n">validPostCode</span> <span class="o">::</span> <span class="kt">String</span> <span class="o">-&gt;</span> <span class="kt">Maybe</span> <span class="kt">PostCode</span>
+
+<span class="o">...</span>
+
+<span class="n">validAddress</span> <span class="o">::</span> <span class="kt">String</span> <span class="o">-&gt;</span> <span class="kt">Maybe</span> <span class="p">(</span><span class="kt">Street</span><span class="p">,</span> <span class="kt">Name</span><span class="p">,</span> <span class="kt">PostCode</span><span class="p">)</span></code></pre></figure>
+
+<figure class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="kr">data</span> <span class="kt">Form</span> <span class="n">a</span> <span class="kr">where</span>
+  <span class="kt">FormField</span> <span class="o">::</span> <span class="kt">Field</span> <span class="n">a</span> <span class="o">-&gt;</span> <span class="kt">Form</span> <span class="n">a</span>
+  <span class="kt">Pure</span> <span class="o">::</span> <span class="n">a</span> <span class="o">-&gt;</span> <span class="kt">Form</span> <span class="n">a</span>
+  <span class="kt">App</span> <span class="o">::</span> <span class="kt">Form</span> <span class="p">(</span><span class="n">a</span> <span class="o">-&gt;</span> <span class="n">b</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Form</span> <span class="n">a</span> <span class="o">-&gt;</span> <span class="kt">Form</span> <span class="n">b</span></code></pre></figure>
+
+<p>One such formalization is due to Cooper et al.</p>
+
+<h2 id="references">References</h2>
+
+<p>Cooper, E. et al., An idiom’s guide to formlets, 2007 https://homepages.inf.ed.ac.uk/wadler/papers/formlets/formlets.pdf</p>
+
+<p>Van der Jeugt, J. digestive-functors, https://hackage.haskell.org/package/digestive-functors</p>
+:ET

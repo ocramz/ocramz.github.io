@@ -13,16 +13,36 @@ Form-based interaction is an interesting subset of this problem since the input 
 
 What's a web form? It's really two things : an (HTML) view and a callback that will process the inputs submitted via that view, and possibly produce a new view as a result.
 
-Schematically, (v, x -> Maybe v)
+Schematically, `(view, input -> Maybe view')`
 
 We would like this notion to be _composable_ : forms are arrays of typed inputs (e.g. strings, booleans, numbers, dates), and we expect to parse the input into a corresponding arrays of output values.
+
+## Applicative formlets
+
+In functional programming languages the notion of `Applicative` functor represents a property of functions that perform more than one independent computation. 
+
+Example : say we want to validate a street address, composed of a street name and number and a postal code. We can think of a few rules that a good street address must satisfy : the street name should be formatted in a certain way, the number should be a positive integer and the postal code made of 5 digits. If we write these rules as little validation functions, how can we compose these functions together back into one that validates the address as a whole?
+
+In code :
+
+{% highlight haskell %}
+validStreetName :: String -> Maybe Street
+
+validStreetNo :: String -> Maybe N
+
+validPostCode :: String -> Maybe PostCode
+
+...
+
+validAddress :: String -> Maybe (Street, Name, PostCode)
+{% endhighlight %}
 
 
 {% highlight haskell %}
 data Form a where
-  Pure :: a -> Form a
   FormField :: Field a -> Form a
-  App :: Form (b -> a) -> Form b -> Form a
+  Pure :: a -> Form a
+  App :: Form (a -> b) -> Form a -> Form b
 {% endhighlight %}
 
 
