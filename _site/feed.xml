@@ -6,8 +6,8 @@
 </description>
     <link>https://ocramz.github.io/</link>
     <atom:link href="https://ocramz.github.io/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sat, 12 Feb 2022 17:39:14 +0100</pubDate>
-    <lastBuildDate>Sat, 12 Feb 2022 17:39:14 +0100</lastBuildDate>
+    <pubDate>Sat, 12 Feb 2022 17:44:08 +0100</pubDate>
+    <lastBuildDate>Sat, 12 Feb 2022 17:44:08 +0100</lastBuildDate>
     <generator>Jekyll v4.2.0</generator>
     
       <item>
@@ -140,7 +140,7 @@
 
 &lt;p&gt;You need a few language extensions to make the above work, e.g. &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;LambdaCase&lt;/code&gt; and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;GADTs&lt;/code&gt;.&lt;/p&gt;
 
-&lt;p&gt;The &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Error&lt;/code&gt; type is very similar to &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Either&lt;/code&gt;, except for a custom &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Applicative&lt;/code&gt; instance that juxtaposes errors from distinct code paths together. This is conceptually identical to the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Applicative&lt;/code&gt; instance of &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Validation&lt;/code&gt;  https://hackage.haskell.org/package/validation-selective-0.1.0.1/docs/src/Validation.html#line-457 .&lt;/p&gt;
+&lt;p&gt;The &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Error&lt;/code&gt; type is very similar to &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Either&lt;/code&gt;, except for a custom &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Applicative&lt;/code&gt; instance that juxtaposes errors from distinct code paths together. This is conceptually identical to the &lt;a href=&quot;https://hackage.haskell.org/package/validation-selective-0.1.0.1/docs/src/Validation.html#line-457&quot;&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Applicative&lt;/code&gt; instance of &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Validation&lt;/code&gt;&lt;/a&gt;.&lt;/p&gt;
 
 &lt;p&gt;You can make the above more type safe by getting rid of strings, making sure all references are unique etc., but here we are only concerned with a high-level view of the library.&lt;/p&gt;
 
@@ -152,13 +152,13 @@
 
 &lt;h2 id=&quot;references&quot;&gt;References&lt;/h2&gt;
 
-&lt;p&gt;McBride, C. and Paterson, R., Idioms: applicative programming with effects https://personal.cis.strath.ac.uk/conor.mcbride/Idiom.pdf&lt;/p&gt;
+&lt;p&gt;McBride, C. and Paterson, R., &lt;a href=&quot;https://personal.cis.strath.ac.uk/conor.mcbride/Idiom.pdf&quot;&gt;Idioms: applicative programming with effects&lt;/a&gt;&lt;/p&gt;
 
-&lt;p&gt;https://hackage.haskell.org/package/base-4.16.0.0/docs/Control-Applicative.html#t:Applicative&lt;/p&gt;
+&lt;p&gt;GHC Haskell base, &lt;a href=&quot;https://hackage.haskell.org/package/base-4.16.0.0/docs/Control-Applicative.html#t:Applicative&quot;&gt;Applicative&lt;/a&gt;&lt;/p&gt;
 
-&lt;p&gt;Cooper, E. et al., An idiom’s guide to formlets, 2007 https://homepages.inf.ed.ac.uk/wadler/papers/formlets/formlets.pdf&lt;/p&gt;
+&lt;p&gt;Cooper, E. et al., &lt;a href=&quot;https://homepages.inf.ed.ac.uk/wadler/papers/formlets/formlets.pdf&quot;&gt;An idiom’s guide to formlets&lt;/a&gt;&lt;/p&gt;
 
-&lt;p&gt;Van der Jeugt, J. &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;digestive-functors&lt;/code&gt;, https://hackage.haskell.org/package/digestive-functors&lt;/p&gt;
+&lt;p&gt;Van der Jeugt, J. et al. &lt;a href=&quot;https://hackage.haskell.org/package/digestive-functors&quot;&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;digestive-functors&lt;/code&gt;&lt;/a&gt;&lt;/p&gt;
 </description>
         <pubDate>Sat, 12 Feb 2022 00:00:00 +0100</pubDate>
         <link>https://ocramz.github.io/haskell/web/formlets/2022/02/12/formlets.html</link>
