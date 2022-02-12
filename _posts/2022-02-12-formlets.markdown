@@ -124,7 +124,9 @@ viewField = \case
   Switch n -> ...
 {% endhighlight %}
 
-Evaluation too builds up the result by recursively unpacking the input form : 
+A `Widget` holds concrete information necessary to construct a HTML form.
+
+The `eval`uation function similarly builds up the result by recursively unpacking the input form, and if successful it provides valid data for the backend to update the internal application state.
 
 {% highlight haskell %}
 eval :: Monad m =>
