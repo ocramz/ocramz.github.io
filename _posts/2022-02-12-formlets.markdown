@@ -158,7 +158,7 @@ And that's it !
 
 You need a few language extensions to make the above work, e.g. `LambdaCase` and `GADTs`.
 
-The `Error` type is very similar to `Either`, except for a custom `Applicative` instance that juxtaposes errors from distinct code paths together. This is conceptually identical to the [`Applicative` instance of `Validation`](https://hackage.haskell.org/package/validation-selective-0.1.0.1/docs/src/Validation.html#line-457).
+The `Result` type is the same as `Either`, except for its `Applicative` instance that juxtaposes errors from distinct code paths together. This is conceptually identical to the [`Applicative` instance of `Validation`](https://hackage.haskell.org/package/validation-selective-0.1.0.1/docs/src/Validation.html#line-457).
 
 You can make the above more type safe by getting rid of strings, making sure all references are unique etc., but here we are only concerned with a high-level view of the library.
 

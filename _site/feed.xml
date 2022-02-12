@@ -6,8 +6,8 @@
 </description>
     <link>https://ocramz.github.io/</link>
     <atom:link href="https://ocramz.github.io/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sat, 12 Feb 2022 17:44:08 +0100</pubDate>
-    <lastBuildDate>Sat, 12 Feb 2022 17:44:08 +0100</lastBuildDate>
+    <pubDate>Sat, 12 Feb 2022 17:47:33 +0100</pubDate>
+    <lastBuildDate>Sat, 12 Feb 2022 17:47:33 +0100</lastBuildDate>
     <generator>Jekyll v4.2.0</generator>
     
       <item>
@@ -140,7 +140,7 @@
 
 &lt;p&gt;You need a few language extensions to make the above work, e.g. &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;LambdaCase&lt;/code&gt; and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;GADTs&lt;/code&gt;.&lt;/p&gt;
 
-&lt;p&gt;The &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Error&lt;/code&gt; type is very similar to &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Either&lt;/code&gt;, except for a custom &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Applicative&lt;/code&gt; instance that juxtaposes errors from distinct code paths together. This is conceptually identical to the &lt;a href=&quot;https://hackage.haskell.org/package/validation-selective-0.1.0.1/docs/src/Validation.html#line-457&quot;&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Applicative&lt;/code&gt; instance of &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Validation&lt;/code&gt;&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;The &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Result&lt;/code&gt; type is the same as &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Either&lt;/code&gt;, except for its &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Applicative&lt;/code&gt; instance that juxtaposes errors from distinct code paths together. This is conceptually identical to the &lt;a href=&quot;https://hackage.haskell.org/package/validation-selective-0.1.0.1/docs/src/Validation.html#line-457&quot;&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Applicative&lt;/code&gt; instance of &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Validation&lt;/code&gt;&lt;/a&gt;.&lt;/p&gt;
 
 &lt;p&gt;You can make the above more type safe by getting rid of strings, making sure all references are unique etc., but here we are only concerned with a high-level view of the library.&lt;/p&gt;
 
