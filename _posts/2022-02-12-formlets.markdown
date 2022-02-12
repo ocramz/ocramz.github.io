@@ -38,7 +38,7 @@ validPostCode :: String -> Maybe PostCode
 
 ...
 
-validAddress :: String -> String -> String -> Maybe (Street, Name, PostCode)
+validAddress :: String -> String -> String -> Maybe (Street, N, PostCode)
 {% endhighlight %}
 
 
@@ -59,7 +59,7 @@ class Functor f => Applicative f where
 Simplifying somewhat :
 
 {% highlight haskell %}
-validAddress :: String -> String -> String -> Maybe (Street, Name, PostCode)
+validAddress :: String -> String -> String -> Maybe (Street, N, PostCode)
 validAddress sa sb sc = (,,) <$> validStreetName sa <*> validStreetNo sb <*> validPostCode sc
 {% endhighlight %}
 
