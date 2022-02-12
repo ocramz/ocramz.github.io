@@ -129,17 +129,15 @@ A `Widget` holds concrete information necessary to construct a HTML form.
 The `eval`uation function similarly builds up the result by recursively unpacking the input form, and if successful it provides valid data for the backend to update the internal application state.
 
 {% highlight haskell %}
-eval :: Monad m =>
-        FormInputs -- ^ parsed from the message body
-     -> Form a -- ^ our form
-     -> m (Result [String] a)
-eval gfi = \case
-  FormField ff -> pure $ evalField gfi ff
-  Pure x -> pure (pure x)
+eval :: Form a -- ^ parsed from the message body
+     -> (FormInputs -> Result [String] a)
+eval form fi = case form of
+  FormField ff -> evalField fi ff
+  Pure x -> pure x
   App fm xm -> do
-    f <- eval gfi fm
-    x <- eval gfi xm
-    pure (f <*> x)
+    f <- eval fm fi
+    x <- eval xm fi
+    pure $ f x
     
 evalField :: FormInputs -> Field a -> Result [String] a
 evalField gfi = \case
