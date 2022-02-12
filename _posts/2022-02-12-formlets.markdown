@@ -1,0 +1,36 @@
+---
+layout: post
+title: Formlets, simply
+date: 2022-02-12
+categories: Haskell web formlets
+---
+
+## Introduction
+
+Interactive web applications feature a complex exchange of information between user, frontend and backend; in time the focus of this complexity has shifted from the backend (remember CGI scripts?) to the frontend (javascript, perhaps webassembly one day) and back.
+
+Form-based interaction is an interesting subset of this problem since the input data is well structured and the problem can be formalized somewhat generally.
+
+What's a web form? It's really two things : an (HTML) view and a callback that will process the inputs submitted via that view, and possibly produce a new view as a result.
+
+Schematically, (v, x -> Maybe v)
+
+We would like this notion to be _composable_ : forms are arrays of typed inputs (e.g. strings, booleans, numbers, dates), and we expect to parse the input into a corresponding arrays of output values.
+
+
+{% highlight haskell %}
+data Form a where
+  Pure :: a -> Form a
+  FormField :: Field a -> Form a
+  App :: Form (b -> a) -> Form b -> Form a
+{% endhighlight %}
+
+
+One such formalization is due to Cooper et al. 
+
+
+## References
+
+Cooper, E. et al., An idiom’s guide to formlets, 2007 https://homepages.inf.ed.ac.uk/wadler/papers/formlets/formlets.pdf
+
+Van der Jeugt, J. digestive-functors, https://hackage.haskell.org/package/digestive-functors
