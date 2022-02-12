@@ -17,7 +17,7 @@ Schematically, a form can be seen as a pair `(view, input -> Maybe view')`.
 
 We would like this notion to be _composable_ : forms are arrays of typed inputs (e.g. strings, booleans, numbers, dates), and we expect to parse the input into a corresponding arrays of output values.
 
-This post will motivate the internals of the `formlets`/`digestive-functors` libraries, which provide composable HTML formlets and are backed by solid functional programming abstractions.
+This post will motivate the internals of the `formlets`/`digestive-functors` libraries, which provide composable HTML "formlets" and are backed by solid functional programming abstractions.
 
 ## Parallel validation
 
@@ -126,7 +126,7 @@ viewField = \case
 
 A `Widget` holds concrete information necessary to construct a HTML form.
 
-The `eval`uation function similarly builds up the result by recursively unpacking the input form, and if successful it provides valid data for the backend to update the internal application state.
+The `eval`uation function similarly builds up the result by recursively unpacking the input form. Here I have parenthesized its type signature to show that a callback _function_ is computed from a `Form`, as we were hoping.
 
 {% highlight haskell %}
 eval :: Form a
@@ -154,11 +154,19 @@ evalField gfi = \case
 And that's it !
 
 
+## Implementation Notes
+
+You need a few language extensions to make the above work, e.g. `LambdaCase` and `GADTs`.
+
+The `Error` type is very similar to `Either`, except for a custom `Applicative` instance that juxtaposes errors from distinct code paths together. This is conceptually identical to the `Applicative` instance of `Validation`  https://hackage.haskell.org/package/validation-selective-0.1.0.1/docs/src/Validation.html#line-457 .
+
+You can make the above more type safe by getting rid of strings, making sure all references are unique etc., but here we are only concerned with a high-level view of the library.
+
 ## Conclusion
 
-Hopefully this post managed to convey the power and practicality of the Applicative interface.
+Hopefully this post managed to convey the power and practicality of the Applicative interface when applied to web form-based navigation, and to show why are the internals of "formlet" libraries implemented in this way.
 
-The ideas presented here are already consolidated into production-grade libraries, e.g. the `digestive-functors` suite, which comes with adapters for various web frameworks.
+The ideas presented here are already consolidated into production-grade libraries, in particular the `digestive-functors` suite, which comes with adapters for various web frameworks.
 
 
 ## References

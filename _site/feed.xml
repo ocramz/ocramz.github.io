@@ -6,8 +6,8 @@
 </description>
     <link>https://ocramz.github.io/</link>
     <atom:link href="https://ocramz.github.io/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sat, 12 Feb 2022 15:06:19 +0100</pubDate>
-    <lastBuildDate>Sat, 12 Feb 2022 15:06:19 +0100</lastBuildDate>
+    <pubDate>Sat, 12 Feb 2022 17:39:14 +0100</pubDate>
+    <lastBuildDate>Sat, 12 Feb 2022 17:39:14 +0100</lastBuildDate>
     <generator>Jekyll v4.2.0</generator>
     
       <item>
@@ -24,7 +24,7 @@
 
 &lt;p&gt;We would like this notion to be &lt;em&gt;composable&lt;/em&gt; : forms are arrays of typed inputs (e.g. strings, booleans, numbers, dates), and we expect to parse the input into a corresponding arrays of output values.&lt;/p&gt;
 
-&lt;p&gt;This post will motivate the internals of the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;formlets&lt;/code&gt;/&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;digestive-functors&lt;/code&gt; libraries, which provide composable HTML formlets and are backed by solid functional programming abstractions.&lt;/p&gt;
+&lt;p&gt;This post will motivate the internals of the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;formlets&lt;/code&gt;/&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;digestive-functors&lt;/code&gt; libraries, which provide composable HTML “formlets” and are backed by solid functional programming abstractions.&lt;/p&gt;
 
 &lt;h2 id=&quot;parallel-validation&quot;&gt;Parallel validation&lt;/h2&gt;
 
@@ -111,7 +111,7 @@
 
 &lt;p&gt;A &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Widget&lt;/code&gt; holds concrete information necessary to construct a HTML form.&lt;/p&gt;
 
-&lt;p&gt;The &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;eval&lt;/code&gt;uation function similarly builds up the result by recursively unpacking the input form, and if successful it provides valid data for the backend to update the internal application state.&lt;/p&gt;
+&lt;p&gt;The &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;eval&lt;/code&gt;uation function similarly builds up the result by recursively unpacking the input form. Here I have parenthesized its type signature to show that a callback &lt;em&gt;function&lt;/em&gt; is computed from a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Form&lt;/code&gt;, as we were hoping.&lt;/p&gt;
 
 &lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-haskell&quot; data-lang=&quot;haskell&quot;&gt;&lt;span class=&quot;n&quot;&gt;eval&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;::&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Form&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;
      &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;FormInputs&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Result&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
@@ -136,11 +136,19 @@
 
 &lt;p&gt;And that’s it !&lt;/p&gt;
 
+&lt;h2 id=&quot;implementation-notes&quot;&gt;Implementation Notes&lt;/h2&gt;
+
+&lt;p&gt;You need a few language extensions to make the above work, e.g. &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;LambdaCase&lt;/code&gt; and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;GADTs&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;The &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Error&lt;/code&gt; type is very similar to &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Either&lt;/code&gt;, except for a custom &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Applicative&lt;/code&gt; instance that juxtaposes errors from distinct code paths together. This is conceptually identical to the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Applicative&lt;/code&gt; instance of &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Validation&lt;/code&gt;  https://hackage.haskell.org/package/validation-selective-0.1.0.1/docs/src/Validation.html#line-457 .&lt;/p&gt;
+
+&lt;p&gt;You can make the above more type safe by getting rid of strings, making sure all references are unique etc., but here we are only concerned with a high-level view of the library.&lt;/p&gt;
+
 &lt;h2 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h2&gt;
 
-&lt;p&gt;Hopefully this post managed to convey the power and practicality of the Applicative interface.&lt;/p&gt;
+&lt;p&gt;Hopefully this post managed to convey the power and practicality of the Applicative interface when applied to web form-based navigation, and to show why are the internals of “formlet” libraries implemented in this way.&lt;/p&gt;
 
-&lt;p&gt;The ideas presented here are already consolidated into production-grade libraries, e.g. the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;digestive-functors&lt;/code&gt; suite, which comes with adapters for various web frameworks.&lt;/p&gt;
+&lt;p&gt;The ideas presented here are already consolidated into production-grade libraries, in particular the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;digestive-functors&lt;/code&gt; suite, which comes with adapters for various web frameworks.&lt;/p&gt;
 
 &lt;h2 id=&quot;references&quot;&gt;References&lt;/h2&gt;
 
