@@ -108,7 +108,7 @@ form = (,) <$> switch "s0" <*> switch "s1"
 
 Now we need ways to convert `Form` terms into HTML views and validation callbacks respectively. Concretely, we need to write two functions, `view` and `eval`.
 
-I provide two implementation sketches here, but the details depend on the semantics of the frontend framework that generates form data.
+I provide two implementation sketches here, but the details depend on the actual frontend framework.
 
 
 {% highlight haskell %}
