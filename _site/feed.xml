@@ -6,8 +6,8 @@
 </description>
     <link>https://ocramz.github.io/</link>
     <atom:link href="https://ocramz.github.io/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sat, 12 Feb 2022 13:24:43 +0100</pubDate>
-    <lastBuildDate>Sat, 12 Feb 2022 13:24:43 +0100</lastBuildDate>
+    <pubDate>Sat, 12 Feb 2022 14:29:11 +0100</pubDate>
+    <lastBuildDate>Sat, 12 Feb 2022 14:29:11 +0100</lastBuildDate>
     <generator>Jekyll v4.2.0</generator>
     
       <item>
@@ -20,9 +20,11 @@
 
 &lt;p&gt;What’s a web form? It’s really two things : an (HTML) view and a callback that will process the inputs submitted via that view, and possibly produce a new view as a result.&lt;/p&gt;
 
-&lt;p&gt;Schematically, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;(view, input -&amp;gt; Maybe view')&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;Schematically, a form can be seen as a pair &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;(view, input -&amp;gt; Maybe view')&lt;/code&gt;.&lt;/p&gt;
 
 &lt;p&gt;We would like this notion to be &lt;em&gt;composable&lt;/em&gt; : forms are arrays of typed inputs (e.g. strings, booleans, numbers, dates), and we expect to parse the input into a corresponding arrays of output values.&lt;/p&gt;
+
+&lt;p&gt;This post will motivate the internals of the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;formlets&lt;/code&gt;/&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;digestive-functors&lt;/code&gt; libraries, which provide composable HTML formlets and are backed by solid functional programming abstractions.&lt;/p&gt;
 
 &lt;h2 id=&quot;parallel-validation&quot;&gt;Parallel validation&lt;/h2&gt;
 
@@ -42,7 +44,7 @@
 
 &lt;span class=&quot;o&quot;&gt;...&lt;/span&gt;
 
-&lt;span class=&quot;n&quot;&gt;validAddress&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;::&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;String&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Maybe&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;Street&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;PostCode&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+&lt;span class=&quot;n&quot;&gt;validAddress&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;::&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;String&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;String&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;String&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Maybe&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;Street&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;PostCode&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
 &lt;h2 id=&quot;applicative&quot;&gt;Applicative&lt;/h2&gt;
 
@@ -58,8 +60,8 @@
 
 &lt;p&gt;Simplifying somewhat :&lt;/p&gt;
 
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-haskell&quot; data-lang=&quot;haskell&quot;&gt;&lt;span class=&quot;n&quot;&gt;validAddress&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;::&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;String&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Maybe&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;Street&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;PostCode&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;validAddress&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;input&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(,,)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;$&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;validStreetName&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;*&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;validStreetNo&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;*&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;validPostCode&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-haskell&quot; data-lang=&quot;haskell&quot;&gt;&lt;span class=&quot;n&quot;&gt;validAddress&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;::&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;String&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;String&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;String&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Maybe&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;Street&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;PostCode&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;validAddress&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sa&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sb&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sc&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(,,)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;$&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;validStreetName&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sa&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;*&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;validStreetNo&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sb&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;*&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;validPostCode&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sc&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
 &lt;h2 id=&quot;applicative-formlets&quot;&gt;Applicative formlets&lt;/h2&gt;
 
@@ -78,7 +80,7 @@
   &lt;span class=&quot;c1&quot;&gt;-- | switch (binary choice)&lt;/span&gt;
   &lt;span class=&quot;kt&quot;&gt;Switch&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;::&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;String&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Field&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Bool&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
-&lt;p&gt;The &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;String&lt;/code&gt; input to the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Field&lt;/code&gt; constructors is shorthand for a unique reference that will be used to lookup the form inputs from the frontend request body.&lt;/p&gt;
+&lt;p&gt;The &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;String&lt;/code&gt; fields of the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Field&lt;/code&gt; constructors hold unique references that will be used to lookup the form inputs from the frontend request body.&lt;/p&gt;
 
 &lt;p&gt;We can then declare “smart constructors” for the form elements, that will be labeled with the respective output type,&lt;/p&gt;
 

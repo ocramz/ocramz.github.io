@@ -13,9 +13,11 @@ Form-based interaction is an interesting subset of this problem since the input 
 
 What's a web form? It's really two things : an (HTML) view and a callback that will process the inputs submitted via that view, and possibly produce a new view as a result.
 
-Schematically, `(view, input -> Maybe view')`
+Schematically, a form can be seen as a pair `(view, input -> Maybe view')`.
 
 We would like this notion to be _composable_ : forms are arrays of typed inputs (e.g. strings, booleans, numbers, dates), and we expect to parse the input into a corresponding arrays of output values.
+
+This post will motivate the internals of the `formlets`/`digestive-functors` libraries, which provide composable HTML formlets and are backed by solid functional programming abstractions.
 
 ## Parallel validation
 
@@ -36,7 +38,7 @@ validPostCode :: String -> Maybe PostCode
 
 ...
 
-validAddress :: String -> Maybe (Street, Name, PostCode)
+validAddress :: String -> String -> String -> Maybe (Street, Name, PostCode)
 {% endhighlight %}
 
 
@@ -57,8 +59,8 @@ class Functor f => Applicative f where
 Simplifying somewhat :
 
 {% highlight haskell %}
-validAddress :: String -> Maybe (Street, Name, PostCode)
-validAddress input = (,,) <$> validStreetName <*> validStreetNo <*> validPostCode
+validAddress :: String -> String -> String -> Maybe (Street, Name, PostCode)
+validAddress sa sb sc = (,,) <$> validStreetName sa <*> validStreetNo sb <*> validPostCode sc
 {% endhighlight %}
 
 
@@ -84,7 +86,7 @@ data Field a where
   Switch :: String -> Field Bool
 {% endhighlight %}
 
-The `String` input to the `Field` constructors is shorthand for a unique reference that will be used to lookup the form inputs from the frontend request body.
+The `String` fields of the `Field` constructors hold unique references that will be used to lookup the form inputs from the frontend request body.
 
 We can then declare "smart constructors" for the form elements, that will be labeled with the respective output type,
 
