@@ -1,0 +1,11 @@
+* assignment via Riemann optimization : https://github.com/ocramz/assignment-riemann-opt
+
+* gzip compressibility of SVD reduced-rank images
+
+* posts from 2016-2024:
+- NeurIPS'21
+- AD via delimited continuations : https://ocramz.github.io/haskell/automatic-differentiation/2021/07/19/ad-delcont.html
+- finding haskell core of a function via TH : https://ocramz.github.io/haskell/ghc/metaprogramming/2021/06/22/finding-core-th.html
+- GKL bidiagonalization
+- GMRES
+- Arnoldi : https://ocramz.github.io/mathematics/tutorials/2016/11/09/arnoldi-alt.html
