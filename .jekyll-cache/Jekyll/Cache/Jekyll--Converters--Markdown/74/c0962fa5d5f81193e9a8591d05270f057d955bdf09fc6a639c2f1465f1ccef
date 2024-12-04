@@ -1,2 +1,0 @@
-I"ô<p>Yesterday evening I gave a presentation at a <a href="https://www.meetup.com/got-lambda">local functional programming meetup</a> regarding my recent experience in building a data ingestion microservice in Haskell. To tell the truth, I was more concerned with communicating the rationale for my design choices rather than the business application per se, and I wanted to show how (my current understanding of) the language helps (or doesnâ€™t) in structuring a large and realistic application.</p>
-:ET

@@ -1,3 +1,0 @@
-I"¢<p>The Arnoldi iteration is a numerically stable algorithm to produce an orthonormal basis for the Krylov subspace associated with a matrix \(A \in \mathbb{R}^{m \times m}\) and a vector as \(b \in \mathbb{R}^m\).
-The Krylov subspace of order \(r \leq m\) associated with \(A\) and \(b\) is defined as \(K_r := span \lbrace b, Ab, A^b \cdots A^{r-1}b \rbrace\). The spanning vectors of \(K_r\) are not orthogonal.</p>
-:ET

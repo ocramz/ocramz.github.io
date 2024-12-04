@@ -1,9 +1,0 @@
-I"c<ul>
-  <li><a href="#intro">Introduction</a></li>
-  <li><a href="#overview">The interactive Haskell compiler</a></li>
-  <li><a href="#lambda">Notation for functional programs</a></li>
-  <li><a href="#io">Defining new symbols, functions and modules</a></li>
-  <li><a href="#pattern">Pattern matching</a></li>
-  <li><a href="#data">Datatypes</a></li>
-</ul>
-:ET

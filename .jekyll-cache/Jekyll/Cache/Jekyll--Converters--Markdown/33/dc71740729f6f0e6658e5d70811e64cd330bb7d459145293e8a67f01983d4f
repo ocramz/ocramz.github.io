@@ -1,2 +1,0 @@
-I"×<p>Many reference implementations of the singular value decomposition (SVD) use bidiagonalization as a fundamental preprocessing step. Like the <a href="https://ocramz.github.io/mathematics/tutorials/2016/11/09/arnoldi-alt.html">Arnoldi algorithm</a>, it is very closely related to the Gram-Schmidt orthogonalization process, since it multiplies the operand matrix with a series of projection matrices that zero out one or more of its components at each application.</p>
-:ET
