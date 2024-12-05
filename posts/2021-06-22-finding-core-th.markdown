@@ -58,7 +58,7 @@ inspect n = do
 
 The other half of the trick takes place within the plugin, so we'll need to import a bunch of modules from `ghc`-the-library :
 
-{% highlight haskell %}
+```haskell
 -- ghc
 import GHC.Plugins (Plugin, defaultPlugin, CorePlugin, installCoreToDos, pluginRecompile, CommandLineOption, fromSerialized, deserializeWithData, ModGuts(..), Name, CoreExpr, Var, flattenBinds, getName, thNameToGhcName, PluginRecompile(..))
 import GHC.Core.Opt.Monad (CoreToDo(..), CorePluginPass, bindsOnlyPass, CoreM, putMsgS, getDynFlags, errorMsg)
@@ -67,12 +67,12 @@ import GHC.Types.Annotations (Annotation(..), AnnTarget(..))
 import GHC.Utils.Outputable (Outputable(..), SDoc, showSDoc, (<+>), ppr, text)
 -- template-haskell
 import qualified Language.Haskell.TH.Syntax as TH (Name)
-{% endhighlight %}
+```
 
 
 First, we need a function that looks up all the annotations from the module internals (aptly named `ModGuts` in ghc) and attempts to decode them via their Data interface. Here we are using a custom `Target` type defined above, which could carry additional metadata.
 
-{% highlight haskell %}
+```haskell
 extractTargets :: ModGuts -> (ModGuts, [Target])
 extractTargets guts = (guts', xs)
   where
@@ -81,11 +81,11 @@ extractTargets guts = (guts', xs)
     findTargetAnn = \case 
       (Annotation _ payload) -> fromSerialized deserializeWithData payload
       _ -> Nothing
-{% endhighlight %}
+```
 
 Next, we need to map `template-haskell` names to the internal GHC namespace, `thNameToGhcName` to the rescue. If the name can be resolved, `lookupTHName` will return the corresponding Core `Expr`ession (i.e. the abstract syntax tree corresponding to the name we picked in the beginning).
 
-{% highlight haskell %}
+```haskell
 -- Resolve the TH.Name into a GHC Name and look this up within the list of binders in the module guts
 lookupTHName :: ModGuts -> TH.Name -> CoreM (Maybe (Var, CoreExpr))
 lookupTHName guts thn = thNameToGhcName thn >>= \case
@@ -100,14 +100,14 @@ lookupTHName guts thn = thNameToGhcName thn >>= \case
                               | (v,e) <- flattenBinds (mg_binds guts)
                               , getName v == n
                               ]
-{% endhighlight %}
+```
 
 
 ## A custom GHC Core plugin
 
 As noted above, a GHC plugin can customize many aspects of the compilation process. Here we are interested in the compiler phase that produces Core IR, so we'll only have to modify the `installCoreToDos` field of the `defaultPlugin` value provided by `ghc` by providing our own version :
 
-{% highlight haskell %}
+```haskell
 -- module MyPlugin
 
 plugin :: Plugin
@@ -115,7 +115,7 @@ plugin = defaultPlugin {
   installCoreToDos = install -- will be defined below
   , pluginRecompile = \_ -> pure NoForceRecompile
                        }
-{% endhighlight %}
+```
 
 As a minimal example, let's pretty-print the Core expression corresponding to the `Name` we just found:
 

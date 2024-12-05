@@ -130,7 +130,7 @@ op1 f ioa = do
     pure ry
 ```
 
-The above is a pretty faithful port of the Scala version (for a unary function such as $$\sqrt{ \cdot }$$ to reduce clutter), in which the major differences are the explicit tracking of the effects (mutation and continuation) at the type level. How does this work ? 
+The above is a pretty faithful port of the Scala version (for a unary function such as $\sqrt{ \cdot }$ to reduce clutter), in which the major differences are the explicit tracking of the effects (mutation and continuation) at the type level. How does this work ? 
 
 1) Compute the function result and bind the function inputs to the adjoint updating function (the "pullback")
 

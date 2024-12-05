@@ -122,7 +122,7 @@
 <span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>    (<span class="dt">D</span> _ yd) <span class="ot">&lt;-</span> readSTRef rb <span class="co">-- 4)</span></span>
 <span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>    modifySTRef' ra (withD (\rda0 <span class="ot">-&gt;</span> rda0 <span class="op">+</span> g yd)) <span class="co">-- 5)</span></span>
 <span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>    <span class="fu">pure</span> ry</span></code></pre></div>
-<p>The above is a pretty faithful port of the Scala version (for a unary function such as <span class="math display">$$\sqrt{ \cdot }$$</span> to reduce clutter), in which the major differences are the explicit tracking of the effects (mutation and continuation) at the type level. How does this work ?</p>
+<p>The above is a pretty faithful port of the Scala version (for a unary function such as <span class="math inline">$\sqrt{ \cdot }$</span> to reduce clutter), in which the major differences are the explicit tracking of the effects (mutation and continuation) at the type level. How does this work ?</p>
 <ol type="1">
 <li><p>Compute the function result and bind the function inputs to the adjoint updating function (the “pullback”)</p></li>
 <li><p>Allocate a fresh STRef <code>rb</code> with the function result and 0 adjoint part</p></li>
