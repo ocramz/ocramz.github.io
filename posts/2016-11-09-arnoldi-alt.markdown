@@ -19,47 +19,32 @@ If we consider for example the second iteration, we have
 
 \[
 
-A
-\underbrace{
-\left[
-\begin{array}{c|c}
-  \mathbf{q}_1 & \mathbf{q}_2
-\end{array}
-\right]
-}_{Q_1}
+A \underbrace{\left[\begin{array}{c|c}\mathbf{q}_1 & \mathbf{q}_2 \end{array} \right] }_{Q_1}
 =
-\underbrace{
-\left[
-\begin{array}{c|c|c}
-  \mathbf{q}_1 & \mathbf{q}_2 & \mathbf{q}_3
-\end{array}
-\right]
-}_{Q_2}
+\underbrace{\left[\begin{array}{c|c|c}  \mathbf{q}_1 & \mathbf{q}_2 & \mathbf{q}_3\end{array}\right] }_{Q_2}
 
-\left[
-\begin{array}{c c}
+\left[ \begin{array}{c c}
  h_{1, 1} & h_{1, 2} \\
  h_{2, 1} & h_{2, 2}  \\
  0 & h_{3, 2} 
-\end{array}
-\right]
+\end{array} \right]
 
 =
 
-\left[
-\begin{array}{c | c}
- h_{1, 1} \mathbf{q}_1 + h_{2, 1} \mathbf{q}_2 &
- h_{1, 2} \mathbf{q}_1 + h_{2, 2} \mathbf{q}_2 + h_{3, 2} \mathbf{q}_3
+\left[ 
+  \begin{array}{c | c} 
+  h_{1, 1} \mathbf{q}_1 + h_{2, 1} \mathbf{q}_2 &  h_{1, 2} \mathbf{q}_1 + h_{2, 2} \mathbf{q}_2 + h_{3, 2} \mathbf{q}_3
 \end{array}
 \right]
-
 \]
 
 which yields the recursion:
 
-$$
-\mathbf{q}_3 = \frac{A \mathbf{q}_2 - \sum\limits_{i=1}^2 h_{i, 2} \mathbf{q}_i}{h_{3, 2}}.
-$$
+\[
+  \mathbf{q}_3 = \frac{A \mathbf{q}_2 - \sum\limits_{i=1}^2 h_{i, 2} \mathbf{q}_i}{h_{3, 2}}.
+  \]
+
+
 
 In the previous equation the entries of the $$H$$ matrix are obtained by exploiting the orthonormality of the $$\mathbf{q}$$ vectors, i.e. 
 
