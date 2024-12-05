@@ -1,0 +1,72 @@
+---
+layout: post
+title: The generalized minimal-residual method for linear systems
+date: 2017-02-06
+categories: mathematics linear-algebra
+---
+
+The generalized minimal-residual method (GMRES) was introduced by Saad and Schultz in 1986 and to this day it is one of the more popular iterative algorithms for solving large linear systems; it is very versatile (works on general, i.e. non-Hermitian systems) and has a relatively simple derivation, which I will try to convey in this post.
+In the following, I will restrict the notation to the special case in which all vectors have real components, because the complex-valued case just involves exchanging $$\mathbb{R}$$ with $$\mathbb{C}$$.
+
+At each iteration, GMRES provides an increasingly more accurate approximation $$\tilde{x}$$ to the solution of a linear system $$A x = b$$, in the sense of the $$L_2$$ norm (i.e. a "minimal-residual" solution):
+
+$$
+\tilde{x} = \underset{x}{\arg \min} \| A x - b \|,
+$$
+
+where $$A \in \mathbb{R}^{m \times n}$$ is (assumed to be) of full rank (i.e. invertible), $$x \in \mathbb{R}^n$$ and $$b \in \mathbb{R}^m$$.
+
+The approximate solution is sought in spaces of increasing dimensionality; in other words, at iteration $$i \in {1 .. m}$$ the solution $$\tilde{x}_i$$ will be a vector in $$\mathbb{R}^i$$.
+
+This means that we need a series of vector bases ("Krylov subspaces") that map from $$\mathbb{R}^i$$ to $$\mathbb{R}^m$$; the [Arnoldi process](https://ocramz.github.io/mathematics/tutorials/2016/11/09/arnoldi-alt.html) provides these as by-products.
+
+At iteration $$i$$, the Krylov subspace approximation $$y$$ to a vector $$x \in \mathbb{R}^n$$ can be written as $$x = Q_i y$$, in which the $$Q$$ matrices satisfy the Arnoldi recursion $$A Q_i = Q_{i+1} H_i$$. Recall that $$Q_i$$ is shorthand for a set of $$i$$ orthonormal vectors in $$\mathbb{R}^n$$ (i.e. that appear as the matrix columns).
+
+We can now plug in the Krylov approximation and the Arnoldi identity into the residual equation to re-formulate the minimal residual problem:
+
+$$
+\|A x - b\| = \|A Q_i y - b\| = \|Q_{i+1} H_i y -b\|
+$$
+
+Since the columns of the $$Q_i$$ matrices are orthogonal, if $$Q_i v = w$$ then $$v = Q_i^\dagger w$$; this lets us rewrite the residual as follows:
+
+$$
+\|H_i y - Q_{i+1}^\dagger b\|
+$$
+
+We notice that $$Q_{i+1}^\dagger b$$ rotates back the $$b$$ vector to the canonical basis, which can be written as $$\|b\| e_1 =: b_0$$.
+
+At this point we focus on the Hessenberg matrix $$H_i$$ (specifically this is an _upper-Hessenberg_ matrix, because all the elements _below_ the first sub-diagonal are identically zero). This is convenient from a computational point of view, as we will see shortly.
+
+Let us denote the QR factorization of $$H_i$$ as $$O_i U_i$$ (where $$O_i$$ is orthonormal and $$U_i$$ is upper triangular). Since the QR factorization operates on the sub-diagonal nonzero elements of its input matrix, applying it to a Hessenberg matrix means that only at most $$i-2$$ rotations will be required in order to produce its answer.
+
+At this point we are ready to write the GMRES problem in its final form
+
+$$
+\|A x - b\| = \left\|U_i y - O_i^\dagger b_0 \right\| \underset{y}{\rightarrow} min
+$$
+
+which can be efficiently solved by back-substitution since $$U_i$$ is upper triangular.
+
+## Conclusions and some optimizations
+
+To recap, at step $$i$$ the GMRES algorithm requires:
+
+1) applying the Arnoldi process to obtain a Krylov base for $$\{A, b\}$$ in $$\mathbb{R}^i$$,
+
+2) factorizing the Hessenberg matrix obtained at step 1) in its QR factors,
+
+3) solving for the minimal-residual vector $$y$$ using a triangular solver (i.e. back-substitution),
+
+4) retrieving the full-space solution using the Krylov relation $$\tilde{x} = Q_i y$$.
+
+The version of GMRES I have implemented in [sparse-linear-algebra](https://hackage.haskell.org/package/sparse-linear-algebra) does not carry out steps 1-4 repeatedly, but simply finds the "largest" Krylov subspace (i.e. carries out Arnoldi until it breaks down, that is, until the norm of the $$i$$th orthogonal vector is found to be almost 0) and then proceeds with steps 2-4. I found this simpler solution to work quite well in practice.
+
+A popular optimization is to interleave the Arnoldi process with the QR factorization; in particular, the first $$i$$ columns of $$H_{i+1}$$ are exactly $$H_i$$, so computing the QR factorization of $$H_{i+1}$$ only requires applying one additional Givens' rotation, and can recycle the QR factors of $$H_i$$ (appropriately padded).
+
+
+
+
+## References
+
+Y. Saad and M.H. Schultz, "GMRES: A generalized minimal residual algorithm for solving nonsymmetric linear systems", SIAM J. Sci. Stat. Comput., 7:856-869, 1986. 

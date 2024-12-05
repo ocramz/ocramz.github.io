@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>My Hakyll Blog - The singular value decomposition, pt.1 - Golub-Kahan-Lanczos bidiagonalization</title>
+        <link rel="stylesheet" href="../css/default.css" />
+    </head>
+    <body>
+        <header>
+            <div class="logo">
+                <a href="../">My Hakyll Blog</a>
+            </div>
+            <nav>
+                <a href="../">Home</a>
+                <a href="../about.html">About</a>
+                <a href="../contact.html">Contact</a>
+                <a href="../archive.html">Archive</a>
+            </nav>
+        </header>
+
+        <main role="main">
+            <h1>The singular value decomposition, pt.1 - Golub-Kahan-Lanczos bidiagonalization</h1>
+            <article>
+    <section class="header">
+        Posted on February  7, 2017
+        
+    </section>
+    <section>
+        <p>Many reference implementations of the singular value decomposition (SVD) use bidiagonalization as a fundamental preprocessing step. Like the <a href="https://ocramz.github.io/mathematics/tutorials/2016/11/09/arnoldi-alt.html">Arnoldi algorithm</a>, it is very closely related to the Gram-Schmidt orthogonalization process, since it multiplies the operand matrix with a series of projection matrices that zero out one or more of its components at each application.</p>
+<p>In this blog post I will explain the Golub-Kahan-Lanczos bidiagonalization, which applies two projections, <span class="math display"><em>P</em> ∈ ℝ<sup><em>m</em> × <em>n</em></sup></span> and <span class="math display"><em>Q</em> ∈ ℝ<sup><em>n</em> × <em>n</em></sup></span>, to the operand matrix <span class="math display"><em>A</em> ∈ ℝ<sup><em>m</em> × <em>n</em></sup></span> to produce a matrix <span class="math display"><em>B</em> ∈ ℝ<sup><em>n</em> × <em>n</em></sup></span> that is non-zero only on its main diagonal and first super-diagonal.</p>
+<p><span class="math display">$$
+P^\dagger A Q = B =: \left[
+\begin{array}{c c c c c}
+ \alpha_1 &amp; \beta_1  &amp;         &amp; &amp; \\
+          &amp; \alpha_2 &amp; \beta_2 &amp; &amp; \\
+	  &amp; &amp; \ddots &amp; \ddots    &amp; \\
+	  &amp; &amp; &amp; \alpha_{n-1} &amp; \beta_{n-1} \\
+          &amp; &amp; &amp; &amp; \alpha_n \\
+\end{array}
+\right]
+\label{eqn1}
+$$</span></p>
+<p>The equation above requires us to find <em>two</em> sets of orthonormal vectors in order be fulfilled, i.e. the columns of <span class="math display"><em>P</em></span> and <span class="math display"><em>Q</em></span>. This means that there are effectively two sets of equations which we must solve iteratively to retrieve the factorization; these are obtained by applying <span class="math display"><em>P</em></span> to Eq.1 and respectively transposing it and applying <span class="math display"><em>Q</em></span> (and using the fact that <span class="math display">(<em>U</em><em>V</em>)<sup>†</sup> = <em>V</em><sup>†</sup><em>U</em><sup>†</sup></span>):</p>
+<p><span class="math display">$$
+\begin{cases}
+A Q = P B \\
+A^\dagger P = Q B^\dagger
+\end{cases}
+$$</span></p>
+<p>The algorithm directly follows by inspecting the two systems of equations written above in terms of their columns.</p>
+<p>As first step we must choose an arbitrary vector of unit norm and appropriate dimensions, <span class="math display"><strong>q</strong><sub>1</sub></span>, which is used to obtain <span class="math display"><strong>p</strong><sub>1</sub></span> and <span class="math display"><em>α</em><sub>1</sub></span>:</p>
+<p><span class="math display"><em>A</em><strong>q</strong><sub>1</sub> = <em>α</em><sub>1</sub><strong>p</strong><sub>1</sub></span></p>
+<p>whereas <span class="math display"><strong>p</strong><sub>2</sub></span>, <span class="math display"><strong>q</strong><sub>2</sub></span> and <span class="math display"><em>β</em><sub>1</sub></span> are obtained from the second system of equations:</p>
+<p><span class="math display"><em>A</em><sup>†</sup><strong>p</strong><sub>1</sub> = <em>α</em><sub>1</sub><strong>q</strong><sub>1</sub> + <em>β</em><sub>1</sub><strong>q</strong><sub>2</sub></span></p>
+<p>(NB: the <span class="math display"><em>α</em></span> and <span class="math display"><em>β</em></span> coefficients are obtained in turn by prescribing the <span class="math display"><strong>p</strong></span> and <span class="math display"><strong>q</strong></span> vectors to have unit norm).</p>
+<p>Subsequent steps are only minimally different; at step <span class="math display"><em>j</em> ∈ 2..<em>n</em> − 1</span> :</p>
+$$
+<p>$$</p>
+<p>Note : of course also the coefficients <span class="math display"><em>α</em><sub><em>i</em></sub></span> are “outputs” to the iteration, but of the elements of <span class="math display"><em>B</em></span> only <span class="math display"><em>β</em><sub><em>i</em></sub></span> is required to compute the results of iteration <span class="math display"><em>i</em> + 1</span>.</p>
+<p>The final step will be slightly different, again due to the structure of <span class="math display"><em>B</em></span>:</p>
+<p><span class="math display">$$
+\begin{array}{l l}
+A \mathbf{q}_n &amp;= \alpha_n \mathbf{p}_n + \beta_{n-1} \mathbf{p}_{n-1} \\
+A^\dagger \mathbf{p}_n &amp;= \alpha_n \mathbf{q}_n
+\end{array}
+$$</span></p>
+<p>After this, the <span class="math display"><em>α</em></span> and <span class="math display"><em>β</em></span> coefficients and the <span class="math display"><strong>p</strong><sub><em>i</em></sub></span> and <span class="math display"><strong>q</strong><sub><em>i</em></sub></span> vectors can be packed into matrices and used in subsequent computations.</p>
+<p>In <a href="https://hackage.haskell.org/package/sparse-linear-algebra">sparse-linear-algebra</a> I implemented this control flow using the <a href="https://hackage.haskell.org/package/mtl-2.2.1/docs/Control-Monad-State-Strict.html">State monad</a>, which makes the partial datastructures produced during iteration invisible to the rest of the program, by construction.</p>
+<p>As a functional programmer, I found this explanation of the Golub-Kahan-Lanczos algorithm to be easier to follow and implement than that found in Golub and Van Loan’s textbook, which employs in-place mutation (i.e. matrices are overwritten at each iteration).</p>
+<p>Stay tuned for part 2, in which we will complete the explanation of the singular value decomposition algorithm.</p>
+<h2 id="references">References</h2>
+<p>Dongarra, Jack, et al. (eds.), <a href="http://www.netlib.org/utk/people/JackDongarra/etemplates/node198.html">Templates for the Solution of Algebraic Eigenvalue Problems: a Practical Guide</a></p>
+<p>Golub, Gene H.; Van Loan, Charles F. (1996), Matrix Computations (3rd ed.), Johns Hopkins</p>
+    </section>
+</article>
+
+        </main>
+
+        <footer>
+            Site proudly generated by
+            <a href="http://jaspervdj.be/hakyll">Hakyll</a>
+        </footer>
+    </body>
+</html>

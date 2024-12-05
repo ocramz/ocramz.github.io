@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>My Hakyll Blog - The generalized minimal-residual method for linear systems</title>
+        <link rel="stylesheet" href="../css/default.css" />
+    </head>
+    <body>
+        <header>
+            <div class="logo">
+                <a href="../">My Hakyll Blog</a>
+            </div>
+            <nav>
+                <a href="../">Home</a>
+                <a href="../about.html">About</a>
+                <a href="../contact.html">Contact</a>
+                <a href="../archive.html">Archive</a>
+            </nav>
+        </header>
+
+        <main role="main">
+            <h1>The generalized minimal-residual method for linear systems</h1>
+            <article>
+    <section class="header">
+        Posted on February  6, 2017
+        
+    </section>
+    <section>
+        <p>The generalized minimal-residual method (GMRES) was introduced by Saad and Schultz in 1986 and to this day it is one of the more popular iterative algorithms for solving large linear systems; it is very versatile (works on general, i.e. non-Hermitian systems) and has a relatively simple derivation, which I will try to convey in this post.
+In the following, I will restrict the notation to the special case in which all vectors have real components, because the complex-valued case just involves exchanging <span class="math display">ℝ</span> with <span class="math display">ℂ</span>.</p>
+<p>At each iteration, GMRES provides an increasingly more accurate approximation <span class="math display"><em>x̃</em></span> to the solution of a linear system <span class="math display"><em>A</em><em>x</em> = <em>b</em></span>, in the sense of the <span class="math display"><em>L</em><sub>2</sub></span> norm (i.e. a “minimal-residual” solution):</p>
+<p><span class="math display">$$
+\tilde{x} = \underset{x}{\arg \min} \| A x - b \|,
+$$</span></p>
+<p>where <span class="math display"><em>A</em> ∈ ℝ<sup><em>m</em> × <em>n</em></sup></span> is (assumed to be) of full rank (i.e. invertible), <span class="math display"><em>x</em> ∈ ℝ<sup><em>n</em></sup></span> and <span class="math display"><em>b</em> ∈ ℝ<sup><em>m</em></sup></span>.</p>
+<p>The approximate solution is sought in spaces of increasing dimensionality; in other words, at iteration <span class="math display"><em>i</em> ∈ 1..<em>m</em></span> the solution <span class="math display"><em>x̃</em><sub><em>i</em></sub></span> will be a vector in <span class="math display">ℝ<sup><em>i</em></sup></span>.</p>
+<p>This means that we need a series of vector bases (“Krylov subspaces”) that map from <span class="math display">ℝ<sup><em>i</em></sup></span> to <span class="math display">ℝ<sup><em>m</em></sup></span>; the <a href="https://ocramz.github.io/mathematics/tutorials/2016/11/09/arnoldi-alt.html">Arnoldi process</a> provides these as by-products.</p>
+<p>At iteration <span class="math display"><em>i</em></span>, the Krylov subspace approximation <span class="math display"><em>y</em></span> to a vector <span class="math display"><em>x</em> ∈ ℝ<sup><em>n</em></sup></span> can be written as <span class="math display"><em>x</em> = <em>Q</em><sub><em>i</em></sub><em>y</em></span>, in which the <span class="math display"><em>Q</em></span> matrices satisfy the Arnoldi recursion <span class="math display"><em>A</em><em>Q</em><sub><em>i</em></sub> = <em>Q</em><sub><em>i</em> + 1</sub><em>H</em><sub><em>i</em></sub></span>. Recall that <span class="math display"><em>Q</em><sub><em>i</em></sub></span> is shorthand for a set of <span class="math display"><em>i</em></span> orthonormal vectors in <span class="math display">ℝ<sup><em>n</em></sup></span> (i.e. that appear as the matrix columns).</p>
+<p>We can now plug in the Krylov approximation and the Arnoldi identity into the residual equation to re-formulate the minimal residual problem:</p>
+<p><span class="math display">∥<em>A</em><em>x</em> − <em>b</em>∥ = ∥<em>A</em><em>Q</em><sub><em>i</em></sub><em>y</em> − <em>b</em>∥ = ∥<em>Q</em><sub><em>i</em> + 1</sub><em>H</em><sub><em>i</em></sub><em>y</em> − <em>b</em>∥</span></p>
+<p>Since the columns of the <span class="math display"><em>Q</em><sub><em>i</em></sub></span> matrices are orthogonal, if <span class="math display"><em>Q</em><sub><em>i</em></sub><em>v</em> = <em>w</em></span> then <span class="math display"><em>v</em> = <em>Q</em><sub><em>i</em></sub><sup>†</sup><em>w</em></span>; this lets us rewrite the residual as follows:</p>
+<p><span class="math display">∥<em>H</em><sub><em>i</em></sub><em>y</em> − <em>Q</em><sub><em>i</em> + 1</sub><sup>†</sup><em>b</em>∥</span></p>
+<p>We notice that <span class="math display"><em>Q</em><sub><em>i</em> + 1</sub><sup>†</sup><em>b</em></span> rotates back the <span class="math display"><em>b</em></span> vector to the canonical basis, which can be written as <span class="math display">∥<em>b</em>∥<em>e</em><sub>1</sub> =  : <em>b</em><sub>0</sub></span>.</p>
+<p>At this point we focus on the Hessenberg matrix <span class="math display"><em>H</em><sub><em>i</em></sub></span> (specifically this is an <em>upper-Hessenberg</em> matrix, because all the elements <em>below</em> the first sub-diagonal are identically zero). This is convenient from a computational point of view, as we will see shortly.</p>
+<p>Let us denote the QR factorization of <span class="math display"><em>H</em><sub><em>i</em></sub></span> as <span class="math display"><em>O</em><sub><em>i</em></sub><em>U</em><sub><em>i</em></sub></span> (where <span class="math display"><em>O</em><sub><em>i</em></sub></span> is orthonormal and <span class="math display"><em>U</em><sub><em>i</em></sub></span> is upper triangular). Since the QR factorization operates on the sub-diagonal nonzero elements of its input matrix, applying it to a Hessenberg matrix means that only at most <span class="math display"><em>i</em> − 2</span> rotations will be required in order to produce its answer.</p>
+<p>At this point we are ready to write the GMRES problem in its final form</p>
+<p><span class="math display">$$
+\|A x - b\| = \left\|U_i y - O_i^\dagger b_0 \right\| \underset{y}{\rightarrow} min
+$$</span></p>
+<p>which can be efficiently solved by back-substitution since <span class="math display"><em>U</em><sub><em>i</em></sub></span> is upper triangular.</p>
+<h2 id="conclusions-and-some-optimizations">Conclusions and some optimizations</h2>
+<p>To recap, at step <span class="math display"><em>i</em></span> the GMRES algorithm requires:</p>
+<ol type="1">
+<li><p>applying the Arnoldi process to obtain a Krylov base for <span class="math display">{<em>A</em>, <em>b</em>}</span> in <span class="math display">ℝ<sup><em>i</em></sup></span>,</p></li>
+<li><p>factorizing the Hessenberg matrix obtained at step 1) in its QR factors,</p></li>
+<li><p>solving for the minimal-residual vector <span class="math display"><em>y</em></span> using a triangular solver (i.e. back-substitution),</p></li>
+<li><p>retrieving the full-space solution using the Krylov relation <span class="math display"><em>x̃</em> = <em>Q</em><sub><em>i</em></sub><em>y</em></span>.</p></li>
+</ol>
+<p>The version of GMRES I have implemented in <a href="https://hackage.haskell.org/package/sparse-linear-algebra">sparse-linear-algebra</a> does not carry out steps 1-4 repeatedly, but simply finds the “largest” Krylov subspace (i.e. carries out Arnoldi until it breaks down, that is, until the norm of the <span class="math display"><em>i</em></span>th orthogonal vector is found to be almost 0) and then proceeds with steps 2-4. I found this simpler solution to work quite well in practice.</p>
+<p>A popular optimization is to interleave the Arnoldi process with the QR factorization; in particular, the first <span class="math display"><em>i</em></span> columns of <span class="math display"><em>H</em><sub><em>i</em> + 1</sub></span> are exactly <span class="math display"><em>H</em><sub><em>i</em></sub></span>, so computing the QR factorization of <span class="math display"><em>H</em><sub><em>i</em> + 1</sub></span> only requires applying one additional Givens’ rotation, and can recycle the QR factors of <span class="math display"><em>H</em><sub><em>i</em></sub></span> (appropriately padded).</p>
+<h2 id="references">References</h2>
+<p>Y. Saad and M.H. Schultz, “GMRES: A generalized minimal residual algorithm for solving nonsymmetric linear systems”, SIAM J. Sci. Stat. Comput., 7:856-869, 1986.</p>
+    </section>
+</article>
+
+        </main>
+
+        <footer>
+            Site proudly generated by
+            <a href="http://jaspervdj.be/hakyll">Hakyll</a>
+        </footer>
+    </body>
+</html>
