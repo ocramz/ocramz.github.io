@@ -44,9 +44,7 @@ $$
 
 which yields the recursion:
 
-\[
-  \mathbf{q}_3 = \frac{A \mathbf{q}_2 - \sum\limits_{i=1}^2 h_{i, 2} \mathbf{q}_i}{h_{3, 2}}.
-  \]
+\[\mathbf{q}_3 = \frac{A \mathbf{q}_2 - \sum\limits_{i=1}^2 h_{i, 2} \mathbf{q}_i}{h_{3, 2}}.\]
 
 
 
