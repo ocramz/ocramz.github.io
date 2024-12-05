@@ -17,7 +17,8 @@ The method starts from a normalized vector $$\mathbf{q}_1$$ and iteratively prod
 
 If we consider for example the second iteration, we have
 
-\[ A \underbrace{\left[
+$$
+A \underbrace{\left[
   \begin{array}{c|c}
   \mathbf{q}_1 & \mathbf{q}_2 
   \end{array} 
@@ -39,7 +40,7 @@ If we consider for example the second iteration, we have
   h_{1, 1} \mathbf{q}_1 + h_{2, 1} \mathbf{q}_2 &  h_{1, 2} \mathbf{q}_1 + h_{2, 2} \mathbf{q}_2 + h_{3, 2} \mathbf{q}_3
 \end{array}
 \right]
-\]
+$$
 
 which yields the recursion:
 
