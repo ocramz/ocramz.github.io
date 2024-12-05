@@ -6,9 +6,9 @@
     padding-right: 15px;
   }
 
-  @media (min-width: 1200px) {
+  @media (min-width: 1400px) {
     .container{
-        max-width: 970px;
+        max-width: 1200px;
     }
 }
 
