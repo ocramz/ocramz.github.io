@@ -128,7 +128,7 @@ op1 f ioa = do
     (D _ yd) <- readSTRef rb -- 4)
     modifySTRef' ra (withD (\rda0 -> rda0 + g yd)) -- 5)
     pure ry
-```haskell
+```
 
 The above is a pretty faithful port of the Scala version (for a unary function such as $$\sqrt{ \cdot }$$ to reduce clutter), in which the major differences are the explicit tracking of the effects (mutation and continuation) at the type level. How does this work ? 
 
