@@ -20,7 +20,7 @@ In a [previous post](http://ocramz.github.io/automatic-differentiation/machine-l
 
 Here are two short code snippets that originally appeared in [1]. 
 
-{% highlight scala %}
+```scala
 class NumR (val x: Double, var d: Double) {
   def + (that: NumR) = shift { (k: NumR => Unit) =>
     val y = new NumR(this.x + that.x, 0.0);
@@ -28,7 +28,7 @@ class NumR (val x: Double, var d: Double) {
     this.d += y.d; 
     that.d += y.d
   }
-{% endhighlight %}
+```
 
 This is a Scala implementation of a "plus" function that sums dual numbers. It relies on delimited continuations to achieve non-local control flow and specify what to do when a continuation returns. My Scala is pretty rusty so this has been a head scratcher for a while. I'll first document how my train of thought went while reading this code, and then try to break it down more formally.
 
@@ -44,14 +44,14 @@ This is a Scala implementation of a "plus" function that sums dual numbers. It r
 
 The other interesting snippet is where all the work happens : the function value is computed, the adjoint accumulation process kicks off (in the "backwards" sweep) and the gradient is returned:
 
-{% highlight scala %}
+```scala
 def grad(f: NumR => NumR @cps[Unit] )(x: Double) = {
   val z = new NumR(x, 0.0)
   reset  { 
     f(z).d = 1.0 }
   z.d
   }
-{% endhighlight %}
+```
 
 1) `grad` is a higher-order function that takes the function to be differentiated as a parameter (`f: NumR => NumR`, overloaded to act upon dual numbers `NumR`), and an evaluation point `x`.
 
@@ -71,7 +71,7 @@ I'm not a programming languages researcher so diving into the original publicati
 
 Here's a minimal snippet to use both `shift` and `reset`, composed with variable "mutation" in the `State` monad. To be precise we will use the continuation _monad transformer_ `ContT`, and its corresponding operators `shiftT` and `resetT`, to compose other "effects" together with continuations:
 
-{% highlight haskell %}
+```haskell
 t1 :: ContT Int (State [Int]) Int
 t1 = resetT $ do
   let
@@ -85,14 +85,14 @@ t1 = resetT $ do
     pure y -- 5)
   cons 0 -- 2)
   pure r -- 3)
-{% endhighlight %}
+```
 
 Running the example above elucidates how the _order_ of variable mutation is affected :
 
-{% highlight haskell %}
+```shell
 λ> flip runState [] $ evalContT t1
 (2,[2,0,1])
-{% endhighlight %}
+```
 
 1) As soon as the continuation `k` is invoked (applied to value `y = 2`), control _exits_ from the `shiftT` block,
 
@@ -113,7 +113,7 @@ As it turns out, this non-local control flow (i.e. delegating to a continuation,
 In order to convince myself of this, I've implemented the ideas of [1] in a [Haskell library](https://hackage.haskell.org/package/ad-delcont). Overall, I find the result pretty satisfying both from a theoretical and ergonomic standpoint.
 
 
-{% highlight haskell %}
+```haskell
 op1 :: (Num da, Num db) =>
        (a -> (b, db -> da)) -- ^ returns : (function result, pullback)
     -> ContT x (ST s) (DVar s a da)
@@ -128,7 +128,7 @@ op1 f ioa = do
     (D _ yd) <- readSTRef rb -- 4)
     modifySTRef' ra (withD (\rda0 -> rda0 + g yd)) -- 5)
     pure ry
-{% endhighlight %}
+```haskell
 
 The above is a pretty faithful port of the Scala version (for a unary function such as $$\sqrt{ \cdot }$$ to reduce clutter), in which the major differences are the explicit tracking of the effects (mutation and continuation) at the type level. How does this work ? 
 

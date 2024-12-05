@@ -48,15 +48,13 @@
 <p>In a <a href="http://ocramz.github.io/automatic-differentiation/machine-learning/2021/07/18/ad.html">previous post</a> I illustrated the fundamentals of automatic differentiation, as implemented in most imperative programming languages. It turns out, a computational tape is not the only available option for inverting control flow, in sufficiently advanced programming languages. How can we implement reverse-mode automatic differentiation in a purely-functional setting? Read on!</p>
 <h2 id="staring-at-higher-order-scala-code">Staring at higher-order Scala code</h2>
 <p>Here are two short code snippets that originally appeared in [1].</p>
-<p>{% highlight scala %}
-class NumR (val x: Double, var d: Double) {
-def + (that: NumR) = shift { (k: NumR =&gt; Unit) =&gt;
-val y = new NumR(this.x + that.x, 0.0);
-k(y);
-this.d += y.d;
-that.d += y.d
-}
-{% endhighlight %}</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode scala"><code class="sourceCode scala"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> <span class="fu">NumR</span> <span class="op">(</span><span class="kw">val</span> x<span class="op">:</span> <span class="ex">Double</span><span class="op">,</span> <span class="kw">var</span> d<span class="op">:</span> <span class="ex">Double</span><span class="op">)</span> <span class="op">{</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">def</span> <span class="op">+</span> <span class="op">(</span>that<span class="op">:</span> NumR<span class="op">)</span> <span class="op">=</span> shift <span class="op">{</span> <span class="op">(</span>k<span class="op">:</span> NumR <span class="op">=&gt;</span> <span class="bu">Unit</span><span class="op">)</span> <span class="op">=&gt;</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">val</span> y <span class="op">=</span> <span class="kw">new</span> <span class="fu">NumR</span><span class="op">(</span><span class="kw">this</span><span class="op">.</span>x <span class="op">+</span> that<span class="op">.</span>x<span class="op">,</span> <span class="fl">0.0</span><span class="op">);</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">k</span><span class="op">(</span>y<span class="op">);</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    <span class="kw">this</span><span class="op">.</span>d <span class="op">+=</span> y<span class="op">.</span>d<span class="op">;</span> </span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    that<span class="op">.</span>d <span class="op">+=</span> y<span class="op">.</span>d</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span></code></pre></div>
 <p>This is a Scala implementation of a “plus” function that sums dual numbers. It relies on delimited continuations to achieve non-local control flow and specify what to do when a continuation returns. My Scala is pretty rusty so this has been a head scratcher for a while. I’ll first document how my train of thought went while reading this code, and then try to break it down more formally.</p>
 <ol type="1">
 <li><p>First we declare a dual number type <code>NumR</code>, which has fields <code>.x</code> and <code>.d</code> for the primal and adjoint respectively.</p></li>
@@ -66,14 +64,12 @@ that.d += y.d
 <li><p>Upon returning from <code>k</code>, the dual part of the mutated value of <code>y</code> is used to update by accumulation the dual parts of the input variables <code>x</code> and <code>y</code>.</p></li>
 </ol>
 <p>The other interesting snippet is where all the work happens : the function value is computed, the adjoint accumulation process kicks off (in the “backwards” sweep) and the gradient is returned:</p>
-<p>{% highlight scala %}
-def grad(f: NumR =&gt; NumR <span class="citation" data-cites="cps">@cps [Unit]</span> )(x: Double) = {
-val z = new NumR(x, 0.0)
-reset {
-f(z).d = 1.0 }
-z.d
-}
-{% endhighlight %}</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode scala"><code class="sourceCode scala"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> <span class="fu">grad</span><span class="op">(</span>f<span class="op">:</span> NumR <span class="op">=&gt;</span> NumR @cps<span class="op">[</span><span class="bu">Unit</span><span class="op">]</span> <span class="op">)(</span>x<span class="op">:</span> <span class="ex">Double</span><span class="op">)</span> <span class="op">=</span> <span class="op">{</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">val</span> z <span class="op">=</span> <span class="kw">new</span> <span class="fu">NumR</span><span class="op">(</span>x<span class="op">,</span> <span class="fl">0.0</span><span class="op">)</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  reset  <span class="op">{</span> </span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">f</span><span class="op">(</span>z<span class="op">).</span>d <span class="op">=</span> <span class="fl">1.0</span> <span class="op">}</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  z<span class="op">.</span>d</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span></code></pre></div>
 <ol type="1">
 <li><p><code>grad</code> is a higher-order function that takes the function to be differentiated as a parameter (<code>f: NumR =&gt; NumR</code>, overloaded to act upon dual numbers <code>NumR</code>), and an evaluation point <code>x</code>.</p></li>
 <li><p>A temporary variable <code>z</code> is declared, having 0 adjoint part and primal part corresponding to the point of interest <code>x</code>. <code>z</code> will accumulate the partial derivative of <code>f</code> with respect to <code>x</code>.</p></li>
@@ -85,26 +81,22 @@ z.d
 <p>I’m not a programming languages researcher so diving into the original publications didn’t exactly help. Fortunately, a bit of tinkering can save us hours of poring over old papers.</p>
 <p><code>shift</code>/<code>reset</code> are readily available in the <a href="https://hackage.haskell.org/package/transformers"><code>transformers</code></a> Haskell library, within module <a href="https://hackage.haskell.org/package/transformers/docs/Control-Monad-Trans-Cont.html"><code>Control.Monad.Trans.Cont</code></a>.</p>
 <p>Here’s a minimal snippet to use both <code>shift</code> and <code>reset</code>, composed with variable “mutation” in the <code>State</code> monad. To be precise we will use the continuation <em>monad transformer</em> <code>ContT</code>, and its corresponding operators <code>shiftT</code> and <code>resetT</code>, to compose other “effects” together with continuations:</p>
-<p>{% highlight haskell %}
-t1 :: ContT Int (State [Int]) Int
-t1 = resetT $ do
-let
-x = 1 – input
-cons w = lift $ modify (w :)
-r &lt;- shiftT $ &gt; do
-cons x
-let y = x + 1
-z &lt;- lift $ k y – 1)
-cons z – 4)
-pure y – 5)
-cons 0 – 2)
-pure r – 3)
-{% endhighlight %}</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ot">t1 ::</span> <span class="dt">ContT</span> <span class="dt">Int</span> (<span class="dt">State</span> [<span class="dt">Int</span>]) <span class="dt">Int</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">=</span> resetT <span class="op">$</span> <span class="kw">do</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">let</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    x <span class="ot">=</span> <span class="dv">1</span> <span class="co">-- input</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    cons w <span class="ot">=</span> lift <span class="op">$</span> modify (w <span class="op">:</span>)</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  r <span class="ot">&lt;-</span> shiftT <span class="op">$</span> \k <span class="ot">-&gt;</span> <span class="kw">do</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>    cons x</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>    <span class="kw">let</span> y <span class="ot">=</span> x <span class="op">+</span> <span class="dv">1</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>    z <span class="ot">&lt;-</span> lift <span class="op">$</span> k y <span class="co">-- 1)</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>    cons z <span class="co">-- 4)</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">pure</span> y <span class="co">-- 5)</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>  cons <span class="dv">0</span> <span class="co">-- 2)</span></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pure</span> r <span class="co">-- 3)</span></span></code></pre></div>
 <p>Running the example above elucidates how the <em>order</em> of variable mutation is affected :</p>
-<p>{% highlight haskell %}
-λ&gt; flip runState [] $ evalContT t1
-(2,[2,0,1])
-{% endhighlight %}</p>
+<pre class="shell"><code>λ&gt; flip runState [] $ evalContT t1
+(2,[2,0,1])</code></pre>
 <ol type="1">
 <li><p>As soon as the continuation <code>k</code> is invoked (applied to value <code>y = 2</code>), control <em>exits</em> from the <code>shiftT</code> block,</p></li>
 <li><p>continues at the next line (in this case appending a <code>0</code> to the list used as state variable),</p></li>
@@ -116,22 +108,7 @@ pure r – 3)
 <h2 id="introducing-ad-delcont">Introducing <code>ad-delcont</code></h2>
 <p>As it turns out, this non-local control flow (i.e. delegating to a continuation, doing something and returning to the starting point with the results) is well suited to implementing the forward-backward computation needed in reverse-mode automatic differentiation.</p>
 <p>In order to convince myself of this, I’ve implemented the ideas of [1] in a <a href="https://hackage.haskell.org/package/ad-delcont">Haskell library</a>. Overall, I find the result pretty satisfying both from a theoretical and ergonomic standpoint.</p>
-<p>{% highlight haskell %}
-op1 :: (Num da, Num db) =&gt;
-(a -&gt; (b, db -&gt; da)) – ^ returns : (function result, pullback)
--&gt; ContT x (ST s) (DVar s a da)
--&gt; ContT x (ST s) (DVar s a db)<br />
-op1 f ioa = do
-ra &lt;- ioa
-(D xa <em>) &lt;- lift $ readSTRef ra
-let (xb, g) = f xa – 1)
-shiftT $  k -&gt; lift $ do
-rb &lt;- var xb 0 – 2)
-ry &lt;- k rb – 3)
-(D </em> yd) &lt;- readSTRef rb – 4)
-modifySTRef’ ra (withD ( -&gt; rda0 + g yd)) – 5)
-pure ry
-{% endhighlight %}</p>
+<p><code>haskell op1 :: (Num da, Num db) =&gt;        (a -&gt; (b, db -&gt; da)) -- ^ returns : (function result, pullback)     -&gt; ContT x (ST s) (DVar s a da)     -&gt; ContT x (ST s) (DVar s a db)   op1 f ioa = do   ra &lt;- ioa   (D xa _) &lt;- lift $ readSTRef ra   let (xb, g) = f xa -- 1)   shiftT $ \ k -&gt; lift $ do     rb &lt;- var xb 0 -- 2)     ry &lt;- k rb -- 3)     (D _ yd) &lt;- readSTRef rb -- 4)     modifySTRef' ra (withD (\rda0 -&gt; rda0 + g yd)) -- 5)     pure ry</code>haskell</p>
 <p>The above is a pretty faithful port of the Scala version (for a unary function such as <span class="math display">$$\sqrt{ \cdot }$$</span> to reduce clutter), in which the major differences are the explicit tracking of the effects (mutation and continuation) at the type level. How does this work ?</p>
 <ol type="1">
 <li><p>Compute the function result and bind the function inputs to the adjoint updating function (the “pullback”)</p></li>
