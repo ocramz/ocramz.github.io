@@ -57,110 +57,105 @@
 <p>Annotations can also be attached by the user to declarations, types and modules, but this method does so programmatically.</p>
 <p>The resulting function has a type signature similar to this : <code>Name -&gt; Q [Dec]</code>, i.e. given a <code>Name</code> it will produce a list of new declarations <code>Dec</code> at compile time.</p>
 <p>If we’re only interested in attaching a <code>Name</code> to the annotation, we just need :</p>
-<p>{% highlight haskell %}
-{-# language DeriveDataTypeable #-}
-import Data.Data (Data)
-import Language.Haskell.TH (Name, Loc, AnnTarget(..), Pragma(..), Dec(..), location, Q, Exp(..))
-import Language.Haskell.TH.Syntax (liftData)</p>
-<p>– our annotation payload type
-data Target = MkTarget { tgName :: Name } deriving (Data)</p>
-<p>inspect :: Name -&gt; Q [Dec]
-inspect n = do
-annExpr &lt;- liftData (MkTarget n)
-pure [PragmaD (AnnP ModuleAnnotation annExpr)]
-{% endhighlight %}</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ot">{-# language DeriveDataTypeable #-}</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span> <span class="dt">Data.Data</span> (<span class="dt">Data</span>)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span> <span class="dt">Language.Haskell.TH</span> (<span class="dt">Name</span>, <span class="dt">Loc</span>, <span class="dt">AnnTarget</span>(..), <span class="dt">Pragma</span>(..), <span class="dt">Dec</span>(..), location, <span class="dt">Q</span>, <span class="dt">Exp</span>(..))</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span> <span class="dt">Language.Haskell.TH.Syntax</span> (liftData)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co">-- our annotation payload type</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="kw">data</span> <span class="dt">Target</span> <span class="ot">=</span> <span class="dt">MkTarget</span> {<span class="ot"> tgName ::</span> <span class="dt">Name</span> } <span class="kw">deriving</span> (<span class="dt">Data</span>)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="ot">inspect ::</span> <span class="dt">Name</span> <span class="ot">-&gt;</span> <span class="dt">Q</span> [<span class="dt">Dec</span>]</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>inspect n <span class="ot">=</span> <span class="kw">do</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>  annExpr <span class="ot">&lt;-</span> liftData (<span class="dt">MkTarget</span> n)</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pure</span> [<span class="dt">PragmaD</span> (<span class="dt">AnnP</span> <span class="dt">ModuleAnnotation</span> annExpr)]</span></code></pre></div>
 <h2 id="picking-out-our-annotation-from-within-the-plugin">Picking out our annotation from within the plugin</h2>
 <p>The other half of the trick takes place within the plugin, so we’ll need to import a bunch of modules from <code>ghc</code>-the-library :</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">-- ghc</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span> <span class="dt">GHC.Plugins</span> (<span class="dt">Plugin</span>, defaultPlugin, <span class="dt">CorePlugin</span>, installCoreToDos, pluginRecompile, <span class="dt">CommandLineOption</span>, fromSerialized, deserializeWithData, <span class="dt">ModGuts</span>(..), <span class="dt">Name</span>, <span class="dt">CoreExpr</span>, <span class="dt">Var</span>, flattenBinds, getName, thNameToGhcName, <span class="dt">PluginRecompile</span>(..))</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span> <span class="dt">GHC.Core.Opt.Monad</span> (<span class="dt">CoreToDo</span>(..), <span class="dt">CorePluginPass</span>, bindsOnlyPass, <span class="dt">CoreM</span>, putMsgS, getDynFlags, errorMsg)</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span> <span class="dt">GHC.Core</span> (<span class="dt">CoreProgram</span>, <span class="dt">CoreBind</span>, <span class="dt">Bind</span>(..), <span class="dt">Expr</span>(..))</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span> <span class="dt">GHC.Types.Annotations</span> (<span class="dt">Annotation</span>(..), <span class="dt">AnnTarget</span>(..))</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span> <span class="dt">GHC.Utils.Outputable</span> (<span class="dt">Outputable</span>(..), <span class="dt">SDoc</span>, showSDoc, (&lt;+&gt;), ppr, text)</span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co">-- template-haskell</span></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span> <span class="kw">qualified</span> <span class="dt">Language.Haskell.TH.Syntax</span> <span class="kw">as</span> <span class="dt">TH</span> (<span class="dt">Name</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">-- ghc</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span> <span class="dt">GHC.Plugins</span> (<span class="dt">Plugin</span>, defaultPlugin, <span class="dt">CorePlugin</span>, installCoreToDos, pluginRecompile, <span class="dt">CommandLineOption</span>, fromSerialized, deserializeWithData, <span class="dt">ModGuts</span>(..), <span class="dt">Name</span>, <span class="dt">CoreExpr</span>, <span class="dt">Var</span>, flattenBinds, getName, thNameToGhcName, <span class="dt">PluginRecompile</span>(..))</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span> <span class="dt">GHC.Core.Opt.Monad</span> (<span class="dt">CoreToDo</span>(..), <span class="dt">CorePluginPass</span>, bindsOnlyPass, <span class="dt">CoreM</span>, putMsgS, getDynFlags, errorMsg)</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span> <span class="dt">GHC.Core</span> (<span class="dt">CoreProgram</span>, <span class="dt">CoreBind</span>, <span class="dt">Bind</span>(..), <span class="dt">Expr</span>(..))</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span> <span class="dt">GHC.Types.Annotations</span> (<span class="dt">Annotation</span>(..), <span class="dt">AnnTarget</span>(..))</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span> <span class="dt">GHC.Utils.Outputable</span> (<span class="dt">Outputable</span>(..), <span class="dt">SDoc</span>, showSDoc, (&lt;+&gt;), ppr, text)</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="co">-- template-haskell</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span> <span class="kw">qualified</span> <span class="dt">Language.Haskell.TH.Syntax</span> <span class="kw">as</span> <span class="dt">TH</span> (<span class="dt">Name</span>)</span></code></pre></div>
 <p>First, we need a function that looks up all the annotations from the module internals (aptly named <code>ModGuts</code> in ghc) and attempts to decode them via their Data interface. Here we are using a custom <code>Target</code> type defined above, which could carry additional metadata.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ot">extractTargets ::</span> <span class="dt">ModGuts</span> <span class="ot">-&gt;</span> (<span class="dt">ModGuts</span>, [<span class="dt">Target</span>])</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>extractTargets guts <span class="ot">=</span> (guts', xs)</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">where</span></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    (anns_clean, xs) <span class="ot">=</span> partitionMaybe findTargetAnn (mg_anns guts)</span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    guts' <span class="ot">=</span> guts { mg_anns <span class="ot">=</span> anns_clean }</span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    findTargetAnn <span class="ot">=</span> \<span class="kw">case</span> </span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>      (<span class="dt">Annotation</span> _ payload) <span class="ot">-&gt;</span> fromSerialized deserializeWithData payload</span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>      _ <span class="ot">-&gt;</span> <span class="dt">Nothing</span></span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ot">extractTargets ::</span> <span class="dt">ModGuts</span> <span class="ot">-&gt;</span> (<span class="dt">ModGuts</span>, [<span class="dt">Target</span>])</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>extractTargets guts <span class="ot">=</span> (guts', xs)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">where</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    (anns_clean, xs) <span class="ot">=</span> partitionMaybe findTargetAnn (mg_anns guts)</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    guts' <span class="ot">=</span> guts { mg_anns <span class="ot">=</span> anns_clean }</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    findTargetAnn <span class="ot">=</span> \<span class="kw">case</span> </span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>      (<span class="dt">Annotation</span> _ payload) <span class="ot">-&gt;</span> fromSerialized deserializeWithData payload</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>      _ <span class="ot">-&gt;</span> <span class="dt">Nothing</span></span></code></pre></div>
 <p>Next, we need to map <code>template-haskell</code> names to the internal GHC namespace, <code>thNameToGhcName</code> to the rescue. If the name can be resolved, <code>lookupTHName</code> will return the corresponding Core <code>Expr</code>ession (i.e. the abstract syntax tree corresponding to the name we picked in the beginning).</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co">-- Resolve the TH.Name into a GHC Name and look this up within the list of binders in the module guts</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="ot">lookupTHName ::</span> <span class="dt">ModGuts</span> <span class="ot">-&gt;</span> <span class="dt">TH.Name</span> <span class="ot">-&gt;</span> <span class="dt">CoreM</span> (<span class="dt">Maybe</span> (<span class="dt">Var</span>, <span class="dt">CoreExpr</span>))</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>lookupTHName guts thn <span class="ot">=</span> thNameToGhcName thn <span class="op">&gt;&gt;=</span> \<span class="kw">case</span></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="dt">Nothing</span> <span class="ot">-&gt;</span> <span class="kw">do</span></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    errorMsg <span class="op">$</span> text <span class="st">&quot;Could not resolve TH name&quot;</span> <span class="op">&lt;+&gt;</span> text (<span class="fu">show</span> thn)</span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">pure</span> <span class="dt">Nothing</span></span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>  <span class="dt">Just</span> n <span class="ot">-&gt;</span> <span class="fu">pure</span> <span class="op">$</span> lookupNameInGuts guts n</span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>  <span class="kw">where</span></span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="ot">    lookupNameInGuts ::</span> <span class="dt">ModGuts</span> <span class="ot">-&gt;</span> <span class="dt">Name</span> <span class="ot">-&gt;</span> <span class="dt">Maybe</span> (<span class="dt">Var</span>, <span class="dt">CoreExpr</span>)</span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>    lookupNameInGuts guts n <span class="ot">=</span> listToMaybe</span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>                              [ (v,e)</span>
-<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>                              <span class="op">|</span> (v,e) <span class="ot">&lt;-</span> flattenBinds (mg_binds guts)</span>
-<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>                              , getName v <span class="op">==</span> n</span>
-<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>                              ]</span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co">-- Resolve the TH.Name into a GHC Name and look this up within the list of binders in the module guts</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="ot">lookupTHName ::</span> <span class="dt">ModGuts</span> <span class="ot">-&gt;</span> <span class="dt">TH.Name</span> <span class="ot">-&gt;</span> <span class="dt">CoreM</span> (<span class="dt">Maybe</span> (<span class="dt">Var</span>, <span class="dt">CoreExpr</span>))</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>lookupTHName guts thn <span class="ot">=</span> thNameToGhcName thn <span class="op">&gt;&gt;=</span> \<span class="kw">case</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="dt">Nothing</span> <span class="ot">-&gt;</span> <span class="kw">do</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    errorMsg <span class="op">$</span> text <span class="st">&quot;Could not resolve TH name&quot;</span> <span class="op">&lt;+&gt;</span> text (<span class="fu">show</span> thn)</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">pure</span> <span class="dt">Nothing</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  <span class="dt">Just</span> n <span class="ot">-&gt;</span> <span class="fu">pure</span> <span class="op">$</span> lookupNameInGuts guts n</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>  <span class="kw">where</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="ot">    lookupNameInGuts ::</span> <span class="dt">ModGuts</span> <span class="ot">-&gt;</span> <span class="dt">Name</span> <span class="ot">-&gt;</span> <span class="dt">Maybe</span> (<span class="dt">Var</span>, <span class="dt">CoreExpr</span>)</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>    lookupNameInGuts guts n <span class="ot">=</span> listToMaybe</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>                              [ (v,e)</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>                              <span class="op">|</span> (v,e) <span class="ot">&lt;-</span> flattenBinds (mg_binds guts)</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>                              , getName v <span class="op">==</span> n</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>                              ]</span></code></pre></div>
 <h2 id="a-custom-ghc-core-plugin">A custom GHC Core plugin</h2>
 <p>As noted above, a GHC plugin can customize many aspects of the compilation process. Here we are interested in the compiler phase that produces Core IR, so we’ll only have to modify the <code>installCoreToDos</code> field of the <code>defaultPlugin</code> value provided by <code>ghc</code> by providing our own version :</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co">-- module MyPlugin</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="ot">plugin ::</span> <span class="dt">Plugin</span></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>plugin <span class="ot">=</span> defaultPlugin {</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  installCoreToDos <span class="ot">=</span> install <span class="co">-- will be defined below</span></span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  , pluginRecompile <span class="ot">=</span> \_ <span class="ot">-&gt;</span> <span class="fu">pure</span> <span class="dt">NoForceRecompile</span></span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>                       }</span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co">-- module MyPlugin</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="ot">plugin ::</span> <span class="dt">Plugin</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>plugin <span class="ot">=</span> defaultPlugin {</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  installCoreToDos <span class="ot">=</span> install <span class="co">-- will be defined below</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  , pluginRecompile <span class="ot">=</span> \_ <span class="ot">-&gt;</span> <span class="fu">pure</span> <span class="dt">NoForceRecompile</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>                       }</span></code></pre></div>
 <p>As a minimal example, let’s pretty-print the Core expression corresponding to the <code>Name</code> we just found:</p>
-<p>{% highlight haskell %}
-– Print the Core representation of the expression that has the given Name
-printCore :: ModGuts -&gt; TH.Name -&gt; CoreM ()
-printCore guts thn = do
-mn &lt;- lookupTHName guts thn
-case mn of
-Just (_, coreexpr) -&gt; do
-dflags &lt;- getDynFlags
-putMsgS $ showSDoc dflags (ppr coreexpr) – GHC pretty printer
-Nothing -&gt; do
-errorMsg $ text “Cannot find name” &lt;+&gt; text (show thn)
-{% endhighlight %}</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co">-- Print the Core representation of the expression that has the given Name</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="ot">printCore ::</span> <span class="dt">ModGuts</span> <span class="ot">-&gt;</span> <span class="dt">TH.Name</span> <span class="ot">-&gt;</span> <span class="dt">CoreM</span> ()</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>printCore guts thn <span class="ot">=</span> <span class="kw">do</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  mn <span class="ot">&lt;-</span> lookupTHName guts thn</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">case</span> mn <span class="kw">of</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>    <span class="dt">Just</span> (_, coreexpr) <span class="ot">-&gt;</span> <span class="kw">do</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>      dflags <span class="ot">&lt;-</span> getDynFlags</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>      putMsgS <span class="op">$</span> showSDoc dflags (ppr coreexpr) <span class="co">-- GHC pretty printer</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>    <span class="dt">Nothing</span> <span class="ot">-&gt;</span> <span class="kw">do</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>      errorMsg <span class="op">$</span> text <span class="st">&quot;Cannot find name&quot;</span> <span class="op">&lt;+&gt;</span> text (<span class="fu">show</span> thn)</span></code></pre></div>
 <p>All that’s left is to package <code>printCore</code> into our custom implementation of <code>installCoreToDos</code>:</p>
-<p>{% highlight haskell %}
-– append a ‘CoreDoPluginPass’ at the <em>end</em> of the ‘CoreToDo’ list
-install :: [CommandLineOption] -&gt; [CoreToDo] -&gt; CoreM [CoreToDo]
-install _ todos = pure (todos ++ [pass])
-where
-pass = CoreDoPluginPass pname $  guts -&gt; do
-let (guts’, targets) = extractTargets guts
-traverse_ ( t -&gt; printCore guts’ (tgName t)) targets
-pure guts’
-pname = “MyPlugin”
-{% endhighlight %}</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co">-- append a 'CoreDoPluginPass' at the _end_ of the 'CoreToDo' list</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="ot">install ::</span> [<span class="dt">CommandLineOption</span>] <span class="ot">-&gt;</span> [<span class="dt">CoreToDo</span>] <span class="ot">-&gt;</span> <span class="dt">CoreM</span> [<span class="dt">CoreToDo</span>]</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>install _ todos <span class="ot">=</span> <span class="fu">pure</span> (todos <span class="op">++</span> [pass])</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">where</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    pass <span class="ot">=</span> <span class="dt">CoreDoPluginPass</span> pname <span class="op">$</span> \ guts <span class="ot">-&gt;</span> <span class="kw">do</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>      <span class="kw">let</span> (guts', targets) <span class="ot">=</span> extractTargets guts</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>      traverse_ (\ t <span class="ot">-&gt;</span> printCore guts' (tgName t)) targets</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>      <span class="fu">pure</span> guts'</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>    pname <span class="ot">=</span> <span class="st">&quot;MyPlugin&quot;</span></span></code></pre></div>
 <p>Here it’s important to stress that <code>install</code> <em>appends</em> our plugin pass to the ones received as input from the upstream compilation pipeline.</p>
 <p>Another crucial detail : the name string of the plugin as specified in <code>CoreDoPluginPass</code> <em>must</em> be the full module name where the <code>plugin</code> value is declared.</p>
 <h2 id="trying-out-our-plugin">Trying out our plugin</h2>
 <p>A GHC plugin can be imported as any other Haskell library in the <code>build-depends</code> section of the Cabal file. While developing a plugin, one should ensure that the test <code>hs-srcs-dirs</code> directory is distinct from that under which the plugin source is defined, so as not to form an import loop.</p>
 <p>With this, we can declare a minimal module that imports the TH helper <code>inspect</code> and the plugin as well. Important to note that <code>MyPlugin</code> in the <code>-fplugin</code> option is the name of the Cabal <em>module</em> in which GHC will look for the <code>plugin :: Plugin</code> value (the entry point to our plugin).</p>
-<p>{% highlight haskell %}
-{-# LANGUAGE TemplateHaskell #-}
-{-# OPTIONS_GHC -fplugin=MyPlugin #-}
-module PluginTest where</p>
-<p>– try building with either type signature for extra fun</p>
-<p>f :: Double -&gt; Double -&gt; Double
-– f :: Floating a =&gt; a -&gt; a -&gt; a
-f = y -&gt; sqrt x + y</p>
-<p>inspect ’f
-{% endhighlight %}</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="ot">{-# LANGUAGE TemplateHaskell #-}</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="ot">{-# OPTIONS_GHC -fplugin=MyPlugin #-}</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="kw">module</span> <span class="dt">PluginTest</span> <span class="kw">where</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="co">-- try building with either type signature for extra fun</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="ot">f ::</span> <span class="dt">Double</span> <span class="ot">-&gt;</span> <span class="dt">Double</span> <span class="ot">-&gt;</span> <span class="dt">Double</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="co">-- f :: Floating a =&gt; a -&gt; a -&gt; a </span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>f <span class="ot">=</span> \x y <span class="ot">-&gt;</span> <span class="fu">sqrt</span> x <span class="op">+</span> y</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>inspect 'f</span></code></pre></div>
 <p>The output of our custom compiler pass will be interleaved with the rest of the GHC output as part of a clean recompile (e.g. <code>stack clean &amp;&amp; stack build</code>):</p>
-<p>{% highlight haskell %}
-[1 of 2] Compiling Main
-[2 of 2] Compiling PluginTest
- (x [Dmd=&lt;S,1*U(U)&gt;] :: Double) (y [Dmd=&lt;S,1*U(U)&gt;] :: Double) -&gt;
-case x of { D# x -&gt;
-case y of { D# y -&gt; D# (+## (sqrtDouble# x) y) }
-}
-{% endhighlight %}</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span> <span class="kw">of</span> <span class="dv">2</span>] <span class="dt">Compiling</span> <span class="dt">Main</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>[<span class="dv">2</span> <span class="kw">of</span> <span class="dv">2</span>] <span class="dt">Compiling</span> <span class="dt">PluginTest</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>\ (x [<span class="dt">Dmd</span><span class="op">=&lt;</span><span class="dt">S</span>,<span class="dv">1</span><span class="op">*</span><span class="dt">U</span>(<span class="dt">U</span>)<span class="op">&gt;</span>]<span class="ot"> ::</span> <span class="dt">Double</span>) (y [<span class="dt">Dmd</span><span class="op">=&lt;</span><span class="dt">S</span>,<span class="dv">1</span><span class="op">*</span><span class="dt">U</span>(<span class="dt">U</span>)<span class="op">&gt;</span>]<span class="ot"> ::</span> <span class="dt">Double</span>) <span class="ot">-&gt;</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">case</span> x <span class="kw">of</span> { <span class="dt">D</span><span class="op">#</span> x <span class="ot">-&gt;</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">case</span> y <span class="kw">of</span> { <span class="dt">D</span><span class="op">#</span> y <span class="ot">-&gt;</span> <span class="dt">D</span><span class="op">#</span> (<span class="op">+##</span> (sqrtDouble<span class="op">#</span> x) y) }</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>  }</span></code></pre></div>
 <p>If you squint a bit, you can still see the structure of the original expression <code>\x y = sqrt x + y</code>, enriched with additional annotations.
 For example:</p>
 <ul>

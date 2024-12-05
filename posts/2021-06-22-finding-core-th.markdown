@@ -37,7 +37,7 @@ The resulting function has a type signature similar to this : `Name -> Q [Dec]`,
 
 If we're only interested in attaching a `Name` to the annotation, we just need : 
 
-{% highlight haskell %}
+```haskell
 {-# language DeriveDataTypeable #-}
 import Data.Data (Data)
 import Language.Haskell.TH (Name, Loc, AnnTarget(..), Pragma(..), Dec(..), location, Q, Exp(..))
@@ -50,7 +50,7 @@ inspect :: Name -> Q [Dec]
 inspect n = do
   annExpr <- liftData (MkTarget n)
   pure [PragmaD (AnnP ModuleAnnotation annExpr)]
-{% endhighlight %}
+```
 
 
 
@@ -119,7 +119,7 @@ plugin = defaultPlugin {
 
 As a minimal example, let's pretty-print the Core expression corresponding to the `Name` we just found:
 
-{% highlight haskell %}
+```haskell
 -- Print the Core representation of the expression that has the given Name
 printCore :: ModGuts -> TH.Name -> CoreM ()
 printCore guts thn = do
@@ -130,12 +130,12 @@ printCore guts thn = do
       putMsgS $ showSDoc dflags (ppr coreexpr) -- GHC pretty printer
     Nothing -> do
       errorMsg $ text "Cannot find name" <+> text (show thn)
-{% endhighlight %}
+```
 
 
 All that's left is to package `printCore` into our custom implementation of `installCoreToDos`:
 
-{% highlight haskell %}
+```haskell
 -- append a 'CoreDoPluginPass' at the _end_ of the 'CoreToDo' list
 install :: [CommandLineOption] -> [CoreToDo] -> CoreM [CoreToDo]
 install _ todos = pure (todos ++ [pass])
@@ -145,7 +145,7 @@ install _ todos = pure (todos ++ [pass])
       traverse_ (\ t -> printCore guts' (tgName t)) targets
       pure guts'
     pname = "MyPlugin"
-{% endhighlight %}
+```
 
 Here it's important to stress that `install` _appends_ our plugin pass to the ones received as input from the upstream compilation pipeline. 
 
@@ -158,7 +158,7 @@ A GHC plugin can be imported as any other Haskell library in the `build-depends`
 
 With this, we can declare a minimal module that imports the TH helper `inspect` and the plugin as well. Important to note that `MyPlugin` in the `-fplugin` option is the name of the Cabal _module_ in which GHC will look for the `plugin :: Plugin` value (the entry point to our plugin).
 
-{% highlight haskell %}
+```haskell
 {-# LANGUAGE TemplateHaskell #-}
 {-# OPTIONS_GHC -fplugin=MyPlugin #-}
 module PluginTest where
@@ -170,18 +170,18 @@ f :: Double -> Double -> Double
 f = \x y -> sqrt x + y
 
 inspect 'f
-{% endhighlight %}
+```
 
 The output of our custom compiler pass will be interleaved with the rest of the GHC output as part of a clean recompile (e.g. `stack clean && stack build`):
 
-{% highlight haskell %}
+```haskell
 [1 of 2] Compiling Main
 [2 of 2] Compiling PluginTest
 \ (x [Dmd=<S,1*U(U)>] :: Double) (y [Dmd=<S,1*U(U)>] :: Double) ->
   case x of { D# x ->
   case y of { D# y -> D# (+## (sqrtDouble# x) y) }
   }
-{% endhighlight %}
+```
 
 If you squint a bit, you can still see the structure of the original expression `\x y = sqrt x + y`, enriched with additional annotations.
 For example: 
