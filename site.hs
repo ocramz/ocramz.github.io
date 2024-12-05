@@ -4,7 +4,7 @@ import           Data.Monoid (mappend)
 import           Hakyll
 
 import Text.Pandoc.Highlighting (Style, tango, styleToCss)
-import Text.Pandoc.Options      (ReaderOptions(..), WriterOptions(..))
+import Text.Pandoc.Options      (ReaderOptions(..), WriterOptions(..), HTMLMathMethod(..))
 
 
 
@@ -27,6 +27,11 @@ cfg = defaultConfiguration {
 --       { writerHighlightStyle   = Just pandocCodeStyle
 --       }
 
+
+writerOptions = defaultHakyllWriterOptions
+                    { writerHTMLMathMethod = MathJax "" }
+
+pandocCompilerWithMathJax = pandocCompilerWith defaultHakyllReaderOptions writerOptions
 
 main :: IO ()
 main = hakyllWith cfg $ do
