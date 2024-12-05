@@ -17,11 +17,14 @@ The method starts from a normalized vector $$\mathbf{q}_1$$ and iteratively prod
 
 If we consider for example the second iteration, we have
 
-\[
-
-A \underbrace{\left[\begin{array}{c|c}\mathbf{q}_1 & \mathbf{q}_2 \end{array} \right] }_{Q_1}
-=
-\underbrace{\left[\begin{array}{c|c|c}  \mathbf{q}_1 & \mathbf{q}_2 & \mathbf{q}_3\end{array}\right] }_{Q_2}
+\[ A \underbrace{\left[
+  \begin{array}{c|c}
+  \mathbf{q}_1 & \mathbf{q}_2 
+  \end{array} 
+  \right] }_{Q_1} = \underbrace{\left[
+    \begin{array}{c|c|c}  
+    \mathbf{q}_1 & \mathbf{q}_2 & \mathbf{q}_3
+    \end{array}\right] }_{Q_2}
 
 \left[ \begin{array}{c c}
  h_{1, 1} & h_{1, 2} \\

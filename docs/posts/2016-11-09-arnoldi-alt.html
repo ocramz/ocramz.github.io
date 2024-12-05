@@ -58,9 +58,7 @@ The Krylov subspace of order <span class="math display"><em>r</em> ≤ <em>m
 With the subscripts we signify that at iteration <span class="math display"><em>i</em></span> there are <span class="math display"><em>i</em></span> columns of <span class="math display"><em>Q</em></span> available (we denote this as <span class="math display"><em>Q</em><sub><em>i</em> − 1</sub></span>) and we must find the <span class="math display"><em>i</em> + 1</span>th.</p>
 <p>The method starts from a normalized vector <span class="math display"><strong>q</strong><sub>1</sub></span> and iteratively produces the next basis vectors. This process eventually “breaks down” since the norm of the iterates <span class="math display"><strong>q</strong><sub><em>i</em></sub></span> decreases, at which point the algorithm is said to have converged.</p>
 <p>If we consider for example the second iteration, we have</p>
-<p>[</p>
-<h1 id="a-_q_1">A _{Q_1}</h1>
-<p>_{Q_2}</p>
+<p>[ A <em>{Q_1} = </em>{Q_2}</p>
 <p>=</p>
 <p>which yields the recursion:</p>
 <p>[
