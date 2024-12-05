@@ -15,25 +15,25 @@ cfg = defaultConfiguration {
   destinationDirectory = "docs"
 }
 
-pandocCodeStyle :: Style
-pandocCodeStyle = tango
+-- pandocCodeStyle :: Style
+-- pandocCodeStyle = tango
 
--- enable syntax highlighting
-pandocCompiler' :: Compiler (Item String)
-pandocCompiler' =
-  pandocCompilerWith
-    defaultHakyllReaderOptions
-    defaultHakyllWriterOptions
-      { writerHighlightStyle   = Just pandocCodeStyle
-      }
+-- -- enable syntax highlighting
+-- pandocCompiler' :: Compiler (Item String)
+-- pandocCompiler' =
+--   pandocCompilerWith
+--     defaultHakyllReaderOptions
+--     defaultHakyllWriterOptions
+--       { writerHighlightStyle   = Just pandocCodeStyle
+--       }
 
 
 main :: IO ()
 main = hakyllWith cfg $ do
-    create ["css/syntax.css"] $ do
-        route idRoute
-        compile $ do
-            makeItem $ styleToCss pandocCodeStyle
+    -- create ["css/syntax.css"] $ do
+    --     route idRoute
+    --     compile $ do
+    --         makeItem $ styleToCss pandocCodeStyle
 
     match "images/*" $ do
         route   idRoute
@@ -51,7 +51,7 @@ main = hakyllWith cfg $ do
 
     match "posts/*" $ do
         route $ setExtension "html"
-        compile $ pandocCompiler'
+        compile $ pandocCompiler
             >>= loadAndApplyTemplate "templates/post.html"    postCtx
             >>= loadAndApplyTemplate "templates/default.html" postCtx
             >>= relativizeUrls
