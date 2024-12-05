@@ -17,7 +17,8 @@ The method starts from a normalized vector $$\mathbf{q}_1$$ and iteratively prod
 
 If we consider for example the second iteration, we have
 
-$$
+\[
+
 A
 \underbrace{
 \left[
@@ -52,7 +53,7 @@ A
 \end{array}
 \right]
 
-$$
+\]
 
 which yields the recursion:
 
