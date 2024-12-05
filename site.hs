@@ -45,6 +45,7 @@ main = hakyllWith cfg $ do
 
     match "js/*" $ do
         route   idRoute
+        compile copyFileCompiler
 
     match (fromList ["about.html", "contact.markdown", "oss.html", "research.html"]) $ do
         route   $ setExtension "html"
