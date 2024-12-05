@@ -5,6 +5,14 @@
     padding-left: 15px;
     padding-right: 15px;
   }
+
+  @media (min-width: 1200px) {
+    .container{
+        max-width: 970px;
+    }
+}
+
+
   @media (min-width: 768px) {
     .container {
       width: 750px;
@@ -712,7 +720,7 @@
   }
   .hidden {
     display: none !important;
-  }
+  } 
   .affix {
     position: fixed;
   }
