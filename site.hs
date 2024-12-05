@@ -43,6 +43,9 @@ main = hakyllWith cfg $ do
         route   idRoute
         compile compressCssCompiler
 
+    match "js/*" $ do
+        route   idRoute
+
     match (fromList ["about.html", "contact.markdown", "oss.html", "research.html"]) $ do
         route   $ setExtension "html"
         compile $ pandocCompiler
