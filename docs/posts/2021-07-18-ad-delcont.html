@@ -108,35 +108,55 @@
 <h2 id="introducing-ad-delcont">Introducing <code>ad-delcont</code></h2>
 <p>As it turns out, this non-local control flow (i.e. delegating to a continuation, doing something and returning to the starting point with the results) is well suited to implementing the forward-backward computation needed in reverse-mode automatic differentiation.</p>
 <p>In order to convince myself of this, I’ve implemented the ideas of [1] in a <a href="https://hackage.haskell.org/package/ad-delcont">Haskell library</a>. Overall, I find the result pretty satisfying both from a theoretical and ergonomic standpoint.</p>
-<p><code>haskell op1 :: (Num da, Num db) =&gt;        (a -&gt; (b, db -&gt; da)) -- ^ returns : (function result, pullback)     -&gt; ContT x (ST s) (DVar s a da)     -&gt; ContT x (ST s) (DVar s a db)   op1 f ioa = do   ra &lt;- ioa   (D xa _) &lt;- lift $ readSTRef ra   let (xb, g) = f xa -- 1)   shiftT $ \ k -&gt; lift $ do     rb &lt;- var xb 0 -- 2)     ry &lt;- k rb -- 3)     (D _ yd) &lt;- readSTRef rb -- 4)     modifySTRef' ra (withD (\rda0 -&gt; rda0 + g yd)) -- 5)     pure ry</code>haskell</p>
-<p>The above is a pretty faithful port of the Scala version (for a unary function such as <span class="math display">$$\sqrt{ \cdot }$$</span> to reduce clutter), in which the major differences are the explicit tracking of the effects (mutation and continuation) at the type level. How does this work ?</p>
-<ol type="1">
-<li><p>Compute the function result and bind the function inputs to the adjoint updating function (the “pullback”)</p></li>
-<li><p>Allocate a fresh STRef <code>rb</code> with the function result and 0 adjoint part</p></li>
-<li><p><code>rb</code> is passed downstream as an argument to the continuation <code>k</code>, with the expectation that the STRef will be mutated</p></li>
-<li><p>Upon returning from the <code>k</code> (bouncing from the boundary of <code>resetT</code>), the mutated STRef is read back in</p></li>
-<li><p>The adjoint part of the input variable is updated using <code>rb</code> (accumulating the adjoints by summing them together, as this variable might be used in more than one program branch) and the result of the continuation is returned.</p></li>
-</ol>
-<p>In the Haskell case, we pass mutable references to dual variables within the <code>ST</code> monad (introduced in [2] and readily available in the Haskell standard library at <code>Control.Monad.ST</code>)</p>
-<p>The code computing the gradient is correspondingly succint and maps almost exactly (modulo “lifting” and mutation in <code>ST</code>) to its Scala counterpart from [1]:</p>
-<p>{% highlight haskell %}
-rad1 :: (Num a, Num b) =&gt;
-(forall s . AD’ s a -&gt; AD’ s b) – ^ function to be differentiated
--&gt; a – ^ function argument
--&gt; (b, a) – ^ (result, adjoint)
-rad1 f x = runST $ do
-xr &lt;- var x 0
-zr’ &lt;- evalContT $
-resetT $ do
-let
-z = f (AD (pure xr))
-zr &lt;- unAD z
-lift $ modifySTRef’ zr (withD (const 1))
-pure zr
-(D z <em>) &lt;- readSTRef zr’
-(D </em> x_bar) &lt;- readSTRef xr
-pure (z, x_bar)
-{% endhighlight %}</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ot">op1 ::</span> (<span class="dt">Num</span> da, <span class="dt">Num</span> db) <span class="ot">=&gt;</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>       (a <span class="ot">-&gt;</span> (b, db <span class="ot">-&gt;</span> da)) <span class="co">-- ^ returns : (function result, pullback)</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    <span class="ot">-&gt;</span> <span class="dt">ContT</span> x (<span class="dt">ST</span> s) (<span class="dt">DVar</span> s a da)</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    <span class="ot">-&gt;</span> <span class="dt">ContT</span> x (<span class="dt">ST</span> s) (<span class="dt">DVar</span> s a db)  </span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>op1 f ioa <span class="ot">=</span> <span class="kw">do</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  ra <span class="ot">&lt;-</span> ioa</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  (<span class="dt">D</span> xa _) <span class="ot">&lt;-</span> lift <span class="op">$</span> readSTRef ra</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>  <span class="kw">let</span> (xb, g) <span class="ot">=</span> f xa <span class="co">-- 1)</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>  shiftT <span class="op">$</span> \ k <span class="ot">-&gt;</span> lift <span class="op">$</span> <span class="kw">do</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>    rb <span class="ot">&lt;-</span> var xb <span class="dv">0</span> <span class="co">-- 2)</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>    ry <span class="ot">&lt;-</span> k rb <span class="co">-- 3)</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>    (<span class="dt">D</span> _ yd) <span class="ot">&lt;-</span> readSTRef rb <span class="co">-- 4)</span></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>    modifySTRef' ra (withD (\rda0 <span class="ot">-&gt;</span> rda0 <span class="op">+</span> g yd)) <span class="co">-- 5)</span></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>    <span class="fu">pure</span> ry</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a><span class="ot">```haskell</span></span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a><span class="ot">The above is a pretty faithful port of the Scala version (for a unary function such as $$\sqrt{ \cdot }$$ to reduce clutter), in which the major differences are the explicit tracking of the effects (mutation and continuation) at the type level. How does this work ? </span></span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a><span class="ot">1) Compute the function result and bind the function inputs to the adjoint updating function (the &quot;pullback&quot;)</span></span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a><span class="ot">2) Allocate a fresh STRef `</span>rb<span class="ot">` with the function result and 0 adjoint part</span></span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a><span class="ot">3) `</span>rb<span class="ot">` is passed downstream as an argument to the continuation `</span>k<span class="ot">`, with the expectation that the STRef will be mutated</span></span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a><span class="ot">4) Upon returning from the `</span>k<span class="ot">` (bouncing from the boundary of `</span>resetT<span class="ot">`), the mutated STRef is read back in</span></span>
+<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a><span class="ot">5) The adjoint part of the input variable is updated using `</span>rb<span class="ot">` (accumulating the adjoints by summing them together, as this variable might be used in more than one program branch) and the result of the continuation is returned.</span></span>
+<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a><span class="ot">In the Haskell case, we pass mutable references to dual variables within the `</span><span class="dt">ST</span><span class="ot">` monad (introduced in [2] and readily available in the Haskell standard library at `</span><span class="dt">Control.Monad.ST</span><span class="ot">`)</span></span>
+<span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-31"><a href="#cb5-31" aria-hidden="true" tabindex="-1"></a><span class="ot">The code computing the gradient is correspondingly succint and maps almost exactly (modulo &quot;lifting&quot; and mutation in `</span><span class="dt">ST</span><span class="ot">`) to its Scala counterpart from [1]:</span></span>
+<span id="cb5-32"><a href="#cb5-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-33"><a href="#cb5-33" aria-hidden="true" tabindex="-1"></a><span class="ot">```</span>haskell</span>
+<span id="cb5-34"><a href="#cb5-34" aria-hidden="true" tabindex="-1"></a><span class="ot">rad1 ::</span> (<span class="dt">Num</span> a, <span class="dt">Num</span> b) <span class="ot">=&gt;</span></span>
+<span id="cb5-35"><a href="#cb5-35" aria-hidden="true" tabindex="-1"></a>        (<span class="kw">forall</span> s <span class="op">.</span> <span class="dt">AD'</span> s a <span class="ot">-&gt;</span> <span class="dt">AD'</span> s b) <span class="co">-- ^ function to be differentiated</span></span>
+<span id="cb5-36"><a href="#cb5-36" aria-hidden="true" tabindex="-1"></a>     <span class="ot">-&gt;</span> a <span class="co">-- ^ function argument</span></span>
+<span id="cb5-37"><a href="#cb5-37" aria-hidden="true" tabindex="-1"></a>     <span class="ot">-&gt;</span> (b, a) <span class="co">-- ^ (result, adjoint)</span></span>
+<span id="cb5-38"><a href="#cb5-38" aria-hidden="true" tabindex="-1"></a>rad1 f x <span class="ot">=</span> runST <span class="op">$</span> <span class="kw">do</span></span>
+<span id="cb5-39"><a href="#cb5-39" aria-hidden="true" tabindex="-1"></a>  xr <span class="ot">&lt;-</span> var x <span class="dv">0</span></span>
+<span id="cb5-40"><a href="#cb5-40" aria-hidden="true" tabindex="-1"></a>  zr' <span class="ot">&lt;-</span> evalContT <span class="op">$</span></span>
+<span id="cb5-41"><a href="#cb5-41" aria-hidden="true" tabindex="-1"></a>    resetT <span class="op">$</span> <span class="kw">do</span></span>
+<span id="cb5-42"><a href="#cb5-42" aria-hidden="true" tabindex="-1"></a>      <span class="kw">let</span></span>
+<span id="cb5-43"><a href="#cb5-43" aria-hidden="true" tabindex="-1"></a>        z <span class="ot">=</span> f (<span class="dt">AD</span> (<span class="fu">pure</span> xr))</span>
+<span id="cb5-44"><a href="#cb5-44" aria-hidden="true" tabindex="-1"></a>      zr <span class="ot">&lt;-</span> unAD z</span>
+<span id="cb5-45"><a href="#cb5-45" aria-hidden="true" tabindex="-1"></a>      lift <span class="op">$</span> modifySTRef' zr (withD (<span class="fu">const</span> <span class="dv">1</span>))</span>
+<span id="cb5-46"><a href="#cb5-46" aria-hidden="true" tabindex="-1"></a>      <span class="fu">pure</span> zr</span>
+<span id="cb5-47"><a href="#cb5-47" aria-hidden="true" tabindex="-1"></a>  (<span class="dt">D</span> z _) <span class="ot">&lt;-</span> readSTRef zr'</span>
+<span id="cb5-48"><a href="#cb5-48" aria-hidden="true" tabindex="-1"></a>  (<span class="dt">D</span> _ x_bar) <span class="ot">&lt;-</span> readSTRef xr</span>
+<span id="cb5-49"><a href="#cb5-49" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pure</span> (z, x_bar)</span></code></pre></div>
 <p><code>AD</code> is just a newtype wrapper around <code>ContT .. (ST s) ..</code>, in which the return variables are <code>STRef</code>s containing our dual variables; it implements the <code>Num</code>, <code>Fractional</code>, <code>Floating</code> interface and the library provides combinators for implementing new typeclasses as well.</p>
 <h2 id="discussion">Discussion</h2>
 <p>This was a rather long and technical post. I hope I suceeded in showing how delimited continuations can be put to work to implement a purely-functional version of reverse-mode AD. This is a crucial component in the modern optimization and machine learning toolbox, and I find its functional version to be particularly pleasing.</p>

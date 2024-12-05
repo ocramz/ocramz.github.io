@@ -146,7 +146,7 @@ In the Haskell case, we pass mutable references to dual variables within the `ST
 
 The code computing the gradient is correspondingly succint and maps almost exactly (modulo "lifting" and mutation in `ST`) to its Scala counterpart from [1]:
 
-{% highlight haskell %}
+```haskell
 rad1 :: (Num a, Num b) =>
         (forall s . AD' s a -> AD' s b) -- ^ function to be differentiated
      -> a -- ^ function argument
@@ -163,7 +163,7 @@ rad1 f x = runST $ do
   (D z _) <- readSTRef zr'
   (D _ x_bar) <- readSTRef xr
   pure (z, x_bar)
-{% endhighlight %}
+```
 
 `AD` is just a newtype wrapper around `ContT .. (ST s) .. `, in which the return variables are `STRef`s containing our dual variables; it implements the `Num`, `Fractional`, `Floating` interface and the library provides combinators for implementing new typeclasses as well.
 
