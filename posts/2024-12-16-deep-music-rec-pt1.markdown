@@ -11,7 +11,9 @@ categories: machine-learning
 
 <!-- ![Preference graph](prefs_graph.png "Preference graph") -->
 
-<img src="/images/prefs_graph.png" width=300/>
+Can we learn a music recommendation model from raw audio samples and a preference graph?
+
+<img src="/images/prefs_graph.png" width=400/>
 
 
 
