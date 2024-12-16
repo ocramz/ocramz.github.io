@@ -50,10 +50,10 @@ The embedding model is closely related to the <a href="https://sander.ai/2014/08
 The NN architecture can be broken down as follows:
 
 * the audio samples are first transformed into mel-spectrograms (which bins frequencies according to a human perceptual model);
-* the STFT representation is fed to 3 convolutional stages, i.e. `Conv1d` interleaved with a max-pooling operation (window size 4). Both the convolutions and the pooling are done over the time axis only.
+* the STFT representation is fed to 3 convolutional stages, i.e. `Conv1d` interleaved with a max-pooling operation (window size 4 and 2 respectively). Both the convolutions and the pooling are done over the time axis only.
 * After the last 1D convolution there is an average pooling operation over the whole time axis. The result of this is a vector having size `n_mels` for each sample.
-* Next, there is a `Linear` layer that projects the frequency bins to our embedding space,
-* followed by a $L_2$ normalization step.
+* Next, there are three `Linear` layers interleaved by a `ReLU` nonlinearity. The first linear layer maps from `n_mels` to a larger `dim_hidden`, the middle one is a square matrix and the last one projects the hidden dimension down to our embedding space.
+* The fully-connected layers are then followed by a $L_2$ normalization step.
 
 The main change from the Spotify CNN is the loss function: here I use a <a href="https://pytorch.org/docs/stable/generated/torch.nn.TripletMarginLoss.html">triplet loss</a> based on the <a href="https://en.wikipedia.org/wiki/Cosine_similarity#Cosine_distance">cosine "distance"</a>, defined as:
 
