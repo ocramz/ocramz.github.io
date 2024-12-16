@@ -79,7 +79,7 @@ $$
 
 # Training
 
-<img src="melspec_training_loss.png"/>
+<img src="/images/melspec_training_loss.png" width=400/>
 
 With the following parameters:
 
