@@ -20,7 +20,7 @@ Can we learn a music recommendation model from raw audio samples and a preferenc
 
 # Dataset
 
-
+The music preference graph and audio samples were constructed from public sources.
 
 
 # Model
