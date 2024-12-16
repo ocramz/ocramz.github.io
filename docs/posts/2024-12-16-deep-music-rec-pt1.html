@@ -62,7 +62,12 @@
 <p>In order to limit the size of the dataset I only considered music samples having the largest <a href="https://en.wikipedia.org/wiki/Centrality#Degree_centrality">degree centrality</a>, i.e. the largest numnber of inbound edges (recommendations). In simpler words, these are the most recommended albums in the dataset.</p>
 <p>The music preference graph and audio samples were constructed from public sources.</p>
 <h1 id="model-take-1">Model, take 1</h1>
-<p>I initially experimented with</p>
+<p>I initially experimented with a <a href="https://pytorch-geometric.readthedocs.io/en/latest/generated/torch_geometric.nn.conv.GCNConv.html#torch_geometric.nn.conv.GCNConv">graph convolutional network</a>. The idea behind this was to:</p>
+<ul>
+<li>Embed the most central audio samples</li>
+<li>Diffuse out to all the remaining nodes with the GCN.</li>
+</ul>
+<p>I dropped this approach because it required an awful amount of memory, and is clearly wasteful because we need to begin with random or zero embeddings for all the nodes that don’t have audio attached.</p>
 <h1 id="model-take-2">Model, take 2</h1>
 <p>The embedding model is closely related to the <a href="https://sander.ai/2014/08/05/spotify-cnns.html">“Spotify CNN” introduced here back in 2014.</a></p>
 <p>The NN architecture can be broken down as follows:</p>

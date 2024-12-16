@@ -28,7 +28,12 @@ The music preference graph and audio samples were constructed from public source
 
 # Model, take 1
 
-I initially experimented with 
+I initially experimented with a <a href="https://pytorch-geometric.readthedocs.io/en/latest/generated/torch_geometric.nn.conv.GCNConv.html#torch_geometric.nn.conv.GCNConv">graph convolutional network</a>. The idea behind this was to:
+
+* Embed the most central audio samples
+* Diffuse out to all the remaining nodes with the GCN.
+
+I dropped this approach because it required an awful amount of memory, and is clearly wasteful because we need to begin with random or zero embeddings for all the nodes that don't have audio attached.
 
 # Model, take 2
 
