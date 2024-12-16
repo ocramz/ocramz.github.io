@@ -39,7 +39,7 @@ There are a number of preprocessing steps between the graph and audio data and t
 * Download top $k$ albums by in-degree centrality: `SELECT album_url, nodes.album_id FROM nodes INNER JOIN nodes_degrees ON nodes.album_id = nodes_degrees.album_id WHERE degree > {degree_min} ORDER BY degree DESC LIMIT {k}`. So far we used $k = 50$.
 * For each track in each album: split the audio in 30-seconds chunks, and assign it to either the training or test or validation partition.
 * Compute the preference graph distances for each album
-* 
+* For each dataset partition and audio chunk, sample a few other chunks from the graph distance map ("isochrone"?).
 
 The music preference graph and audio samples were constructed from public sources.
 
