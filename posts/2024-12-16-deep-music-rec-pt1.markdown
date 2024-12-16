@@ -19,11 +19,11 @@ This project started from this question, and the curiosity to combine together a
 
 # Technical summary
 
-This post describes an audio embedding model, trained to produce embeddings that are close if the graph distances of their respective albums are small. In other words, I used the preference graph as supervision labels for the audio embeddings: in a contrastive setting, we consider an "anchor" sample, a positive and a negative one, which are here distinguished by their graph distance to the anchor.
+This post describes an audio embedding model, trained to produce embeddings that are close together if the graph distances of their respective albums are small. In other words, I used the preference graph as supervision labels for the audio embeddings: in a contrastive setting, we consider an "anchor" sample, a positive and a negative one, which are here distinguished by their graph distance to the anchor.
 
 It becomes a (context-free, static, non-personalized) recommendation model by:
 
-* embedding a music collection
+* embedding a music collection with the trained model
 * storing it into an index (here I used SQLite)
 * embedding a query (a new music track) with the same model and looking up the most similar ones from the index.
 
@@ -80,7 +80,7 @@ $$
 
 # Training
 
-<img src="/images/melspec_training_loss.png" width=400/>
+<img src="/images/melspec_training_loss.png" width=500/>
 
 With the following parameters:
 

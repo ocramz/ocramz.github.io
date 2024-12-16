@@ -58,10 +58,10 @@
 <p><img src="../images/prefs_graph.png" width="400/"></p>
 <p>This project started from this question, and the curiosity to combine together a few topics I’ve been curious about recently: audio processing with deep neural networks, contrastive learning and graph data.</p>
 <h1 id="technical-summary">Technical summary</h1>
-<p>This post describes an audio embedding model, trained to produce embeddings that are close if the graph distances of their respective albums are small. In other words, I used the preference graph as supervision labels for the audio embeddings: in a contrastive setting, we consider an “anchor” sample, a positive and a negative one, which are here distinguished by their graph distance to the anchor.</p>
+<p>This post describes an audio embedding model, trained to produce embeddings that are close together if the graph distances of their respective albums are small. In other words, I used the preference graph as supervision labels for the audio embeddings: in a contrastive setting, we consider an “anchor” sample, a positive and a negative one, which are here distinguished by their graph distance to the anchor.</p>
 <p>It becomes a (context-free, static, non-personalized) recommendation model by:</p>
 <ul>
-<li>embedding a music collection</li>
+<li>embedding a music collection with the trained model</li>
 <li>storing it into an index (here I used SQLite)</li>
 <li>embedding a query (a new music track) with the same model and looking up the most similar ones from the index.</li>
 </ul>
@@ -105,7 +105,7 @@ d(x_1, x_2) := \sqrt{2 ( 1 - (x_1 \cdot x_2)) }
 $$</span></p>
 <p>(NB: the definition above assumes unit-norm vectors <span class="math inline"><em>x</em><sub>1</sub></span> and <span class="math inline"><em>x</em><sub>2</sub></span>).</p>
 <h1 id="training">Training</h1>
-<p><img src="../images/melspec_training_loss.png" width="400/"></p>
+<p><img src="../images/melspec_training_loss.png" width="500/"></p>
 <p>With the following parameters:</p>
 <ul>
 <li>Adam optimizer</li>
