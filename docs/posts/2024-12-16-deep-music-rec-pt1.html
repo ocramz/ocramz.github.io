@@ -68,7 +68,7 @@
 </ul>
 <p>The main change from the Spotify CNN is the loss function: here I use a <a href="https://pytorch.org/docs/stable/generated/torch.nn.TripletMarginLoss.html">triplet loss</a> based on the <a href="https://en.wikipedia.org/wiki/Cosine_similarity#Cosine_distance">cosine “distance”</a>:</p>
 <p><span class="math display">$$
-L(x_1, x_2) = \sqrt{2 ( 1 - (x_1 \cdot x_2)) }
+d(x_1, x_2) := \sqrt{2 ( 1 - (x_1 \cdot x_2)) }
 $$</span></p>
     </section>
 </article>
