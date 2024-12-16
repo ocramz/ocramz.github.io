@@ -66,7 +66,7 @@
 <li>embedding a query (a new music track) with the same model and looking up the most similar ones from the index.</li>
 </ul>
 <h1 id="dataset">Dataset</h1>
-<p>In order to limit the size of the dataset I only considered music samples having the largest <a href="https://en.wikipedia.org/wiki/Centrality#Degree_centrality">degree centrality</a>, i.e. the largest numnber of inbound edges (recommendations). In simpler words, these are the most recommended albums in the dataset.</p>
+<p>In order to limit the size of the dataset I only considered music samples having the largest <a href="https://en.wikipedia.org/wiki/Centrality#Degree_centrality">in-degree centrality</a>, i.e. the largest number of inbound edges. In simpler words, these are the most recommended albums in the dataset.</p>
 <p>The music preference graph and audio samples were constructed from public sources.</p>
 <h1 id="model-take-1">Model, take 1</h1>
 <p>I initially experimented with a <a href="https://pytorch-geometric.readthedocs.io/en/latest/generated/torch_geometric.nn.conv.GCNConv.html#torch_geometric.nn.conv.GCNConv">graph convolutional network</a>. The idea behind this was to:</p>
