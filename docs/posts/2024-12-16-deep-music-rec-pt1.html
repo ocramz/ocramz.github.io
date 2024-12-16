@@ -66,7 +66,7 @@
 <li>the STFT representation is fed to two convolutional stages, i.e. <code>Conv1d</code> followed by a <code>ReLU</code> nonlinearity.</li>
 <li>lastly, there is a linear layer that projects to our embedding space.</li>
 </ul>
-<p>The main change from the Spotify CNN is the loss function: here I use a <a href="https://pytorch.org/docs/stable/generated/torch.nn.TripletMarginLoss.html">triplet loss</a> based on the cosine distance:</p>
+<p>The main change from the Spotify CNN is the loss function: here I use a <a href="https://pytorch.org/docs/stable/generated/torch.nn.TripletMarginLoss.html">triplet loss</a> based on the <a href="https://en.wikipedia.org/wiki/Cosine_similarity#Cosine_distance">cosine “distance”</a>:</p>
 <p><span class="math display">$$
 L(x_1, x_2) = \sqrt{2 ( 1 - (x_1 \cdot x_2)) }
 $$</span></p>

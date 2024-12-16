@@ -33,7 +33,7 @@ The NN architecture can be broken down into these blocks:
 * the STFT representation is fed to two convolutional stages, i.e. `Conv1d` followed by a `ReLU` nonlinearity.
 * lastly, there is a linear layer that projects to our embedding space.
 
-The main change from the Spotify CNN is the loss function: here I use a <a href="https://pytorch.org/docs/stable/generated/torch.nn.TripletMarginLoss.html">triplet loss</a> based on the cosine distance:
+The main change from the Spotify CNN is the loss function: here I use a <a href="https://pytorch.org/docs/stable/generated/torch.nn.TripletMarginLoss.html">triplet loss</a> based on the <a href="https://en.wikipedia.org/wiki/Cosine_similarity#Cosine_distance">cosine "distance"</a>:
 
 $$
 L(x_1, x_2) = \sqrt{2 ( 1 - (x_1 \cdot x_2)) }
