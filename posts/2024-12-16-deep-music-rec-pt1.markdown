@@ -17,9 +17,17 @@ Can we learn a music recommendation model from raw audio samples and a preferenc
 
 This project started from this question, and the curiosity to combine together a few topics I've been curious about recently: audio processing, contrastive learning and graphs.
 
-# Dataset
+# Technical summary
 
-I used the preference graph as supervision labels for the audio embeddings: in a contrastive setting, we consider an "anchor" sample, a positive and a negative one, which are here distinguished by their graph distance.
+This is an audio embedding model, trained to produce embeddings that are close if their respective graph distances are small. In other words, I used the preference graph as supervision labels for the audio embeddings: in a contrastive setting, we consider an "anchor" sample, a positive and a negative one, which are here distinguished by their graph distance.
+
+It becomes a (context-free, static, non-personalized) recommendation model by:
+
+* embedding a music collection
+* storing it into an index (here I used SQLite)
+* embedding a query (a new music track) with the same model and looking up the most similar ones from the index.
+
+# Dataset
 
 In order to limit the size of the dataset I only considered music samples having the largest <a href="https://en.wikipedia.org/wiki/Centrality#Degree_centrality">degree centrality</a>, i.e. the largest numnber of inbound edges (recommendations). In simpler words, these are the most recommended albums in the dataset.
 
@@ -31,9 +39,9 @@ The music preference graph and audio samples were constructed from public source
 I initially experimented with a <a href="https://pytorch-geometric.readthedocs.io/en/latest/generated/torch_geometric.nn.conv.GCNConv.html#torch_geometric.nn.conv.GCNConv">graph convolutional network</a>. The idea behind this was to:
 
 * Embed the most central audio samples
-* Diffuse out to all the remaining nodes with the GCN.
+* Diffuse the embeddings out to all the remaining nodes with the GCN.
 
-I dropped this approach because it required an awful amount of memory, and is clearly wasteful because we need to begin with random or zero embeddings for all the nodes that don't have audio attached.
+I dropped this approach because even with 1 or 2 GCN layers it required an awful amount of memory, and is clearly wasteful because we need to begin with random or zero embeddings for all the nodes that don't have audio attached.
 
 # Model, take 2
 
