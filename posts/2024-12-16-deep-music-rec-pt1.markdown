@@ -18,5 +18,17 @@ Can we learn a music recommendation model from raw audio samples and a preferenc
 
 
 
-# Building the dataset
+# Dataset
 
+
+
+
+# Model
+
+The embedding model is a variation of the <a href="https://sander.ai/2014/08/05/spotify-cnns.html">"Spotify CNN" introduced here back in 2014.</a>
+
+The NN architecture can be broken down into these blocks:
+
+* the audio samples are first transformed into mel-spectrograms (which bins frequencies according to a human perceptual model)
+* the STFT representation is fed to two convolutional stages, i.e. `Conv1d` followed by a `ReLU` nonlinearity.
+* lastly, there is a linear layer that projects to our embedding space.
