@@ -56,7 +56,7 @@
 <!-- ![Preference graph](prefs_graph.png "Preference graph") -->
 <p>Can we learn a music recommendation model from raw audio samples and a preference graph?</p>
 <p><img src="../images/prefs_graph.png" width="400/"></p>
-<p>This project started from this question, and the curiosity to combine together a few topics I’ve been curious about recently: audio processing, contrastive learning and graphs.</p>
+<p>This project started from this question, and the curiosity to combine together a few topics I’ve been curious about recently: audio processing with deep neural networks, contrastive learning and graphs.</p>
 <h1 id="technical-summary">Technical summary</h1>
 <p>This is an audio embedding model, trained to produce embeddings that are close if their respective graph distances are small. In other words, I used the preference graph as supervision labels for the audio embeddings: in a contrastive setting, we consider an “anchor” sample, a positive and a negative one, which are here distinguished by their graph distance to the anchor.</p>
 <p>It becomes a (context-free, static, non-personalized) recommendation model by:</p>
@@ -73,8 +73,9 @@
 <li>Compute the graph in-degrees from the edges: <code>INSERT OR REPLACE INTO nodes_degrees SELECT to_node, count(to_node) FROM edges GROUP BY to_node</code></li>
 <li>Download top <span class="math inline"><em>k</em></span> albums by in-degree centrality: <code>SELECT album_url, nodes.album_id FROM nodes INNER JOIN nodes_degrees ON nodes.album_id = nodes_degrees.album_id WHERE degree &gt; {degree_min} ORDER BY degree DESC LIMIT {k}</code>. So far we used <span class="math inline"><em>d</em><em>e</em><em>g</em><em>r</em><em>e</em><em>e</em> = 10</span> and <span class="math inline"><em>k</em> = 50</span>.</li>
 <li>For each track in each album: split the audio in 30-seconds chunks, and assign it to either the training or test or validation partition. It’s crucial to fix the chunk length, as PyTorch works with data batches, and each batch is a (anchor, positive, negative)-tuple of <span class="math inline"><em>B</em> × <em>T</em></span> tensors (batch size, time steps).</li>
-<li>Compute the preference graph distances for each album</li>
-<li>For each dataset partition and audio chunk, sample a few other chunks from the graph distance map (<a href="https://en.wikipedia.org/wiki/Isochrone_map">“isochrone”</a>?).</li>
+<li>Compute the preference graph distances for each album, up to distance <span class="math inline"><em>d</em><sub><em>m</em><em>a</em><em>x</em></sub></span>. So far we used <span class="math inline"><em>d</em><sub><em>m</em><em>a</em><em>x</em></sub> = 4</span></li>
+<li>For each dataset partition and audio chunk, sample a few other chunks from the graph distance map (<a href="https://en.wikipedia.org/wiki/Isochrone_map">“isochrone”</a>?), among the closest and farthest from the anchor. The IDs for these will be stored in a triplet metadata table</li>
+<li>The PyTorch <code>Dataset</code> looks up a triplet given a row index, then using that it retrieves the audio chunks (which are stored in SQLite as <code>np.ndarray</code>s).</li>
 </ul>
 <p>The music preference graph and audio samples were constructed from public sources.</p>
 <h1 id="model-take-1">Model, take 1</h1>
