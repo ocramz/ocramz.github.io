@@ -58,7 +58,7 @@
 <p><img src="../images/prefs_graph.png" width="400/"></p>
 <p>This project started from this question, and the curiosity to combine together a few topics I’ve been curious about recently: audio processing, contrastive learning and graphs.</p>
 <h1 id="technical-summary">Technical summary</h1>
-<p>This is an audio embedding model, trained to produce embeddings that are close if their respective graph distances are small. In other words, I used the preference graph as supervision labels for the audio embeddings: in a contrastive setting, we consider an “anchor” sample, a positive and a negative one, which are here distinguished by their graph distance.</p>
+<p>This is an audio embedding model, trained to produce embeddings that are close if their respective graph distances are small. In other words, I used the preference graph as supervision labels for the audio embeddings: in a contrastive setting, we consider an “anchor” sample, a positive and a negative one, which are here distinguished by their graph distance to the anchor.</p>
 <p>It becomes a (context-free, static, non-personalized) recommendation model by:</p>
 <ul>
 <li>embedding a music collection</li>
@@ -103,6 +103,14 @@
 d(x_1, x_2) := \sqrt{2 ( 1 - (x_1 \cdot x_2)) }
 $$</span></p>
 <p>(NB: the definition above assumes unit-norm vectors <span class="math inline"><em>x</em><sub>1</sub></span> and <span class="math inline"><em>x</em><sub>2</sub></span>).</p>
+<h1 id="training">Training</h1>
+<p><img src="melspec_training_loss.png" /></p>
+<p>With the following parameters:</p>
+<ul>
+<li>Adam optimizer</li>
+<li>base learning rate : 0.005</li>
+<li>batch size = 16</li>
+</ul>
     </section>
 </article>
 

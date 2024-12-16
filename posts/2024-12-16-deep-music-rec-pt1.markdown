@@ -19,7 +19,7 @@ This project started from this question, and the curiosity to combine together a
 
 # Technical summary
 
-This is an audio embedding model, trained to produce embeddings that are close if their respective graph distances are small. In other words, I used the preference graph as supervision labels for the audio embeddings: in a contrastive setting, we consider an "anchor" sample, a positive and a negative one, which are here distinguished by their graph distance.
+This is an audio embedding model, trained to produce embeddings that are close if their respective graph distances are small. In other words, I used the preference graph as supervision labels for the audio embeddings: in a contrastive setting, we consider an "anchor" sample, a positive and a negative one, which are here distinguished by their graph distance to the anchor.
 
 It becomes a (context-free, static, non-personalized) recommendation model by:
 
@@ -75,3 +75,14 @@ d(x_1, x_2) := \sqrt{2 ( 1 - (x_1 \cdot x_2)) }
 $$
 
 (NB: the definition above assumes unit-norm vectors $x_1$ and $x_2$).
+
+
+# Training
+
+<img src="melspec_training_loss.png"/>
+
+With the following parameters:
+
+* Adam optimizer
+* base learning rate : 0.005
+* batch size = 16
