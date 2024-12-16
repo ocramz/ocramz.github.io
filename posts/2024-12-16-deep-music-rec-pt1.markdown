@@ -9,7 +9,9 @@ categories: machine-learning
 # Introduction 
 
 
-![Preference graph](prefs_graph.png "Preference graph")
+<!-- ![Preference graph](prefs_graph.png "Preference graph") -->
+
+<img src="/images/prefs_graph.png"/>
 
 
 
