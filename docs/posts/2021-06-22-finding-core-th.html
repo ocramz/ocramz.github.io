@@ -52,7 +52,9 @@
         June 22, 2021
     </section>
     <section>
-        <h2 id="introduction">Introduction</h2>
+        <h2 id="disclaimer">2024 disclaimer</h2>
+<p>It’s been a while since I used Haskell at this depth, and looking at this wall of deeply technical lore I must admit I only follow like 50% of it. This said, it’s a pretty cool trick if you are interested in GHC internals!</p>
+<h2 id="introduction">Introduction</h2>
 <p><a href="https://www.haskell.org/ghc/">GHC</a> is a wonderful <del>compiler</del> platform for writing compilers and languages. In addition to Haskell offering convenient syntactic abstractions for creating domain-specific languages, the language itself and the internals of the compiler can be extended in many ways, which let users come up with mind-bending innovations in <a href="http://conal.net/papers/compiling-to-categories/compiling-to-categories.pdf">scientific computing</a>, <a href="https://hackage.haskell.org/package/inspection-testing">testing</a> and <a href="https://haskellwingman.dev/">code editing</a>, among many other examples.</p>
 <p>The compiler offers a <a href="https://downloads.haskell.org/ghc/latest/docs/html/users_guide/extending_ghc.html#compiler-plugins">plugin system</a> that lets users customize various aspects of the syntax analysis, typechecking and compilation phases, without having to rebuild the compiler itself.</p>
 <p>While writing a GHC plugin that lets the user analyze and transform the Core representation of certain Haskell expressions, I found myself in need of a specific bit of machinery: <em>how can the user tell the compiler which expression to look for?</em> Moreover, how to map the names of user-defined terms to the internal representation used by the compiler?</p>

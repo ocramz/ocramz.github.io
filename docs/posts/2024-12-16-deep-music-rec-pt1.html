@@ -73,6 +73,8 @@
 <li>Compute the graph in-degrees from the edges: <code>INSERT OR REPLACE INTO nodes_degrees SELECT to_node, count(to_node) FROM edges GROUP BY to_node</code></li>
 <li>Download top <span class="math inline"><em>k</em></span> albums by in-degree centrality: <code>SELECT album_url, nodes.album_id FROM nodes INNER JOIN nodes_degrees ON nodes.album_id = nodes_degrees.album_id WHERE degree &gt; {degree_min} ORDER BY degree DESC LIMIT {k}</code>. So far we used <span class="math inline"><em>k</em> = 50</span>.</li>
 <li>For each track in each album: split the audio in 30-seconds chunks, and assign it to either the training or test or validation partition.</li>
+<li>Compute the preference graph distances for each album</li>
+<li></li>
 </ul>
 <p>The music preference graph and audio samples were constructed from public sources.</p>
 <h1 id="model-take-1">Model, take 1</h1>
@@ -86,11 +88,11 @@
 <p>The embedding model is closely related to the <a href="https://sander.ai/2014/08/05/spotify-cnns.html">“Spotify CNN” introduced here back in 2014.</a></p>
 <p>The NN architecture can be broken down as follows:</p>
 <ul>
-<li>the audio samples are first transformed into mel-spectrograms (which bins frequencies according to a human perceptual model);</li>
-<li>the STFT representation is fed to 3 convolutional stages, i.e. <code>Conv1d</code> interleaved with a max-pooling operation (window size 4 and 2 respectively). Both the convolutions and the pooling are done over the time axis only.</li>
-<li>After the last 1D convolution there is an average pooling operation over the whole time axis. The result of this is a vector having size <code>n_mels</code> for each sample.</li>
-<li>Next, there are three <code>Linear</code> layers interleaved by a <code>ReLU</code> nonlinearity. The first linear layer maps from <code>n_mels</code> to a larger <code>dim_hidden</code>, the middle one is a square matrix and the last one projects the hidden dimension down to our embedding space.</li>
-<li>The fully-connected layers are then followed by a <span class="math inline"><em>L</em><sub>2</sub></span> normalization step.</li>
+<li>the audio samples are first transformed into <b>mel-spectrograms</b> (which bins frequencies according to a human perceptual model);</li>
+<li>the STFT representation is fed to 3 <b>convolutional stages</b>, i.e. <code>Conv1d</code> interleaved with a max-pooling operation (window size 4 and 2 respectively). Both the convolutions and the pooling are done over the time axis only.</li>
+<li>After the last 1D convolution there is an <b>average pooling</b> operation over the whole time axis. The result of this is a vector having size <code>n_mels</code> for each sample.</li>
+<li>Next, there are three <b>linear layers</b> interleaved by a <code>ReLU</code> nonlinearity. The first linear layer maps from <code>n_mels</code> to a larger <code>dim_hidden</code>, the middle one is a square matrix and the last one projects the hidden dimension down to our embedding space.</li>
+<li>The fully-connected layers are then followed by a <span class="math inline"><em>L</em><sub>2</sub></span> <b>normalization</b> step.</li>
 </ul>
 <p>The main changes from the Spotify CNN are:</p>
 <ul>

@@ -38,6 +38,8 @@ There are a number of preprocessing steps between the graph and audio data and t
 * Compute the graph in-degrees from the edges: `INSERT OR REPLACE INTO nodes_degrees SELECT to_node, count(to_node) FROM edges GROUP BY to_node`
 * Download top $k$ albums by in-degree centrality: `SELECT album_url, nodes.album_id FROM nodes INNER JOIN nodes_degrees ON nodes.album_id = nodes_degrees.album_id WHERE degree > {degree_min} ORDER BY degree DESC LIMIT {k}`. So far we used $k = 50$.
 * For each track in each album: split the audio in 30-seconds chunks, and assign it to either the training or test or validation partition.
+* Compute the preference graph distances for each album
+* 
 
 The music preference graph and audio samples were constructed from public sources.
 
@@ -57,11 +59,11 @@ The embedding model is closely related to the <a href="https://sander.ai/2014/08
 
 The NN architecture can be broken down as follows:
 
-* the audio samples are first transformed into mel-spectrograms (which bins frequencies according to a human perceptual model);
-* the STFT representation is fed to 3 convolutional stages, i.e. `Conv1d` interleaved with a max-pooling operation (window size 4 and 2 respectively). Both the convolutions and the pooling are done over the time axis only.
-* After the last 1D convolution there is an average pooling operation over the whole time axis. The result of this is a vector having size `n_mels` for each sample.
-* Next, there are three `Linear` layers interleaved by a `ReLU` nonlinearity. The first linear layer maps from `n_mels` to a larger `dim_hidden`, the middle one is a square matrix and the last one projects the hidden dimension down to our embedding space.
-* The fully-connected layers are then followed by a $L_2$ normalization step.
+* the audio samples are first transformed into <b>mel-spectrograms</b> (which bins frequencies according to a human perceptual model);
+* the STFT representation is fed to 3 <b>convolutional stages</b>, i.e. `Conv1d` interleaved with a max-pooling operation (window size 4 and 2 respectively). Both the convolutions and the pooling are done over the time axis only.
+* After the last 1D convolution there is an <b>average pooling</b> operation over the whole time axis. The result of this is a vector having size `n_mels` for each sample.
+* Next, there are three <b>linear layers</b> interleaved by a `ReLU` nonlinearity. The first linear layer maps from `n_mels` to a larger `dim_hidden`, the middle one is a square matrix and the last one projects the hidden dimension down to our embedding space.
+* The fully-connected layers are then followed by a $L_2$ <b>normalization</b> step.
 
 The main changes from the Spotify CNN are: 
 

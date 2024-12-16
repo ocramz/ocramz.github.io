@@ -5,6 +5,11 @@ date: 2021-06-22
 categories: Haskell GHC metaprogramming
 ---
 
+## 2024 disclaimer
+
+It's been a while since I used Haskell at this depth, and looking at this wall of deeply technical lore I must admit I only follow like 50% of it. This said, it's a pretty cool trick if you are interested in GHC internals!
+
+
 ## Introduction
 
 [GHC](https://www.haskell.org/ghc/) is a wonderful ~~compiler~~ platform for writing compilers and languages. In addition to Haskell offering convenient syntactic abstractions for creating domain-specific languages, the language itself and the internals of the compiler can be extended in many ways, which let users come up with mind-bending innovations in [scientific computing](http://conal.net/papers/compiling-to-categories/compiling-to-categories.pdf), [testing](https://hackage.haskell.org/package/inspection-testing) and [code editing](https://haskellwingman.dev/), among many other examples.
