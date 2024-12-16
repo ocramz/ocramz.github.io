@@ -37,7 +37,7 @@ There are a number of preprocessing steps, and the intermediate results are stor
 
 * Compute the graph in-degrees from the edges: `INSERT OR REPLACE INTO nodes_degrees SELECT to_node, count(to_node) FROM edges GROUP BY to_node`
 * Download top $k$ albums by in-degree centrality: `SELECT album_url, nodes.album_id FROM nodes INNER JOIN nodes_degrees ON nodes.album_id = nodes_degrees.album_id WHERE degree > {degree_min} ORDER BY degree DESC LIMIT {k}`. So far we used $k = 50$.
-* For each track in each album: split the audio in 30-seconds chunks, and assign it to either the training or test or validation partition. It's crucial to fix the chunk length, as PyTorch works with data batches, and each batch is a (anchor, positive, negative)-tuple of $B \times T \times F$ tensors (batch size, time steps, frequency bins).
+* For each track in each album: split the audio in 30-seconds chunks, and assign it to either the training or test or validation partition. It's crucial to fix the chunk length, as PyTorch works with data batches, and each batch is a (anchor, positive, negative)-tuple of $B \times T$ tensors (batch size, time steps).
 * Compute the preference graph distances for each album
 * For each dataset partition and audio chunk, sample a few other chunks from the graph distance map (<a href="https://en.wikipedia.org/wiki/Isochrone_map">"isochrone"</a>?).
 
