@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Deep music recommendation - pt. 1
+title: Building a content-based music recommendation system - pt. 1
 date: 2024-12-16
 categories: machine-learning
 ---
