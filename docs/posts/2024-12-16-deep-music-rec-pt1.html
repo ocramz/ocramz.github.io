@@ -74,7 +74,7 @@
 <li>Download top <span class="math inline"><em>k</em></span> albums by in-degree centrality: <code>SELECT album_url, nodes.album_id FROM nodes INNER JOIN nodes_degrees ON nodes.album_id = nodes_degrees.album_id WHERE degree &gt; {degree_min} ORDER BY degree DESC LIMIT {k}</code>. So far we used <span class="math inline"><em>k</em> = 50</span>.</li>
 <li>For each track in each album: split the audio in 30-seconds chunks, and assign it to either the training or test or validation partition.</li>
 <li>Compute the preference graph distances for each album</li>
-<li>For each dataset partition and audio chunk, sample a few other chunks from the graph distance map (“isochrone”?).</li>
+<li>For each dataset partition and audio chunk, sample a few other chunks from the graph distance map (<a href="https://en.wikipedia.org/wiki/Isochrone_map">“isochrone”</a>?).</li>
 </ul>
 <p>The music preference graph and audio samples were constructed from public sources.</p>
 <h1 id="model-take-1">Model, take 1</h1>
