@@ -33,6 +33,11 @@ In order to limit the size of the dataset I only considered music samples having
 
 Each graph vertex corresponds to a music /album/ which contains one or more tracks.
 
+There are a number of preprocessing steps between the graph and audio data and the `LightningDataModule` (and the intermediate results are stored in SQLite, indexed by album, track and chunk ID). For the sake of brevity let's summarize the preprocessing:
+
+* Compute the graph in-degrees from the edges: `INSERT OR REPLACE INTO nodes_degrees SELECT to_node, count(to_node) FROM edges GROUP BY to_node`
+* 
+
 The music preference graph and audio samples were constructed from public sources.
 
 
