@@ -36,7 +36,8 @@ Each graph vertex corresponds to a music /album/ which contains one or more trac
 There are a number of preprocessing steps between the graph and audio data and the `LightningDataModule` (and the intermediate results are stored in SQLite, indexed by album, track and chunk ID). For the sake of brevity let's summarize the preprocessing:
 
 * Compute the graph in-degrees from the edges: `INSERT OR REPLACE INTO nodes_degrees SELECT to_node, count(to_node) FROM edges GROUP BY to_node`
-* Download top $k$ albums by in-degree centrality: `SELECT album_url, nodes.album_id FROM nodes INNER JOIN nodes_degrees ON nodes.album_id = nodes_degrees.album_id WHERE degree > {degree_min} ORDER BY degree DESC LIMIT {k}`
+* Download top $k$ albums by in-degree centrality: `SELECT album_url, nodes.album_id FROM nodes INNER JOIN nodes_degrees ON nodes.album_id = nodes_degrees.album_id WHERE degree > {degree_min} ORDER BY degree DESC LIMIT {k}`. So far we used $k = 50$.
+* For each track in each album: split the audio in 30-seconds chunks, and assign it to either the training or test or validation partition.
 
 The music preference graph and audio samples were constructed from public sources.
 
