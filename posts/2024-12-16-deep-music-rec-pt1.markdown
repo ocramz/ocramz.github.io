@@ -11,7 +11,7 @@ categories: machine-learning
 
 <!-- ![Preference graph](prefs_graph.png "Preference graph") -->
 
-<img src="/images/prefs_graph.png"/>
+<img src="/images/prefs_graph.png" width=300/>
 
 
 
