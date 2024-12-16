@@ -55,7 +55,10 @@ The NN architecture can be broken down as follows:
 * Next, there are three `Linear` layers interleaved by a `ReLU` nonlinearity. The first linear layer maps from `n_mels` to a larger `dim_hidden`, the middle one is a square matrix and the last one projects the hidden dimension down to our embedding space.
 * The fully-connected layers are then followed by a $L_2$ normalization step.
 
-The main change from the Spotify CNN is the loss function: here I use a <a href="https://pytorch.org/docs/stable/generated/torch.nn.TripletMarginLoss.html">triplet loss</a> based on the <a href="https://en.wikipedia.org/wiki/Cosine_similarity#Cosine_distance">cosine "distance"</a>, defined as:
+The main changes from the Spotify CNN are: 
+
+* I don't use 3 different time pooling functions but only an average pooling.
+* The loss function: here I use a <a href="https://pytorch.org/docs/stable/generated/torch.nn.TripletMarginLoss.html">triplet loss</a> based on the <a href="https://en.wikipedia.org/wiki/Cosine_similarity#Cosine_distance">cosine "distance"</a>, defined as:
 
 $$
 d(x_1, x_2) := \sqrt{2 ( 1 - (x_1 \cdot x_2)) }

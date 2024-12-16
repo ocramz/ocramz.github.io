@@ -85,7 +85,11 @@
 <li>Next, there are three <code>Linear</code> layers interleaved by a <code>ReLU</code> nonlinearity. The first linear layer maps from <code>n_mels</code> to a larger <code>dim_hidden</code>, the middle one is a square matrix and the last one projects the hidden dimension down to our embedding space.</li>
 <li>The fully-connected layers are then followed by a <span class="math inline"><em>L</em><sub>2</sub></span> normalization step.</li>
 </ul>
-<p>The main change from the Spotify CNN is the loss function: here I use a <a href="https://pytorch.org/docs/stable/generated/torch.nn.TripletMarginLoss.html">triplet loss</a> based on the <a href="https://en.wikipedia.org/wiki/Cosine_similarity#Cosine_distance">cosine “distance”</a>, defined as:</p>
+<p>The main changes from the Spotify CNN are:</p>
+<ul>
+<li>I don’t use 3 different time pooling functions but only an average pooling.</li>
+<li>The loss function: here I use a <a href="https://pytorch.org/docs/stable/generated/torch.nn.TripletMarginLoss.html">triplet loss</a> based on the <a href="https://en.wikipedia.org/wiki/Cosine_similarity#Cosine_distance">cosine “distance”</a>, defined as:</li>
+</ul>
 <p><span class="math display">$$
 d(x_1, x_2) := \sqrt{2 ( 1 - (x_1 \cdot x_2)) }
 $$</span></p>
