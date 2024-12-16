@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description" content="Marco Zocca" /> 
+        <meta name="author" content="Marco Zocca" />
+        <title>Marco Zocca - Deep music recommendation - pt. 1</title>
+
+        <link rel="stylesheet" href="../css/default.css" />
+
+        <link rel="stylesheet" href="../css/highlight_default.min.css">
+        <script src="../js/highlight.min.js"></script>
+        <script src="../js/haskell.min.js"></script>
+        <script>hljs.highlightAll();</script>
+
+        <script id="MathJax-script" async src="../js/mathjax.min.js"></script>
+    </head>
+    <body>
+
+
+        <div class="container content">
+
+        <header class="masthead">
+            <div class="row">
+              <div class="col-sm-4">
+                    <h2 class="masthead-title">
+                      <a href="../index.html" title="Home">Marco Zocca</a>
+                </h2>
+              </div>
+              <div class="col-sm-8">
+                    <h4 class="masthead-title" style="text-align: right;">
+                      <a href="../about.html" title="About">About</a>
+                  &nbsp;
+                      <a href="../research.html" title="Research">Research</a>
+                  &nbsp;
+                      <a href="../oss.html" title="Open source">Open Source</a>
+                      <!-- <a class='icon-github-squared' href='/oss.html' title='Open source'>Open Source</a> -->
+                  &nbsp;
+                      <a href="../archive.html">Posts</a>
+                </h4>
+              </div>
+            </div>
+              </header>
+
+
+        <main role="main">
+            <h1>Deep music recommendation - pt. 1</h1>
+            <article class="post">
+    <section class="header">
+        December 16, 2024
+    </section>
+    <section>
+        <h1 id="introduction">Introduction</h1>
+<!-- ![Preference graph](prefs_graph.png "Preference graph") -->
+<p>Can we learn a music recommendation model from raw audio samples and a preference graph?</p>
+<p><img src="../images/prefs_graph.png" width="400/"></p>
+<h1 id="dataset">Dataset</h1>
+<p>The music preference graph and audio samples were constructed from public sources.</p>
+<h1 id="model">Model</h1>
+<p>The embedding model is a variation of the <a href="https://sander.ai/2014/08/05/spotify-cnns.html">“Spotify CNN” introduced here back in 2014.</a></p>
+<p>The NN architecture can be broken down into these blocks:</p>
+<ul>
+<li>the audio samples are first transformed into mel-spectrograms (which bins frequencies according to a human perceptual model)</li>
+<li>the STFT representation is fed to two convolutional stages, i.e. <code>Conv1d</code> followed by a <code>ReLU</code> nonlinearity.</li>
+<li>lastly, there is a linear layer that projects to our embedding space.</li>
+</ul>
+    </section>
+</article>
+
+        </main>
+
+        <footer>
+        </footer>
+
+        </div>
+
+
+    </body>
+</html>
