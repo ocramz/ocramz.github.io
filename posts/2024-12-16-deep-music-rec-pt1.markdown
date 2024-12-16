@@ -15,17 +15,24 @@ Can we learn a music recommendation model from raw audio samples and a preferenc
 
 <img src="/images/prefs_graph.png" width=400/>
 
-
-
+This project started from this question, and the curiosity to combine together a few topics I've been curious about recently: audio processing, contrastive learning and graphs.
 
 # Dataset
+
+I used the preference graph as supervision labels for the audio embeddings: in a contrastive setting, we consider an "anchor" sample, a positive and a negative one, which are here distinguished by their graph distance.
+
+In order to limit the size of the dataset I only considered music samples having the largest <a href="https://en.wikipedia.org/wiki/Centrality#Degree_centrality">degree centrality</a>, i.e. the largest numnber of inbound edges (recommendations). In simpler words, these are the most recommended albums in the dataset.
 
 The music preference graph and audio samples were constructed from public sources.
 
 
-# Model
+# Model, take 1
 
-The embedding model is a variation of the <a href="https://sander.ai/2014/08/05/spotify-cnns.html">"Spotify CNN" introduced here back in 2014.</a>
+I initially experimented with 
+
+# Model, take 2
+
+The embedding model is closely related to the <a href="https://sander.ai/2014/08/05/spotify-cnns.html">"Spotify CNN" introduced here back in 2014.</a>
 
 The NN architecture can be broken down as follows:
 
