@@ -31,6 +31,8 @@ It becomes a (context-free, static, non-personalized) recommendation model by:
 
 In order to limit the size of the dataset I only considered music samples having the largest <a href="https://en.wikipedia.org/wiki/Centrality#Degree_centrality">in-degree centrality</a>, i.e. the largest number of inbound edges. In simpler words, these are the most recommended albums in the dataset.
 
+Each graph vertex corresponds to a music /album/ which contains one or more tracks.
+
 The music preference graph and audio samples were constructed from public sources.
 
 
