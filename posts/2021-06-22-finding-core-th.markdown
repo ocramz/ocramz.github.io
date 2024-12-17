@@ -5,10 +5,11 @@ date: 2021-06-22
 categories: Haskell GHC metaprogramming
 ---
 
-## 2024 disclaimer
+## 2024 Disclaimer
 
 It's been a while since I used Haskell at this depth, and looking at this wall of deeply technical lore I must admit I only follow like 50% of it. This said, it's a pretty cool trick if you are interested in GHC internals!
 
+<hr>
 
 ## Introduction
 
