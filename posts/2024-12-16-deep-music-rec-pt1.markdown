@@ -37,10 +37,10 @@ There are a number of preprocessing steps, and the intermediate results are stor
 
 * Compute the graph in-degrees from the edges: `INSERT OR REPLACE INTO nodes_degrees SELECT to_node, count(to_node) FROM edges GROUP BY to_node`
 * Download top $k$ albums by in-degree centrality: `SELECT album_url, nodes.album_id FROM nodes INNER JOIN nodes_degrees ON nodes.album_id = nodes_degrees.album_id WHERE degree > {degree_min} ORDER BY degree DESC LIMIT {k}`. So far we used $degree = 10$ and $k = 50$.
-* For each track in each album: split the audio in 30-seconds chunks, and assign it to either the training or test or validation partition. It's crucial to fix the chunk length, as PyTorch works with data batches, and each batch is a (anchor, positive, negative)-tuple of $B \times T$ tensors (batch size, time steps).
+* For each track in each album: split the audio in 30-seconds chunks, and assign it to either the training or test or validation partition. It's crucial to fix the chunk length, as training works with data batches, and each batch is a (anchor, positive, negative)-tuple of $B \times T$ tensors (batch size, time steps).
 * Compute the preference graph distances for each album, up to distance $d_{max}$, by breadth-first search. So far we used $d_{max} = 4$
 * For each dataset partition and audio chunk, sample a few other chunks from the graph distance map (<a href="https://en.wikipedia.org/wiki/Isochrone_map">"isochrone"</a>?), among the closest and farthest from the anchor. The IDs for these will be stored in a triplet metadata table
-* The PyTorch `Dataset` looks up a triplet given a row index, then using that it retrieves the audio chunks (which are stored in SQLite as `np.ndarray`s).
+* The PyTorch `Dataset` looks up a triplet from a row index, then using that it retrieves the respective audio chunks (which are stored in SQLite as `np.ndarray`s).
 
 The music preference graph and audio samples were constructed from public sources.
 
@@ -52,11 +52,11 @@ I initially experimented with a <a href="https://pytorch-geometric.readthedocs.i
 * Embed the most central audio samples
 * Diffuse the embeddings out to all the remaining nodes with the GCN.
 
-I dropped this approach because even with 1 or 2 GCN layers it required an awful amount of memory, and is clearly wasteful because we need to begin with random or zero embeddings for all the nodes that don't have audio attached.
+I dropped this approach because even with 1 GCN layer it required an awful amount of memory (PyTorch crashed on a 16 GB vRAM T4 GPU instance), and initializing embeddings of all the nodes that don't have audio attached require a whole set of dedicated experiments which I didn't have time for.
 
 # Model, take 2
 
-The embedding model is closely related to the <a href="https://sander.ai/2014/08/05/spotify-cnns.html">"Spotify CNN" introduced here back in 2014.</a>
+The embedding model is similar to the <a href="https://sander.ai/2014/08/05/spotify-cnns.html">"Spotify CNN" introduced here back in 2014.</a>
 
 The NN architecture can be broken down as follows:
 
@@ -68,7 +68,7 @@ The NN architecture can be broken down as follows:
 
 The main changes from the Spotify CNN are: 
 
-* I don't use 3 different time pooling functions but only an average pooling.
+* I don't use 3 different time pooling functions but only an average pooling. 
 * The loss function: here I use a <a href="https://pytorch.org/docs/stable/generated/torch.nn.TripletMarginLoss.html">triplet loss</a> based on the <a href="https://en.wikipedia.org/wiki/Cosine_similarity#Cosine_distance">cosine "distance"</a>, defined as:
 
 $$
