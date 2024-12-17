@@ -85,7 +85,7 @@
 <li>Embed the most central audio samples</li>
 <li>Diffuse the embeddings out to all the remaining nodes with the GCN.</li>
 </ul>
-<p>I dropped this approach because even with 1 GCN layer it required an awful amount of memory (PyTorch crashed with 16 GB vRAM), and initializing embeddings of all the nodes that don’t have audio attached require a whole set of dedicated experiments which I didn’t have time for.</p>
+<p>I dropped this approach because even with 1 GCN layer it required an awful amount of memory (PyTorch crashed with 16 GB vRAM).</p>
 <h1 id="model-take-2">Model, take 2</h1>
 <p>The embedding model is similar to the <a href="https://sander.ai/2014/08/05/spotify-cnns.html">“Spotify CNN” introduced here back in 2014, with a couple variations.</a></p>
 <p>The NN architecture can be broken down as follows:</p>

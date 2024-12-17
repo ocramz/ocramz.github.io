@@ -55,7 +55,7 @@ I initially experimented with a <a href="https://pytorch-geometric.readthedocs.i
 * Embed the most central audio samples
 * Diffuse the embeddings out to all the remaining nodes with the GCN.
 
-I dropped this approach because even with 1 GCN layer it required an awful amount of memory (PyTorch crashed with 16 GB vRAM), and initializing embeddings of all the nodes that don't have audio attached require a whole set of dedicated experiments which I didn't have time for.
+I dropped this approach because even with 1 GCN layer it required an awful amount of memory (PyTorch crashed with 16 GB vRAM).
 
 # Model, take 2
 
