@@ -11,7 +11,7 @@ categories: machine-learning
 
 <!-- ![Preference graph](prefs_graph.png "Preference graph") -->
 
-Can we learn a music recommendation model from raw audio samples and a preference graph?
+Can we reverse engineer a music recommendation model from raw audio samples and a preference graph?
 
 <img src="/images/prefs_graph.png" width=500/>
 
