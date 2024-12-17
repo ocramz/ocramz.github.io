@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Reconstructing a deep learning-based music recommendation model
+title: Reconstructing a music recommendation model
 date: 2024-12-16
 categories: machine-learning deep-learning music
 ---
