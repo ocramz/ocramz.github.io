@@ -6,7 +6,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="description" content="Marco Zocca" /> 
         <meta name="author" content="Marco Zocca" />
-        <title>Marco Zocca - Re-building a deep learning-based music recommendation system - pt. 1</title>
+        <title>Marco Zocca - Reconstructing a deep learning-based music recommendation model</title>
 
         <link rel="stylesheet" href="../css/default.css" />
 
@@ -46,7 +46,7 @@
 
 
         <main role="main">
-            <h1>Re-building a deep learning-based music recommendation system - pt. 1</h1>
+            <h1>Reconstructing a deep learning-based music recommendation model</h1>
             <article class="post">
     <section class="header">
         December 16, 2024
@@ -54,7 +54,7 @@
     <section>
         <h1 id="introduction">Introduction</h1>
 <!-- ![Preference graph](prefs_graph.png "Preference graph") -->
-<p>Can we build a music recommendation model from raw audio samples and a recommendations graph?</p>
+<p>Can we learn a music recommendation model from raw audio samples and a preference graph?</p>
 <p><img src="../images/prefs_graph.png" width="500/"></p>
 <p>To answer this, I wanted to combine together a few topics I’ve been curious about recently: audio processing with deep neural networks, contrastive learning and graph data.</p>
 <p>Not to mention the fact that I’m constantly looking for new music, and while friends and a few trusted broadcasters (e.g. <a href="https://nts.live">NTS</a>) are very helpful, I also rely on YouTube suggestions. So, what makes a good recommender model? Let’s find out!</p>
@@ -67,7 +67,7 @@
 <li>embedding a query (a new music track) with the same model and looking up the most similar ones from the index.</li>
 </ul>
 <h1 id="dataset">Dataset</h1>
-<p>The recommendations graph is taken as fixed, and we do not know how it was constructed.</p>
+<p>The recommendations graph is taken as fixed, and we do not know how it was constructed (whether using content information, or user interactions, or both).</p>
 <p>Each graph vertex corresponds to a music /album/ which contains one or more tracks. In order to limit the size of the audio dataset I only considered music albums having the largest <a href="https://en.wikipedia.org/wiki/Centrality#Degree_centrality">in-degree centrality</a>. In simpler words, these are the most recommended albums in the recommendations graph.</p>
 <p>There are a number of preprocessing steps, and the intermediate results are stored in SQLite to minimize the amount of training-time CPU compute. Here is a summary:</p>
 <ul>

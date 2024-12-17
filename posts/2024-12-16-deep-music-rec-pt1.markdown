@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Re-building a deep learning-based music recommendation system - pt. 1
+title: Reconstructing a deep learning-based music recommendation model
 date: 2024-12-16
 categories: machine-learning deep-learning music
 ---
@@ -11,7 +11,7 @@ categories: machine-learning deep-learning music
 
 <!-- ![Preference graph](prefs_graph.png "Preference graph") -->
 
-Can we build a music recommendation model from raw audio samples and a recommendations graph?
+Can we learn a music recommendation model from raw audio samples and a preference graph?
 
 <img src="/images/prefs_graph.png" width=500/>
 
@@ -31,7 +31,7 @@ It becomes a (context-free, static, non-personalized) recommendation model by:
 
 # Dataset
 
-The recommendations graph is taken as fixed, and we do not know how it was constructed.
+The recommendations graph is taken as fixed, and we do not know how it was constructed (whether using content information, or user interactions, or both).
 
 Each graph vertex corresponds to a music /album/ which contains one or more tracks. In order to limit the size of the audio dataset I only considered music albums having the largest <a href="https://en.wikipedia.org/wiki/Centrality#Degree_centrality">in-degree centrality</a>. In simpler words, these are the most recommended albums in the recommendations graph.
 
