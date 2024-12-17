@@ -55,7 +55,7 @@ I initially experimented with a <a href="https://pytorch-geometric.readthedocs.i
 * Embed the most central audio samples
 * Diffuse the embeddings out to all the remaining nodes with the GCN.
 
-I dropped this approach because even with 1 GCN layer it required an awful amount of memory (PyTorch crashed on a 16 GB vRAM T4 GPU instance), and initializing embeddings of all the nodes that don't have audio attached require a whole set of dedicated experiments which I didn't have time for.
+I dropped this approach because even with 1 GCN layer it required an awful amount of memory (PyTorch crashed with 16 GB vRAM), and initializing embeddings of all the nodes that don't have audio attached require a whole set of dedicated experiments which I didn't have time for.
 
 # Model, take 2
 
@@ -97,6 +97,8 @@ I use <a href="https://lightning.ai/docs/pytorch/stable/">PyTorch Lightning</a> 
 Initially I planned to export the models to ONNX for faster inference but it turns out at least one of my model blocks (the mel-spectrogram FFT) is not currently supported by ONNX due to some missing complex number implementation `:/`
 
 
-# Conclusion of pt. 1
+# Conclusion
+
+Here I've shown a way to use a preference graph for 
 
 Stay tuned for pt. 2 with evaluation and more! Thanks for reading!
