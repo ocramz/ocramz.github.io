@@ -76,7 +76,7 @@ The main changes from the Spotify CNN are:
 
 # Training
 
-At peak, training the model takes less than 4 GB of vRAM, which sits comfortably within a T4 or similar cheap-tier GPU.
+At peak, training the model takes less than 4 GB of vRAM, which sits comfortably within a T4 or similar cheap-tier GPU. It's also pretty fast, at 10-12 batches per second.
 
 Training the model above converges quite smoothly, as we can see below:
 

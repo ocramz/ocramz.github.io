@@ -102,7 +102,7 @@
 <li>The loss function: I use a <a href="https://pytorch.org/docs/stable/generated/torch.nn.TripletMarginLoss.html">triplet loss</a> based on the <a href="https://en.wikipedia.org/wiki/Cosine_similarity#Cosine_distance">Euclidean distance</a>.</li>
 </ul>
 <h1 id="training">Training</h1>
-<p>At peak, training the model takes less than 4 GB of vRAM, which sits comfortably within a T4 or similar cheap-tier GPU.</p>
+<p>At peak, training the model takes less than 4 GB of vRAM, which sits comfortably within a T4 or similar cheap-tier GPU. It’s also pretty fast, at 10-12 batches per second.</p>
 <p>Training the model above converges quite smoothly, as we can see below:</p>
 <p><img src="../images/melspec_training_loss.png" width="500/"></p>
 <p>With the following parameters:</p>
