@@ -67,15 +67,14 @@
 <li>embedding a query (a new music track) with the same model and looking up the most similar ones from the index.</li>
 </ul>
 <h1 id="dataset">Dataset</h1>
-<p>In order to limit the size of the dataset I only considered music samples having the largest <a href="https://en.wikipedia.org/wiki/Centrality#Degree_centrality">in-degree centrality</a>, i.e. the largest number of inbound edges. In simpler words, these are the most recommended albums in the dataset.</p>
-<p>Each graph vertex corresponds to a music /album/ which contains one or more tracks.</p>
-<p>There are a number of preprocessing steps, and the intermediate results are stored in SQLite, indexed by album, track and chunk ID. For the sake of brevity let’s summarize the preprocessing:</p>
+<p>Each graph vertex corresponds to a music /album/ which contains one or more tracks. In order to limit the size of the audio dataset I only considered music albums having the largest <a href="https://en.wikipedia.org/wiki/Centrality#Degree_centrality">in-degree centrality</a>. In simpler words, these are the most recommended albums in the recommendations graph.</p>
+<p>There are a number of preprocessing steps, and the intermediate results are stored in SQLite, indexed by album and track metadata. For the sake of brevity let’s summarize the preprocessing:</p>
 <ul>
-<li>Compute the graph in-degrees from the edges: <code>INSERT OR REPLACE INTO nodes_degrees SELECT to_node, count(to_node) FROM edges GROUP BY to_node</code></li>
-<li>Download top <span class="math inline"><em>k</em></span> albums by in-degree centrality: <code>SELECT album_url, nodes.album_id FROM nodes INNER JOIN nodes_degrees ON nodes.album_id = nodes_degrees.album_id WHERE degree &gt; {degree_min} ORDER BY degree DESC LIMIT {k}</code>. So far we used <span class="math inline"><em>d</em><em>e</em><em>g</em><em>r</em><em>e</em><em>e</em> = 10</span> and <span class="math inline"><em>k</em> = 50</span>.</li>
-<li>For each track in each album: split the audio in 30-seconds chunks, and assign it to either the training or test or validation partition. It’s crucial to fix the chunk length, as training works with data batches, and each batch is a (anchor, positive, negative)-tuple of <span class="math inline"><em>B</em> × <em>T</em></span> tensors (batch size, time steps).</li>
-<li>Compute the preference graph distances for each album, up to distance <span class="math inline"><em>d</em><sub><em>m</em><em>a</em><em>x</em></sub></span>, by breadth-first search. So far I used <span class="math inline"><em>d</em><sub><em>m</em><em>a</em><em>x</em></sub> = 4</span></li>
-<li>For each dataset partition and audio chunk, sample a few other chunks from the graph distance map (<a href="https://en.wikipedia.org/wiki/Isochrone_map">“isochrone”</a>?), among the closest and farthest from the anchor. The IDs for these will be stored in a triplet metadata table</li>
+<li>Compute the <b>graph in-degrees</b> : <code>INSERT OR REPLACE INTO nodes_degrees SELECT to_node, count(to_node) FROM edges GROUP BY to_node</code></li>
+<li>Download top <span class="math inline"><em>k</em></span> albums by in-degree <b>centrality</b>: <code>SELECT album_url, nodes.album_id FROM nodes INNER JOIN nodes_degrees ON nodes.album_id = nodes_degrees.album_id WHERE degree &gt; {degree_min} ORDER BY degree DESC LIMIT {k}</code>. So far we used <span class="math inline"><em>d</em><em>e</em><em>g</em><em>r</em><em>e</em><em>e</em> = 10</span> and <span class="math inline"><em>k</em> = 50</span>.</li>
+<li>For each track in each album: split the audio in <b>30-seconds chunks</b>, and assign it to either the training or test or validation partition. It’s crucial to fix the chunk length, as training works with data batches, and each batch is a (anchor, positive, negative)-tuple of <span class="math inline"><em>B</em> × <em>T</em></span> tensors (batch size, time steps).</li>
+<li>Compute the preference <b>graph distances</b> for each album, up to distance <span class="math inline"><em>d</em><sub><em>m</em><em>a</em><em>x</em></sub></span>, by breadth-first search. So far I used <span class="math inline"><em>d</em><sub><em>m</em><em>a</em><em>x</em></sub> = 4</span></li>
+<li>For each dataset partition and audio chunk, sample a few other chunks from the graph distance map (<a href="https://en.wikipedia.org/wiki/Isochrone_map">“isochrone”</a>?), among the closest and farthest from the anchor. The IDs for these will be stored in a <b>triplet metadata table</b>.</li>
 <li>The PyTorch <code>Dataset</code> looks up a triplet from a row index, then using that it retrieves the respective audio chunks (which are stored in SQLite as <code>np.ndarray</code>s).</li>
 </ul>
 <p>The music preference graph and audio samples were constructed from public sources.</p>
@@ -87,7 +86,7 @@
 </ul>
 <p>I dropped this approach because even with 1 GCN layer it required an awful amount of memory (PyTorch crashed on a 16 GB vRAM T4 GPU instance), and initializing embeddings of all the nodes that don’t have audio attached require a whole set of dedicated experiments which I didn’t have time for.</p>
 <h1 id="model-take-2">Model, take 2</h1>
-<p>The embedding model is similar to the <a href="https://sander.ai/2014/08/05/spotify-cnns.html">“Spotify CNN” introduced here back in 2014.</a></p>
+<p>The embedding model is similar to the <a href="https://sander.ai/2014/08/05/spotify-cnns.html">“Spotify CNN” introduced here back in 2014, with a couple variations.</a></p>
 <p>The NN architecture can be broken down as follows:</p>
 <ul>
 <li>the audio samples are first transformed into <b>mel-spectrograms</b> (which bins frequencies according to a human perceptual model). I use <code>n_mels = 128</code>, 2048 FFT samples and a FFT stride of 1024 throughout.</li>
@@ -99,12 +98,11 @@
 <p>The main changes from the Spotify CNN are:</p>
 <ul>
 <li>I don’t use 3 different time pooling functions but only an average pooling.</li>
-<li>The loss function: here I use a <a href="https://pytorch.org/docs/stable/generated/torch.nn.TripletMarginLoss.html">triplet loss</a> based on the <a href="https://en.wikipedia.org/wiki/Cosine_similarity#Cosine_distance">Euclidean distance</a>, defined as:</li>
+<li>The loss function: here I use a <a href="https://pytorch.org/docs/stable/generated/torch.nn.TripletMarginLoss.html">triplet loss</a> based on the <a href="https://en.wikipedia.org/wiki/Cosine_similarity#Cosine_distance">Euclidean distance</a>, which for unit-length vectors <span class="math inline"><em>x</em><sub>1</sub></span> and <span class="math inline"><em>x</em><sub>2</sub></span> can be defined as:</li>
 </ul>
 <p><span class="math display">$$
 d(x_1, x_2) := \sqrt{2 ( 1 - (x_1 \cdot x_2)) }
 $$</span></p>
-<p>(NB: the definition above assumes unit-norm vectors <span class="math inline"><em>x</em><sub>1</sub></span> and <span class="math inline"><em>x</em><sub>2</sub></span>).</p>
 <h1 id="training">Training</h1>
 <p>Training the model above converges quite smoothly, as we can see below:</p>
 <p><img src="../images/melspec_training_loss.png" width="500/"></p>

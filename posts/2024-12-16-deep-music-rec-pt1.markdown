@@ -31,17 +31,16 @@ It becomes a (context-free, static, non-personalized) recommendation model by:
 
 # Dataset
 
-In order to limit the size of the dataset I only considered music samples having the largest <a href="https://en.wikipedia.org/wiki/Centrality#Degree_centrality">in-degree centrality</a>, i.e. the largest number of inbound edges. In simpler words, these are the most recommended albums in the dataset.
+Each graph vertex corresponds to a music /album/ which contains one or more tracks. In order to limit the size of the audio dataset I only considered music albums having the largest <a href="https://en.wikipedia.org/wiki/Centrality#Degree_centrality">in-degree centrality</a>. In simpler words, these are the most recommended albums in the recommendations graph.
 
-Each graph vertex corresponds to a music /album/ which contains one or more tracks.
 
-There are a number of preprocessing steps, and the intermediate results are stored in SQLite, indexed by album, track and chunk ID. For the sake of brevity let's summarize the preprocessing:
+There are a number of preprocessing steps, and the intermediate results are stored in SQLite, indexed by album and track metadata. For the sake of brevity let's summarize the preprocessing:
 
-* Compute the graph in-degrees from the edges: `INSERT OR REPLACE INTO nodes_degrees SELECT to_node, count(to_node) FROM edges GROUP BY to_node`
-* Download top $k$ albums by in-degree centrality: `SELECT album_url, nodes.album_id FROM nodes INNER JOIN nodes_degrees ON nodes.album_id = nodes_degrees.album_id WHERE degree > {degree_min} ORDER BY degree DESC LIMIT {k}`. So far we used $degree = 10$ and $k = 50$.
-* For each track in each album: split the audio in 30-seconds chunks, and assign it to either the training or test or validation partition. It's crucial to fix the chunk length, as training works with data batches, and each batch is a (anchor, positive, negative)-tuple of $B \times T$ tensors (batch size, time steps).
-* Compute the preference graph distances for each album, up to distance $d_{max}$, by breadth-first search. So far I used $d_{max} = 4$
-* For each dataset partition and audio chunk, sample a few other chunks from the graph distance map (<a href="https://en.wikipedia.org/wiki/Isochrone_map">"isochrone"</a>?), among the closest and farthest from the anchor. The IDs for these will be stored in a triplet metadata table
+* Compute the <b>graph in-degrees</b> : `INSERT OR REPLACE INTO nodes_degrees SELECT to_node, count(to_node) FROM edges GROUP BY to_node`
+* Download top $k$ albums by in-degree <b>centrality</b>: `SELECT album_url, nodes.album_id FROM nodes INNER JOIN nodes_degrees ON nodes.album_id = nodes_degrees.album_id WHERE degree > {degree_min} ORDER BY degree DESC LIMIT {k}`. So far we used $degree = 10$ and $k = 50$.
+* For each track in each album: split the audio in <b>30-seconds chunks</b>, and assign it to either the training or test or validation partition. It's crucial to fix the chunk length, as training works with data batches, and each batch is a (anchor, positive, negative)-tuple of $B \times T$ tensors (batch size, time steps).
+* Compute the preference <b>graph distances</b> for each album, up to distance $d_{max}$, by breadth-first search. So far I used $d_{max} = 4$
+* For each dataset partition and audio chunk, sample a few other chunks from the graph distance map (<a href="https://en.wikipedia.org/wiki/Isochrone_map">"isochrone"</a>?), among the closest and farthest from the anchor. The IDs for these will be stored in a <b>triplet metadata table</b>.
 * The PyTorch `Dataset` looks up a triplet from a row index, then using that it retrieves the respective audio chunks (which are stored in SQLite as `np.ndarray`s).
 
 The music preference graph and audio samples were constructed from public sources.
@@ -58,7 +57,7 @@ I dropped this approach because even with 1 GCN layer it required an awful amoun
 
 # Model, take 2
 
-The embedding model is similar to the <a href="https://sander.ai/2014/08/05/spotify-cnns.html">"Spotify CNN" introduced here back in 2014.</a>
+The embedding model is similar to the <a href="https://sander.ai/2014/08/05/spotify-cnns.html">"Spotify CNN" introduced here back in 2014, with a couple variations.</a>
 
 The NN architecture can be broken down as follows:
 
@@ -71,14 +70,11 @@ The NN architecture can be broken down as follows:
 The main changes from the Spotify CNN are: 
 
 * I don't use 3 different time pooling functions but only an average pooling. 
-* The loss function: here I use a <a href="https://pytorch.org/docs/stable/generated/torch.nn.TripletMarginLoss.html">triplet loss</a> based on the <a href="https://en.wikipedia.org/wiki/Cosine_similarity#Cosine_distance">Euclidean distance</a>, defined as:
+* The loss function: here I use a <a href="https://pytorch.org/docs/stable/generated/torch.nn.TripletMarginLoss.html">triplet loss</a> based on the <a href="https://en.wikipedia.org/wiki/Cosine_similarity#Cosine_distance">Euclidean distance</a>, which for unit-length vectors $x_1$ and $x_2$ can be defined as:
 
 $$
 d(x_1, x_2) := \sqrt{2 ( 1 - (x_1 \cdot x_2)) }
 $$
-
-(NB: the definition above assumes unit-norm vectors $x_1$ and $x_2$).
-
 
 # Training
 
