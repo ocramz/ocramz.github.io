@@ -47,6 +47,8 @@ There are a number of preprocessing steps, and the intermediate results are stor
 
 As a side note, I highly recommend storing intermediate dataset stages in a SQLite database rather than in a filesystem. This lets us look up things by various attributes without having to rely on crazy regexes, which in turn should help with long-term maintainability. Since it's always available thanks to the Python base library, you don't have to worry about the DB being unreachable and the like.
 
+I think you could get an additional data loading speedup by having one SQLite connection per DataLoader thread, but I didn't have time to investigate this.
+
 The music preference graph and audio samples were constructed from public sources.
 
 
