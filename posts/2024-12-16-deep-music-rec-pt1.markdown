@@ -17,7 +17,7 @@ Can we learn a music recommendation model from raw audio samples and a preferenc
 
 This project started from this question, and the curiosity to combine together a few topics I've been curious about recently: audio processing with deep neural networks, contrastive learning and graph data.
 
-Not to mention the fact that I'm constantly looking for new music, and while friends and a few trusted broadcasters (NTS, KEXP) are very helpful, I also rely on YouTube suggestions. So, what makes a good recommender model? Let's find out!
+Not to mention the fact that I'm constantly looking for new music, and while friends and a few trusted broadcasters (e.g. <a href="https://nts.live">NTS</a>) are very helpful, I also rely on YouTube suggestions. So, what makes a good recommender model? Let's find out!
 
 # Technical summary
 

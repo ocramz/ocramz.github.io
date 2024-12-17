@@ -57,7 +57,7 @@
 <p>Can we learn a music recommendation model from raw audio samples and a preference graph?</p>
 <p><img src="../images/prefs_graph.png" width="400/"></p>
 <p>This project started from this question, and the curiosity to combine together a few topics I’ve been curious about recently: audio processing with deep neural networks, contrastive learning and graph data.</p>
-<p>Not to mention the fact that I’m constantly looking for new music, and while friends and a few trusted broadcasters (NTS, KEXP) are very helpful, I also rely on YouTube suggestions. So, what makes a good recommender model? Let’s find out!</p>
+<p>Not to mention the fact that I’m constantly looking for new music, and while friends and a few trusted broadcasters (e.g. <a href="https://nts.live">NTS</a>) are very helpful, I also rely on YouTube suggestions. So, what makes a good recommender model? Let’s find out!</p>
 <h1 id="technical-summary">Technical summary</h1>
 <p>This post describes an audio embedding model, trained to produce embeddings that are close together if the graph distances of their respective albums are small. In other words, I used the preference graph as supervision labels for the audio embeddings: in a contrastive setting, we consider an “anchor” sample, a positive and a negative one, which are here distinguished by their graph distance to the anchor.</p>
 <p>It becomes a (context-free, static, non-personalized) recommendation model by:</p>
