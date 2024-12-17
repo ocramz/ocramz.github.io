@@ -89,10 +89,10 @@
 <p>The embedding model is similar to the <a href="https://sander.ai/2014/08/05/spotify-cnns.html">“Spotify CNN” introduced here back in 2014.</a></p>
 <p>The NN architecture can be broken down as follows:</p>
 <ul>
-<li>the audio samples are first transformed into <b>mel-spectrograms</b> (which bins frequencies according to a human perceptual model);</li>
+<li>the audio samples are first transformed into <b>mel-spectrograms</b> (which bins frequencies according to a human perceptual model). I use <code>n_mels = 128</code>, 2048 FFT samples and a FFT stride of 1024 throughout.</li>
 <li>the STFT representation is fed to 3 <b>convolutional stages</b>, i.e. <code>Conv1d</code> interleaved with a max-pooling operation (window size 4 and 2 respectively). Both the convolutions and the pooling are done over the time axis only.</li>
 <li>After the last 1D convolution there is an <b>average pooling</b> operation over the whole time axis. The result of this is a vector having size <code>n_mels</code> for each sample.</li>
-<li>Next, there are three <b>linear layers</b> interleaved by a <code>ReLU</code> nonlinearity. The first linear layer maps from <code>n_mels</code> to a larger <code>dim_hidden</code>, the middle one is a square matrix and the last one projects the hidden dimension down to our embedding space.</li>
+<li>Next, there are three <b>linear layers</b> interleaved with a <code>ReLU</code> nonlinearity. The first linear layer maps from <code>n_mels</code> to a larger <code>dim_hidden</code>, the middle one is a square matrix and the last one projects the hidden dimension down to our embedding space.</li>
 <li>The fully-connected layers are then followed by a <span class="math inline"><em>L</em><sub>2</sub></span> <b>normalization</b> step.</li>
 </ul>
 <p>The main changes from the Spotify CNN are:</p>
@@ -105,13 +105,16 @@ d(x_1, x_2) := \sqrt{2 ( 1 - (x_1 \cdot x_2)) }
 $$</span></p>
 <p>(NB: the definition above assumes unit-norm vectors <span class="math inline"><em>x</em><sub>1</sub></span> and <span class="math inline"><em>x</em><sub>2</sub></span>).</p>
 <h1 id="training">Training</h1>
+<p>Training the model above converges quite smoothly</p>
 <p><img src="../images/melspec_training_loss.png" width="500/"></p>
 <p>With the following parameters:</p>
 <ul>
 <li>Adam optimizer</li>
-<li>base learning rate : 0.005</li>
+<li>base learning rate = 0.005</li>
 <li>batch size = 16</li>
 </ul>
+<h1 id="saving-checkpoints-for-inference">Saving checkpoints for inference</h1>
+<p>I use <a href="https://lightning.ai/docs/pytorch/stable/">PyTorch Lightning</a> for all my deep learning models, which takes care of automatically saving models during and at the end of each training run.</p>
     </section>
 </article>
 
