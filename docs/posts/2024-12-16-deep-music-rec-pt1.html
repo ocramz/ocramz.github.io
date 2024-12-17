@@ -79,7 +79,6 @@
 <li>The PyTorch <code>Dataset</code> looks up a triplet from a row index, then using that it retrieves the respective audio chunks (which are stored in SQLite as <code>np.ndarray</code>s).</li>
 </ul>
 <p>As a side note, I highly recommend storing intermediate dataset stages in a SQLite database rather than in a filesystem. This lets us look up things by various attributes without having to rely on crazy regexes, which in turn should help with long-term maintainability. Since it’s always available thanks to the Python base library, you don’t have to worry about the DB being unreachable and the like.</p>
-<p>I think you could get an additional data loading speedup by having one SQLite connection per DataLoader thread, but I didn’t have time to investigate this.</p>
 <p>The music preference graph and audio samples were constructed from public sources.</p>
 <h1 id="model-take-1">Model, take 1</h1>
 <p>I initially experimented with a <a href="https://pytorch-geometric.readthedocs.io/en/latest/generated/torch_geometric.nn.conv.GCNConv.html#torch_geometric.nn.conv.GCNConv">graph convolutional network</a>. The idea behind this was to:</p>
@@ -104,7 +103,7 @@
 <li>The loss function: I use a <a href="https://pytorch.org/docs/stable/generated/torch.nn.TripletMarginLoss.html">triplet loss</a> based on the <a href="https://en.wikipedia.org/wiki/Cosine_similarity#Cosine_distance">Euclidean distance</a>.</li>
 </ul>
 <h1 id="training">Training</h1>
-<p>At peak, training the model takes less than 4 GB of vRAM, which sits comfortably within a T4 or similar cheap-tier GPU. It’s also pretty fast, at 10-12 batches per second.</p>
+<p>At peak, training the model takes less than 4 GB of vRAM, which sits comfortably within a T4 or similar cheap-tier GPU. It’s also pretty fast, at 10-12 batches per second. I think you could get an additional data loading speedup by having one SQLite connection per DataLoader thread, but I didn’t have time to investigate this.</p>
 <p>Training the model above converges quite smoothly, as we can see below:</p>
 <p><img src="../images/melspec_training_loss.png" width="500/"></p>
 <p>With the following parameters:</p>
