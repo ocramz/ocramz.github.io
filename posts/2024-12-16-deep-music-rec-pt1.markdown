@@ -15,7 +15,7 @@ Can we learn a music recommendation model from raw audio samples and a preferenc
 
 <img src="/images/prefs_graph.png" width=500/>
 
-This project started from this question, and the curiosity to combine together a few topics I've been curious about recently: audio processing with deep neural networks, contrastive learning and graph data.
+To answer this, I wanted to combine together a few topics I've been curious about recently: audio processing with deep neural networks, contrastive learning and graph data.
 
 Not to mention the fact that I'm constantly looking for new music, and while friends and a few trusted broadcasters (e.g. <a href="https://nts.live">NTS</a>) are very helpful, I also rely on YouTube suggestions. So, what makes a good recommender model? Let's find out!
 
@@ -37,9 +37,9 @@ Each graph vertex corresponds to a music /album/ which contains one or more trac
 There are a number of preprocessing steps, and the intermediate results are stored in SQLite, indexed by album and track metadata. For the sake of brevity let's summarize the preprocessing:
 
 * Compute the <b>graph in-degrees</b> : `INSERT OR REPLACE INTO nodes_degrees SELECT to_node, count(to_node) FROM edges GROUP BY to_node`
-* Download top $k$ albums by in-degree <b>centrality</b>: `SELECT album_url, nodes.album_id FROM nodes INNER JOIN nodes_degrees ON nodes.album_id = nodes_degrees.album_id WHERE degree > {degree_min} ORDER BY degree DESC LIMIT {k}`. So far we used $degree = 10$ and $k = 50$.
+* Download top $k$ albums by in-degree <b>centrality</b>: `SELECT album_url, nodes.album_id FROM nodes INNER JOIN nodes_degrees ON nodes.album_id = nodes_degrees.album_id WHERE degree > {degree_min} ORDER BY degree DESC LIMIT {k}`. So far I used $degree = 10$ and $k = 50$.
 * For each track in each album: split the audio in <b>30-seconds chunks</b>, and assign it to either the training or test or validation partition. It's crucial to fix the chunk length, as training works with data batches, and each batch is a (anchor, positive, negative)-tuple of $B \times T$ tensors (batch size, time steps).
-* Compute the preference <b>graph distances</b> for each album, up to distance $d_{max}$, by breadth-first search. So far I used $d_{max} = 4$
+* Compute the preference <b>graph distances</b> for each album, up to distance $d_{max}$, by breadth-first search. So far I used $d_{max} = 4$.
 * For each dataset partition and audio chunk, sample a few other chunks from the graph distance map (<a href="https://en.wikipedia.org/wiki/Isochrone_map">"isochrone"</a>?), among the closest and farthest from the anchor. The IDs for these will be stored in a <b>triplet metadata table</b>.
 * The PyTorch `Dataset` looks up a triplet from a row index, then using that it retrieves the respective audio chunks (which are stored in SQLite as `np.ndarray`s).
 
@@ -88,10 +88,15 @@ With the following parameters:
 * base learning rate = 0.005
 * batch size = 16
 
-This does not use any form of data augmentation, and interestingly the validation loss seems to keep slowly decreasing even after a large number of epochs.
+This BTW does not use any form of data augmentation, and interestingly the validation loss seems to keep slowly decreasing even after a large number of epochs. I suppose one could search for better optimizer hparams (the validation loss jumps around quite a bit) but this looks already good enough.
 
 # Saving checkpoints for inference
 
 I use <a href="https://lightning.ai/docs/pytorch/stable/">PyTorch Lightning</a> for all my deep learning models, which takes care of automatically saving models during and at the end of each training run.
 
 Initially I planned to export the models to ONNX for faster inference but it turns out at least one of my model blocks (the mel-spectrogram FFT) is not currently supported by ONNX due to some missing complex number implementation `:/`
+
+
+# Conclusion of pt. 1
+
+Stay tuned for pt. 2 with evaluation and more! Thanks for reading!

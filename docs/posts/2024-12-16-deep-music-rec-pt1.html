@@ -56,7 +56,7 @@
 <!-- ![Preference graph](prefs_graph.png "Preference graph") -->
 <p>Can we learn a music recommendation model from raw audio samples and a preference graph?</p>
 <p><img src="../images/prefs_graph.png" width="500/"></p>
-<p>This project started from this question, and the curiosity to combine together a few topics I’ve been curious about recently: audio processing with deep neural networks, contrastive learning and graph data.</p>
+<p>To answer this, I wanted to combine together a few topics I’ve been curious about recently: audio processing with deep neural networks, contrastive learning and graph data.</p>
 <p>Not to mention the fact that I’m constantly looking for new music, and while friends and a few trusted broadcasters (e.g. <a href="https://nts.live">NTS</a>) are very helpful, I also rely on YouTube suggestions. So, what makes a good recommender model? Let’s find out!</p>
 <h1 id="technical-summary">Technical summary</h1>
 <p>This post describes an audio embedding model, trained to produce embeddings that are close together if the graph distances of their respective albums are small. In other words, I used the preference graph as supervision labels for the audio embeddings: in a contrastive setting, we consider an “anchor” sample, a positive and a negative one, which are here distinguished by their graph distance to the anchor.</p>
@@ -71,9 +71,9 @@
 <p>There are a number of preprocessing steps, and the intermediate results are stored in SQLite, indexed by album and track metadata. For the sake of brevity let’s summarize the preprocessing:</p>
 <ul>
 <li>Compute the <b>graph in-degrees</b> : <code>INSERT OR REPLACE INTO nodes_degrees SELECT to_node, count(to_node) FROM edges GROUP BY to_node</code></li>
-<li>Download top <span class="math inline"><em>k</em></span> albums by in-degree <b>centrality</b>: <code>SELECT album_url, nodes.album_id FROM nodes INNER JOIN nodes_degrees ON nodes.album_id = nodes_degrees.album_id WHERE degree &gt; {degree_min} ORDER BY degree DESC LIMIT {k}</code>. So far we used <span class="math inline"><em>d</em><em>e</em><em>g</em><em>r</em><em>e</em><em>e</em> = 10</span> and <span class="math inline"><em>k</em> = 50</span>.</li>
+<li>Download top <span class="math inline"><em>k</em></span> albums by in-degree <b>centrality</b>: <code>SELECT album_url, nodes.album_id FROM nodes INNER JOIN nodes_degrees ON nodes.album_id = nodes_degrees.album_id WHERE degree &gt; {degree_min} ORDER BY degree DESC LIMIT {k}</code>. So far I used <span class="math inline"><em>d</em><em>e</em><em>g</em><em>r</em><em>e</em><em>e</em> = 10</span> and <span class="math inline"><em>k</em> = 50</span>.</li>
 <li>For each track in each album: split the audio in <b>30-seconds chunks</b>, and assign it to either the training or test or validation partition. It’s crucial to fix the chunk length, as training works with data batches, and each batch is a (anchor, positive, negative)-tuple of <span class="math inline"><em>B</em> × <em>T</em></span> tensors (batch size, time steps).</li>
-<li>Compute the preference <b>graph distances</b> for each album, up to distance <span class="math inline"><em>d</em><sub><em>m</em><em>a</em><em>x</em></sub></span>, by breadth-first search. So far I used <span class="math inline"><em>d</em><sub><em>m</em><em>a</em><em>x</em></sub> = 4</span></li>
+<li>Compute the preference <b>graph distances</b> for each album, up to distance <span class="math inline"><em>d</em><sub><em>m</em><em>a</em><em>x</em></sub></span>, by breadth-first search. So far I used <span class="math inline"><em>d</em><sub><em>m</em><em>a</em><em>x</em></sub> = 4</span>.</li>
 <li>For each dataset partition and audio chunk, sample a few other chunks from the graph distance map (<a href="https://en.wikipedia.org/wiki/Isochrone_map">“isochrone”</a>?), among the closest and farthest from the anchor. The IDs for these will be stored in a <b>triplet metadata table</b>.</li>
 <li>The PyTorch <code>Dataset</code> looks up a triplet from a row index, then using that it retrieves the respective audio chunks (which are stored in SQLite as <code>np.ndarray</code>s).</li>
 </ul>
@@ -112,10 +112,12 @@ $$</span></p>
 <li>base learning rate = 0.005</li>
 <li>batch size = 16</li>
 </ul>
-<p>This does not use any form of data augmentation, and interestingly the validation loss seems to keep slowly decreasing even after a large number of epochs.</p>
+<p>This BTW does not use any form of data augmentation, and interestingly the validation loss seems to keep slowly decreasing even after a large number of epochs. I suppose one could search for better optimizer hparams (the validation loss jumps around quite a bit) but this looks already good enough.</p>
 <h1 id="saving-checkpoints-for-inference">Saving checkpoints for inference</h1>
 <p>I use <a href="https://lightning.ai/docs/pytorch/stable/">PyTorch Lightning</a> for all my deep learning models, which takes care of automatically saving models during and at the end of each training run.</p>
 <p>Initially I planned to export the models to ONNX for faster inference but it turns out at least one of my model blocks (the mel-spectrogram FFT) is not currently supported by ONNX due to some missing complex number implementation <code>:/</code></p>
+<h1 id="conclusion-of-pt.-1">Conclusion of pt. 1</h1>
+<p>Stay tuned for pt. 2 with evaluation and more! Thanks for reading!</p>
     </section>
 </article>
 
