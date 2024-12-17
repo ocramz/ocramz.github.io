@@ -39,7 +39,7 @@ Each graph vertex corresponds to a music /album/ which contains one or more trac
 There are a number of preprocessing steps, and the intermediate results are stored in SQLite to minimize the amount of training-time CPU compute. Here is a summary:
 
 * Compute the <b>graph in-degrees</b> : `INSERT INTO nodes_degrees SELECT to_node, count(to_node) FROM edges GROUP BY to_node`
-* Download top $k$ albums by in-degree <b>centrality</b>: `SELECT album_url, nodes.album_id FROM nodes INNER JOIN nodes_degrees ON nodes.album_id = nodes_degrees.album_id WHERE degree > {degree_min} ORDER BY degree DESC LIMIT {k}`. So far I used $degree = 10$ and $k = 50$.
+* Download top $k$ albums by in-degree <b>centrality</b>: `SELECT album_url, nodes.album_id FROM nodes INNER JOIN nodes_degrees ON nodes.album_id = nodes_degrees.album_id WHERE degree > {degree_min} ORDER BY degree DESC LIMIT {k}`. So far I used `degree_min` = 10 and `k` = 50.
 * For each track in each album: split the audio in <b>30-seconds chunks</b>, and assign it to either the training or test or validation partition. It's crucial to fix the chunk length, as training works with data batches, and each batch is a (anchor, positive, negative)-tuple of $B \times T$ tensors (batch size, time steps).
 * Compute the preference <b>graph distances</b> for each album, up to distance $d_{max}$, by breadth-first search. So far I used $d_{max} = 4$.
 * For each dataset partition and audio chunk, sample a few other chunks from the graph distance map (<a href="https://en.wikipedia.org/wiki/Isochrone_map">"isochrone"</a>?), among the closest and farthest from the anchor. The IDs for these will be stored in a <b>triplet metadata table</b>.
