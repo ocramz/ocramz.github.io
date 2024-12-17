@@ -65,20 +65,18 @@ The NN architecture can be broken down as follows:
 
 * the audio samples are first transformed into <b>mel-spectrograms</b> (which bins frequencies according to a human perceptual model). I use `n_mels = 128`, 2048 FFT samples and a FFT stride of 1024 throughout.
 * the STFT representation is fed to 3 <b>convolutional stages</b>, i.e. `Conv1d` interleaved with a max-pooling operation (window size 4 and 2 respectively). Both the convolutions and the pooling are done over the time axis only.
-* After the last 1D convolution there is an <b>average pooling</b> operation over the whole time axis. The result of this is a vector having size `n_mels` for each sample.
+* After the last 1D convolution there is an <b>average pooling</b> operation over the whole time axis. The result of this is a vector of size `n_mels`.
 * Next, there are three <b>linear layers</b> interleaved with a `ReLU` nonlinearity. The first linear layer maps from `n_mels` to a larger `dim_hidden = 1024`, the middle one is a square matrix and the last one projects the hidden dimension down to our embedding space.
 * The fully-connected layers are then followed by a $L_2$ <b>normalization</b> step.
 
 The main changes from the Spotify CNN are: 
 
 * I don't use 3 different time pooling functions but only an average pooling. 
-* The loss function: here I use a <a href="https://pytorch.org/docs/stable/generated/torch.nn.TripletMarginLoss.html">triplet loss</a> based on the <a href="https://en.wikipedia.org/wiki/Cosine_similarity#Cosine_distance">Euclidean distance</a>, which for unit-length vectors $x_1$ and $x_2$ can be defined as:
-
-$$
-d(x_1, x_2) := \sqrt{2 ( 1 - (x_1 \cdot x_2)) }
-$$
+* The loss function: I use a <a href="https://pytorch.org/docs/stable/generated/torch.nn.TripletMarginLoss.html">triplet loss</a> based on the <a href="https://en.wikipedia.org/wiki/Cosine_similarity#Cosine_distance">Euclidean distance</a>.
 
 # Training
+
+At peak, training the model takes less than 4 GB of vRAM, which sits comfortably within a T4 or similar cheap-tier GPU.
 
 Training the model above converges quite smoothly, as we can see below:
 

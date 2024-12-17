@@ -92,19 +92,17 @@
 <ul>
 <li>the audio samples are first transformed into <b>mel-spectrograms</b> (which bins frequencies according to a human perceptual model). I use <code>n_mels = 128</code>, 2048 FFT samples and a FFT stride of 1024 throughout.</li>
 <li>the STFT representation is fed to 3 <b>convolutional stages</b>, i.e. <code>Conv1d</code> interleaved with a max-pooling operation (window size 4 and 2 respectively). Both the convolutions and the pooling are done over the time axis only.</li>
-<li>After the last 1D convolution there is an <b>average pooling</b> operation over the whole time axis. The result of this is a vector having size <code>n_mels</code> for each sample.</li>
+<li>After the last 1D convolution there is an <b>average pooling</b> operation over the whole time axis. The result of this is a vector of size <code>n_mels</code>.</li>
 <li>Next, there are three <b>linear layers</b> interleaved with a <code>ReLU</code> nonlinearity. The first linear layer maps from <code>n_mels</code> to a larger <code>dim_hidden = 1024</code>, the middle one is a square matrix and the last one projects the hidden dimension down to our embedding space.</li>
 <li>The fully-connected layers are then followed by a <span class="math inline"><em>L</em><sub>2</sub></span> <b>normalization</b> step.</li>
 </ul>
 <p>The main changes from the Spotify CNN are:</p>
 <ul>
 <li>I don’t use 3 different time pooling functions but only an average pooling.</li>
-<li>The loss function: here I use a <a href="https://pytorch.org/docs/stable/generated/torch.nn.TripletMarginLoss.html">triplet loss</a> based on the <a href="https://en.wikipedia.org/wiki/Cosine_similarity#Cosine_distance">Euclidean distance</a>, which for unit-length vectors <span class="math inline"><em>x</em><sub>1</sub></span> and <span class="math inline"><em>x</em><sub>2</sub></span> can be defined as:</li>
+<li>The loss function: I use a <a href="https://pytorch.org/docs/stable/generated/torch.nn.TripletMarginLoss.html">triplet loss</a> based on the <a href="https://en.wikipedia.org/wiki/Cosine_similarity#Cosine_distance">Euclidean distance</a>.</li>
 </ul>
-<p><span class="math display">$$
-d(x_1, x_2) := \sqrt{2 ( 1 - (x_1 \cdot x_2)) }
-$$</span></p>
 <h1 id="training">Training</h1>
+<p>At peak, training the model takes less than 4 GB of vRAM, which sits comfortably within a T4 or similar cheap-tier GPU.</p>
 <p>Training the model above converges quite smoothly, as we can see below:</p>
 <p><img src="../images/melspec_training_loss.png" width="500/"></p>
 <p>With the following parameters:</p>
