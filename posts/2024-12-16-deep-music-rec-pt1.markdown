@@ -45,6 +45,8 @@ There are a number of preprocessing steps, and the intermediate results are stor
 * For each dataset partition and audio chunk, sample a few other chunks from the graph distance map (<a href="https://en.wikipedia.org/wiki/Isochrone_map">"isochrone"</a>?), among the closest and farthest from the anchor. The IDs for these will be stored in a <b>triplet metadata table</b>.
 * The PyTorch `Dataset` looks up a triplet from a row index, then using that it retrieves the respective audio chunks (which are stored in SQLite as `np.ndarray`s).
 
+As a side note, I highly recommend storing intermediate dataset stages in a SQLite database rather than in a filesystem. This lets us look up things by various attributes without having to rely on crazy regexes, which in turn should help with long-term maintainability. Since it's always available thanks to the Python base library, you don't have to worry about the DB being unreachable and the like.
+
 The music preference graph and audio samples were constructed from public sources.
 
 
@@ -63,10 +65,10 @@ The embedding model is similar to the <a href="https://sander.ai/2014/08/05/spot
 
 The NN architecture can be broken down as follows:
 
-* the audio samples are first sampled at 16 kHz and transformed into <b>mel-spectrograms</b> (which bins frequencies according to a human perceptual model). I use `n_mels = 128`, 2048 FFT samples and a FFT stride of 1024 throughout.
-* the STFT representation is fed to 3 <b>convolutional stages</b>, i.e. `Conv1d` interleaved with a max-pooling operation (window size 4 and 2 respectively). Both the convolutions and the pooling are done over the time axis only.
+* the audio samples are first <b>down-sampled</b> at 16 kHz and transformed into <b>mel-spectrograms</b> (which bins frequencies according to a human perceptual model). I use `n_mels = 128`, 2048 FFT samples and a FFT stride of 1024 throughout.
+* the STFT representation is fed to 3 <b>convolutional stages</b>, i.e. `Conv1d` interleaved with a <b>max-pooling operation</b> (window size 4 and 2 respectively). Both the convolutions and the pooling are done over the time axis only.
 * After the last 1D convolution there is an <b>average pooling</b> operation over the whole time axis. The result of this is a vector of size `n_mels`.
-* Next, there are three <b>linear layers</b> interleaved with a `ReLU` nonlinearity. The first linear layer maps from `n_mels` to a larger `dim_hidden = 1024`, the middle one is a square matrix and the last one projects the hidden dimension down to our embedding space.
+* Next, there are three <b>linear layers interleaved with a ReLU nonlinearity</b>. The first linear layer maps from `n_mels` to a larger `dim_hidden = 1024`, the middle one is a square matrix and the last one projects the hidden dimension down to our embedding space.
 * The fully-connected layers are then followed by a $L_2$ <b>normalization</b> step.
 
 The main changes from the Spotify CNN are: 
@@ -99,6 +101,8 @@ Initially I planned to export the models to ONNX for faster inference but it tur
 
 # Conclusion
 
-Here I've shown a way to use a preference graph for 
+In this post I've shown a way to use a preference graph as supervision signal for training a neural audio embedding model.
+
+
 
 Stay tuned for pt. 2 with evaluation and more! Thanks for reading!

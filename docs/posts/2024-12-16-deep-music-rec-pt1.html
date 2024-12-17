@@ -78,6 +78,7 @@
 <li>For each dataset partition and audio chunk, sample a few other chunks from the graph distance map (<a href="https://en.wikipedia.org/wiki/Isochrone_map">“isochrone”</a>?), among the closest and farthest from the anchor. The IDs for these will be stored in a <b>triplet metadata table</b>.</li>
 <li>The PyTorch <code>Dataset</code> looks up a triplet from a row index, then using that it retrieves the respective audio chunks (which are stored in SQLite as <code>np.ndarray</code>s).</li>
 </ul>
+<p>As a side note, I highly recommend storing intermediate dataset stages in a SQLite database rather than in a filesystem. This lets us look up things by various attributes without having to rely on crazy regexes, which in turn should help with long-term maintainability. Since it’s always available thanks to the Python base library, you don’t have to worry about the DB being unreachable and the like.</p>
 <p>The music preference graph and audio samples were constructed from public sources.</p>
 <h1 id="model-take-1">Model, take 1</h1>
 <p>I initially experimented with a <a href="https://pytorch-geometric.readthedocs.io/en/latest/generated/torch_geometric.nn.conv.GCNConv.html#torch_geometric.nn.conv.GCNConv">graph convolutional network</a>. The idea behind this was to:</p>
@@ -90,10 +91,10 @@
 <p>The embedding model is similar to the <a href="https://sander.ai/2014/08/05/spotify-cnns.html">“Spotify CNN” introduced here back in 2014, with a couple variations.</a></p>
 <p>The NN architecture can be broken down as follows:</p>
 <ul>
-<li>the audio samples are first sampled at 16 kHz and transformed into <b>mel-spectrograms</b> (which bins frequencies according to a human perceptual model). I use <code>n_mels = 128</code>, 2048 FFT samples and a FFT stride of 1024 throughout.</li>
-<li>the STFT representation is fed to 3 <b>convolutional stages</b>, i.e. <code>Conv1d</code> interleaved with a max-pooling operation (window size 4 and 2 respectively). Both the convolutions and the pooling are done over the time axis only.</li>
+<li>the audio samples are first <b>down-sampled</b> at 16 kHz and transformed into <b>mel-spectrograms</b> (which bins frequencies according to a human perceptual model). I use <code>n_mels = 128</code>, 2048 FFT samples and a FFT stride of 1024 throughout.</li>
+<li>the STFT representation is fed to 3 <b>convolutional stages</b>, i.e. <code>Conv1d</code> interleaved with a <b>max-pooling operation</b> (window size 4 and 2 respectively). Both the convolutions and the pooling are done over the time axis only.</li>
 <li>After the last 1D convolution there is an <b>average pooling</b> operation over the whole time axis. The result of this is a vector of size <code>n_mels</code>.</li>
-<li>Next, there are three <b>linear layers</b> interleaved with a <code>ReLU</code> nonlinearity. The first linear layer maps from <code>n_mels</code> to a larger <code>dim_hidden = 1024</code>, the middle one is a square matrix and the last one projects the hidden dimension down to our embedding space.</li>
+<li>Next, there are three <b>linear layers interleaved with a ReLU nonlinearity</b>. The first linear layer maps from <code>n_mels</code> to a larger <code>dim_hidden = 1024</code>, the middle one is a square matrix and the last one projects the hidden dimension down to our embedding space.</li>
 <li>The fully-connected layers are then followed by a <span class="math inline"><em>L</em><sub>2</sub></span> <b>normalization</b> step.</li>
 </ul>
 <p>The main changes from the Spotify CNN are:</p>
@@ -116,7 +117,7 @@
 <p>I use <a href="https://lightning.ai/docs/pytorch/stable/">PyTorch Lightning</a> for all my deep learning models, which takes care of automatically saving models during and at the end of each training run.</p>
 <p>Initially I planned to export the models to ONNX for faster inference but it turns out at least one of my model blocks (the mel-spectrogram FFT) is not currently supported by ONNX due to some missing complex number implementation <code>:/</code></p>
 <h1 id="conclusion">Conclusion</h1>
-<p>Here I’ve shown a way to use a preference graph for</p>
+<p>In this post I’ve shown a way to use a preference graph as supervision signal for training a neural audio embedding model.</p>
 <p>Stay tuned for pt. 2 with evaluation and more! Thanks for reading!</p>
     </section>
 </article>
