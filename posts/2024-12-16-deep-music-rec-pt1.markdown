@@ -66,7 +66,7 @@ The embedding model is similar to the <a href="https://sander.ai/2014/08/05/spot
 The NN architecture can be broken down as follows:
 
 * the audio samples are first <b>down-sampled</b> at 16 kHz and transformed into <b>mel-spectrograms</b> (which bins frequencies according to a human perceptual model). I use `n_mels = 128`, 2048 FFT samples and a FFT stride of 1024 throughout.
-* the STFT representation is fed to 3 <b>convolutional stages</b>, i.e. `Conv1d` interleaved with a <b>max-pooling operation</b> (window size 4 and 2 respectively). Both the convolutions and the pooling are done over the time axis only.
+* the STFT representation is fed to 3 <b>convolutional stages</b>, i.e. `Conv1d` <b>interleaved with a max-pooling operation</b> (window size 4 and 2 respectively). Both the convolutions and the pooling are done over the time axis only.
 * After the last 1D convolution there is an <b>average pooling</b> operation over the whole time axis. The result of this is a vector of size `n_mels`.
 * Next, there are three <b>linear layers interleaved with a ReLU nonlinearity</b>. The first linear layer maps from `n_mels` to a larger `dim_hidden = 1024`, the middle one is a square matrix and the last one projects the hidden dimension down to our embedding space.
 * The fully-connected layers are then followed by a $L_2$ <b>normalization</b> step.
