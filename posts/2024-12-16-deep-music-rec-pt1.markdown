@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Building a deep learning-based music recommendation system - pt. 1
+title: Re-building a deep learning-based music recommendation system - pt. 1
 date: 2024-12-16
 categories: machine-learning
 ---
