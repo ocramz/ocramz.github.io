@@ -2,7 +2,7 @@
 layout: post
 title: Re-building a deep learning-based music recommendation system - pt. 1
 date: 2024-12-16
-categories: machine-learning
+categories: machine-learning deep-learning music
 ---
 
 
@@ -11,7 +11,7 @@ categories: machine-learning
 
 <!-- ![Preference graph](prefs_graph.png "Preference graph") -->
 
-Can we reverse engineer a music recommendation model from raw audio samples and a preference graph?
+Can we build a music recommendation model from raw audio samples and a recommendations graph?
 
 <img src="/images/prefs_graph.png" width=500/>
 
@@ -31,10 +31,12 @@ It becomes a (context-free, static, non-personalized) recommendation model by:
 
 # Dataset
 
+The recommendations graph is taken as fixed, and we do not know how it was constructed.
+
 Each graph vertex corresponds to a music /album/ which contains one or more tracks. In order to limit the size of the audio dataset I only considered music albums having the largest <a href="https://en.wikipedia.org/wiki/Centrality#Degree_centrality">in-degree centrality</a>. In simpler words, these are the most recommended albums in the recommendations graph.
 
 
-There are a number of preprocessing steps, and the intermediate results are stored in SQLite, indexed by album and track metadata. For the sake of brevity let's summarize the preprocessing:
+There are a number of preprocessing steps, and the intermediate results are stored in SQLite to minimize the amount of training-time CPU compute. Here is a summary:
 
 * Compute the <b>graph in-degrees</b> : `INSERT OR REPLACE INTO nodes_degrees SELECT to_node, count(to_node) FROM edges GROUP BY to_node`
 * Download top $k$ albums by in-degree <b>centrality</b>: `SELECT album_url, nodes.album_id FROM nodes INNER JOIN nodes_degrees ON nodes.album_id = nodes_degrees.album_id WHERE degree > {degree_min} ORDER BY degree DESC LIMIT {k}`. So far I used $degree = 10$ and $k = 50$.
