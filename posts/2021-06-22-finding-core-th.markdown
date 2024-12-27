@@ -5,9 +5,9 @@ date: 2021-06-22
 categories: Haskell GHC metaprogramming
 ---
 
-## 2024 Summary
+## Summary
 
-It's been a while since I used Haskell at this depth, so here's a high-level overview: the GHC compiler produces an intermediate program representation in a internal language called "Core"; this post documents a way to mark certain expressions in order to retrieve their "Core" representation later in the compilation pipeline.
+The GHC compiler produces an intermediate program representation in a internal language called "Core"; this post documents a way for a user to mark certain expressions in order to retrieve their "Core" representation later in the compilation pipeline.
 
 <hr>
 
