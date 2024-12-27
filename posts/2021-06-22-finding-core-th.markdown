@@ -7,7 +7,7 @@ categories: Haskell GHC metaprogramming
 
 ## 2024 Disclaimer
 
-It's been a while since I used Haskell at this depth, and looking at this wall of deeply technical lore I must admit I only follow like 50% of it. This said, it's a pretty cool trick if you are interested in GHC internals!
+It's been a while since I used Haskell at this depth, so here's a summary: the GHC compiler produces an intermediate program representation in a internal language called "Core". This post documents a way to mark certain expressions in order to retrieve their "Core" representation later in the compilation pipeline.
 
 <hr>
 
@@ -19,7 +19,7 @@ The compiler offers a [plugin system](https://downloads.haskell.org/ghc/latest/d
 
 While writing a GHC plugin that lets the user analyze and transform the Core representation of certain Haskell expressions, I found myself in need of a specific bit of machinery: _how can the user tell the compiler which expression to look for?_ Moreover, how to map the names of user-defined terms to the internal representation used by the compiler?
 
-It turns out `inspection-testing` provides this functionality as part of its user interface, and I will document it here both to consolidate its details in my head and so that others might learn from it in the future. 
+It turns out the `inspection-testing` library provides this functionality as part of its user interface, and I will document it here both to consolidate its details in my head and so that others might learn from it in the future. 
 
 This post will also introduce concepts from both the `ghc` and `template-haskell` libraries as needed, so it should be useful to those who, like me, had zero experience in compiler internals until the other day.
 
