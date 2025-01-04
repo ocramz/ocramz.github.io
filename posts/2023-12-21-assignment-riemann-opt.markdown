@@ -54,7 +54,7 @@ We use a customized version of `mctorch` [3], extended to implement the manifold
 
 We initialize at a random doubly stochastic matrix, and use SGD with learning rate 2e-2.
 
-<img src="/images/assign_opt_gap_iter-1000_n-10_lr-0.02_1735984842.png" width=500/>
+<img src="/images/assign_opt_gap_iter-1000_n-10_lr-0.02_1735984842.png" width=400/>
 
 As we can see above, the optimality gap $y - y_{Munkres}$ decreases smoothly (from most starting points, that is).
 
