@@ -28,8 +28,14 @@ The Birkhoff-von Neumann theorem states that, in dimension $n$, the convex polyt
 
 Can we use this fact to solve the assignment problem with a convex, interior point approach?
 
-$$
-$$
+
+
+# Experiments
+
+<img src="assign_opt_gap-1000_n-10_lr-0.02_1735984842.gif"/>
+
+<img src="assign_movie_iter-1000_n-10_lr-0.02_1735984842.gif"/>
+
 
 
 # References
