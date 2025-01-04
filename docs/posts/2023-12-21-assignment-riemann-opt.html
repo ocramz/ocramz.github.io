@@ -63,12 +63,16 @@ $$</span></p>
 <h1 id="from-discrete-to-continuous">From discrete to continuous</h1>
 <p>The Birkhoff-von Neumann theorem states that, in dimension <span class="math inline"><em>n</em></span>, the convex polytope <span class="math inline"><em>B</em></span> of doubly convex matrices [1] is the convex hull of the set of <span class="math inline"><em>n</em> × <em>n</em></span> permutation matrices. This polytope is called the Birkhoff polytope [2].</p>
 <p>Can we use this fact to solve the assignment problem with a convex, interior point approach?</p>
+<p>Since the cost function is linear in the argument <span class="math inline"><em>P</em></span> we expect the optimum to lie at a vertex of the admissible region <span class="math inline"><em>B</em></span>.</p>
+<p>What is left to find out is how to turn a constrained optimization problem into an unconstrained one over an appropriate subspace.</p>
 <h2 id="the-manifold-of-doubly-stochastic-matrices">The manifold of doubly stochastic matrices</h2>
+<h2 id="first-order-optimization-on-manifolds">First-order optimization on manifolds</h2>
+<p>We use a customized version of <code>mctorch</code> [3], extended to implement the manifold of doubly-stochastic matrices.</p>
 <h1 id="experiments">Experiments</h1>
-<p>We initialize at a random doubly stochastic matrix.</p>
-<p><img src="../images/assign_opt_gap_iter-1000_n-10_lr-0.02_1735984842.png" /></p>
-<p>The optimality gap <span class="math inline"><em>y</em> − <em>y</em><sub><em>M</em><em>u</em><em>n</em><em>k</em><em>r</em><em>e</em><em>s</em></sub></span> decreases smoothly</p>
-<p><img src="../images/assign_movie_iter-1000_n-10_lr-0.02_1735984842.gif" /></p>
+<p>We initialize at a random doubly stochastic matrix, and use</p>
+<p><img src="../images/assign_opt_gap_iter-1000_n-10_lr-0.02_1735984842.png" width="500/"></p>
+<p>As we can see above, the optimality gap <span class="math inline"><em>y</em> − <em>y</em><sub><em>M</em><em>u</em><em>n</em><em>k</em><em>r</em><em>e</em><em>s</em></sub></span> decreases smoothly (from most starting points, that is).</p>
+<p><img src="../images/assign_movie_iter-1000_n-10_lr-0.02_1735984842.gif" width="500/"></p>
 <p>In the above animation we see the optimal assignment as dashed red edges, superimposed with the temporary solution in blue. As a visual cue, the thickness of the blue edges is proportional to the respective edge coefficient, and we see it both “sparsifies” as it approaches</p>
 <h2 id="code-repo">Code repo</h2>
 <p>All scripts can be found here: https://github.com/ocramz/assignment-riemann-opt</p>
@@ -76,6 +80,7 @@ $$</span></p>
 <ol type="1">
 <li>Doubly-stochastic matrix <a href="https://en.wikipedia.org/wiki/Doubly_stochastic_matrix">wikipedia</a></li>
 <li>Birkhoff polytope <a href="https://en.wikipedia.org/wiki/Birkhoff_polytope">wikipedia</a></li>
+<li><code>mctorch</code> <a href="github">https://github.com/mctorch/mctorch</a></li>
 </ol>
     </section>
 </article>

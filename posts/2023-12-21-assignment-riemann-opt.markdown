@@ -28,19 +28,33 @@ The Birkhoff-von Neumann theorem states that, in dimension $n$, the convex polyt
 
 Can we use this fact to solve the assignment problem with a convex, interior point approach?
 
+Since the cost function is linear in the argument $P$ we expect the optimum to lie at a vertex of the admissible region $B$.
+
+What is left to find out is how to turn a constrained optimization problem into an unconstrained one over an appropriate subspace.
 
 ## The manifold of doubly stochastic matrices
 
 
+
+
+
+
+## First-order optimization on manifolds
+
+We use a customized version of `mctorch` [3], extended to implement the manifold of doubly-stochastic matrices.
+
+
+
+
 # Experiments
 
-We initialize at a random doubly stochastic matrix. 
+We initialize at a random doubly stochastic matrix, and use
 
-<img src="/images/assign_opt_gap_iter-1000_n-10_lr-0.02_1735984842.png"/>
+<img src="/images/assign_opt_gap_iter-1000_n-10_lr-0.02_1735984842.png" width=500/>
 
-The optimality gap $y - y_{Munkres}$ decreases smoothly
+As we can see above, the optimality gap $y - y_{Munkres}$ decreases smoothly (from most starting points, that is).
 
-<img src="/images/assign_movie_iter-1000_n-10_lr-0.02_1735984842.gif"/>
+<img src="/images/assign_movie_iter-1000_n-10_lr-0.02_1735984842.gif" width=500/>
 
 In the above animation we see the optimal assignment as dashed red edges, superimposed with the temporary solution in blue. As a visual cue, the thickness of the blue edges is proportional to the respective edge coefficient, and we see it both "sparsifies" as it approaches 
 
@@ -54,3 +68,4 @@ All scripts can be found here: https://github.com/ocramz/assignment-riemann-opt
 
 1. Doubly-stochastic matrix <a href="https://en.wikipedia.org/wiki/Doubly_stochastic_matrix">wikipedia</a>
 2. Birkhoff polytope <a href="https://en.wikipedia.org/wiki/Birkhoff_polytope">wikipedia</a>
+3. `mctorch` <a href="github">https://github.com/mctorch/mctorch</a>
