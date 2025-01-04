@@ -56,8 +56,9 @@
 <h1 id="technical-summary">Technical summary</h1>
 <p>We use the Birkhoff theorem to turn a combinatorial optimization problem (minimum bipartite matching aka assignment) into a continuous one, constrained on the manifold of doubly stochastic matrices.</p>
 <h1 id="minimum-bipartite-matching">Minimum bipartite matching</h1>
+<p>Given a bipartite graph between two sets <span class="math inline"><em>U</em></span>, <span class="math inline"><em>V</em></span> and an edge cost matrix <span class="math inline"><em>C</em></span> with positive entries, the assignment problem can be written as finding an permutation matrix <span class="math inline"><em>P</em></span> that solves the following problem:</p>
 <p><span class="math display">$$
-P^{\star} = \argmin
+P^{\star} = \underset{P}{\mathrm{argmin}} P C
 $$</span></p>
 <h1 id="references">References</h1>
 <ol type="1">

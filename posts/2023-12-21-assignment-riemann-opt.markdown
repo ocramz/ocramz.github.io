@@ -17,8 +17,10 @@ We use the Birkhoff theorem to turn a combinatorial optimization problem (minimu
 
 # Minimum bipartite matching
 
+Given a bipartite graph between two sets $U$, $V$ and an edge cost matrix $C$ with positive entries, the assignment problem can be written as finding an permutation matrix $P$ that solves the following problem:
+
 $$
-P^{\star} = \argmin
+P^{\star} = \underset{P}{\mathrm{argmin}} P C
 $$
 
 
