@@ -7,6 +7,8 @@ categories: optimization
 
 # Introduction
 
+Here I document a little experiment which connects some interesting areas of mathematics.
+
 
 We use the Birkhoff theorem to turn a combinatorial optimization problem (minimum bipartite matching aka assignment) into a continuous one, constrained on the manifold of doubly stochastic matrices.
 
@@ -34,7 +36,9 @@ What is left to find out is how to turn a constrained optimization problem into 
 
 ## The manifold of doubly stochastic matrices
 
-Informally, a <i>manifold</i> is a 
+Informally, a <i>manifold</i> is a version of Euclidean space that is only locally flat (unlike regular Euclidean space which is flat everywhere).
+
+
 
 
 
@@ -48,7 +52,7 @@ We use a customized version of `mctorch` [3], extended to implement the manifold
 
 # Experiments
 
-We initialize at a random doubly stochastic matrix, and use
+We initialize at a random doubly stochastic matrix, and use SGD with learning rate 2e-2.
 
 <img src="/images/assign_opt_gap_iter-1000_n-10_lr-0.02_1735984842.png" width=500/>
 
@@ -61,7 +65,7 @@ In the above animation we see the optimal assignment as dashed red edges, superi
 
 ## Code repo
 
-All scripts can be found here: https://github.com/ocramz/assignment-riemann-opt
+All scripts can be found on my GitHub profile <a href="https://github.com/ocramz/assignment-riemann-opt">here</a>.
 
 
 # References
