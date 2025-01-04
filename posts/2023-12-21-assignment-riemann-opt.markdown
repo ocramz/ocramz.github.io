@@ -18,7 +18,7 @@ We use the Birkhoff theorem to turn a combinatorial optimization problem (minimu
 Given a bipartite graph between two sets $U$, $V$ of $n$ items each, and an edge cost matrix $C$ with positive entries, the assignment problem can be written as finding an permutation matrix $P$ that solves the following problem:
 
 $$
-P^{\star} = \underset{P \in \mathfrak{P}}{\mathrm{argmin}} \left( P C \right)
+P^{\star} = \underset{P \in \mathbb{P}}{\mathrm{argmin}} \left( P C \right)
 $$
 
 Recall that a permutation matrix has binary entries, and exactly one $1$ per row. The identity matrix can be seen as a trivial permutation that does nothing to its argument, when seen as an operator.
@@ -38,9 +38,9 @@ What is left to find out is how to turn a constrained optimization problem into 
 
 ## The manifold of doubly stochastic matrices
 
-Informally, a <i>manifold</i> is a version of Euclidean space that is only locally flat (unlike regular Euclidean space which is flat everywhere).
+Informally, a <i>manifold</i> is a version of Euclidean space $\mathbb{R}^n$ that is only locally flat (unlike regular Euclidean space which is flat everywhere).
 
-
+The main technical device for moving between $\mathbb{R}^n$ and a manifold is a pair of transformations: 
 
 
 
@@ -54,8 +54,7 @@ We use a customized version of `mctorch` [3], extended to implement the manifold
 
 # Experiments
 
-We initialize at a random doubly stochastic matrix, and use SGD with learning rate 2e-2.
-
+We initialize the optimizer at a random doubly stochastic matrix, and use SGD with learning rate 2e-2.
 
 
 <img src="/images/assign_movie_iter-1000_n-10_lr-0.02_1735984842.gif" width=500/>

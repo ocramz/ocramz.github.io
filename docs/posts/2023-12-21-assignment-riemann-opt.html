@@ -60,7 +60,7 @@
 <h2 id="minimum-bipartite-matching">Minimum bipartite matching</h2>
 <p>Given a bipartite graph between two sets <span class="math inline"><em>U</em></span>, <span class="math inline"><em>V</em></span> of <span class="math inline"><em>n</em></span> items each, and an edge cost matrix <span class="math inline"><em>C</em></span> with positive entries, the assignment problem can be written as finding an permutation matrix <span class="math inline"><em>P</em></span> that solves the following problem:</p>
 <p><span class="math display">$$
-P^{\star} = \underset{P \in \mathfrak{P}}{\mathrm{argmin}} \left( P C \right)
+P^{\star} = \underset{P \in \mathbb{P}}{\mathrm{argmin}} \left( P C \right)
 $$</span></p>
 <p>Recall that a permutation matrix has binary entries, and exactly one <span class="math inline">1</span> per row. The identity matrix can be seen as a trivial permutation that does nothing to its argument, when seen as an operator.</p>
 <p>Finding the optimal permutation matrix <span class="math inline"><em>P</em><sup>⋆</sup></span> is a combinatorial optimization problem that has well known polynomial-time solution algorithms, e.g. Munkres that runs in <span class="math inline"><em>O</em>(<em>n</em><sup>3</sup>)</span> time.</p>
@@ -70,11 +70,12 @@ $$</span></p>
 <p>Since the cost function is linear in the argument <span class="math inline"><em>P</em></span> we expect the optimum to lie at a vertex of the admissible region <span class="math inline"><em>B</em></span>.</p>
 <p>What is left to find out is how to turn a constrained optimization problem into an unconstrained one over an appropriate subspace.</p>
 <h2 id="the-manifold-of-doubly-stochastic-matrices">The manifold of doubly stochastic matrices</h2>
-<p>Informally, a <i>manifold</i> is a version of Euclidean space that is only locally flat (unlike regular Euclidean space which is flat everywhere).</p>
+<p>Informally, a <i>manifold</i> is a version of Euclidean space <span class="math inline">ℝ<sup><em>n</em></sup></span> that is only locally flat (unlike regular Euclidean space which is flat everywhere).</p>
+<p>The main technical device for moving between <span class="math inline">ℝ<sup><em>n</em></sup></span> and a manifold is a pair of transformations:</p>
 <h2 id="first-order-optimization-on-manifolds">First-order optimization on manifolds</h2>
 <p>We use a customized version of <code>mctorch</code> [3], extended to implement the manifold of doubly-stochastic matrices.</p>
 <h1 id="experiments">Experiments</h1>
-<p>We initialize at a random doubly stochastic matrix, and use SGD with learning rate 2e-2.</p>
+<p>We initialize the optimizer at a random doubly stochastic matrix, and use SGD with learning rate 2e-2.</p>
 <p><img src="../images/assign_movie_iter-1000_n-10_lr-0.02_1735984842.gif" width="500/"></p>
 <p>In the above animation we see the optimal assignment as dashed red edges, superimposed with the temporary solution in blue. As a visual cue, the thickness of the blue edges is proportional to the respective edge coefficient, and we see it both “sparsifies” as it approaches the optimum.</p>
 <p><img src="../images/assign_opt_gap_iter-1000_n-10_lr-0.02_1735984842.png" width="400/"></p>
