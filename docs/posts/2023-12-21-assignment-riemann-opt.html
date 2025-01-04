@@ -65,15 +65,20 @@ $$</span></p>
 <p>Recall that a permutation matrix has binary entries, and exactly one <span class="math inline">1</span> per row. The identity matrix can be seen as a trivial permutation that does nothing to its argument, when seen as an operator.</p>
 <p>Finding the optimal permutation matrix <span class="math inline"><em>P</em><sup>⋆</sup></span> is a combinatorial optimization problem that has well known polynomial-time solution algorithms, e.g. Munkres that runs in <span class="math inline"><em>O</em>(<em>n</em><sup>3</sup>)</span> time.</p>
 <h1 id="from-discrete-to-continuous">From discrete to continuous</h1>
-<p>The Birkhoff-von Neumann theorem states that, in dimension <span class="math inline"><em>n</em></span>, the convex polytope <span class="math inline"><em>B</em></span> of doubly convex matrices [1] is the convex hull of the set of <span class="math inline"><em>n</em> × <em>n</em></span> permutation matrices. This polytope is called the Birkhoff polytope [2].</p>
+<p>The Birkhoff-von Neumann theorem states that, in dimension <span class="math inline"><em>n</em></span>, the convex polytope <span class="math inline">𝔹</span> of doubly convex matrices [1] is the convex hull of the set of <span class="math inline"><em>n</em> × <em>n</em></span> permutation matrices. This polytope is called the Birkhoff polytope [2].</p>
 <p>Can we use this fact to solve the assignment problem with a convex, interior point approach?</p>
-<p>Since the cost function is linear in the argument <span class="math inline"><em>P</em></span> we expect the optimum to lie at a vertex of the admissible region <span class="math inline"><em>B</em></span>.</p>
+<p>Since the cost function is linear in the argument <span class="math inline"><em>P</em></span> we expect the optimum to lie at a vertex of the admissible region <span class="math inline">𝔹</span>.</p>
+<p>We can thus relax the assignment problem such that the optimization variable ranges over the Birkhoff polytope:</p>
+<p><span class="math display">$$
+P^{\star} = \underset{P \in \mathbb{B}}{\mathrm{argmin}} \left( P C \right)
+$$</span></p>
 <p>What is left to find out is how to turn a constrained optimization problem into an unconstrained one over an appropriate subspace.</p>
 <h2 id="the-manifold-of-doubly-stochastic-matrices">The manifold of doubly stochastic matrices</h2>
 <p>Informally, a <i>manifold</i> is a version of Euclidean space <span class="math inline">ℝ<sup><em>n</em></sup></span> that is only locally flat (unlike regular Euclidean space which is flat everywhere).</p>
-<p>The main technical device for moving between <span class="math inline">ℝ<sup><em>n</em></sup></span> and a manifold <span class="math inline">𝔐</span> is an orthogonal projection. The gradient of our cost function over <span class="math inline"><em>M</em></span> is then expressed as the projection of its gradient computed over <span class="math inline">ℝ<sup><em>n</em></sup></span>.</p>
+<p>The main technical device for moving between <span class="math inline">ℝ<sup><em>n</em></sup></span> and a manifold <span class="math inline">𝕄</span> is an orthogonal projection. The gradient of our cost function over <span class="math inline">𝕄</span> is then expressed as the projection of its gradient computed over <span class="math inline">ℝ<sup><em>n</em></sup></span>.</p>
 <h2 id="first-order-optimization-on-manifolds">First-order optimization on manifolds</h2>
 <p>We use a customized version of <code>mctorch</code> [3], extended to implement the manifold of doubly-stochastic matrices.</p>
+<p>At every SGD step, the optimizer checks for</p>
 <h1 id="experiments">Experiments</h1>
 <p>We initialize the optimizer at a random doubly stochastic matrix, and use SGD with learning rate 2e-2.</p>
 <p><img src="../images/assign_movie_iter-1000_n-10_lr-0.02_1735984842.gif" width="500/"></p>

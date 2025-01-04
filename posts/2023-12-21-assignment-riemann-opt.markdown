@@ -28,11 +28,17 @@ Finding the optimal permutation matrix $P^{\star}$ is a combinatorial optimizati
 
 # From discrete to continuous
 
-The Birkhoff-von Neumann theorem states that, in dimension $n$, the convex polytope $B$ of doubly convex matrices [1] is the convex hull of the set of $n \times n$ permutation matrices. This polytope is called the Birkhoff polytope [2].
+The Birkhoff-von Neumann theorem states that, in dimension $n$, the convex polytope $\mathbb{B}$ of doubly convex matrices [1] is the convex hull of the set of $n \times n$ permutation matrices. This polytope is called the Birkhoff polytope [2].
 
 Can we use this fact to solve the assignment problem with a convex, interior point approach?
 
-Since the cost function is linear in the argument $P$ we expect the optimum to lie at a vertex of the admissible region $B$.
+Since the cost function is linear in the argument $P$ we expect the optimum to lie at a vertex of the admissible region $\mathbb{B}$.
+
+We can thus relax the assignment problem such that the optimization variable ranges over the Birkhoff polytope:
+
+$$
+P^{\star} = \underset{P \in \mathbb{B}}{\mathrm{argmin}} \left( P C \right)
+$$
 
 What is left to find out is how to turn a constrained optimization problem into an unconstrained one over an appropriate subspace.
 
@@ -40,7 +46,7 @@ What is left to find out is how to turn a constrained optimization problem into 
 
 Informally, a <i>manifold</i> is a version of Euclidean space $\mathbb{R}^n$ that is only locally flat (unlike regular Euclidean space which is flat everywhere).
 
-The main technical device for moving between $\mathbb{R}^n$ and a manifold $\mathfrak{M}$ is an orthogonal projection. The gradient of our cost function over $M$ is then expressed as the projection of its gradient computed over $\mathbb{R}^n$.
+The main technical device for moving between $\mathbb{R}^n$ and a manifold $\mathbb{M}$ is an orthogonal projection. The gradient of our cost function over $\mathbb{M}$ is then expressed as the projection of its gradient computed over $\mathbb{R}^n$.
 
 
 
@@ -49,6 +55,7 @@ The main technical device for moving between $\mathbb{R}^n$ and a manifold $\mat
 
 We use a customized version of `mctorch` [3], extended to implement the manifold of doubly-stochastic matrices.
 
+At every SGD step, the optimizer checks for 
 
 
 
