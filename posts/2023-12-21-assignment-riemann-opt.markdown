@@ -26,7 +26,7 @@ Finding the optimal permutation matrix $P^{\star}$ is a combinatorial optimizati
 
 The Birkhoff-von Neumann theorem states that, in dimension $n$, the convex polytope $B$ of doubly convex matrices [1] is the convex hull of the set of $n \times n$ permutation matrices. This polytope is called the Birkhoff polytope [2].
 
-Can we use this fact to turn 
+Can we use this fact to solve the assignment problem with a convex, interior point approach?
 
 $$
 $$
