@@ -17,9 +17,9 @@ We use the Birkhoff theorem to turn a combinatorial optimization problem (minimu
 
 # Minimum bipartite matching
 
-\[
+$$
 P^{\star} = \argmin
-\]
+$$
 
 
 # References
