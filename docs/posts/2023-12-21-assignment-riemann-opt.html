@@ -75,10 +75,10 @@ $$</span></p>
 <p>We use a customized version of <code>mctorch</code> [3], extended to implement the manifold of doubly-stochastic matrices.</p>
 <h1 id="experiments">Experiments</h1>
 <p>We initialize at a random doubly stochastic matrix, and use SGD with learning rate 2e-2.</p>
+<p><img src="../images/assign_movie_iter-1000_n-10_lr-0.02_1735984842.gif" width="500/"></p>
+<p>In the above animation we see the optimal assignment as dashed red edges, superimposed with the temporary solution in blue. As a visual cue, the thickness of the blue edges is proportional to the respective edge coefficient, and we see it both “sparsifies” as it approaches the optimum.</p>
 <p><img src="../images/assign_opt_gap_iter-1000_n-10_lr-0.02_1735984842.png" width="400/"></p>
 <p>As we can see above, the optimality gap <span class="math inline"><em>y</em> − <em>y</em><sub><em>M</em><em>u</em><em>n</em><em>k</em><em>r</em><em>e</em><em>s</em></sub></span> decreases smoothly (from most starting points, that is).</p>
-<p><img src="../images/assign_movie_iter-1000_n-10_lr-0.02_1735984842.gif" width="500/"></p>
-<p>In the above animation we see the optimal assignment as dashed red edges, superimposed with the temporary solution in blue. As a visual cue, the thickness of the blue edges is proportional to the respective edge coefficient, and we see it both “sparsifies” as it approaches</p>
 <h2 id="code-repo">Code repo</h2>
 <p>All scripts can be found on my GitHub profile <a href="https://github.com/ocramz/assignment-riemann-opt">here</a>.</p>
 <h1 id="references">References</h1>
