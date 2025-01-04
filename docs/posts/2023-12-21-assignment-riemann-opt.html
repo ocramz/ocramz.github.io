@@ -58,7 +58,7 @@
 <h2 id="minimum-bipartite-matching">Minimum bipartite matching</h2>
 <p>Given a bipartite graph between two sets <span class="math inline"><em>U</em></span>, <span class="math inline"><em>V</em></span> of <span class="math inline"><em>n</em></span> items each, and an edge cost matrix <span class="math inline"><em>C</em></span> with positive entries, the assignment problem can be written as finding an permutation matrix <span class="math inline"><em>P</em></span> that solves the following problem:</p>
 <p><span class="math display">$$
-P^{\star} = \underset{P}{\mathrm{argmin}} \left( P C \right)
+P^{\star} = \underset{P \in \mathfrak{P}}{\mathrm{argmin}} \left( P C \right)
 $$</span></p>
 <p>Recall that a permutation matrix has binary entries, and exactly one <span class="math inline">1</span> per row. The identity matrix can be seen as a trivial permutation that does nothing to its argument, when seen as an operator.</p>
 <p>Finding the optimal permutation matrix <span class="math inline"><em>P</em><sup>⋆</sup></span> is a combinatorial optimization problem that has well known polynomial-time solution algorithms, e.g. Munkres that runs in <span class="math inline"><em>O</em>(<em>n</em><sup>3</sup>)</span> time.</p>

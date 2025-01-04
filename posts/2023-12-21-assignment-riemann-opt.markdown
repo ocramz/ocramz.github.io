@@ -18,7 +18,7 @@ We use the Birkhoff theorem to turn a combinatorial optimization problem (minimu
 Given a bipartite graph between two sets $U$, $V$ of $n$ items each, and an edge cost matrix $C$ with positive entries, the assignment problem can be written as finding an permutation matrix $P$ that solves the following problem:
 
 $$
-P^{\star} = \underset{P}{\mathrm{argmin}} \left( P C \right)
+P^{\star} = \underset{P \in \mathfrak{P}}{\mathrm{argmin}} \left( P C \right)
 $$
 
 Recall that a permutation matrix has binary entries, and exactly one $1$ per row. The identity matrix can be seen as a trivial permutation that does nothing to its argument, when seen as an operator.
