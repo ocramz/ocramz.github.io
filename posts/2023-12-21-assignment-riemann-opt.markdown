@@ -34,7 +34,7 @@ What is left to find out is how to turn a constrained optimization problem into 
 
 ## The manifold of doubly stochastic matrices
 
-
+Informally, a <i>manifold</i> is a 
 
 
 
@@ -69,3 +69,4 @@ All scripts can be found here: https://github.com/ocramz/assignment-riemann-opt
 1. Doubly-stochastic matrix <a href="https://en.wikipedia.org/wiki/Doubly_stochastic_matrix">wikipedia</a>
 2. Birkhoff polytope <a href="https://en.wikipedia.org/wiki/Birkhoff_polytope">wikipedia</a>
 3. `mctorch` <a href="github">https://github.com/mctorch/mctorch</a>
+4. Douik, A. and Hassibi, B., Manifold Optimization Over the Set of Doubly Stochastic Matrices: A Second-Order Geometry <a href="https://arxiv.org/abs/1802.02628">arXiv</a>
