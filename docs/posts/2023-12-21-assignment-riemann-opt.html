@@ -71,7 +71,7 @@ $$</span></p>
 <p>What is left to find out is how to turn a constrained optimization problem into an unconstrained one over an appropriate subspace.</p>
 <h2 id="the-manifold-of-doubly-stochastic-matrices">The manifold of doubly stochastic matrices</h2>
 <p>Informally, a <i>manifold</i> is a version of Euclidean space <span class="math inline">ℝ<sup><em>n</em></sup></span> that is only locally flat (unlike regular Euclidean space which is flat everywhere).</p>
-<p>The main technical device for moving between <span class="math inline">ℝ<sup><em>n</em></sup></span> and a manifold is a pair of transformations:</p>
+<p>The main technical device for moving between <span class="math inline">ℝ<sup><em>n</em></sup></span> and a manifold <span class="math inline">𝔐</span> is an orthogonal projection. The gradient of our cost function over <span class="math inline"><em>M</em></span> is then expressed as the projection of its gradient computed over <span class="math inline">ℝ<sup><em>n</em></sup></span>.</p>
 <h2 id="first-order-optimization-on-manifolds">First-order optimization on manifolds</h2>
 <p>We use a customized version of <code>mctorch</code> [3], extended to implement the manifold of doubly-stochastic matrices.</p>
 <h1 id="experiments">Experiments</h1>

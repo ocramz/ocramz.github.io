@@ -40,7 +40,7 @@ What is left to find out is how to turn a constrained optimization problem into 
 
 Informally, a <i>manifold</i> is a version of Euclidean space $\mathbb{R}^n$ that is only locally flat (unlike regular Euclidean space which is flat everywhere).
 
-The main technical device for moving between $\mathbb{R}^n$ and a manifold is a pair of transformations: 
+The main technical device for moving between $\mathbb{R}^n$ and a manifold $\mathfrak{M}$ is an orthogonal projection. The gradient of our cost function over $M$ is then expressed as the projection of its gradient computed over $\mathbb{R}^n$.
 
 
 
