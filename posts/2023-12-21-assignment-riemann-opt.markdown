@@ -29,13 +29,20 @@ The Birkhoff-von Neumann theorem states that, in dimension $n$, the convex polyt
 Can we use this fact to solve the assignment problem with a convex, interior point approach?
 
 
+## The manifold of doubly stochastic matrices
+
 
 # Experiments
 
-<img src="assign_opt_gap-1000_n-10_lr-0.02_1735984842.gif"/>
+We initialize at a random doubly stochastic matrix. 
+
+<img src="assign_opt_gap-iter-1000_n-10_lr-0.02_1735984842.png"/>
+
+The optimality gap $y - y_{Munkres}$ decreases smoothly
 
 <img src="assign_movie_iter-1000_n-10_lr-0.02_1735984842.gif"/>
 
+In the above animation we see the optimal assignment as dashed red edges, superimposed with the temporary solution in blue. As a visual cue, the thickness of the blue edges is proportional to the respective edge coefficient, and we see it both "sparsifies" as it approaches 
 
 
 # References
