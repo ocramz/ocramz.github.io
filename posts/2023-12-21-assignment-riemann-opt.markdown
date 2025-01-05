@@ -10,7 +10,7 @@ categories: optimization
 <img src="/images/assignment_riemann_tri.png"/>
 
 
-Some time ago at work I noticed two separate instances of the same optimization problem, and decided to read up a little on the fundamentals. The two applications were object tracking in videos, and alignment of spectral peaks in chromatography data.
+Some time ago I ran into two separate instances of the same optimization problem in the span of a few days, and decided to read up a little on the fundamentals. The two applications were object tracking in videos, and alignment of spectral peaks in chromatography data.
 
 By chasing some definitions, I learned about the Birkhoff theorem. This allows to turn the initial combinatorial optimization problem ([minimum weight bipartite matching *aka* "assignment"](https://math.mit.edu/~goemans/18433S13/matching-notes.pdf) [0]) into a continuous one. The other half of my investigation is about how to turn a constrained continuous optimization problem into an unconstrained one on an appropriate manifold..
 
@@ -64,7 +64,9 @@ At every SGD step, the optimizer checks for
 
 # Experiments
 
-We initialize the optimizer at a random doubly stochastic matrix, and use SGD with learning rate 2e-2.
+We start by generating a cost matrix of rank $n$, and computing the optimal assignment with the Munkres algorithm, which provides us with a cost lower bound (LB).
+We then initialize the SGD optimizer at a random doubly stochastic matrix, with a learning rate 2e-2 (found empirically).
+
 
 
 <img src="/images/assign_movie_iter-1000_n-10_lr-0.02_1735984842.gif" width=500/>
