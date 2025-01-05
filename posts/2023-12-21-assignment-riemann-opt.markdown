@@ -60,7 +60,7 @@ As a side note, one of the internal operations to implement the retraction is th
 
 ## First-order optimization on manifolds
 
-We use a customized version of `mctorch` [3], extended to implement the manifold of doubly-stochastic matrices. In the following I refer to Python modules and line numbers in my implementation at this commit : 
+We use a customized version of `mctorch` [3], extended to implement the manifold of doubly-stochastic matrices. In the following I refer to Python modules and line numbers in my implementation at [this commit](https://github.com/ocramz/assignment-riemann-opt/tree/a6bf622b77160dac58dc72fdd1ddd036338d23f3) : 
 
 At every SGD step (`rsgd.py` line 57), the optimizer 
 
@@ -68,6 +68,7 @@ At every SGD step (`rsgd.py` line 57), the optimizer
 2. scales it by the negative learning rate
 3. computes the *retraction* of the current point along the scaled Riemann gradient, thereby moving to a new point on the manifold $\mathbb{M}$.
 
+The doubly-stochastic matrix manifold operations are implemented [here](https://github.com/ocramz/assignment-riemann-opt/blob/a6bf622b77160dac58dc72fdd1ddd036338d23f3/doublystochastic.py).
 
 
 # Experiments
