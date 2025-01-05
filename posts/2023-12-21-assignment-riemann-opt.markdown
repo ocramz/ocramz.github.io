@@ -32,7 +32,7 @@ The assignment problem is a special case of the larger family of *optimal transp
 
 # From discrete to continuous
 
-The Birkhoff-von Neumann theorem states that, in dimension $n$, the convex polytope $\mathbb{B}$ of doubly convex matrices [1] is the convex hull of the set of $n \times n$ permutation matrices. Informally, there is a convex, continuous region of space "between" the permutation matrices of a given dimensionality. This convex set is called the Birkhoff polytope [2].
+The Birkhoff-von Neumann theorem states that, in dimension $n$, the set $\mathbb{B}$ of doubly stochastic matrices [1] is the convex hull of the set of $n \times n$ permutation matrices. Informally, there is a convex, continuous region of space "between" the permutation matrices of a given dimensionality. This convex set is called the Birkhoff polytope [2].
 
 Can we perhaps use this result to solve the assignment problem with a convex, interior point approach?
 
