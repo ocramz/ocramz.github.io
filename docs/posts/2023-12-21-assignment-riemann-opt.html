@@ -97,9 +97,11 @@ $$</span></p>
 <p>We start by generating a cost matrix of rank <span class="math inline"><em>n</em></span>, and computing the optimal assignment with the Munkres algorithm, which provides us with a cost lower bound (<span class="math inline"><em>y</em><sub><em>L</em><em>B</em></sub></span>).
 We then initialize the SGD optimizer at a random doubly stochastic matrix, with a learning rate 2e-2 (found empirically).</p>
 <p><img src="../images/assign_movie_iter-1000_n-10_lr-0.02_1735984842.gif" width="500/"></p>
-<p>In the above animation we see the optimal assignment as dashed red edges, superimposed with the temporary solution in blue. As a visual cue, the thickness of the blue edges is proportional to the respective matrix coefficient, and we see it “sparsifies” as it approaches the optimum at a vertex of the Birkhoff set.</p>
+<p>In the above animation we see the optimal assignment as dashed red edges, superimposed with the temporary solution in blue. As a visual cue, the thickness of the blue edges is proportional to the respective matrix coefficient, and we see the matrix “sparsifies” as it approaches the optimum at a vertex of the Birkhoff set.</p>
 <p><img src="../images/assign_opt_gap_iter-1000_n-10_lr-0.02_1735984842.png" width="400/"></p>
-<p>As we can see above, the optimality gap between the current and the Munkres cost (<span class="math inline"><em>y</em> − <em>y</em><sub><em>L</em><em>B</em></sub></span>) converges smoothly to 0 (from most starting points, in my experiments). I still have to characterize when and how it converges slowly, and some rare cases in which the bound worsens for a while before improving again.</p>
+<p>As we can see above, the optimality gap between the current and the Munkres cost (<span class="math inline"><em>y</em> − <em>y</em><sub><em>L</em><em>B</em></sub></span>) converges smoothly to 0 (from most starting points, in my experiments). I still have to characterize some rare cases in which the bound worsens for a while before improving again.</p>
+<h1 id="conclusions">Conclusions</h1>
+<p>I was quite surprised this approach works so well, to be honest. Besides usual academic concerns of performance, convergence bounds etc., it would be interesting to generalize this approach and look at the actual connections with optimal transport: what if we have two histograms or <em>distributions</em> rather than the sets <span class="math inline"><em>U</em></span> and <span class="math inline"><em>V</em></span>?</p>
 <h2 id="code-repo">Code repo</h2>
 <p>All scripts can be found on my GitHub profile <a href="https://github.com/ocramz/assignment-riemann-opt">here</a>.</p>
 <h1 id="references">References</h1>

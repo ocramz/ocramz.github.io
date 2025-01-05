@@ -85,12 +85,17 @@ We then initialize the SGD optimizer at a random doubly stochastic matrix, with 
 
 <img src="/images/assign_movie_iter-1000_n-10_lr-0.02_1735984842.gif" width=500/>
 
-In the above animation we see the optimal assignment as dashed red edges, superimposed with the temporary solution in blue. As a visual cue, the thickness of the blue edges is proportional to the respective matrix coefficient, and we see it "sparsifies" as it approaches the optimum at a vertex of the Birkhoff set.
+In the above animation we see the optimal assignment as dashed red edges, superimposed with the temporary solution in blue. As a visual cue, the thickness of the blue edges is proportional to the respective matrix coefficient, and we see the matrix "sparsifies" as it approaches the optimum at a vertex of the Birkhoff set.
 
 
 <img src="/images/assign_opt_gap_iter-1000_n-10_lr-0.02_1735984842.png" width=400/>
 
-As we can see above, the optimality gap between the current and the Munkres cost ($y - y_{LB}$) converges smoothly to 0 (from most starting points, in my experiments). I still have to characterize when and how it converges slowly, and some rare cases in which the bound worsens for a while before improving again.
+As we can see above, the optimality gap between the current and the Munkres cost ($y - y_{LB}$) converges smoothly to 0 (from most starting points, in my experiments). I still have to characterize some rare cases in which the bound worsens for a while before improving again.
+
+
+# Conclusions
+
+I was quite surprised this approach works so well, to be honest. Besides usual academic concerns of performance, convergence bounds etc., it would be interesting to generalize this approach and look at the actual connections with optimal transport: what if we have two histograms or *distributions* rather than the sets $U$ and $V$?
 
 
 ## Code repo
