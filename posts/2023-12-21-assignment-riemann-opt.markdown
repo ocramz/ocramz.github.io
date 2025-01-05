@@ -81,7 +81,7 @@ The doubly-stochastic matrix manifold operations are implemented [here](https://
 # Experiments
 
 We start by generating a cost matrix of rank $n$, and computing the optimal assignment with the Munkres algorithm, which provides us with a cost lower bound ($y_{LB}$).
-We then initialize the SGD optimizer at a random doubly stochastic matrix, with the elements sampled from the ["folded" normal distribution](https://en.wikipedia.org/wiki/Folded_normal_distribution)  $ |\mathcal{N}(0, 1) |$.
+We then initialize the SGD optimizer at a random doubly stochastic matrix, with the elements sampled from the ["folded" normal distribution](https://en.wikipedia.org/wiki/Folded_normal_distribution)  $|\mathcal{N}(0, 1)|$.
 The learning rate is set to 2e-2 (found empirically).
 
 
