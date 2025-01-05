@@ -75,11 +75,12 @@ $$</span></p>
 P^{\star} = \underset{P \in \mathbb{B}}{\mathrm{argmin}} \left( P C \right)
 $$</span></p>
 <p>What is left to find out is how to turn a constrained optimization problem into an unconstrained one over an appropriate subspace.</p>
-<h2 id="the-manifold-of-doubly-stochastic-matrices">The manifold of doubly stochastic matrices</h2>
+<h2 id="optimization-on-manifolds">Optimization on manifolds</h2>
 <p>Informally, a <i>manifold</i> is a version of Euclidean space <span class="math inline">ℝ<sup><em>n</em></sup></span> that is only locally flat (unlike regular Euclidean space which is flat everywhere).</p>
 <p>The main technical devices for moving between <span class="math inline">ℝ<sup><em>n</em></sup></span> and a manifold <span class="math inline">𝕄</span> are the <em>orthogonal projection</em> from <span class="math inline">𝕄</span> to its tangent, and the <em>retraction</em> operation that assigns points on the tangent bundle <span class="math inline"><em>T</em>𝕄</span> to <span class="math inline">𝕄</span>.</p>
 <p>For an introduction to the definitions I found the book and online course <a href="https://www.nicolasboumal.net/book/#lectures">“An introduction to optimization on smooth manifolds”</a> to be very accessible.</p>
-<p>The numerical implementations of the projection and retraction are taken from the literature [4].</p>
+<h2 id="the-manifold-of-doubly-stochastic-matrices">The manifold of doubly stochastic matrices</h2>
+<p>The numerical implementations of the projection and retraction are taken from the literature, i.e. a single paper on the topic [4].</p>
 <p>As a side note, one of the internal operations to implement the retraction is the Sinkhorn-Knopp iteration which has applications elsewhere too (e.g in optimal transport).</p>
 <h2 id="first-order-optimization-on-manifolds">First-order optimization on manifolds</h2>
 <p>My optimization code is based on <code>torch</code> with some code borrowed from <code>mctorch</code> [3], extended to implement the manifold of doubly-stochastic matrices. In the following I refer to Python modules and line numbers in my implementation at <a href="https://github.com/ocramz/assignment-riemann-opt/tree/a6bf622b77160dac58dc72fdd1ddd036338d23f3">this commit</a> :</p>
@@ -94,7 +95,7 @@ $$</span></p>
 <p>We start by generating a cost matrix of rank <span class="math inline"><em>n</em></span>, and computing the optimal assignment with the Munkres algorithm, which provides us with a cost lower bound (<span class="math inline"><em>y</em><sub><em>L</em><em>B</em></sub></span>).
 We then initialize the SGD optimizer at a random doubly stochastic matrix, with a learning rate 2e-2 (found empirically).</p>
 <p><img src="../images/assign_movie_iter-1000_n-10_lr-0.02_1735984842.gif" width="500/"></p>
-<p>In the above animation we see the optimal assignment as dashed red edges, superimposed with the temporary solution in blue. As a visual cue, the thickness of the blue edges is proportional to the respective matrix coefficient, and we see it both “sparsifies” as it approaches the optimum.</p>
+<p>In the above animation we see the optimal assignment as dashed red edges, superimposed with the temporary solution in blue. As a visual cue, the thickness of the blue edges is proportional to the respective matrix coefficient, and we see it “sparsifies” as it approaches the optimum at a vertex of the Birkhoff set.</p>
 <p><img src="../images/assign_opt_gap_iter-1000_n-10_lr-0.02_1735984842.png" width="400/"></p>
 <p>As we can see above, the optimality gap between the current and the Munkres cost (<span class="math inline"><em>y</em> − <em>y</em><sub><em>L</em><em>B</em></sub></span>) converges smoothly to 0 (from most starting points, in my experiments). I still have to characterize when and how it converges slowly, and some rare cases in which the bound worsens for a while before improving again.</p>
 <h2 id="code-repo">Code repo</h2>

@@ -46,7 +46,7 @@ $$
 
 What is left to find out is how to turn a constrained optimization problem into an unconstrained one over an appropriate subspace.
 
-## The manifold of doubly stochastic matrices
+## Optimization on manifolds
 
 Informally, a <i>manifold</i> is a version of Euclidean space $\mathbb{R}^n$ that is only locally flat (unlike regular Euclidean space which is flat everywhere).
 
@@ -54,7 +54,9 @@ The main technical devices for moving between $\mathbb{R}^n$ and a manifold $\ma
 
 For an introduction to the definitions I found the book and online course ["An introduction to optimization on smooth manifolds"](https://www.nicolasboumal.net/book/#lectures) to be very accessible.
 
-The numerical implementations of the projection and retraction are taken from the literature [4].
+## The manifold of doubly stochastic matrices
+
+The numerical implementations of the projection and retraction are taken from the literature, i.e. a single paper on the topic [4].
 
 As a side note, one of the internal operations to implement the retraction is the Sinkhorn-Knopp iteration which has applications elsewhere too (e.g in optimal transport).
 
@@ -81,7 +83,7 @@ We then initialize the SGD optimizer at a random doubly stochastic matrix, with 
 
 <img src="/images/assign_movie_iter-1000_n-10_lr-0.02_1735984842.gif" width=500/>
 
-In the above animation we see the optimal assignment as dashed red edges, superimposed with the temporary solution in blue. As a visual cue, the thickness of the blue edges is proportional to the respective matrix coefficient, and we see it both "sparsifies" as it approaches the optimum.
+In the above animation we see the optimal assignment as dashed red edges, superimposed with the temporary solution in blue. As a visual cue, the thickness of the blue edges is proportional to the respective matrix coefficient, and we see it "sparsifies" as it approaches the optimum at a vertex of the Birkhoff set.
 
 
 <img src="/images/assign_opt_gap_iter-1000_n-10_lr-0.02_1735984842.png" width=400/>
