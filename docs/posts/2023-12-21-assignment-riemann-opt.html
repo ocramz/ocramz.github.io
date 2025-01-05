@@ -95,15 +95,16 @@ $$</span></p>
 </ol>
 <p>The doubly-stochastic matrix manifold operations are implemented <a href="https://github.com/ocramz/assignment-riemann-opt/blob/a6bf622b77160dac58dc72fdd1ddd036338d23f3/doublystochastic.py">here</a>.</p>
 <h1 id="experiments">Experiments</h1>
-<p>We start by generating a cost matrix of rank <span class="math inline"><em>n</em></span>, and computing the optimal assignment with the Munkres algorithm, which provides us with a cost lower bound (<span class="math inline"><em>y</em><sub><em>L</em><em>B</em></sub></span>).
-We then initialize the SGD optimizer at a random doubly stochastic matrix, with the elements sampled from the <a href="https://en.wikipedia.org/wiki/Folded_normal_distribution">“folded” normal distribution</a> <span class="math inline">|𝒩(0, 1)|</span>.
+<p>We start by generating a cost matrix <span class="math inline"><em>C</em></span> of rank <span class="math inline"><em>n</em> = 10</span>, and computing the optimal assignment with the Munkres algorithm, which provides us with a cost lower bound (<span class="math inline"><em>y</em><sub><em>L</em><em>B</em></sub></span>).
+We then initialize the SGD optimizer at a random doubly stochastic matrix. The elements of both <span class="math inline"><em>C</em></span> and the starting point are sampled from the <a href="https://en.wikipedia.org/wiki/Folded_normal_distribution">“folded” normal distribution</a> <span class="math inline">|𝒩(0, 1)|</span>.
 The learning rate is set to 2e-2 (found empirically).</p>
 <p><img src="../images/assign_movie_iter-1000_n-10_lr-0.02_1735984842.gif" width="500/"></p>
 <p>In the above animation we see the optimal assignment as dashed red edges, superimposed with the temporary solution in blue. As a visual cue, the thickness of the blue edges is proportional to the respective matrix coefficient, and we see the matrix “sparsifies” as it approaches the optimum at a vertex of the Birkhoff set.</p>
 <p><img src="../images/assign_opt_gap_iter-1000_n-10_lr-0.02_1735984842.png" width="400/"></p>
 <p>As we can see above, the optimality gap between the current and the Munkres cost (<span class="math inline"><em>y</em> − <em>y</em><sub><em>L</em><em>B</em></sub></span>) converges smoothly to 0 (from most starting points, in my experiments). I still have to characterize some rare cases in which the bound worsens for a while before improving again.</p>
 <h1 id="conclusions">Conclusions</h1>
-<p>I was quite surprised this approach works so well, to be honest. Besides usual academic concerns of performance, convergence bounds etc., it would be interesting to generalize this approach and look at the actual connections with optimal transport: what if we have two histograms or <em>distributions</em> rather than the sets <span class="math inline"><em>U</em></span> and <span class="math inline"><em>V</em></span>?</p>
+<p>I was quite surprised this approach works so well, to be honest. It would be interesting to look at the convergence of the method wrt the distribution of edge weights <span class="math inline"><em>C</em></span>.</p>
+<p>Besides usual concerns of performance, convergence bounds etc., it would be also interesting to generalize this approach and look at the actual connections with optimal transport: what if we have two histograms or <em>distributions</em> rather than the sets <span class="math inline"><em>U</em></span> and <span class="math inline"><em>V</em></span>?</p>
 <h2 id="code-repo">Code repo</h2>
 <p>All scripts can be found on my GitHub profile <a href="https://github.com/ocramz/assignment-riemann-opt">here</a>.</p>
 <h1 id="references">References</h1>
