@@ -74,11 +74,12 @@ $$</span></p>
 <p><span class="math display">$$
 P^{\star} = \underset{P \in \mathbb{B}}{\mathrm{argmin}} \left( P C \right)
 $$</span></p>
-<p>What is left to find out is how to turn a constrained optimization problem into an unconstrained one over an appropriate subspace.</p>
+<p>That implicit constraint under the <span class="math inline">argmin</span> looks nasty. How to address it?</p>
+<p>In the following we’ll see how to turn this kind of constrained optimization problem into an unconstrained one over an appropriate <em>manifold</em>.</p>
 <h2 id="optimization-on-manifolds">Optimization on manifolds</h2>
 <p>Informally, a <i>manifold</i> is a version of Euclidean space <span class="math inline">ℝ<sup><em>n</em></sup></span> that is only locally flat (unlike regular Euclidean space which is flat everywhere).</p>
-<p>The main technical devices for moving between <span class="math inline">ℝ<sup><em>n</em></sup></span> and a manifold <span class="math inline">𝕄</span> are the <em>orthogonal projection</em> from <span class="math inline">𝕄</span> to its tangent, and the <em>retraction</em> operation that assigns points on the tangent bundle <span class="math inline"><em>T</em>𝕄</span> to <span class="math inline">𝕄</span>.</p>
-<p>For an introduction to the definitions I found the book and online course <a href="https://www.nicolasboumal.net/book/#lectures">“An introduction to optimization on smooth manifolds”</a> to be very accessible.</p>
+<p>The main technical devices for moving between <span class="math inline">ℝ<sup><em>n</em></sup></span> and a smooth manifold <span class="math inline">𝕄</span> are the <em>orthogonal projection</em> from <span class="math inline">𝕄</span> to its tangent, and the <em>retraction</em> operation that assigns points on the tangent bundle <span class="math inline"><em>T</em>𝕄</span> to <span class="math inline">𝕄</span>.</p>
+<p>For an introduction to the relevant definitions I found the book and online course <a href="https://www.nicolasboumal.net/book/#lectures">“An introduction to optimization on smooth manifolds”</a> to be very accessible.</p>
 <h2 id="the-manifold-of-doubly-stochastic-matrices">The manifold of doubly stochastic matrices</h2>
 <p>Many interesting sets have manifold structure: the sphere, <a href="https://en.wikipedia.org/wiki/Statistical_manifold">the set of probability distributions</a>, the set of positive-definite matrices. You can construct manifolds from products of manifolds, too. With some furious handwaving on my part and by recognizing the similarities (e.g. positivity and unit norm constraint, but I’ll try to dig out a reference) you can convince yourself that DS matrices have manifold structure in turn.</p>
 <p>The numerical implementations of the projection and retraction operators are taken from the literature, i.e. a single paper on the topic [4].</p>

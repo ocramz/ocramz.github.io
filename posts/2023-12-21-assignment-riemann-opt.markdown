@@ -44,15 +44,17 @@ $$
 P^{\star} = \underset{P \in \mathbb{B}}{\mathrm{argmin}} \left( P C \right)
 $$
 
-What is left to find out is how to turn a constrained optimization problem into an unconstrained one over an appropriate subspace.
+That implicit constraint under the $\mathrm{argmin}$ looks nasty. How to address it?
+
+In the following we'll see how to turn this kind of constrained optimization problem into an unconstrained one over an appropriate *manifold*.
 
 ## Optimization on manifolds
 
 Informally, a <i>manifold</i> is a version of Euclidean space $\mathbb{R}^n$ that is only locally flat (unlike regular Euclidean space which is flat everywhere).
 
-The main technical devices for moving between $\mathbb{R}^n$ and a manifold $\mathbb{M}$ are the *orthogonal projection* from $\mathbb{M}$ to its tangent, and the *retraction* operation that assigns points on the tangent bundle $T\mathbb{M}$ to $\mathbb{M}$. 
+The main technical devices for moving between $\mathbb{R}^n$ and a smooth manifold $\mathbb{M}$ are the *orthogonal projection* from $\mathbb{M}$ to its tangent, and the *retraction* operation that assigns points on the tangent bundle $T\mathbb{M}$ to $\mathbb{M}$. 
 
-For an introduction to the definitions I found the book and online course ["An introduction to optimization on smooth manifolds"](https://www.nicolasboumal.net/book/#lectures) to be very accessible.
+For an introduction to the relevant definitions I found the book and online course ["An introduction to optimization on smooth manifolds"](https://www.nicolasboumal.net/book/#lectures) to be very accessible.
 
 ## The manifold of doubly stochastic matrices
 
