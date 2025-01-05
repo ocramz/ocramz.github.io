@@ -10,7 +10,7 @@ categories: optimization
 <img src="/images/assignment_riemann_tri.png"/>
 
 
-Some time ago I ran into two separate instances of the same combinatorial optimization problem in the span of a few days, and decided to read up a little on the fundamentals. The two applications were object tracking in videos, and peaks alignment in chromatography data.
+Some time ago I ran into two separate instances of the same combinatorial optimization problem in the span of a few days, and decided to read up a little on the fundamentals. The two applications were object tracking in videos, and peak alignment in chromatography data.
 
 By chasing down some definitions, I learned about the Birkhoff theorem, which led me to wonder whether we can turn the original combinatorial problem ([minimum weight bipartite matching *aka* "assignment"](https://math.mit.edu/~goemans/18433S13/matching-notes.pdf) [0]) into a differentiable one. The other half of my investigation was about how to turn a constrained optimization problem into an unconstrained one over an appropriate smooth sub-manifold.
 
@@ -26,9 +26,9 @@ $$
 
 Recall that a permutation matrix has binary entries, and exactly one $1$ per row and column.
 
-Finding the optimal permutation matrix $P^{\star}$ is a combinatorial optimization problem that has well known polynomial-time solution algorithms, e.g. Munkres that runs in $O(n^3)$ time.
+Finding the optimal permutation matrix $P^{\star}$ is a combinatorial optimization problem that has [well known polynomial-time solution algorithms](https://en.wikipedia.org/wiki/Hungarian_algorithm), e.g. Munkres that runs in $O(n^3)$ time.
 
-The assignment problem is a special case of the larger family of *optimal transport* problems, which mathematicians started looking at in the 18th century.
+The assignment problem is a special case of the larger family of *optimal transport* problems, which mathematicians have looked at since the 18th century.
 
 # From discrete to continuous
 
