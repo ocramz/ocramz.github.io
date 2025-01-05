@@ -18,7 +18,7 @@ In this post I go over the background concepts and document my experiments which
 
 ## Minimum bipartite matching
 
-Given a bipartite graph between two sets $U$, $V$ of $n$ items each, and an edge cost matrix $C$ with positive entries, the assignment problem can be written as finding a permutation matrix $P$ that minimizes the total cost:
+Given a bipartite graph between two sets $U$, $V$ of $n$ items each, and an edge cost matrix $C$ with positive entries, the assignment problem can be written as finding a permutation matrix $P^{\star}$ that minimizes the total cost:
 
 $$
 P^{\star} = \underset{P \in \mathbb{P}}{\mathrm{argmin}} \left( P C \right)
