@@ -7,11 +7,11 @@ categories: optimization
 
 # Introduction
 
-Here I document a little experiment which connects some interesting areas of mathematics.
+Some time ago at work I noticed two separate instances of the same optimization problem, and decided to read up a little on the fundamentals. The two applications were object tracking in videos, and alignment of spectral peaks in chromatography data.
 
+By chasing some definitions, I learned about the Birkhoff theorem. This allows to turn the initial combinatorial optimization problem ([minimum weight bipartite matching *aka* "assignment"](https://math.mit.edu/~goemans/18433S13/matching-notes.pdf) [0]) into a continuous one. The other half of my investigation is about how to turn a constrained continuous optimization problem into an unconstrained one on an appropriate manifold..
 
-We use the Birkhoff theorem to turn a combinatorial optimization problem (minimum bipartite matching aka assignment) into a continuous one, constrained on the manifold of doubly stochastic matrices.
-
+In this post I document an experiment which started from a "what if?" and ended up connecting some interesting areas of mathematics and computer science.
 
 ## Minimum bipartite matching
 
@@ -81,6 +81,7 @@ All scripts can be found on my GitHub profile <a href="https://github.com/ocramz
 
 # References
 
+0. Assignment problem <a href="https://en.wikipedia.org/wiki/Assignment_problem">wikipedia</a>
 1. Doubly-stochastic matrix <a href="https://en.wikipedia.org/wiki/Doubly_stochastic_matrix">wikipedia</a>
 2. Birkhoff polytope <a href="https://en.wikipedia.org/wiki/Birkhoff_polytope">wikipedia</a>
 3. `mctorch` <a href="github">https://github.com/mctorch/mctorch</a>

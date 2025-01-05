@@ -55,8 +55,9 @@
     </section>
     <section>
         <h1 id="introduction">Introduction</h1>
-<p>Here I document a little experiment which connects some interesting areas of mathematics.</p>
-<p>We use the Birkhoff theorem to turn a combinatorial optimization problem (minimum bipartite matching aka assignment) into a continuous one, constrained on the manifold of doubly stochastic matrices.</p>
+<p>Some time ago at work I noticed two separate instances of the same optimization problem, and decided to read up a little on the fundamentals. The two applications were object tracking in videos, and alignment of spectral peaks in chromatography data.</p>
+<p>By chasing some definitions, I learned about the Birkhoff theorem. This allows to turn the initial combinatorial optimization problem (<a href="https://math.mit.edu/~goemans/18433S13/matching-notes.pdf">minimum weight bipartite matching <em>aka</em> “assignment”</a> [0]) into a continuous one. The other half of my investigation is about how to turn a constrained continuous optimization problem into an unconstrained one on an appropriate manifold..</p>
+<p>In this post I document an experiment which started from a “what if?” and ended up connecting some interesting areas of mathematics and computer science.</p>
 <h2 id="minimum-bipartite-matching">Minimum bipartite matching</h2>
 <p>Given a bipartite graph between two sets <span class="math inline"><em>U</em></span>, <span class="math inline"><em>V</em></span> of <span class="math inline"><em>n</em></span> items each, and an edge cost matrix <span class="math inline"><em>C</em></span> with positive entries, the assignment problem can be written as finding an permutation matrix <span class="math inline"><em>P</em></span> that solves the following problem:</p>
 <p><span class="math display">$$
@@ -87,7 +88,8 @@ $$</span></p>
 <h2 id="code-repo">Code repo</h2>
 <p>All scripts can be found on my GitHub profile <a href="https://github.com/ocramz/assignment-riemann-opt">here</a>.</p>
 <h1 id="references">References</h1>
-<ol type="1">
+<ol start="0" type="1">
+<li>Assignment problem <a href="https://en.wikipedia.org/wiki/Assignment_problem">wikipedia</a></li>
 <li>Doubly-stochastic matrix <a href="https://en.wikipedia.org/wiki/Doubly_stochastic_matrix">wikipedia</a></li>
 <li>Birkhoff polytope <a href="https://en.wikipedia.org/wiki/Birkhoff_polytope">wikipedia</a></li>
 <li><code>mctorch</code> <a href="github">https://github.com/mctorch/mctorch</a></li>
