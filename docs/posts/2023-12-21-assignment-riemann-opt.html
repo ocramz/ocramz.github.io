@@ -88,9 +88,9 @@ $$</span></p>
 <p>My optimization code is based on <code>torch</code> with some code borrowed from <code>mctorch</code> [3], extended to implement the manifold of doubly-stochastic matrices. In the following I refer to Python modules and line numbers in my implementation at <a href="https://github.com/ocramz/assignment-riemann-opt/tree/a6bf622b77160dac58dc72fdd1ddd036338d23f3">this commit</a> :</p>
 <p>At every SGD step (<code>rsgd.py</code> line 57), the optimizer</p>
 <ol type="1">
-<li>computes the Riemann gradient (<code>egrad2rgrad</code>, from <code>parameter.py</code> line 31) via an orthogonal projection</li>
+<li>computes the Riemann gradient (<code>egrad2rgrad</code>, from <code>parameter.py</code> line 31) via an orthogonal projection of the Euclidean gradient of the cost function onto <span class="math inline"><em>T</em>𝕄</span></li>
 <li>scales it by the negative learning rate</li>
-<li>computes the retraction of the current point along the scaled Riemann gradient, thereby moving to a new point on the manifold <span class="math inline">𝕄</span>.</li>
+<li>computes the retraction of the current point along the scaled Riemann gradient, thereby moving to a new point on <span class="math inline">𝕄</span>.</li>
 </ol>
 <p>The doubly-stochastic matrix manifold operations are implemented <a href="https://github.com/ocramz/assignment-riemann-opt/blob/a6bf622b77160dac58dc72fdd1ddd036338d23f3/doublystochastic.py">here</a>.</p>
 <h1 id="experiments">Experiments</h1>

@@ -69,9 +69,9 @@ My optimization code is based on `torch` with some code borrowed from `mctorch` 
 
 At every SGD step (`rsgd.py` line 57), the optimizer 
 
-1. computes the Riemann gradient (`egrad2rgrad`, from `parameter.py` line 31) via an orthogonal projection
+1. computes the Riemann gradient (`egrad2rgrad`, from `parameter.py` line 31) via an orthogonal projection of the Euclidean gradient of the cost function onto $T\mathbb{M}$
 2. scales it by the negative learning rate
-3. computes the retraction of the current point along the scaled Riemann gradient, thereby moving to a new point on the manifold $\mathbb{M}$.
+3. computes the retraction of the current point along the scaled Riemann gradient, thereby moving to a new point on $\mathbb{M}$.
 
 The doubly-stochastic matrix manifold operations are implemented [here](https://github.com/ocramz/assignment-riemann-opt/blob/a6bf622b77160dac58dc72fdd1ddd036338d23f3/doublystochastic.py).
 
