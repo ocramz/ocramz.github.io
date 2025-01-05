@@ -67,7 +67,7 @@ As a side note, one of the internal operations to implement the retraction is th
 
 My optimization code is based on `torch` with some code borrowed from `mctorch` [3], extended to implement the manifold of doubly-stochastic matrices. In the following I refer to Python modules and line numbers in my implementation at [this commit](https://github.com/ocramz/assignment-riemann-opt/tree/a6bf622b77160dac58dc72fdd1ddd036338d23f3) : 
 
-At every SGD step (`rsgd.py` line 57), the optimizer 
+Disregarding some implementation details (e.g. how Pytorch handles mutable objects), at every SGD step (`rsgd.py` line 57), the optimizer 
 
 1. computes the Riemann gradient (`egrad2rgrad`, from `parameter.py` line 31) via an orthogonal projection of the Euclidean gradient of the cost function onto $T\mathbb{M}$
 2. scales it by the negative learning rate
