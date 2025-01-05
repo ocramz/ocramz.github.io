@@ -36,8 +36,6 @@ The Birkhoff-von Neumann theorem states that, in dimension $n$, the set $\mathbb
 
 Can we perhaps use this result to solve the assignment problem with a convex, interior point approach?
 
-
-
 We can rewrite the assignment problem such that the optimization variable ranges over the Birkhoff polytope; this rewritten form is equivalent to the original one since the cost function is linear in the argument $P$, so we expect the optimum to lie at a vertex of the admissible region $\mathbb{B}$ (i.e. to be a permutation matrix).
 
 $$
@@ -62,7 +60,7 @@ Many interesting sets have manifold structure: the sphere, [the set of probabili
 
 The numerical implementations of the projection and retraction operators are taken from the literature, i.e. a single paper on the topic [4].
 
-As a side note, one of the internal operations to implement the retraction is the Sinkhorn-Knopp iteration which has applications elsewhere too (e.g in optimal transport).
+As a side note, one of the internal operations to implement the retraction is the [Sinkhorn-Knopp iteration](https://en.wikipedia.org/wiki/Sinkhorn%27s_theorem) which has applications elsewhere too (e.g in optimal transport).
 
 
 ## First-order optimization on manifolds
@@ -106,4 +104,5 @@ All scripts can be found on my GitHub profile <a href="https://github.com/ocramz
 1. Doubly-stochastic matrix <a href="https://en.wikipedia.org/wiki/Doubly_stochastic_matrix">wikipedia</a>
 2. Birkhoff polytope <a href="https://en.wikipedia.org/wiki/Birkhoff_polytope">wikipedia</a>
 3. `mctorch` <a href="github">https://github.com/mctorch/mctorch</a>
-4. Douik, A. and Hassibi, B., Manifold Optimization Over the Set of Doubly Stochastic Matrices: A Second-Order Geometry <a href="https://arxiv.org/abs/1802.02628">arXiv</a>
+4. Douik, A. and Hassibi, B., Manifold Optimization Over the Set of Doubly Stochastic Matrices: A Second-Order Geometry, 2018 <a href="https://arxiv.org/abs/1802.02628">arXiv</a>
+5. Boumal, N. [An introduction to optimization on smooth manifolds](https://www.nicolasboumal.net/book/#lectures)

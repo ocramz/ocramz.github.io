@@ -83,7 +83,7 @@ $$</span></p>
 <h2 id="the-manifold-of-doubly-stochastic-matrices">The manifold of doubly stochastic matrices</h2>
 <p>Many interesting sets have manifold structure: the sphere, <a href="https://en.wikipedia.org/wiki/Statistical_manifold">the set of probability distributions</a>, the set of positive-definite matrices. You can construct manifolds from products of manifolds, too. With some furious handwaving on my part and by recognizing the similarities (e.g. positivity and unit norm constraint, but I’ll try to dig out a reference) you can convince yourself that DS matrices have manifold structure in turn.</p>
 <p>The numerical implementations of the projection and retraction operators are taken from the literature, i.e. a single paper on the topic [4].</p>
-<p>As a side note, one of the internal operations to implement the retraction is the Sinkhorn-Knopp iteration which has applications elsewhere too (e.g in optimal transport).</p>
+<p>As a side note, one of the internal operations to implement the retraction is the <a href="https://en.wikipedia.org/wiki/Sinkhorn%27s_theorem">Sinkhorn-Knopp iteration</a> which has applications elsewhere too (e.g in optimal transport).</p>
 <h2 id="first-order-optimization-on-manifolds">First-order optimization on manifolds</h2>
 <p>My optimization code is based on <code>torch</code> with some code borrowed from <code>mctorch</code> [3], extended to implement the manifold of doubly-stochastic matrices. In the following I refer to Python modules and line numbers in my implementation at <a href="https://github.com/ocramz/assignment-riemann-opt/tree/a6bf622b77160dac58dc72fdd1ddd036338d23f3">this commit</a> :</p>
 <p>At every SGD step (<code>rsgd.py</code> line 57), the optimizer</p>
@@ -108,7 +108,8 @@ We then initialize the SGD optimizer at a random doubly stochastic matrix, with 
 <li>Doubly-stochastic matrix <a href="https://en.wikipedia.org/wiki/Doubly_stochastic_matrix">wikipedia</a></li>
 <li>Birkhoff polytope <a href="https://en.wikipedia.org/wiki/Birkhoff_polytope">wikipedia</a></li>
 <li><code>mctorch</code> <a href="github">https://github.com/mctorch/mctorch</a></li>
-<li>Douik, A. and Hassibi, B., Manifold Optimization Over the Set of Doubly Stochastic Matrices: A Second-Order Geometry <a href="https://arxiv.org/abs/1802.02628">arXiv</a></li>
+<li>Douik, A. and Hassibi, B., Manifold Optimization Over the Set of Doubly Stochastic Matrices: A Second-Order Geometry, 2018 <a href="https://arxiv.org/abs/1802.02628">arXiv</a></li>
+<li>Boumal, N. <a href="https://www.nicolasboumal.net/book/#lectures">An introduction to optimization on smooth manifolds</a></li>
 </ol>
     </section>
 </article>
