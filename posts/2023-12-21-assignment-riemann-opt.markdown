@@ -7,6 +7,9 @@ categories: optimization
 
 # Introduction
 
+<img src="/images/assignment_riemann_tri.png"/>
+
+
 Some time ago at work I noticed two separate instances of the same optimization problem, and decided to read up a little on the fundamentals. The two applications were object tracking in videos, and alignment of spectral peaks in chromatography data.
 
 By chasing some definitions, I learned about the Birkhoff theorem. This allows to turn the initial combinatorial optimization problem ([minimum weight bipartite matching *aka* "assignment"](https://math.mit.edu/~goemans/18433S13/matching-notes.pdf) [0]) into a continuous one. The other half of my investigation is about how to turn a constrained continuous optimization problem into an unconstrained one on an appropriate manifold..
