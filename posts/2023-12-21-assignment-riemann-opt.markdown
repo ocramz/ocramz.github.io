@@ -49,16 +49,24 @@ What is left to find out is how to turn a constrained optimization problem into 
 
 Informally, a <i>manifold</i> is a version of Euclidean space $\mathbb{R}^n$ that is only locally flat (unlike regular Euclidean space which is flat everywhere).
 
-The main technical device for moving between $\mathbb{R}^n$ and a manifold $\mathbb{M}$ is an orthogonal projection. The gradient of our cost function over $\mathbb{M}$ is then expressed as the projection of its gradient computed over $\mathbb{R}^n$.
+The main technical devices for moving between $\mathbb{R}^n$ and a manifold $\mathbb{M}$ are the *orthogonal projection* from $\mathbb{M}$ to its tangent, and the *retraction* operation that assigns points on the tangent bundle $T\mathbb{M}$ to $\mathbb{M}$. 
 
+For an introduction to the definitions I found the book and online course ["An introduction to optimization on smooth manifolds"](https://www.nicolasboumal.net/book/#lectures) to be very accessible.
 
+The numerical implementations of the projection and retraction are taken from the literature [4].
+
+As a side note, one of the internal operations to implement the retraction is the Sinkhorn-Knopp iteration which has applications elsewhere too (e.g in optimal transport).
 
 
 ## First-order optimization on manifolds
 
-We use a customized version of `mctorch` [3], extended to implement the manifold of doubly-stochastic matrices.
+We use a customized version of `mctorch` [3], extended to implement the manifold of doubly-stochastic matrices. In the following I refer to Python modules and line numbers in my implementation at this commit : 
 
-At every SGD step, the optimizer checks for 
+At every SGD step (`rsgd.py` line 57), the optimizer 
+
+1. computes the Riemann gradient (`egrad2rgrad`, from `parameter.py` line 31)
+2. scales it by the negative learning rate
+3. computes the *retraction* of the current point along the scaled Riemann gradient, thereby moving to a new point on the manifold $\mathbb{M}$.
 
 
 
@@ -71,12 +79,12 @@ We then initialize the SGD optimizer at a random doubly stochastic matrix, with 
 
 <img src="/images/assign_movie_iter-1000_n-10_lr-0.02_1735984842.gif" width=500/>
 
-In the above animation we see the optimal assignment as dashed red edges, superimposed with the temporary solution in blue. As a visual cue, the thickness of the blue edges is proportional to the respective edge coefficient, and we see it both "sparsifies" as it approaches the optimum.
+In the above animation we see the optimal assignment as dashed red edges, superimposed with the temporary solution in blue. As a visual cue, the thickness of the blue edges is proportional to the respective matrix coefficient, and we see it both "sparsifies" as it approaches the optimum.
 
 
 <img src="/images/assign_opt_gap_iter-1000_n-10_lr-0.02_1735984842.png" width=400/>
 
-As we can see above, the optimality gap $y - y_{Munkres}$ decreases smoothly (from most starting points, that is).
+As we can see above, the optimality gap between the current and the Munkres cost ($y - y_{LB}$) converges smoothly to 0 (from most starting points, in my experiments). I still have to characterize when and how it converges slowly, and some rare cases in which the bound worsens for a while before improving again.
 
 
 ## Code repo
