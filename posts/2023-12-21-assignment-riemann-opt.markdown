@@ -10,7 +10,7 @@ categories: optimization
 <img src="/images/assignment_riemann_tri.png"/>
 
 
-Some time ago I ran into two separate instances of the same combinatorial optimization problem in the span of a few days, and decided to read up a little on the fundamentals. The two applications were object tracking in videos, and alignment of spectral peaks in chromatography data.
+Some time ago I ran into two separate instances of the same combinatorial optimization problem in the span of a few days, and decided to read up a little on the fundamentals. The two applications were object tracking in videos, and peaks alignment in chromatography data.
 
 By chasing down some definitions, I learned about the Birkhoff theorem, which led me to wonder whether we can turn the original combinatorial problem ([minimum weight bipartite matching *aka* "assignment"](https://math.mit.edu/~goemans/18433S13/matching-notes.pdf) [0]) into a differentiable one. The other half of my investigation was about how to turn a constrained continuous optimization problem into an unconstrained one over an appropriate manifold.
 
