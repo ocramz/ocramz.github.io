@@ -14,7 +14,7 @@ Some time ago I ran into two separate instances of the same combinatorial optimi
 
 By chasing down some definitions, I learned about the Birkhoff theorem, which led me to wonder whether we can turn the original combinatorial problem ([minimum weight bipartite matching *aka* "assignment"](https://math.mit.edu/~goemans/18433S13/matching-notes.pdf) [0]) into a differentiable one. The other half of my investigation was about how to turn a constrained continuous optimization problem into an unconstrained one over an appropriate manifold.
 
-In this post I document my experiments which started from a "what if?" and ended up connecting some interesting areas of mathematics and computer science (and an empirical confirmation to my starting intuition, I should add).
+In this post I go over the background concepts and document my experiments which started from a "what if?" and ended up connecting some interesting areas of mathematics and computer science (and an empirical confirmation to my starting intuition, I should add).
 
 ## Minimum bipartite matching
 
