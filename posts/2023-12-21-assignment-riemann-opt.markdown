@@ -60,20 +60,20 @@ As a side note, one of the internal operations to implement the retraction is th
 
 ## First-order optimization on manifolds
 
-We use a customized version of `mctorch` [3], extended to implement the manifold of doubly-stochastic matrices. In the following I refer to Python modules and line numbers in my implementation at [this commit](https://github.com/ocramz/assignment-riemann-opt/tree/a6bf622b77160dac58dc72fdd1ddd036338d23f3) : 
+My optimization code is based on `torch` with some code borrowed from `mctorch` [3], extended to implement the manifold of doubly-stochastic matrices. In the following I refer to Python modules and line numbers in my implementation at [this commit](https://github.com/ocramz/assignment-riemann-opt/tree/a6bf622b77160dac58dc72fdd1ddd036338d23f3) : 
 
 At every SGD step (`rsgd.py` line 57), the optimizer 
 
-1. computes the Riemann gradient (`egrad2rgrad`, from `parameter.py` line 31)
+1. computes the Riemann gradient (`egrad2rgrad`, from `parameter.py` line 31) via an orthogonal projection
 2. scales it by the negative learning rate
-3. computes the *retraction* of the current point along the scaled Riemann gradient, thereby moving to a new point on the manifold $\mathbb{M}$.
+3. computes the retraction of the current point along the scaled Riemann gradient, thereby moving to a new point on the manifold $\mathbb{M}$.
 
 The doubly-stochastic matrix manifold operations are implemented [here](https://github.com/ocramz/assignment-riemann-opt/blob/a6bf622b77160dac58dc72fdd1ddd036338d23f3/doublystochastic.py).
 
 
 # Experiments
 
-We start by generating a cost matrix of rank $n$, and computing the optimal assignment with the Munkres algorithm, which provides us with a cost lower bound (LB).
+We start by generating a cost matrix of rank $n$, and computing the optimal assignment with the Munkres algorithm, which provides us with a cost lower bound ($y_{LB}$).
 We then initialize the SGD optimizer at a random doubly stochastic matrix, with a learning rate 2e-2 (found empirically).
 
 

@@ -81,16 +81,16 @@ $$</span></p>
 <p>The numerical implementations of the projection and retraction are taken from the literature [4].</p>
 <p>As a side note, one of the internal operations to implement the retraction is the Sinkhorn-Knopp iteration which has applications elsewhere too (e.g in optimal transport).</p>
 <h2 id="first-order-optimization-on-manifolds">First-order optimization on manifolds</h2>
-<p>We use a customized version of <code>mctorch</code> [3], extended to implement the manifold of doubly-stochastic matrices. In the following I refer to Python modules and line numbers in my implementation at <a href="https://github.com/ocramz/assignment-riemann-opt/tree/a6bf622b77160dac58dc72fdd1ddd036338d23f3">this commit</a> :</p>
+<p>My optimization code is based on <code>torch</code> with some code borrowed from <code>mctorch</code> [3], extended to implement the manifold of doubly-stochastic matrices. In the following I refer to Python modules and line numbers in my implementation at <a href="https://github.com/ocramz/assignment-riemann-opt/tree/a6bf622b77160dac58dc72fdd1ddd036338d23f3">this commit</a> :</p>
 <p>At every SGD step (<code>rsgd.py</code> line 57), the optimizer</p>
 <ol type="1">
-<li>computes the Riemann gradient (<code>egrad2rgrad</code>, from <code>parameter.py</code> line 31)</li>
+<li>computes the Riemann gradient (<code>egrad2rgrad</code>, from <code>parameter.py</code> line 31) via an orthogonal projection</li>
 <li>scales it by the negative learning rate</li>
-<li>computes the <em>retraction</em> of the current point along the scaled Riemann gradient, thereby moving to a new point on the manifold <span class="math inline">𝕄</span>.</li>
+<li>computes the retraction of the current point along the scaled Riemann gradient, thereby moving to a new point on the manifold <span class="math inline">𝕄</span>.</li>
 </ol>
 <p>The doubly-stochastic matrix manifold operations are implemented <a href="https://github.com/ocramz/assignment-riemann-opt/blob/a6bf622b77160dac58dc72fdd1ddd036338d23f3/doublystochastic.py">here</a>.</p>
 <h1 id="experiments">Experiments</h1>
-<p>We start by generating a cost matrix of rank <span class="math inline"><em>n</em></span>, and computing the optimal assignment with the Munkres algorithm, which provides us with a cost lower bound (LB).
+<p>We start by generating a cost matrix of rank <span class="math inline"><em>n</em></span>, and computing the optimal assignment with the Munkres algorithm, which provides us with a cost lower bound (<span class="math inline"><em>y</em><sub><em>L</em><em>B</em></sub></span>).
 We then initialize the SGD optimizer at a random doubly stochastic matrix, with a learning rate 2e-2 (found empirically).</p>
 <p><img src="../images/assign_movie_iter-1000_n-10_lr-0.02_1735984842.gif" width="500/"></p>
 <p>In the above animation we see the optimal assignment as dashed red edges, superimposed with the temporary solution in blue. As a visual cue, the thickness of the blue edges is proportional to the respective matrix coefficient, and we see it both “sparsifies” as it approaches the optimum.</p>
