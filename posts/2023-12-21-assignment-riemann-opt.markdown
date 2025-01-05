@@ -28,6 +28,7 @@ Recall that a permutation matrix has binary entries, and exactly one $1$ per row
 
 Finding the optimal permutation matrix $P^{\star}$ is a combinatorial optimization problem that has well known polynomial-time solution algorithms, e.g. Munkres that runs in $O(n^3)$ time.
 
+The assignment problem is a special case of the larger family of *optimal transport* problems, which mathematicians started looking at in the 18th century.
 
 # From discrete to continuous
 
