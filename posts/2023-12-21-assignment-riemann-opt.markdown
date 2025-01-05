@@ -56,7 +56,9 @@ For an introduction to the definitions I found the book and online course ["An i
 
 ## The manifold of doubly stochastic matrices
 
-The numerical implementations of the projection and retraction are taken from the literature, i.e. a single paper on the topic [4].
+Many interesting sets have manifold structure: the sphere, [the set of probability distributions](https://en.wikipedia.org/wiki/Statistical_manifold), the set of positive-definite matrices. You can construct manifolds from products of manifolds, too. With some furious handwaving on my part and by recognizing the similarities (e.g. the positive and unit norm constraint, but I'll try to dig out a reference) you can convince yourself that DS matrices have manifold structure in turn.
+
+The numerical implementations of the projection and retraction operators are taken from the literature, i.e. a single paper on the topic [4].
 
 As a side note, one of the internal operations to implement the retraction is the Sinkhorn-Knopp iteration which has applications elsewhere too (e.g in optimal transport).
 
