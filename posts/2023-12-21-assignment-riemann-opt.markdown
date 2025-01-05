@@ -42,7 +42,8 @@ $$
 P^{\star} = \underset{P \in \mathbb{B}}{\mathrm{argmin}} \left( P C \right)
 $$
 
-That implicit constraint under the $\mathrm{argmin}$ looks nasty. How to address it?
+That implicit constraint under the $\mathrm{argmin}$ looks hard. How to address it?
+One way would be to write a Lagrangian and set up a primal-dual optimization scheme for it. In this post we're _not_ going to do that :)
 
 In the following we'll see how to turn this kind of constrained optimization problem into an unconstrained one over an appropriate *manifold*.
 

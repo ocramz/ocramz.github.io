@@ -74,7 +74,8 @@ $$</span></p>
 <p><span class="math display">$$
 P^{\star} = \underset{P \in \mathbb{B}}{\mathrm{argmin}} \left( P C \right)
 $$</span></p>
-<p>That implicit constraint under the <span class="math inline">argmin</span> looks nasty. How to address it?</p>
+<p>That implicit constraint under the <span class="math inline">argmin</span> looks hard. How to address it?
+One way would be to write a Lagrangian and set up a primal-dual optimization scheme for it. In this post we’re <em>not</em> going to do that :)</p>
 <p>In the following we’ll see how to turn this kind of constrained optimization problem into an unconstrained one over an appropriate <em>manifold</em>.</p>
 <h2 id="optimization-on-manifolds">Optimization on manifolds</h2>
 <p>Informally, a <i>manifold</i> is a version of Euclidean space <span class="math inline">ℝ<sup><em>n</em></sup></span> that is only locally flat (unlike regular Euclidean space which is uniformly flat everywhere).</p>
