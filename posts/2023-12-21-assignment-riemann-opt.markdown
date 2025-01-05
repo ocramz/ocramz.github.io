@@ -24,7 +24,7 @@ $$
 P^{\star} = \underset{P \in \mathbb{P}}{\mathrm{argmin}} \left( P C \right)
 $$
 
-Recall that a permutation matrix has binary entries, and exactly one $1$ per row.
+Recall that a permutation matrix has binary entries, and exactly one $1$ per row and column.
 
 Finding the optimal permutation matrix $P^{\star}$ is a combinatorial optimization problem that has well known polynomial-time solution algorithms, e.g. Munkres that runs in $O(n^3)$ time.
 
@@ -32,7 +32,7 @@ The assignment problem is a special case of the larger family of *optimal transp
 
 # From discrete to continuous
 
-The Birkhoff-von Neumann theorem states that, in dimension $n$, the set $\mathbb{B}$ of doubly stochastic matrices [1] is the convex hull of the set of $n \times n$ permutation matrices. Informally, there is a convex, continuous region of space "between" the permutation matrices of a given dimensionality. This convex set is called the Birkhoff polytope [2].
+The Birkhoff-von Neumann theorem states that the convex hull of the set of $n \times n$ permutation matrices is the set $\mathbb{B}$ of doubly stochastic matrices [1]. Informally, there is a convex, continuous region of space "between" the permutation matrices, considered as points in $\mathbb{R}_{+}^{n \times n}$. This convex set is called the Birkhoff polytope [2].
 
 Can we perhaps use this result to solve the assignment problem with a convex, interior point approach?
 

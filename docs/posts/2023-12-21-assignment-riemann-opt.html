@@ -64,11 +64,11 @@
 <p><span class="math display">$$
 P^{\star} = \underset{P \in \mathbb{P}}{\mathrm{argmin}} \left( P C \right)
 $$</span></p>
-<p>Recall that a permutation matrix has binary entries, and exactly one <span class="math inline">1</span> per row.</p>
+<p>Recall that a permutation matrix has binary entries, and exactly one <span class="math inline">1</span> per row and column.</p>
 <p>Finding the optimal permutation matrix <span class="math inline"><em>P</em><sup>⋆</sup></span> is a combinatorial optimization problem that has well known polynomial-time solution algorithms, e.g. Munkres that runs in <span class="math inline"><em>O</em>(<em>n</em><sup>3</sup>)</span> time.</p>
 <p>The assignment problem is a special case of the larger family of <em>optimal transport</em> problems, which mathematicians started looking at in the 18th century.</p>
 <h1 id="from-discrete-to-continuous">From discrete to continuous</h1>
-<p>The Birkhoff-von Neumann theorem states that, in dimension <span class="math inline"><em>n</em></span>, the set <span class="math inline">𝔹</span> of doubly stochastic matrices [1] is the convex hull of the set of <span class="math inline"><em>n</em> × <em>n</em></span> permutation matrices. Informally, there is a convex, continuous region of space “between” the permutation matrices of a given dimensionality. This convex set is called the Birkhoff polytope [2].</p>
+<p>The Birkhoff-von Neumann theorem states that the convex hull of the set of <span class="math inline"><em>n</em> × <em>n</em></span> permutation matrices is the set <span class="math inline">𝔹</span> of doubly stochastic matrices [1]. Informally, there is a convex, continuous region of space “between” the permutation matrices, considered as points in <span class="math inline">ℝ<sub>+</sub><sup><em>n</em> × <em>n</em></sup></span>. This convex set is called the Birkhoff polytope [2].</p>
 <p>Can we perhaps use this result to solve the assignment problem with a convex, interior point approach?</p>
 <p>We can rewrite the assignment problem such that the optimization variable ranges over the Birkhoff polytope; this rewritten form is equivalent to the original one since the cost function is linear in the argument <span class="math inline"><em>P</em></span>, so we expect the optimum to lie at a vertex of the admissible region <span class="math inline">𝔹</span> (i.e. to be a permutation matrix).</p>
 <p><span class="math display">$$
