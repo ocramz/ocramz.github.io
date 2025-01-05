@@ -77,7 +77,8 @@ $$</span></p>
 <p>That implicit constraint under the <span class="math inline">argmin</span> looks nasty. How to address it?</p>
 <p>In the following we’ll see how to turn this kind of constrained optimization problem into an unconstrained one over an appropriate <em>manifold</em>.</p>
 <h2 id="optimization-on-manifolds">Optimization on manifolds</h2>
-<p>Informally, a <i>manifold</i> is a version of Euclidean space <span class="math inline">ℝ<sup><em>n</em></sup></span> that is only locally flat (unlike regular Euclidean space which is flat everywhere).</p>
+<p>Informally, a <i>manifold</i> is a version of Euclidean space <span class="math inline">ℝ<sup><em>n</em></sup></span> that is only locally flat (unlike regular Euclidean space which is uniformly flat everywhere).</p>
+<p>In order to “make progress” towards a minimum cost region over a manifold, we must define notions of vector addition over curved spaces, in a way.</p>
 <p>The main technical devices for moving between <span class="math inline">ℝ<sup><em>n</em></sup></span> and a <a href="https://en.wikipedia.org/wiki/Riemannian_manifold">smooth manifold</a> <span class="math inline">𝕄</span> are the <em>orthogonal projection</em> from <span class="math inline">𝕄</span> to its tangent, and the <em>retraction</em> operation that assigns points on the tangent bundle <span class="math inline"><em>T</em>𝕄</span> to <span class="math inline">𝕄</span>.</p>
 <p>For an introduction to the relevant definitions I found the book and online course <a href="https://www.nicolasboumal.net/book/#lectures">“An introduction to optimization on smooth manifolds”</a> to be very accessible.</p>
 <h2 id="the-manifold-of-doubly-stochastic-matrices">The manifold of doubly stochastic matrices</h2>
@@ -86,7 +87,7 @@ $$</span></p>
 <p>As a side note, one of the internal operations to implement the retraction is the <a href="https://en.wikipedia.org/wiki/Sinkhorn%27s_theorem">Sinkhorn-Knopp iteration</a> which has applications elsewhere too (e.g in optimal transport).</p>
 <h2 id="first-order-optimization-on-manifolds">First-order optimization on manifolds</h2>
 <p>My optimization code is based on <code>torch</code> with some code borrowed from <code>mctorch</code> [3], extended to implement the manifold of doubly-stochastic matrices. In the following I refer to Python modules and line numbers in my implementation at <a href="https://github.com/ocramz/assignment-riemann-opt/tree/a6bf622b77160dac58dc72fdd1ddd036338d23f3">this commit</a> :</p>
-<p>Disregarding some implementation details (e.g. how Pytorch handles mutable objects), at every SGD step (<code>rsgd.py</code> line 57), the optimizer</p>
+<p>Disregarding some implementation details (e.g. how Pytorch handles mutable objects), at every SGD step (<code>rsgd.py</code> line 57), the optimizer follows the textbook definition:</p>
 <ol type="1">
 <li>computes the Riemann gradient (<code>egrad2rgrad</code>, from <code>parameter.py</code> line 31) via an orthogonal projection of the Euclidean gradient of the cost function onto <span class="math inline"><em>T</em>𝕄</span></li>
 <li>scales it by the negative learning rate</li>

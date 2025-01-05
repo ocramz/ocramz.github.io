@@ -48,7 +48,9 @@ In the following we'll see how to turn this kind of constrained optimization pro
 
 ## Optimization on manifolds
 
-Informally, a <i>manifold</i> is a version of Euclidean space $\mathbb{R}^n$ that is only locally flat (unlike regular Euclidean space which is flat everywhere).
+Informally, a <i>manifold</i> is a version of Euclidean space $\mathbb{R}^n$ that is only locally flat (unlike regular Euclidean space which is uniformly flat everywhere).
+
+In order to "make progress" towards a minimum cost region over a manifold, we must define notions of vector addition over curved spaces, in a way.
 
 The main technical devices for moving between $\mathbb{R}^n$ and a [smooth manifold](https://en.wikipedia.org/wiki/Riemannian_manifold) $\mathbb{M}$ are the *orthogonal projection* from $\mathbb{M}$ to its tangent, and the *retraction* operation that assigns points on the tangent bundle $T\mathbb{M}$ to $\mathbb{M}$. 
 
@@ -67,7 +69,7 @@ As a side note, one of the internal operations to implement the retraction is th
 
 My optimization code is based on `torch` with some code borrowed from `mctorch` [3], extended to implement the manifold of doubly-stochastic matrices. In the following I refer to Python modules and line numbers in my implementation at [this commit](https://github.com/ocramz/assignment-riemann-opt/tree/a6bf622b77160dac58dc72fdd1ddd036338d23f3) : 
 
-Disregarding some implementation details (e.g. how Pytorch handles mutable objects), at every SGD step (`rsgd.py` line 57), the optimizer 
+Disregarding some implementation details (e.g. how Pytorch handles mutable objects), at every SGD step (`rsgd.py` line 57), the optimizer follows the textbook definition:
 
 1. computes the Riemann gradient (`egrad2rgrad`, from `parameter.py` line 31) via an orthogonal projection of the Euclidean gradient of the cost function onto $T\mathbb{M}$
 2. scales it by the negative learning rate
