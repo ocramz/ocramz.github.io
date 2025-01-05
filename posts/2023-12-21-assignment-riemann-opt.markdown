@@ -18,13 +18,13 @@ In this post I document my experiments which started from a "what if?" and ended
 
 ## Minimum bipartite matching
 
-Given a bipartite graph between two sets $U$, $V$ of $n$ items each, and an edge cost matrix $C$ with positive entries, the assignment problem can be written as finding an permutation matrix $P$ that solves the following problem:
+Given a bipartite graph between two sets $U$, $V$ of $n$ items each, and an edge cost matrix $C$ with positive entries, the assignment problem can be written as finding a permutation matrix $P$ that minimizes the total cost:
 
 $$
 P^{\star} = \underset{P \in \mathbb{P}}{\mathrm{argmin}} \left( P C \right)
 $$
 
-Recall that a permutation matrix has binary entries, and exactly one $1$ per row. The identity matrix can be seen as a trivial permutation that does nothing to its argument, when seen as an operator.
+Recall that a permutation matrix has binary entries, and exactly one $1$ per row.
 
 Finding the optimal permutation matrix $P^{\star}$ is a combinatorial optimization problem that has well known polynomial-time solution algorithms, e.g. Munkres that runs in $O(n^3)$ time.
 
