@@ -87,7 +87,7 @@ $$</span></p>
 <p>As a side note, one of the internal operations to implement the retraction is the <a href="https://en.wikipedia.org/wiki/Sinkhorn%27s_theorem">Sinkhorn-Knopp iteration</a> which has applications elsewhere too (e.g in optimal transport).</p>
 <h2 id="first-order-optimization-on-manifolds">First-order optimization on manifolds</h2>
 <p>My optimization code is based on <code>torch</code> with some code borrowed from <code>mctorch</code> [3], extended to implement the manifold of doubly-stochastic matrices. In the following I refer to Python modules and line numbers in my implementation at <a href="https://github.com/ocramz/assignment-riemann-opt/tree/a6bf622b77160dac58dc72fdd1ddd036338d23f3">this commit</a> :</p>
-<p>Disregarding some implementation details (e.g. how Pytorch handles mutable objects), at every SGD step (<code>rsgd.py</code> line 57), the optimizer follows the textbook definition:</p>
+<p>Disregarding some implementation details (e.g. how Pytorch handles mutable objects), the SGD step (<code>rsgd.py</code> line 57) follows the textbook definition:</p>
 <ol type="1">
 <li>computes the Riemann gradient (<code>egrad2rgrad</code>, from <code>parameter.py</code> line 31) via an orthogonal projection of the Euclidean gradient of the cost function onto <span class="math inline"><em>T</em>𝕄</span></li>
 <li>scales it by the negative learning rate</li>
