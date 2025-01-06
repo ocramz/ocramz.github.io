@@ -67,7 +67,7 @@ The numerical implementations of the projection and retraction operators are tak
 
   $$\nabla_R f(x) = \prod_x \left( \nabla f(x) \odot x \right)$$
   
-  * The projection $\prod_x(z)$ of a point $z$ on $T\mathbb{M}(x)$ is defined (Eqns. B.9 and B.10 of [4]) via two auxiliary quantities $\alpha$ and $\beta$:
+  * The projection $\prod_x(z)$ of a point $z$ on $T\mathbb{M}(x)$ is defined (Eqns. B.9 - B.11 of [4]) via two auxiliary quantities $\alpha$ and $\beta$:
   
     $$(I - x x^\top) \alpha = (z - x z^\top) 1$$
     
