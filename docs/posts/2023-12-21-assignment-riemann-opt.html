@@ -83,14 +83,14 @@ One way would be to write a Lagrangian and set up a primal-dual optimization sch
 <p>The main technical devices for moving between <span class="math inline">ℝ<sup><em>n</em></sup></span> and a <a href="https://en.wikipedia.org/wiki/Riemannian_manifold">smooth manifold</a> <span class="math inline">𝕄</span> are the <em>orthogonal projection</em> from <span class="math inline">𝕄</span> to its tangent, and the <em>retraction</em> operation that assigns points on the tangent bundle <span class="math inline"><em>T</em>𝕄</span> to <span class="math inline">𝕄</span>.</p>
 <p>For an introduction to the relevant definitions I found the book and online course <a href="https://www.nicolasboumal.net/book/#lectures">“An introduction to optimization on smooth manifolds”</a> to be very accessible.</p>
 <h2 id="the-manifold-of-doubly-stochastic-matrices">The manifold of doubly stochastic matrices</h2>
-<p>Many interesting sets have manifold structure: the sphere, <a href="https://en.wikipedia.org/wiki/Statistical_manifold">the set of probability distributions</a>, the set of positive-definite matrices. You can construct manifolds from products of manifolds, too. With some furious handwaving on my part and by recognizing the similarities (e.g. positivity and unit norm constraint, but I’ll try to dig out a reference) you can convince yourself that DS matrices have manifold structure in turn.</p>
-<p>The numerical implementations of the projection and retraction operators are taken from the literature, i.e. a single paper on the topic [4]:</p>
+<p>Many interesting sets have manifold structure: the sphere, <a href="https://en.wikipedia.org/wiki/Statistical_manifold">the set of probability distributions</a>, the set of positive-definite matrices. You can construct manifolds from products of manifolds, too. With some furious handwaving on my part and by recognizing the similarities (e.g. positivity and unit norm constraint) you can convince yourself that DS matrices have manifold structure in turn. Alternatively, you can read the discussion in Section V of [4] for all proofs.</p>
+<p>The definitions of the projection and retraction operators are taken from the literature ([4] is the single paper on the topic I’ve found):</p>
 <ul>
 <li><p>Riemann gradient (Lemma 1 of [4]):</p>
 <p><span class="math display">∇<sub><em>R</em></sub><em>f</em>(<em>x</em>) = ∏<sub><em>x</em></sub>(∇<em>f</em>(<em>x</em>) ⊙ <em>x</em>)</span></p>
 <ul>
 <li><p>The projection <span class="math inline">∏<sub><em>x</em></sub>(<em>z</em>)</span> of a point <span class="math inline"><em>z</em></span> on <span class="math inline"><em>T</em>𝕄(<em>x</em>)</span> is defined (Eqns. B.9 - B.11 of [4]) via two auxiliary quantities <span class="math inline"><em>α</em></span> and <span class="math inline"><em>β</em></span>:</p>
-<p><span class="math display">(<em>I</em> − <em>x</em><em>x</em><sup>⊤</sup>)<em>α</em> = (<em>z</em> − <em>x</em><em>z</em><sup>⊤</sup>)1</span></p>
+<p><span class="math display"><em>α</em> = (<em>I</em> − <em>x</em><em>x</em><sup>⊤</sup>)<sup>⊤</sup>(<em>z</em> − <em>x</em><em>z</em><sup>⊤</sup>)1</span></p>
 <p><span class="math display"><em>β</em> = <em>z</em><sup>⊤</sup>1 − <em>x</em><sup>⊤</sup><em>α</em></span></p>
 <p><span class="math display">∏<sub><em>x</em></sub>(<em>z</em>) = <em>z</em> − (<em>α</em>1<sup>⊤</sup> + 1<em>β</em><sup>⊤</sup>) ⊗ <em>x</em></span></p></li>
 </ul></li>
@@ -106,7 +106,7 @@ One way would be to write a Lagrangian and set up a primal-dual optimization sch
 <li>scale it by the negative learning rate</li>
 <li>compute the retraction of the current point along the scaled Riemann gradient, thereby moving to a new point on <span class="math inline">𝕄</span>.</li>
 </ol>
-<p>The projection and retraction operators for the doubly-stochastic matrix manifold are implemented <a href="https://github.com/ocramz/assignment-riemann-opt/blob/1fda47b537886f280f50cdbb5414f0fe39b06b01/doublystochastic.py">here</a>.</p>
+<p>The projection and retraction operators for the doubly-stochastic matrix manifold are implemented fo<a href="https://github.com/ocramz/assignment-riemann-opt/blob/1fda47b537886f280f50cdbb5414f0fe39b06b01/doublystochastic.py">here</a>, following the definitions given above from [4].</p>
 <h1 id="experiments">Experiments</h1>
 <p>We start by generating a cost matrix <span class="math inline"><em>C</em></span> of rank <span class="math inline"><em>n</em> = 10</span>, and computing the optimal assignment with the Munkres algorithm, which provides us with a cost lower bound (<span class="math inline"><em>y</em><sub><em>L</em><em>B</em></sub></span>).
 We then initialize the SGD optimizer at a random doubly stochastic matrix. The elements of both <span class="math inline"><em>C</em></span> and the starting point are sampled from the <a href="https://en.wikipedia.org/wiki/Folded_normal_distribution">“folded” normal distribution</a> <span class="math inline">|𝒩(0, 1)|</span>.

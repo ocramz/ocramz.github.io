@@ -59,9 +59,9 @@ For an introduction to the relevant definitions I found the book and online cour
 
 ## The manifold of doubly stochastic matrices
 
-Many interesting sets have manifold structure: the sphere, [the set of probability distributions](https://en.wikipedia.org/wiki/Statistical_manifold), the set of positive-definite matrices. You can construct manifolds from products of manifolds, too. With some furious handwaving on my part and by recognizing the similarities (e.g. positivity and unit norm constraint, but I'll try to dig out a reference) you can convince yourself that DS matrices have manifold structure in turn.
+Many interesting sets have manifold structure: the sphere, [the set of probability distributions](https://en.wikipedia.org/wiki/Statistical_manifold), the set of positive-definite matrices. You can construct manifolds from products of manifolds, too. With some furious handwaving on my part and by recognizing the similarities (e.g. positivity and unit norm constraint) you can convince yourself that DS matrices have manifold structure in turn. Alternatively, you can read the discussion in Section V of [4] for all proofs. 
 
-The numerical implementations of the projection and retraction operators are taken from the literature, i.e. a single paper on the topic [4]:
+The definitions of the projection and retraction operators are taken from the literature ([4] is the single paper on the topic I've found):
 
 * Riemann gradient (Lemma 1 of [4]): 
 
@@ -69,7 +69,7 @@ The numerical implementations of the projection and retraction operators are tak
   
   * The projection $\prod_x(z)$ of a point $z$ on $T\mathbb{M}(x)$ is defined (Eqns. B.9 - B.11 of [4]) via two auxiliary quantities $\alpha$ and $\beta$:
   
-    $$(I - x x^\top) \alpha = (z - x z^\top) 1$$
+    $$\alpha = (I - x x^\top)^\top (z - x z^\top) 1$$
     
     $$\beta = z^\top 1 - x^\top \alpha$$
     
@@ -93,7 +93,7 @@ Disregarding some implementation details (e.g. how Pytorch handles mutable objec
 2. scale it by the negative learning rate
 3. compute the retraction of the current point along the scaled Riemann gradient, thereby moving to a new point on $\mathbb{M}$.
 
-The projection and retraction operators for the doubly-stochastic matrix manifold are implemented [here](https://github.com/ocramz/assignment-riemann-opt/blob/1fda47b537886f280f50cdbb5414f0fe39b06b01/doublystochastic.py).
+The projection and retraction operators for the doubly-stochastic matrix manifold are implemented fo[here](https://github.com/ocramz/assignment-riemann-opt/blob/1fda47b537886f280f50cdbb5414f0fe39b06b01/doublystochastic.py), following the definitions given above from [4].
 
 
 # Experiments
