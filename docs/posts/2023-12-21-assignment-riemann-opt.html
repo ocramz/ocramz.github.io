@@ -86,14 +86,16 @@ One way would be to write a Lagrangian and set up a primal-dual optimization sch
 <p>Many interesting sets have manifold structure: the sphere, <a href="https://en.wikipedia.org/wiki/Statistical_manifold">the set of probability distributions</a>, the set of positive-definite matrices. You can construct manifolds from products of manifolds, too. With some furious handwaving on my part and by recognizing the similarities (e.g. positivity and unit norm constraint, but I’ll try to dig out a reference) you can convince yourself that DS matrices have manifold structure in turn.</p>
 <p>The numerical implementations of the projection and retraction operators are taken from the literature, i.e. a single paper on the topic [4]:</p>
 <ul>
-<li>Riemann gradient (Lemma 1 of [4]): <span class="math display">∇<sub><em>R</em></sub><em>f</em>(<em>x</em>) = ∏<sub><em>x</em></sub>(∇<em>f</em>(<em>x</em>) ⊙ <em>x</em>)</span>
+<li><p>Riemann gradient (Lemma 1 of [4]):
+<span class="math display">∇<sub><em>R</em></sub><em>f</em>(<em>x</em>) = ∏<sub><em>x</em></sub>(∇<em>f</em>(<em>x</em>) ⊙ <em>x</em>)</span></p>
 <ul>
-<li>The projection <span class="math inline">∏<sub><em>x</em></sub>(<em>z</em>)</span> of a point <span class="math inline"><em>z</em></span> on <span class="math inline"><em>T</em>𝕄(<em>x</em>)</span> is defined (Eqns. B.9 and B.10 of [4]) as:
-<span class="math display">(<em>I</em> − <em>x</em><em>x</em><sup><em>T</em></sup>)<em>α</em> = (<em>z</em> − <em>x</em><em>z</em><sup><em>T</em></sup>)</span>
-<span class="math display"><em>β</em> = <em>z</em><sup><em>T</em></sup>1 − <em>x</em><sup><em>T</em></sup><em>α</em></span>
-<span class="math display">∏<sub><em>x</em></sub>(<em>z</em>) = <em>z</em> − (<em>α</em>1 + 1<em>β</em>) ⊗ <em>x</em></span></li>
+<li><p>The projection <span class="math inline">∏<sub><em>x</em></sub>(<em>z</em>)</span> of a point <span class="math inline"><em>z</em></span> on <span class="math inline"><em>T</em>𝕄(<em>x</em>)</span> is defined (Eqns. B.9 and B.10 of [4]) as:
+<span class="math display">(<em>I</em> − <em>x</em><em>x</em><sup><em>T</em></sup>)<em>α</em> = (<em>z</em> − <em>x</em><em>z</em><sup><em>T</em></sup>)</span></p>
+<p><span class="math display"><em>β</em> = <em>z</em><sup><em>T</em></sup>1 − <em>x</em><sup><em>T</em></sup><em>α</em></span></p>
+<p><span class="math display">∏<sub><em>x</em></sub>(<em>z</em>) = <em>z</em> − (<em>α</em>1 + 1<em>β</em>) ⊗ <em>x</em></span></p></li>
 </ul></li>
-<li>The retraction <span class="math inline">$R_$</span></li>
+<li><p>The retraction <span class="math inline"><em>R</em><sub><em>x</em></sub>(<em>v</em>)</span> of a tangent vector <span class="math inline"><em>v</em> ∈ <em>T</em>𝕄</span> onto <span class="math inline">𝕄</span> (Lemma 2 of [4]) is defined as:
+<span class="math display"><em>R</em><sub><em>x</em></sub>(<em>v</em>) = <em>S</em>(<em>x</em> ⊙ <em>e</em><em>x</em><em>p</em>(<em>v</em> ⊘ <em>x</em>))</span></p></li>
 </ul>
 <p>The <a href="https://en.wikipedia.org/wiki/Sinkhorn%27s_theorem">Sinkhorn-Knopp iteration</a> computes a diagonal scaling of a positive matrix such that its rows and columns are normalized (i.e. a doubly-stochastic matrix).</p>
 <h2 id="first-order-optimization-on-manifolds">First-order optimization on manifolds</h2>
