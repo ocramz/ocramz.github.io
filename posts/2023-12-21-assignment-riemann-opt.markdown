@@ -67,13 +67,15 @@ The numerical implementations of the projection and retraction operators are tak
 
   $$\nabla_R f(x) = \prod_x \left( \nabla f(x) \odot x \right)$$
   
-  * The projection $\prod_x(z)$ of a point $z$ on $T\mathbb{M}(x)$ is defined (Eqns. B.9 and B.10 of [4]) as:
+  * The projection $\prod_x(z)$ of a point $z$ on $T\mathbb{M}(x)$ is defined (Eqns. B.9 and B.10 of [4]) via two auxiliary quantities $\alpha$ and $\beta$:
   
     $$(I - x x^T) \alpha = (z - x z^T)$$
     
     $$\beta = z^T 1 - x^T \alpha$$
     
     $$\prod_x(z) = z - (\alpha 1 + 1 \beta) \otimes x$$
+    
+    We use a least-squares linear solver `lstsq` to compute $\alpha$.
     
 * The retraction $R_x(v)$ of a tangent vector $v \in T\mathbb{M}$ onto $\mathbb{M}$ (Lemma 2 of [4]) is defined as:
 
