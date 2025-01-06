@@ -75,7 +75,6 @@ The numerical implementations of the projection and retraction operators are tak
     
     $$\prod_x(z) = z - (\alpha 1^\top + 1 \beta^\top) \otimes x$$
     
-    We use a least-squares linear solver `lstsq` to compute $\alpha$.
     
 * The retraction $R_x(v)$ of a tangent vector $v \in T\mathbb{M}$ onto $\mathbb{M}$ (Lemma 2 of [4]) is defined as:
 
