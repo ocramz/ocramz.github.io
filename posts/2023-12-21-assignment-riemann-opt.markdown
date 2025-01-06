@@ -63,7 +63,7 @@ Many interesting sets have manifold structure: the sphere, [the set of probabili
 
 The numerical implementations of the projection and retraction operators are taken from the literature, i.e. a single paper on the topic [4]:
 
-* Riemann gradient (Lemma 1 of [4]): $\nabla_R f(X) = \prod_X \left( \nabla f(X) \bigodot X \right) $
+* Riemann gradient (Lemma 1 of [4]): $\nabla_R f(X) = \prod_X \left( \nabla f(X) \bigodot X \right)$
 
 
 

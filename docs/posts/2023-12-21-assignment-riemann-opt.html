@@ -86,7 +86,7 @@ One way would be to write a Lagrangian and set up a primal-dual optimization sch
 <p>Many interesting sets have manifold structure: the sphere, <a href="https://en.wikipedia.org/wiki/Statistical_manifold">the set of probability distributions</a>, the set of positive-definite matrices. You can construct manifolds from products of manifolds, too. With some furious handwaving on my part and by recognizing the similarities (e.g. positivity and unit norm constraint, but I’ll try to dig out a reference) you can convince yourself that DS matrices have manifold structure in turn.</p>
 <p>The numerical implementations of the projection and retraction operators are taken from the literature, i.e. a single paper on the topic [4]:</p>
 <ul>
-<li>Riemann gradient (Lemma 1 of [4]): $_R f(X) = _X ( f(X) X ) $</li>
+<li>Riemann gradient (Lemma 1 of [4]): <span class="math inline">∇<sub><em>R</em></sub><em>f</em>(<em>X</em>) = ∏<sub><em>X</em></sub>(∇<em>f</em>(<em>X</em>)⨀<em>X</em>)</span></li>
 </ul>
 <p>As a side note, one of the internal operations to implement the retraction is the <a href="https://en.wikipedia.org/wiki/Sinkhorn%27s_theorem">Sinkhorn-Knopp iteration</a> which has applications elsewhere too (e.g in optimal transport).</p>
 <h2 id="first-order-optimization-on-manifolds">First-order optimization on manifolds</h2>
