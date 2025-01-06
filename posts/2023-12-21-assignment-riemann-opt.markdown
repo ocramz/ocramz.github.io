@@ -69,11 +69,11 @@ The numerical implementations of the projection and retraction operators are tak
   
   * The projection $\prod_x(z)$ of a point $z$ on $T\mathbb{M}(x)$ is defined (Eqns. B.9 and B.10 of [4]) via two auxiliary quantities $\alpha$ and $\beta$:
   
-    $$(I - x x^T) \alpha = (z - x z^T)$$
+    $$(I - x x^\top) \alpha = (z - x z^\top) 1$$
     
-    $$\beta = z^T 1 - x^T \alpha$$
+    $$\beta = z^\top 1 - x^\top \alpha$$
     
-    $$\prod_x(z) = z - (\alpha 1 + 1 \beta) \otimes x$$
+    $$\prod_x(z) = z - (\alpha 1^\top + 1 \beta^\top) \otimes x$$
     
     We use a least-squares linear solver `lstsq` to compute $\alpha$.
     
