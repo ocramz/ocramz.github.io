@@ -61,7 +61,13 @@ For an introduction to the relevant definitions I found the book and online cour
 
 Many interesting sets have manifold structure: the sphere, [the set of probability distributions](https://en.wikipedia.org/wiki/Statistical_manifold), the set of positive-definite matrices. You can construct manifolds from products of manifolds, too. With some furious handwaving on my part and by recognizing the similarities (e.g. positivity and unit norm constraint, but I'll try to dig out a reference) you can convince yourself that DS matrices have manifold structure in turn.
 
-The numerical implementations of the projection and retraction operators are taken from the literature, i.e. a single paper on the topic [4]. There are some related remarks in the Julia package [manifolds.jl](https://juliamanifolds.github.io/manifolds/stable/manifolds/multinomialdoublystochastic.html).
+The numerical implementations of the projection and retraction operators are taken from the literature, i.e. a single paper on the topic [4]:
+
+* Riemann gradient (Lemma 1 of [4]): $\nabla_R f(X) = \prod_X \left( \nabla f(X) \bigodot X \right) $
+
+
+
+
 
 As a side note, one of the internal operations to implement the retraction is the [Sinkhorn-Knopp iteration](https://en.wikipedia.org/wiki/Sinkhorn%27s_theorem) which has applications elsewhere too (e.g in optimal transport).
 
@@ -117,3 +123,4 @@ All scripts can be found on my GitHub profile <a href="https://github.com/ocramz
 3. `mctorch` <a href="github">https://github.com/mctorch/mctorch</a>
 4. Douik, A. and Hassibi, B., Manifold Optimization Over the Set of Doubly Stochastic Matrices: A Second-Order Geometry, 2018 <a href="https://arxiv.org/abs/1802.02628">arXiv</a>
 5. Boumal, N. [An introduction to optimization on smooth manifolds](https://www.nicolasboumal.net/book/#lectures)
+6. [manifolds.jl](https://juliamanifolds.github.io/manifolds/stable/manifolds/multinomialdoublystochastic.html)
