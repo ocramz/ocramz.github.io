@@ -64,9 +64,11 @@ Many interesting sets have manifold structure: the sphere, [the set of probabili
 The numerical implementations of the projection and retraction operators are taken from the literature, i.e. a single paper on the topic [4]:
 
 * Riemann gradient (Lemma 1 of [4]): 
+
   $$\nabla_R f(x) = \prod_x \left( \nabla f(x) \odot x \right)$$
   
   * The projection $\prod_x(z)$ of a point $z$ on $T\mathbb{M}(x)$ is defined (Eqns. B.9 and B.10 of [4]) as:
+  
     $$(I - x x^T) \alpha = (z - x z^T)$$
     
     $$\beta = z^T 1 - x^T \alpha$$
@@ -74,9 +76,10 @@ The numerical implementations of the projection and retraction operators are tak
     $$\prod_x(z) = z - (\alpha 1 + 1 \beta) \otimes x$$
     
 * The retraction $R_x(v)$ of a tangent vector $v \in T\mathbb{M}$ onto $\mathbb{M}$ (Lemma 2 of [4]) is defined as:
+
   $$R_x(v)= S(x \odot exp(v \oslash x))$$
     
-The [Sinkhorn-Knopp iteration](https://en.wikipedia.org/wiki/Sinkhorn%27s_theorem) computes a diagonal scaling of a positive matrix such that its rows and columns are normalized (i.e. a doubly-stochastic matrix).
+The [Sinkhorn-Knopp iteration](https://en.wikipedia.org/wiki/Sinkhorn%27s_theorem) $S$ computes a diagonal scaling of a positive matrix such that its rows and columns are normalized (i.e. a doubly-stochastic matrix).
 
 
 ## First-order optimization on manifolds
