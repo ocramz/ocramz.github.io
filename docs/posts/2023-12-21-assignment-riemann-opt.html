@@ -106,7 +106,7 @@ One way would be to write a Lagrangian and set up a primal-dual optimization sch
 <li>scale it by the negative learning rate</li>
 <li>compute the retraction of the current point along the scaled Riemann gradient, thereby moving to a new point on <span class="math inline">𝕄</span>.</li>
 </ol>
-<p>The projection and retraction operators for the doubly-stochastic matrix manifold are implemented fo<a href="https://github.com/ocramz/assignment-riemann-opt/blob/1fda47b537886f280f50cdbb5414f0fe39b06b01/doublystochastic.py">here</a>, following the definitions given above from [4].</p>
+<p>The projection and retraction operators for the doubly-stochastic matrix manifold are implemented <a href="https://github.com/ocramz/assignment-riemann-opt/blob/1fda47b537886f280f50cdbb5414f0fe39b06b01/doublystochastic.py">here</a>, following the definitions given above from [4].</p>
 <h1 id="experiments">Experiments</h1>
 <p>We start by generating a cost matrix <span class="math inline"><em>C</em></span> of rank <span class="math inline"><em>n</em> = 10</span>, and computing the optimal assignment with the Munkres algorithm, which provides us with a cost lower bound (<span class="math inline"><em>y</em><sub><em>L</em><em>B</em></sub></span>).
 We then initialize the SGD optimizer at a random doubly stochastic matrix. The elements of both <span class="math inline"><em>C</em></span> and the starting point are sampled from the <a href="https://en.wikipedia.org/wiki/Folded_normal_distribution">“folded” normal distribution</a> <span class="math inline">|𝒩(0, 1)|</span>.

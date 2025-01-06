@@ -93,7 +93,7 @@ Disregarding some implementation details (e.g. how Pytorch handles mutable objec
 2. scale it by the negative learning rate
 3. compute the retraction of the current point along the scaled Riemann gradient, thereby moving to a new point on $\mathbb{M}$.
 
-The projection and retraction operators for the doubly-stochastic matrix manifold are implemented fo[here](https://github.com/ocramz/assignment-riemann-opt/blob/1fda47b537886f280f50cdbb5414f0fe39b06b01/doublystochastic.py), following the definitions given above from [4].
+The projection and retraction operators for the doubly-stochastic matrix manifold are implemented [here](https://github.com/ocramz/assignment-riemann-opt/blob/1fda47b537886f280f50cdbb5414f0fe39b06b01/doublystochastic.py), following the definitions given above from [4].
 
 
 # Experiments
