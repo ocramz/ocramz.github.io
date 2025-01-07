@@ -67,16 +67,19 @@ The definitions of the projection and retraction operators are taken from the li
 
   $$\nabla_R f(x) = \prod_x \left( \nabla f(x) \odot x \right)$$
   
-  * The projection $\prod_x(z)$ of a vector $z$ on $T\mathbb{M}(x)$ is defined (Eqns. B.9 - B.11 of [4]) via two auxiliary quantities $\alpha$ and $\beta$:
+  * The projection $\prod_x(z)$ of a vector $z$ on $T\mathbb{B}(x)$ is defined (Eqns. B.9 - B.11 of [4]) as:
   
-    $$\alpha = (I - x x^\top)^\top (z - x z^\top) 1$$
-    
-    $$\beta = z^\top 1 - x^\top \alpha$$
-    
+
     $$\prod_x(z) = z - (\alpha 1^\top + 1 \beta^\top) \odot x$$
     
+    where
     
-* The retraction $R_x(v)$ of a tangent vector $v \in T\mathbb{M}$ onto $\mathbb{M}$ (Lemma 2 of [4]) is defined as:
+    $$\alpha = (I - x x^\top)^\top (z - x z^\top) 1$$
+    
+    $$\beta = z^\top 1 - x^\top \alpha$$    
+    
+    
+* The retraction $R_x(v)$ of a tangent vector $v \in T\mathbb{B}$ onto $\mathbb{B}$ (Lemma 2 of [4]) is defined as:
 
   $$R_x(v)= S(x \odot exp(v \oslash x))$$
     
