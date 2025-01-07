@@ -76,7 +76,7 @@ The definitions of the projection and retraction operators are taken from the li
     
     $$\alpha = (I - x x^\top)^\top (z - x z^\top) 1$$
     
-    $$\beta = z^\top 1 - x^\top \alpha$$    
+    $$\beta = z^\top 1 - x^\top \alpha$$
     
     
 * The retraction $R_x(v)$ of a tangent vector $v \in T\mathbb{B}$ onto $\mathbb{B}$ (Lemma 2 of [4]) is defined as:
