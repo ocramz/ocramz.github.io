@@ -49,11 +49,11 @@ In the following we'll see how to turn this kind of constrained optimization pro
 
 ## Optimization on manifolds
 
-Informally, a <i>manifold</i> is a version of Euclidean space $\mathbb{R}^n$ that is only locally flat (unlike regular Euclidean space which is uniformly flat everywhere).
+Informally, a <i>manifold</i> is a version of Euclidean space $\mathbb{R}^d$ that is only locally flat (unlike regular Euclidean space which is uniformly flat everywhere).
 
-In order to "make progress" towards a minimum cost region over a manifold, we must define notions of vector addition over curved spaces, in a way.
+In order to "make progress" towards a minimum cost region over a manifold, we must define notions of vector addition over curved spaces, in a way. Riemann gradient descent proceeds by correcting the update steps, constraining the iterations to lie on the manifold, as we will see in the following.
 
-The main technical devices for moving between $\mathbb{R}^n$ and a [smooth manifold](https://en.wikipedia.org/wiki/Riemannian_manifold) $\mathbb{M}$ are the *orthogonal projection* from $\mathbb{M}$ to its tangent, and the *retraction* operation that assigns points on the tangent bundle $T\mathbb{M}$ to $\mathbb{M}$. 
+The main technical devices for moving along a [smooth manifold](https://en.wikipedia.org/wiki/Riemannian_manifold) $\mathbb{M}$ are the *orthogonal projection* from $\mathbb{M}$ to its tangent, and the *retraction* operation that assigns points on the tangent bundle $T\mathbb{M}$ to $\mathbb{M}$. 
 
 For an introduction to the relevant definitions I found the book and online course ["An introduction to optimization on smooth manifolds"](https://www.nicolasboumal.net/book/#lectures) to be very accessible.
 
