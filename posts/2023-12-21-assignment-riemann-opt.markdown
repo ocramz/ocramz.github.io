@@ -80,8 +80,9 @@ The definitions of the projection and retraction operators are taken from the li
 
   $$R_x(v)= S(x \odot exp(v \oslash x))$$
     
-Where $\odot$ and $\oslash$ are the elementwise (Hadamard) product and division, respectively.
-The [Sinkhorn-Knopp iteration](https://en.wikipedia.org/wiki/Sinkhorn%27s_theorem) $S$ computes a diagonal scaling of a positive matrix such that its rows and columns are normalized (i.e. a doubly-stochastic matrix).
+where $\odot$ and $\oslash$ are the elementwise (Hadamard) product and division, respectively.
+
+In the retraction formula above, the [Sinkhorn-Knopp iteration](https://en.wikipedia.org/wiki/Sinkhorn%27s_theorem) $S$ computes a diagonal scaling of a positive matrix such that its rows and columns are normalized (i.e. a doubly-stochastic matrix).
 
 
 ## First-order optimization on manifolds
