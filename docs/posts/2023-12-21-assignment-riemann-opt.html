@@ -100,14 +100,14 @@ One way would be to write a Lagrangian and set up a primal-dual optimization sch
 <p>where <span class="math inline">⊙</span> and <span class="math inline">⊘</span> are the elementwise (Hadamard) product and division, respectively.</p>
 <p>In the retraction formula above, the <a href="https://en.wikipedia.org/wiki/Sinkhorn%27s_theorem">Sinkhorn-Knopp iteration</a> <span class="math inline"><em>S</em></span> computes a diagonal scaling of a positive matrix such that its rows and columns are normalized (i.e. a doubly-stochastic matrix).</p>
 <h2 id="first-order-optimization-on-manifolds">First-order optimization on manifolds</h2>
-<p>My optimization code is based on <code>torch</code> with some code borrowed from <code>mctorch</code> [3], extended to implement the manifold of doubly-stochastic matrices. In the following I refer to Python modules and line numbers in my implementation at <a href="https://github.com/ocramz/assignment-riemann-opt/tree/1fda47b537886f280f50cdbb5414f0fe39b06b01">this commit</a> :</p>
+<p>My optimization code is based on <code>torch</code> with some code borrowed from <code>mctorch</code> [3], extended to implement the manifold of doubly-stochastic matrices. In the following I refer to Python modules and line numbers in my implementation at <a href="https://github.com/ocramz/assignment-riemann-opt/tree/aed67ed8be296f4e5850797c841cbcf19338192e">this commit</a> :</p>
 <p>Disregarding some implementation details (e.g. how Pytorch handles mutable objects), the Riemann SGD step (<code>rsgd.py</code> line 57) follows the textbook definition:</p>
 <ol type="1">
 <li>compute the Riemann gradient (<code>egrad2rgrad</code>, from <code>parameter.py</code> line 31) via an orthogonal projection of the Euclidean gradient of the cost function onto <span class="math inline"><em>T</em>𝕄</span></li>
 <li>scale it by the negative learning rate</li>
 <li>compute the retraction of the current point along the scaled Riemann gradient, thereby moving to a new point on <span class="math inline">𝕄</span>.</li>
 </ol>
-<p>The projection and retraction operators for the doubly-stochastic matrix manifold are implemented <a href="https://github.com/ocramz/assignment-riemann-opt/blob/1fda47b537886f280f50cdbb5414f0fe39b06b01/doublystochastic.py">here</a>, following the definitions given above from [4].</p>
+<p>The projection and retraction operators for the doubly-stochastic matrix manifold are implemented <a href="https://github.com/ocramz/assignment-riemann-opt/blob/aed67ed8be296f4e5850797c841cbcf19338192e/doublystochastic.py">here</a>, following the definitions given above from [4].</p>
 <h1 id="experiments">Experiments</h1>
 <p>We start by generating a cost matrix <span class="math inline"><em>C</em></span> of rank <span class="math inline"><em>n</em> = 10</span>, and computing the optimal assignment with the Munkres algorithm, which provides us with a cost lower bound (<span class="math inline"><em>y</em><sub><em>L</em><em>B</em></sub></span>).
 We then initialize the SGD optimizer at a random doubly stochastic matrix. The elements of both <span class="math inline"><em>C</em></span> and the starting point are sampled from the <a href="https://en.wikipedia.org/wiki/Folded_normal_distribution">“folded” normal distribution</a> <span class="math inline">|𝒩(0, 1)|</span>.

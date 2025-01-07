@@ -87,7 +87,7 @@ In the retraction formula above, the [Sinkhorn-Knopp iteration](https://en.wikip
 
 ## First-order optimization on manifolds
 
-My optimization code is based on `torch` with some code borrowed from `mctorch` [3], extended to implement the manifold of doubly-stochastic matrices. In the following I refer to Python modules and line numbers in my implementation at [this commit](https://github.com/ocramz/assignment-riemann-opt/tree/1fda47b537886f280f50cdbb5414f0fe39b06b01) : 
+My optimization code is based on `torch` with some code borrowed from `mctorch` [3], extended to implement the manifold of doubly-stochastic matrices. In the following I refer to Python modules and line numbers in my implementation at [this commit](https://github.com/ocramz/assignment-riemann-opt/tree/aed67ed8be296f4e5850797c841cbcf19338192e) : 
 
 Disregarding some implementation details (e.g. how Pytorch handles mutable objects), the Riemann SGD step (`rsgd.py` line 57) follows the textbook definition:
 
@@ -95,7 +95,7 @@ Disregarding some implementation details (e.g. how Pytorch handles mutable objec
 2. scale it by the negative learning rate
 3. compute the retraction of the current point along the scaled Riemann gradient, thereby moving to a new point on $\mathbb{M}$.
 
-The projection and retraction operators for the doubly-stochastic matrix manifold are implemented [here](https://github.com/ocramz/assignment-riemann-opt/blob/1fda47b537886f280f50cdbb5414f0fe39b06b01/doublystochastic.py), following the definitions given above from [4].
+The projection and retraction operators for the doubly-stochastic matrix manifold are implemented [here](https://github.com/ocramz/assignment-riemann-opt/blob/aed67ed8be296f4e5850797c841cbcf19338192e/doublystochastic.py), following the definitions given above from [4].
 
 
 # Experiments
