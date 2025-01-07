@@ -97,7 +97,8 @@ One way would be to write a Lagrangian and set up a primal-dual optimization sch
 <li><p>The retraction <span class="math inline"><em>R</em><sub><em>x</em></sub>(<em>v</em>)</span> of a tangent vector <span class="math inline"><em>v</em> ∈ <em>T</em>𝕄</span> onto <span class="math inline">𝕄</span> (Lemma 2 of [4]) is defined as:</p>
 <p><span class="math display"><em>R</em><sub><em>x</em></sub>(<em>v</em>) = <em>S</em>(<em>x</em> ⊙ <em>e</em><em>x</em><em>p</em>(<em>v</em> ⊘ <em>x</em>))</span></p></li>
 </ul>
-<p>The <a href="https://en.wikipedia.org/wiki/Sinkhorn%27s_theorem">Sinkhorn-Knopp iteration</a> <span class="math inline"><em>S</em></span> computes a diagonal scaling of a positive matrix such that its rows and columns are normalized (i.e. a doubly-stochastic matrix).</p>
+<p>Where <span class="math inline">⊙</span> and <span class="math inline">⊘</span> are the elementwise (Hadamard) product and division, respectively.
+The <a href="https://en.wikipedia.org/wiki/Sinkhorn%27s_theorem">Sinkhorn-Knopp iteration</a> <span class="math inline"><em>S</em></span> computes a diagonal scaling of a positive matrix such that its rows and columns are normalized (i.e. a doubly-stochastic matrix).</p>
 <h2 id="first-order-optimization-on-manifolds">First-order optimization on manifolds</h2>
 <p>My optimization code is based on <code>torch</code> with some code borrowed from <code>mctorch</code> [3], extended to implement the manifold of doubly-stochastic matrices. In the following I refer to Python modules and line numbers in my implementation at <a href="https://github.com/ocramz/assignment-riemann-opt/tree/1fda47b537886f280f50cdbb5414f0fe39b06b01">this commit</a> :</p>
 <p>Disregarding some implementation details (e.g. how Pytorch handles mutable objects), the Riemann SGD step (<code>rsgd.py</code> line 57) follows the textbook definition:</p>
