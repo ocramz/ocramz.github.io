@@ -136,7 +136,7 @@ All scripts can be found on my GitHub profile <a href="https://github.com/ocramz
 0. Assignment problem <a href="https://en.wikipedia.org/wiki/Assignment_problem">wikipedia</a>
 1. Doubly-stochastic matrix <a href="https://en.wikipedia.org/wiki/Doubly_stochastic_matrix">wikipedia</a>
 2. Birkhoff polytope <a href="https://en.wikipedia.org/wiki/Birkhoff_polytope">wikipedia</a>
-3. `mctorch` <a href="github">https://github.com/mctorch/mctorch</a>
+3. `mctorch` <a href="https://github.com/mctorch/mctorch">github</a>
 4. Douik, A. and Hassibi, B., Manifold Optimization Over the Set of Doubly Stochastic Matrices: A Second-Order Geometry, 2018 <a href="https://arxiv.org/abs/1802.02628">arXiv</a>
 5. Boumal, N. [An introduction to optimization on smooth manifolds](https://www.nicolasboumal.net/book/#lectures)
 6. [manifolds.jl](https://juliamanifolds.github.io/manifolds/stable/manifolds/multinomialdoublystochastic.html)
