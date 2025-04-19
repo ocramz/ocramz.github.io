@@ -9,7 +9,7 @@ categories: optimization
 
 <img src="/images/assignment_riemann_tri.png"/>
 
-> HN discussion: https://news.ycombinator.com/item?id=42603443
+> HN discussion: [https://news.ycombinator.com/item?id=42603443](https://news.ycombinator.com/item?id=42603443)
 
 Some time ago I ran into two separate instances of the same combinatorial optimization problem in the span of a few days, and decided to read up a little on the fundamentals. The two applications were object tracking in videos, and peak alignment in chromatography data.
 
