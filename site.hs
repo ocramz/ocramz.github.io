@@ -6,6 +6,7 @@ import           Hakyll
 import Text.Pandoc.Highlighting (Style, tango, styleToCss)
 import Text.Pandoc.Options      (ReaderOptions(..), WriterOptions(..), HTMLMathMethod(..))
 
+import Hakyll.Web.Meta.OpenGraph (openGraphField)
 
 
 --------------------------------------------------------------------------------
@@ -62,7 +63,7 @@ main = hakyllWith cfg $ do
         route $ setExtension "html"
         compile $ pandocCompiler
             >>= loadAndApplyTemplate "templates/post.html"    postCtx
-            >>= loadAndApplyTemplate "templates/default.html" postCtx
+            >>= loadAndApplyTemplate "templates/default.html" (postCtx <> openGraphContext)
             >>= relativizeUrls
 
     create ["archive.html"] $ do
@@ -102,3 +103,13 @@ postCtx :: Context String
 postCtx =
     dateField "date" "%B %e, %Y" `mappend`
     defaultContext
+
+
+openGraphContext :: Context String
+openGraphContext = openGraphField "opengraph" ctx
+  where
+    ctx = field "og-image" ogImageField <> constField "root" siteRoot <> defaultContext
+    ogImageField item = do
+      Just path <- getRoute $ setVersion (Just "og-image") (itemIdentifier item)
+      pure $ siteRoot <> toUrl path
+    siteRoot = "https://ocramz.github.io"
