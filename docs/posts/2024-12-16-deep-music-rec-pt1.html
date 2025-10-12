@@ -8,12 +8,12 @@
         <meta name="author" content="Marco Zocca" />
         <title>Marco Zocca - Reconstructing a music recommendation model</title>
 
-        <link rel="stylesheet" href="../css/default.css" />
-        <meta property="og:type" content="article" /><meta property="og:url" content="https://ocramz.github.io/posts/2024-12-16-deep-music-rec-pt1.html" /><meta property="og:title" content="Reconstructing a music recommendation model" /><meta property="og:image" content="../images/renovation.png" />
+        <link rel="stylesheet" href="/css/default.css" />
+        <meta property="og:type" content="article" /><meta property="og:url" content="https://ocramz.github.io/posts/2024-12-16-deep-music-rec-pt1.html" /><meta property="og:title" content="Reconstructing a music recommendation model" /><meta property="og:image" content="/images/renovation.png" />
 
-        <link rel="stylesheet" href="../css/highlight_default.min.css">
-        <script src="../js/highlight.min.js"></script>
-        <script src="../js/haskell.min.js"></script>
+        <link rel="stylesheet" href="/css/highlight_default.min.css">
+        <script src="/js/highlight.min.js"></script>
+        <script src="/js/haskell.min.js"></script>
         <script>hljs.highlightAll();</script>
 
         <!--  <script id="MathJax-script" async src="/js/mathjax.min.js"></script> -->
@@ -29,19 +29,19 @@
             <div class="row">
               <div class="col-sm-4">
                     <h2 class="masthead-title">
-                      <a href="../index.html" title="Home">Marco Zocca</a>
+                      <a href="/index.html" title="Home">Marco Zocca</a>
                 </h2>
               </div>
               <div class="col-sm-8">
                     <h4 class="masthead-title" style="text-align: right;">
-                      <a href="../about.html" title="About">About</a>
+                      <a href='/about.html' title='About'>About</a>
                   &nbsp;
-                      <a href="../research.html" title="Research">Research</a>
+                      <a href='/research.html' title='Research'>Research</a>
                   &nbsp;
-                      <a href="../oss.html" title="Open source">Open Source</a>
+                      <a href='/oss.html' title='Open source'>Open Source</a>
                       <!-- <a class='icon-github-squared' href='/oss.html' title='Open source'>Open Source</a> -->
                   &nbsp;
-                      <a href="../archive.html">Posts</a>
+                      <a href="/archive.html">Posts</a>
                 </h4>
               </div>
             </div>
@@ -58,7 +58,7 @@
         <h1 id="introduction">Introduction</h1>
 <!-- ![Preference graph](prefs_graph.png "Preference graph") -->
 <p>Can we learn a music recommendation model from raw audio samples and a preference graph?</p>
-<p><img src="../images/prefs_graph.png" width="500/"></p>
+<p><img src="/images/prefs_graph.png" width=500/></p>
 <p>To answer this, I wanted to combine together a few topics I’ve been curious about recently: audio processing with deep neural networks, contrastive learning and graph data.</p>
 <p>Not to mention the fact that I’m constantly looking for new music, and while friends and a few trusted broadcasters (e.g. <a href="https://nts.live">NTS</a>) are very helpful, I also rely on YouTube suggestions. So, what makes a good recommender model? Let’s find out!</p>
 <h1 id="technical-summary">Technical summary</h1>
@@ -108,7 +108,7 @@
 <h1 id="training">Training</h1>
 <p>At peak, training the model takes less than 4 GB of vRAM, which sits comfortably within a T4 or similar cheap-tier GPU. It’s also pretty fast, at 10-12 batches per second. I think you could get an additional data loading speedup by having one SQLite connection per DataLoader thread, but I didn’t have time to investigate this.</p>
 <p>Training the model above converges quite smoothly, as we can see below:</p>
-<p><img src="../images/melspec_training_loss.png" width="500/"></p>
+<p><img src="/images/melspec_training_loss.png" width=500/></p>
 <p>With the following parameters:</p>
 <ul>
 <li>Adam optimizer</li>
