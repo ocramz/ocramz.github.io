@@ -3,6 +3,7 @@ layout: post
 title: Purely-functional reverse-mode automatic differentiation with delimited continuations
 date: 2021-07-19
 categories: Haskell automatic-differentiation
+og-image: https://cdn.pixabay.com/photo/2021/11/02/07/12/renovation-6762557_1280.jpg
 ---
 
 ## Introduction
