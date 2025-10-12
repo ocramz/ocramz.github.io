@@ -3,6 +3,7 @@ layout: post
 title: Overhauling a ML project for long-term maintenance and production
 date: 2025-10-10
 categories: Python Pytorch MLOps
+og-image: /images/renovation.png
 ---
 
 ## Introduction
