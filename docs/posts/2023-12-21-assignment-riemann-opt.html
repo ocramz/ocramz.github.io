@@ -8,12 +8,12 @@
         <meta name="author" content="Marco Zocca" />
         <title>Marco Zocca - Minimum bipartite matching via Riemann optimization</title>
 
-        <link rel="stylesheet" href="/css/default.css" />
+        <link rel="stylesheet" href="../css/default.css" />
         <meta property="og:type" content="article" /><meta property="og:url" content="https://ocramz.github.io/posts/2023-12-21-assignment-riemann-opt.html" /><meta property="og:title" content="Minimum bipartite matching via Riemann optimization" />
 
-        <link rel="stylesheet" href="/css/highlight_default.min.css">
-        <script src="/js/highlight.min.js"></script>
-        <script src="/js/haskell.min.js"></script>
+        <link rel="stylesheet" href="../css/highlight_default.min.css">
+        <script src="../js/highlight.min.js"></script>
+        <script src="../js/haskell.min.js"></script>
         <script>hljs.highlightAll();</script>
 
         <!--  <script id="MathJax-script" async src="/js/mathjax.min.js"></script> -->
@@ -29,19 +29,19 @@
             <div class="row">
               <div class="col-sm-4">
                     <h2 class="masthead-title">
-                      <a href="/index.html" title="Home">Marco Zocca</a>
+                      <a href="../index.html" title="Home">Marco Zocca</a>
                 </h2>
               </div>
               <div class="col-sm-8">
                     <h4 class="masthead-title" style="text-align: right;">
-                      <a href='/about.html' title='About'>About</a>
+                      <a href="../about.html" title="About">About</a>
                   &nbsp;
-                      <a href='/research.html' title='Research'>Research</a>
+                      <a href="../research.html" title="Research">Research</a>
                   &nbsp;
-                      <a href='/oss.html' title='Open source'>Open Source</a>
+                      <a href="../oss.html" title="Open source">Open Source</a>
                       <!-- <a class='icon-github-squared' href='/oss.html' title='Open source'>Open Source</a> -->
                   &nbsp;
-                      <a href="/archive.html">Posts</a>
+                      <a href="../archive.html">Posts</a>
                 </h4>
               </div>
             </div>
@@ -56,7 +56,7 @@
     </section>
     <section>
         <h1 id="introduction">Introduction</h1>
-<p><img src="/images/assignment_riemann_tri.png"/></p>
+<p><img src="../images/assignment_riemann_tri.png" /></p>
 <blockquote>
 <p>HN discussion: <a href="https://news.ycombinator.com/item?id=42603443">https://news.ycombinator.com/item?id=42603443</a></p>
 </blockquote>
@@ -117,9 +117,9 @@ One way would be to write a Lagrangian and set up a primal-dual optimization sch
 <p>We start by generating a cost matrix <span class="math inline"><em>C</em></span> of rank <span class="math inline"><em>n</em> = 10</span>, and computing the optimal assignment with the Munkres algorithm, which provides us with a cost lower bound (<span class="math inline"><em>y</em><sub><em>L</em><em>B</em></sub></span>).
 We then initialize the SGD optimizer at a random doubly stochastic matrix. The elements of both <span class="math inline"><em>C</em></span> and the starting point are sampled from the <a href="https://en.wikipedia.org/wiki/Folded_normal_distribution">“folded” normal distribution</a> <span class="math inline">|𝒩(0, 1)|</span>.
 The learning rate is set to 2e-2 (found empirically).</p>
-<p><img src="/images/assign_movie_iter-1000_n-10_lr-0.02_1735984842.gif" width=500/></p>
+<p><img src="../images/assign_movie_iter-1000_n-10_lr-0.02_1735984842.gif" width="500/"></p>
 <p>In the above animation we see the optimal assignment as dashed red edges, superimposed with the temporary solution in blue. As a visual cue, the thickness of the blue edges is proportional to the respective matrix coefficient, and we see the matrix “sparsifies” as it approaches the optimum at a vertex of the Birkhoff set.</p>
-<p><img src="/images/assign_opt_gap_iter-1000_n-10_lr-0.02_1735984842.png" width=400/></p>
+<p><img src="../images/assign_opt_gap_iter-1000_n-10_lr-0.02_1735984842.png" width="400/"></p>
 <p>As we can see above, the optimality gap between the current and the Munkres cost (<span class="math inline"><em>y</em> − <em>y</em><sub><em>L</em><em>B</em></sub></span>) converges smoothly to 0 (from most starting points, in my experiments). I still have to characterize some rare cases in which the bound worsens for a while before improving again.</p>
 <h1 id="conclusions">Conclusions</h1>
 <p>I was quite surprised this approach works so well, to be honest. It would be interesting to look at the convergence of the method wrt the distribution of edge weights <span class="math inline"><em>C</em></span>.</p>

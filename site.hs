@@ -64,7 +64,7 @@ main = hakyllWith cfg $ do
         compile $ pandocCompiler
             >>= loadAndApplyTemplate "templates/post.html"    postCtx
             >>= loadAndApplyTemplate "templates/default.html" (postCtx <> openGraphContext)
-            -- >>= relativizeUrls
+            >>= relativizeUrls
 
     create ["archive.html"] $ do
         route idRoute

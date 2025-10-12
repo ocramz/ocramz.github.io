@@ -8,12 +8,12 @@
         <meta name="author" content="Marco Zocca" />
         <title>Marco Zocca - Purely-functional reverse-mode automatic differentiation with delimited continuations</title>
 
-        <link rel="stylesheet" href="/css/default.css" />
+        <link rel="stylesheet" href="../css/default.css" />
         <meta property="og:type" content="article" /><meta property="og:url" content="https://ocramz.github.io/posts/2021-07-18-ad-delcont.html" /><meta property="og:title" content="Purely-functional reverse-mode automatic differentiation with delimited continuations" />
 
-        <link rel="stylesheet" href="/css/highlight_default.min.css">
-        <script src="/js/highlight.min.js"></script>
-        <script src="/js/haskell.min.js"></script>
+        <link rel="stylesheet" href="../css/highlight_default.min.css">
+        <script src="../js/highlight.min.js"></script>
+        <script src="../js/haskell.min.js"></script>
         <script>hljs.highlightAll();</script>
 
         <!--  <script id="MathJax-script" async src="/js/mathjax.min.js"></script> -->
@@ -29,19 +29,19 @@
             <div class="row">
               <div class="col-sm-4">
                     <h2 class="masthead-title">
-                      <a href="/index.html" title="Home">Marco Zocca</a>
+                      <a href="../index.html" title="Home">Marco Zocca</a>
                 </h2>
               </div>
               <div class="col-sm-8">
                     <h4 class="masthead-title" style="text-align: right;">
-                      <a href='/about.html' title='About'>About</a>
+                      <a href="../about.html" title="About">About</a>
                   &nbsp;
-                      <a href='/research.html' title='Research'>Research</a>
+                      <a href="../research.html" title="Research">Research</a>
                   &nbsp;
-                      <a href='/oss.html' title='Open source'>Open Source</a>
+                      <a href="../oss.html" title="Open source">Open Source</a>
                       <!-- <a class='icon-github-squared' href='/oss.html' title='Open source'>Open Source</a> -->
                   &nbsp;
-                      <a href="/archive.html">Posts</a>
+                      <a href="../archive.html">Posts</a>
                 </h4>
               </div>
             </div>
@@ -134,7 +134,7 @@
 <span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>    rb <span class="ot">&lt;-</span> var xb <span class="dv">0</span> <span class="co">-- 2)</span></span>
 <span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>    ry <span class="ot">&lt;-</span> k rb <span class="co">-- 3)</span></span>
 <span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>    (<span class="dt">D</span> _ yd) <span class="ot">&lt;-</span> readSTRef rb <span class="co">-- 4)</span></span>
-<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>    modifySTRef&#39; ra (withD (\rda0 <span class="ot">-&gt;</span> rda0 <span class="op">+</span> g yd)) <span class="co">-- 5)</span></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>    modifySTRef' ra (withD (\rda0 <span class="ot">-&gt;</span> rda0 <span class="op">+</span> g yd)) <span class="co">-- 5)</span></span>
 <span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>    <span class="fu">pure</span> ry</span></code></pre></div>
 <p>The above is a pretty faithful port of the Scala version (for a unary function such as <span class="math inline">$\sqrt{ \cdot }$</span> to reduce clutter), in which the major differences are the explicit tracking of the effects (mutation and continuation) at the type level. How does this work ?</p>
 <ol type="1">
@@ -147,19 +147,19 @@
 <p>In the Haskell case, we pass mutable references to dual variables within the <code>ST</code> monad (introduced in [2] and readily available in the Haskell standard library at <code>Control.Monad.ST</code>)</p>
 <p>The code computing the gradient is correspondingly succint and maps almost exactly (modulo “lifting” and mutation in <code>ST</code>) to its Scala counterpart from [1]:</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ot">rad1 ::</span> (<span class="dt">Num</span> a, <span class="dt">Num</span> b) <span class="ot">=&gt;</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>        (<span class="kw">forall</span> s <span class="op">.</span> <span class="dt">AD&#39;</span> s a <span class="ot">-&gt;</span> <span class="dt">AD&#39;</span> s b) <span class="co">-- ^ function to be differentiated</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>        (<span class="kw">forall</span> s <span class="op">.</span> <span class="dt">AD'</span> s a <span class="ot">-&gt;</span> <span class="dt">AD'</span> s b) <span class="co">-- ^ function to be differentiated</span></span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>     <span class="ot">-&gt;</span> a <span class="co">-- ^ function argument</span></span>
 <span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>     <span class="ot">-&gt;</span> (b, a) <span class="co">-- ^ (result, adjoint)</span></span>
 <span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>rad1 f x <span class="ot">=</span> runST <span class="op">$</span> <span class="kw">do</span></span>
 <span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>  xr <span class="ot">&lt;-</span> var x <span class="dv">0</span></span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>  zr&#39; <span class="ot">&lt;-</span> evalContT <span class="op">$</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>  zr' <span class="ot">&lt;-</span> evalContT <span class="op">$</span></span>
 <span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>    resetT <span class="op">$</span> <span class="kw">do</span></span>
 <span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>      <span class="kw">let</span></span>
 <span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>        z <span class="ot">=</span> f (<span class="dt">AD</span> (<span class="fu">pure</span> xr))</span>
 <span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>      zr <span class="ot">&lt;-</span> unAD z</span>
-<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>      lift <span class="op">$</span> modifySTRef&#39; zr (withD (<span class="fu">const</span> <span class="dv">1</span>))</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>      lift <span class="op">$</span> modifySTRef' zr (withD (<span class="fu">const</span> <span class="dv">1</span>))</span>
 <span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>      <span class="fu">pure</span> zr</span>
-<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>  (<span class="dt">D</span> z _) <span class="ot">&lt;-</span> readSTRef zr&#39;</span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>  (<span class="dt">D</span> z _) <span class="ot">&lt;-</span> readSTRef zr'</span>
 <span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>  (<span class="dt">D</span> _ x_bar) <span class="ot">&lt;-</span> readSTRef xr</span>
 <span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pure</span> (z, x_bar)</span></code></pre></div>
 <p><code>AD</code> is just a newtype wrapper around <code>ContT .. (ST s) ..</code>, in which the return variables are <code>STRef</code>s containing our dual variables; it implements the <code>Num</code>, <code>Fractional</code>, <code>Floating</code> interface and the library provides combinators for implementing new typeclasses as well.</p>

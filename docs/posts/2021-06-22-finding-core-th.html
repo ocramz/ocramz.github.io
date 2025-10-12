@@ -8,12 +8,12 @@
         <meta name="author" content="Marco Zocca" />
         <title>Marco Zocca - Finding the Core of an expression using Template Haskell and a custom GHC Core plugin</title>
 
-        <link rel="stylesheet" href="/css/default.css" />
+        <link rel="stylesheet" href="../css/default.css" />
         <meta property="og:type" content="article" /><meta property="og:url" content="https://ocramz.github.io/posts/2021-06-22-finding-core-th.html" /><meta property="og:title" content="Finding the Core of an expression using Template Haskell and a custom GHC Core plugin" />
 
-        <link rel="stylesheet" href="/css/highlight_default.min.css">
-        <script src="/js/highlight.min.js"></script>
-        <script src="/js/haskell.min.js"></script>
+        <link rel="stylesheet" href="../css/highlight_default.min.css">
+        <script src="../js/highlight.min.js"></script>
+        <script src="../js/haskell.min.js"></script>
         <script>hljs.highlightAll();</script>
 
         <!--  <script id="MathJax-script" async src="/js/mathjax.min.js"></script> -->
@@ -29,19 +29,19 @@
             <div class="row">
               <div class="col-sm-4">
                     <h2 class="masthead-title">
-                      <a href="/index.html" title="Home">Marco Zocca</a>
+                      <a href="../index.html" title="Home">Marco Zocca</a>
                 </h2>
               </div>
               <div class="col-sm-8">
                     <h4 class="masthead-title" style="text-align: right;">
-                      <a href='/about.html' title='About'>About</a>
+                      <a href="../about.html" title="About">About</a>
                   &nbsp;
-                      <a href='/research.html' title='Research'>Research</a>
+                      <a href="../research.html" title="Research">Research</a>
                   &nbsp;
-                      <a href='/oss.html' title='Open source'>Open Source</a>
+                      <a href="../oss.html" title="Open source">Open Source</a>
                       <!-- <a class='icon-github-squared' href='/oss.html' title='Open source'>Open Source</a> -->
                   &nbsp;
-                      <a href="/archive.html">Posts</a>
+                      <a href="../archive.html">Posts</a>
                 </h4>
               </div>
             </div>
@@ -98,10 +98,10 @@
 <span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span> <span class="kw">qualified</span> <span class="dt">Language.Haskell.TH.Syntax</span> <span class="kw">as</span> <span class="dt">TH</span> (<span class="dt">Name</span>)</span></code></pre></div>
 <p>First, we need a function that looks up all the annotations from the module internals (aptly named <code>ModGuts</code> in ghc) and attempts to decode them via their Data interface. Here we are using a custom <code>Target</code> type defined above, which could carry additional metadata.</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ot">extractTargets ::</span> <span class="dt">ModGuts</span> <span class="ot">-&gt;</span> (<span class="dt">ModGuts</span>, [<span class="dt">Target</span>])</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>extractTargets guts <span class="ot">=</span> (guts&#39;, xs)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>extractTargets guts <span class="ot">=</span> (guts', xs)</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">where</span></span>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    (anns_clean, xs) <span class="ot">=</span> partitionMaybe findTargetAnn (mg_anns guts)</span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    guts&#39; <span class="ot">=</span> guts { mg_anns <span class="ot">=</span> anns_clean }</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    guts' <span class="ot">=</span> guts { mg_anns <span class="ot">=</span> anns_clean }</span>
 <span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    findTargetAnn <span class="ot">=</span> \<span class="kw">case</span> </span>
 <span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>      (<span class="dt">Annotation</span> _ payload) <span class="ot">-&gt;</span> fromSerialized deserializeWithData payload</span>
 <span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>      _ <span class="ot">-&gt;</span> <span class="dt">Nothing</span></span></code></pre></div>
@@ -141,14 +141,14 @@
 <span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>    <span class="dt">Nothing</span> <span class="ot">-&gt;</span> <span class="kw">do</span></span>
 <span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>      errorMsg <span class="op">$</span> text <span class="st">&quot;Cannot find name&quot;</span> <span class="op">&lt;+&gt;</span> text (<span class="fu">show</span> thn)</span></code></pre></div>
 <p>All that’s left is to package <code>printCore</code> into our custom implementation of <code>installCoreToDos</code>:</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co">-- append a &#39;CoreDoPluginPass&#39; at the _end_ of the &#39;CoreToDo&#39; list</span></span>
+<div class="sourceCode" id="cb7"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co">-- append a 'CoreDoPluginPass' at the _end_ of the 'CoreToDo' list</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="ot">install ::</span> [<span class="dt">CommandLineOption</span>] <span class="ot">-&gt;</span> [<span class="dt">CoreToDo</span>] <span class="ot">-&gt;</span> <span class="dt">CoreM</span> [<span class="dt">CoreToDo</span>]</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>install _ todos <span class="ot">=</span> <span class="fu">pure</span> (todos <span class="op">++</span> [pass])</span>
 <span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">where</span></span>
 <span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    pass <span class="ot">=</span> <span class="dt">CoreDoPluginPass</span> pname <span class="op">$</span> \ guts <span class="ot">-&gt;</span> <span class="kw">do</span></span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>      <span class="kw">let</span> (guts&#39;, targets) <span class="ot">=</span> extractTargets guts</span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>      traverse_ (\ t <span class="ot">-&gt;</span> printCore guts&#39; (tgName t)) targets</span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>      <span class="fu">pure</span> guts&#39;</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>      <span class="kw">let</span> (guts', targets) <span class="ot">=</span> extractTargets guts</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>      traverse_ (\ t <span class="ot">-&gt;</span> printCore guts' (tgName t)) targets</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>      <span class="fu">pure</span> guts'</span>
 <span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>    pname <span class="ot">=</span> <span class="st">&quot;MyPlugin&quot;</span></span></code></pre></div>
 <p>Here it’s important to stress that <code>install</code> <em>appends</em> our plugin pass to the ones received as input from the upstream compilation pipeline.</p>
 <p>Another crucial detail : the name string of the plugin as specified in <code>CoreDoPluginPass</code> <em>must</em> be the full module name where the <code>plugin</code> value is declared.</p>
@@ -165,7 +165,7 @@
 <span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="co">-- f :: Floating a =&gt; a -&gt; a -&gt; a </span></span>
 <span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>f <span class="ot">=</span> \x y <span class="ot">-&gt;</span> <span class="fu">sqrt</span> x <span class="op">+</span> y</span>
 <span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>inspect &#39;f</span></code></pre></div>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>inspect 'f</span></code></pre></div>
 <p>The output of our custom compiler pass will be interleaved with the rest of the GHC output as part of a clean recompile (e.g. <code>stack clean &amp;&amp; stack build</code>):</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span> <span class="kw">of</span> <span class="dv">2</span>] <span class="dt">Compiling</span> <span class="dt">Main</span></span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>[<span class="dv">2</span> <span class="kw">of</span> <span class="dv">2</span>] <span class="dt">Compiling</span> <span class="dt">PluginTest</span></span>
