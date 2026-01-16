@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description" content="Marco Zocca" /> 
+        <meta name="author" content="Marco Zocca" />
+        <title>Marco Zocca - Ergonomic abstractions for numerical computing: My story so far</title>
+
+        <link rel="stylesheet" href="../css/default.css" />
+        <meta property="og:type" content="article" /><meta property="og:url" content="https://ocramz.github.io/posts/2026-01-16-ergonomics-numerical.html" /><meta property="og:title" content="Ergonomic abstractions for numerical computing: My story so far" />
+
+        <link rel="stylesheet" href="../css/highlight_default.min.css">
+        <script src="../js/highlight.min.js"></script>
+        <script src="../js/haskell.min.js"></script>
+        <script>hljs.highlightAll();</script>
+
+        <!--  <script id="MathJax-script" async src="/js/mathjax.min.js"></script> -->
+        <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+        
+    </head>
+    <body>
+
+
+        <div class="container content">
+
+        <header class="masthead">
+            <div class="row">
+              <div class="col-sm-4">
+                    <h2 class="masthead-title">
+                      <a href="../index.html" title="Home">Marco Zocca</a>
+                </h2>
+              </div>
+              <div class="col-sm-8">
+                    <h4 class="masthead-title" style="text-align: right;">
+                      <a href="../about.html" title="About">About</a>
+                  &nbsp;
+                      <a href="../research.html" title="Research">Research</a>
+                  &nbsp;
+                      <a href="../oss.html" title="Open source">Open Source</a>
+                      <!-- <a class='icon-github-squared' href='/oss.html' title='Open source'>Open Source</a> -->
+                  &nbsp;
+                      <a href="../archive.html">Posts</a>
+                </h4>
+              </div>
+            </div>
+              </header>
+
+
+        <main role="main">
+            <h1>Ergonomic abstractions for numerical computing: My story so far</h1>
+            <article class="post">
+    <section class="header">
+        January 16, 2026
+    </section>
+    <section>
+        <p>You know the feeling of encountering an idea that is so simple and pure as to be inescapable ?</p>
+<p>For me, two such moments happened when I encountered the Matlab “backslash” operator and when I finally grokked <code>(lambda )</code> in Scheme.</p>
+<p>The two ideas are sufficiently different (and alien, I suppose) to merit an origin story of how I encountered them and how they shaped my thinking as I grew as a researcher and practitioner. This backstory is also meant to motivate the three experiments on achieving “ergonomic” numerical interfaces I will show in the second part of the post.</p>
+<p>I should preface this by saying that here I use a very narrow meaning of “ergonomic”: to qualify, surface code should mirror the mathematical notation it models. It’s about considering modeling <em>intent</em> on par with raw performance characteristics.</p>
+<p>Ultimately I think some of these lessons can help toward more reproducible computational science, which in turn shortens the distance between theory and practice of science writ large.</p>
+<h1 id="stumbling-upon-functional-programming">Stumbling upon functional programming</h1>
+<p>I learned about functional programming by complete accident.</p>
+<p>Back during my MSc I majored in Photonics for telecommunication (a branch of EE), which means that among other things we studied all possible special cases of the Maxwell equations (waveguides, tiny resonators, active media, you name it).</p>
+<p>Numerical simulation played a large part, and in addition to some commercial solvers, I started using MEEP and MPB for scattering and mode computations respectively [1, 2].</p>
+<h2 id="aside-some-context-on-my-cs-journey">Aside: Some context on my CS journey</h2>
+<p>Up to that point, my programming experience had been quite limited to academic scripting and programming courses (C, Java, Verilog) in addition to lots of Matlab for all sorts of scripts and simulations. I could “code”, even creatively so (animated Lorenz attractor, Mandelbrot renderer and all), but my CS fundamentals were patchy at best since that was not my major. Any data structures and algorithms were learned “in the field”, and certainly we saw no programming language theory or compilers.</p>
+<p>Imagine my surprise (more like bewilderment really) when I found out that the scripting language for MEEP and MPB simulations was a funny-looking contraption called Scheme. How do you make a loop? You “map” a ““lambda”” over an array ??? Anyway, eventually it clicked and I started making my little Scheme scripts, graduated, then fell into the Lisp and later Haskell rabbit hole.</p>
+<p>To this day I’m a firm believer (and practitioner) in declarative programming, separation between pure and effectful computations and in total functions, and strive to enforce these as standards for correctness and maintainability even outside FP contexts.</p>
+<h1 id="backslash">“Backslash”</h1>
+<p>Solving linear systems is the bread and butter of most science and engineering, so Matlab is centered around doing that really well: close to mathematical notation and supporting a wide variety of operand structures.</p>
+<pre><code>x = A \ b </code></pre>
+<p>where</p>
+<pre><code>A x = b</code></pre>
+<p>In the example, matrix <code>A</code> and vector <code>b</code> can be anything: very large, sparse, structured etc. Backslash provides optimized implementations for most common cases so the user simply doesn’t need to care: it’s a great abstraction.</p>
+<h2 id="aside-computational-research-in-academia">Aside: Computational research in academia</h2>
+<p>My PhD project was heavily computational too: optimization algorithms, numerical PDEs/SDEs etc.</p>
+<p>At that time, scientific open source was nascent (yep I’m that old), including the surrounding discourse on reproducibility and stewardship of computational methods.</p>
+<p>Back then, most labs including the one I was in were secretive with their methods, and most research code was born and died with each grad student project. In some cases you had to email some professor to ask for a copy of their code, with a nice cover letter. How quaint.</p>
+<p>In this milieu I started wondering about long-term sustainability of research artifacts: why is it so hard to turn algorithms into code, and back ? why does everyone use different abstractions? why is reuse nonexistant? <em>Why is the code that explains the results not reviewed as the research artifact</em>?</p>
+<p>“Backslash” felt like an island of sanity in a sea of terrible grad student scripts, and I set out to understand it by replicating it (cue Feynman’s quote on building as a way of knowing).</p>
+<h1 id="three-experiments-in-ergonomic-numerical-computing">Three experiments in ergonomic numerical computing</h1>
+<h2 id="sparse-linear-algebra"><code>sparse-linear-algebra</code></h2>
+<p>Here it is, in all its hacky glory : https://github.com/ocramz/sparse-linear-algebra . The git log tells me that I first committed code almost 10 years ago !</p>
+<p>In this project I tried to replicate the “backslash” experience, somewhat succesfully:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> <span class="dt">LinearVectorSpace</span> v <span class="ot">=&gt;</span> <span class="dt">LinearSystem</span> v <span class="kw">where</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="co">-- | Solve a linear system; uses GMRES internally as default method</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  (<span class="op">&lt;</span>\<span class="op">&gt;</span>)<span class="ot"> ::</span> (<span class="dt">MonadThrow</span> m, <span class="dt">MonadWriter</span> w m) <span class="ot">=&gt;</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>           <span class="dt">MatrixType</span> v   <span class="co">-- ^ System matrix</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>        <span class="ot">-&gt;</span> v              <span class="co">-- ^ Right-hand side</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>        <span class="ot">-&gt;</span> m v            <span class="co">-- ^ Result</span></span></code></pre></div>
+<p>The type parameters model the relationship between matrix and vector types (and in turn constrain the underlying numerical types), and the fact that the solver can log iterations (for debugging) and potentially fail (e.g. if it does not converge).</p>
+<p>This was also my first experiment in building a numerical library out of academia, so naturally I made all the mistakes of an academic programmer :</p>
+<ul>
+<li>a tower of typeclass abstractions on top of each other, causing lots of churn when something needs to change</li>
+<li>building around an intuitive but very inefficient internal design (nested immutable hash maps)</li>
+<li>unstructured workflow: loose or nonexisting ticket/PR/review scopes</li>
+<li>committing straight to <code>master</code></li>
+<li>uploading a half-baked project to a write-only package index : https://hackage.haskell.org/package/sparse-linear-algebra</li>
+</ul>
+<p>This was a nice learning exercise, and I’m thankful that at some point this library got some “traction” (I’m aware of at least one industrial user!) and OSS collaborators. I should also acknowledge that while attempting to fix its many and branching shortcomings I got severely burnt out, and had to stop its development.</p>
+<p>Recently I picked it up again and made some Copilot-based fixes (great tool when you’re out of mental energies for pushing a fix btw), but making it broadly useful like another LAPACK would require a level of committment that I cannot provide long-term.</p>
+<h2 id="sde"><code>sde</code></h2>
+<p>Link : https://github.com/ocramz/sde</p>
+<p>Stochastic differential equations are a generalization of PDEs that admit randomness in some terms; they are very popular in finance and advanced control systems literature.</p>
+<p>Here I implemented a <code>Transition</code> type for threading together random generation and “state” updates in order to implement Wiener/Brownian processes. In the example below we can compose a stochastic volatility process from simpler building blocks:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">data</span> <span class="dt">SV1</span> <span class="ot">=</span> <span class="dt">SV1</span> {<span class="ot">sv1x ::</span> <span class="dt">Double</span>,<span class="ot"> sv1y ::</span> <span class="dt">Double</span>} <span class="kw">deriving</span> (<span class="dt">Eq</span>, <span class="dt">Show</span>)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="ot">stochVolatility1 ::</span> <span class="dt">PrimMonad</span> m <span class="ot">=&gt;</span> <span class="dt">Double</span> <span class="ot">-&gt;</span> <span class="dt">Double</span> <span class="ot">-&gt;</span> <span class="dt">Double</span> <span class="ot">-&gt;</span> <span class="dt">Double</span> <span class="ot">-&gt;</span> <span class="dt">Transition</span> m <span class="dt">SV1</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>stochVolatility1 a b sig alpha <span class="ot">=</span> transition randf f <span class="kw">where</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  randf <span class="ot">=</span> (,) <span class="op">&lt;$&gt;</span> normal <span class="dv">0</span> <span class="dv">1</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>              <span class="op">&lt;*&gt;</span> alphaStable100 alpha</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  f (<span class="dt">SV1</span> x _) (ut, vt) <span class="ot">=</span> <span class="kw">let</span> xt <span class="ot">=</span> b <span class="op">*</span> x <span class="op">+</span> sig <span class="op">*</span> ut</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>                             yt <span class="ot">=</span> a <span class="op">*</span> <span class="fu">exp</span> (xt <span class="op">/</span> <span class="dv">2</span>) <span class="op">*</span> vt</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>                         <span class="kw">in</span> <span class="dt">SV1</span> xt yt</span></code></pre></div>
+<p>One problem is that accurate integration of SDEs is quite tricky as I was kindly made aware of : https://github.com/ocramz/sde/issues/2 , so anything beyond textbook examples would require significant rework.</p>
+<h2 id="ad-delcont"><code>ad-delcont</code></h2>
+<p>This library ( https://hackage.haskell.org/package/ad-delcont ) implements reverse-mode automatic differentiation using a certain control primitive (“delimited continuations”), rather than the more common “tape” data structure.</p>
+<p>I already wrote about this project with explanation and examples: http://ocramz.github.io/posts/2021-07-18-ad-delcont.html , but here I want to highlight how I find the final result quite “ergonomic”:</p>
+<p>It’s ergonomic to <em>library authors</em> because you can extend it safely and without knowing how its internals work; here <code>op1</code> turns a unary operator and its adjoint into a component that can be plugged into bigger AD-enabled functions. The type constraints on the first argument of <code>op1</code> are basic numbers.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ot">op1 ::</span> (<span class="dt">Num</span> da, <span class="dt">Num</span> db) <span class="ot">=&gt;</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>       (a <span class="ot">-&gt;</span> (b, db <span class="ot">-&gt;</span> da)) <span class="co">-- ^ returns : (function result, pullback)</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    <span class="ot">-&gt;</span> <span class="dt">ContT</span> x (<span class="dt">ST</span> s) (<span class="dt">DVar</span> s a da)</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    <span class="ot">-&gt;</span> <span class="dt">ContT</span> x (<span class="dt">ST</span> s) (<span class="dt">DVar</span> s a db)  </span></code></pre></div>
+<p>On the other hand, it’s comfortable to <em>users</em> , because running one such computation (the <code>AD -&gt; AD</code> function) results in a plain numerical function which can be reused in any context:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ot">rad1 ::</span> (<span class="dt">Num</span> a, <span class="dt">Num</span> b) <span class="ot">=&gt;</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>        (<span class="kw">forall</span> s <span class="op">.</span> <span class="dt">AD'</span> s a <span class="ot">-&gt;</span> <span class="dt">AD'</span> s b) <span class="co">-- ^ function to be differentiated</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>     <span class="ot">-&gt;</span> a <span class="co">-- ^ function argument</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>     <span class="ot">-&gt;</span> (b, a) <span class="co">-- ^ (result, adjoint)</span></span></code></pre></div>
+<h1 id="conclusion">Conclusion</h1>
+<p>If you read this far, thank you, I think we might be kindred spirits.</p>
+<p>Respecting modeling intent in scientific libraries can play one small but significant part in helping reproducibility and ultimately accelerating science, which is why I find it a worthy topic of exploration.</p>
+<h1 id="references">References</h1>
+<p>[1] MEEP : https://meep.readthedocs.io/en/master/</p>
+<p>[2] MPB : https://mpb.readthedocs.io/en/latest/</p>
+    </section>
+</article>
+
+        </main>
+
+        <footer>
+        </footer>
+
+        </div>
+
+
+    </body>
+</html>
