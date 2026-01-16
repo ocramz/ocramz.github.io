@@ -31,6 +31,10 @@ So I started what I realized is the same set of activities as reviving any other
 
 ## CLI flags
 
+ML code usually depends on a bunch of hyper-parameters, so it's useful to break these out.
+
+Dataset construction and training take some time and resources, so CLI flags that can set various parameters to small values for unit testing and CI will be useful, e.g. dataset size, number of epochs.
+
 ## Continuous Integration
 
 ```yaml
