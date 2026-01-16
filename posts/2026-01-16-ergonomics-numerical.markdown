@@ -7,7 +7,7 @@ categories: numerical-programming functional-programming ergonomics ux dx
 
 You know the feeling of encountering an idea that is so simple and pure as to be inescapable ?
 
-For me, two such moments happened when I encountered the Matlab "backslash" operator and when I finally grokked `(lambda )` in Scheme.
+For me, two such moments happened when I encountered the Matlab "backslash" operator and `(lambda )` in Scheme.
 
 The two ideas are sufficiently different (and alien, I suppose) to merit an origin story of how I encountered them and how they shaped my thinking as I grew as a researcher and practitioner. This backstory is also meant to motivate the three experiments on achieving "ergonomic" numerical interfaces I will show in the second part of the post. 
 
