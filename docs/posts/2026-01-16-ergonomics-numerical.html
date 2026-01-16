@@ -57,7 +57,7 @@
     <section>
         <p>You know the feeling of encountering an idea that is so simple and pure as to be inescapable ?</p>
 <p>For me, two such moments happened when I encountered the Matlab “backslash” operator and <code>(lambda )</code> in Scheme.</p>
-<p>The two ideas are sufficiently different (and alien, I suppose) to merit an origin story of how I encountered them and how they shaped my thinking as I grew as a researcher and practitioner. This backstory is also meant to motivate the three experiments on achieving “ergonomic” numerical interfaces I will show in the second part of the post.</p>
+<p>The two ideas are sufficiently different (and alien, I suppose) to merit an origin story of how I encountered them and how they shaped my thinking as I grew as a researcher and practitioner. This backstory is also meant to motivate the three experiments on achieving ergonomic numerical interfaces I will show in the second part of the post.</p>
 <p>I should preface this by saying that here I use a very narrow meaning of “ergonomic”: to qualify, surface code should mirror the mathematical notation it models. It’s about considering modeling <em>intent</em> on par with raw performance characteristics.</p>
 <p>Ultimately I think some of these lessons can help toward more reproducible computational science, which in turn shortens the distance between theory and practice of science writ large.</p>
 <h1 id="stumbling-upon-functional-programming">Stumbling upon functional programming</h1>
@@ -65,7 +65,7 @@
 <p>Back during my MSc I majored in Photonics for telecommunication (a branch of EE), which means that among other things we studied all possible special cases of the Maxwell equations (waveguides, tiny resonators, active media, you name it).</p>
 <p>Numerical simulation played a large part, and in addition to some commercial solvers, I started using MEEP and MPB for scattering and mode computations respectively [1, 2].</p>
 <h2 id="aside-some-context-on-my-cs-journey">Aside: Some context on my CS journey</h2>
-<p>Up to that point, my programming experience had been quite limited to academic scripting and programming courses (C, Java, Verilog) in addition to lots of Matlab for all sorts of scripts and simulations. I could “code”, even creatively so (animated Lorenz attractor, Mandelbrot renderer and all), but my CS fundamentals were patchy at best since that was not my major. Any data structures and algorithms were learned “in the field”, and certainly we saw no programming language theory or compilers.</p>
+<p>Up to that point, my programming experience had been quite limited to academic scripting and programming courses (C, Java, Verilog) in addition to lots of Matlab for all sorts of scripts and simulations. I could “code”, even creatively so (animated Lorenz attractor, Mandelbrot renderer and all), but my CS fundamentals were patchy at best since that was not my major. Any data structures and algorithms were learned in the field, and certainly we saw no programming language theory or compilers.</p>
 <p>Imagine my surprise (more like bewilderment really) when I found out that the scripting language for MEEP and MPB simulations was a funny-looking contraption called Scheme. How do you make a loop? You “map” a ““lambda”” over an array ??? Anyway, eventually it clicked and I started making my little Scheme scripts, graduated, then fell into the Lisp and later Haskell rabbit hole.</p>
 <p>To this day I’m a firm believer (and practitioner) in declarative programming, separation between pure and effectful computations and in total functions, and strive to enforce these as standards for correctness and maintainability even outside FP contexts.</p>
 <h1 id="backslash">“Backslash”</h1>
@@ -117,7 +117,7 @@
 <h2 id="ad-delcont"><code>ad-delcont</code></h2>
 <p>This library ( <a href="https://hackage.haskell.org/package/ad-delcont">https://hackage.haskell.org/package/ad-delcont</a> ) implements reverse-mode automatic differentiation using a certain control primitive (“delimited continuations”), rather than the more common “tape” data structure.</p>
 <p>I already wrote <a href="http://ocramz.github.io/posts/2021-07-18-ad-delcont.html">a post</a> about this project with explanation and examples, but here I want to highlight how I find the final result quite “ergonomic”.</p>
-<p>It’s ergonomic to <em>library authors</em> because you can extend it safely and without knowing how its internals work; here <code>op1</code> turns a unary operator and its adjoint into a component that can be plugged into bigger AD-enabled functions. The type constraints on the first argument of <code>op1</code> are basic numbers.</p>
+<p>It’s convenient to <em>library authors</em> because you can extend it safely and without knowing how its internals work; here <code>op1</code> turns a unary operator and its adjoint into a component that can be plugged into bigger AD-enabled functions. The type constraints on the first argument of <code>op1</code> are basic numbers.</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ot">op1 ::</span> (<span class="dt">Num</span> da, <span class="dt">Num</span> db) <span class="ot">=&gt;</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>       (a <span class="ot">-&gt;</span> (b, db <span class="ot">-&gt;</span> da)) <span class="co">-- ^ returns : (function result, pullback)</span></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    <span class="ot">-&gt;</span> <span class="dt">ContT</span> x (<span class="dt">ST</span> s) (<span class="dt">DVar</span> s a da)</span>
@@ -128,7 +128,7 @@
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>     <span class="ot">-&gt;</span> a <span class="co">-- ^ function argument</span></span>
 <span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>     <span class="ot">-&gt;</span> (b, a) <span class="co">-- ^ (result, adjoint)</span></span></code></pre></div>
 <h1 id="conclusion">Conclusion</h1>
-<p>Respecting the <em>intent</em> of numerical modeling in software libraries can play a significant part toward sharing of research artifacts, reproducibility and ultimately accelerating science, which is why I find it a topic well worthy of exploration.</p>
+<p>Communicating the <em>intent</em> of modeling in numerical software libraries can play a significant part toward sharing and reproducibility of research artifacts, and can ultimately accelerate science, which is why I find it a topic well worthy of exploration.</p>
 <h1 id="references">References</h1>
 <p>[1] MEEP : <a href="https://meep.readthedocs.io/en/master/">https://meep.readthedocs.io/en/master/</a></p>
 <p>[2] MPB : <a href="https://mpb.readthedocs.io/en/latest/">https://mpb.readthedocs.io/en/latest/</a></p>

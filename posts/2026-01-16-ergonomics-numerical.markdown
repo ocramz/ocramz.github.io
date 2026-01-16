@@ -9,7 +9,7 @@ You know the feeling of encountering an idea that is so simple and pure as to be
 
 For me, two such moments happened when I encountered the Matlab "backslash" operator and `(lambda )` in Scheme.
 
-The two ideas are sufficiently different (and alien, I suppose) to merit an origin story of how I encountered them and how they shaped my thinking as I grew as a researcher and practitioner. This backstory is also meant to motivate the three experiments on achieving "ergonomic" numerical interfaces I will show in the second part of the post. 
+The two ideas are sufficiently different (and alien, I suppose) to merit an origin story of how I encountered them and how they shaped my thinking as I grew as a researcher and practitioner. This backstory is also meant to motivate the three experiments on achieving ergonomic numerical interfaces I will show in the second part of the post. 
 
 I should preface this by saying that here I use a very narrow meaning of "ergonomic": to qualify, surface code should mirror the mathematical notation it models. It's about considering modeling _intent_ on par with raw performance characteristics. 
 
@@ -26,7 +26,7 @@ Numerical simulation played a large part, and in addition to some commercial sol
 
 ## Aside: Some context on my CS journey
 
-Up to that point, my programming experience had been quite limited to academic scripting and programming courses (C, Java, Verilog) in addition to lots of Matlab for all sorts of scripts and simulations. I could "code", even creatively so (animated Lorenz attractor, Mandelbrot renderer and all), but my CS fundamentals were patchy at best since that was not my major. Any data structures and algorithms were learned "in the field", and certainly we saw no programming language theory or compilers.
+Up to that point, my programming experience had been quite limited to academic scripting and programming courses (C, Java, Verilog) in addition to lots of Matlab for all sorts of scripts and simulations. I could "code", even creatively so (animated Lorenz attractor, Mandelbrot renderer and all), but my CS fundamentals were patchy at best since that was not my major. Any data structures and algorithms were learned in the field, and certainly we saw no programming language theory or compilers.
 
 Imagine my surprise (more like bewilderment really) when I found out that the scripting language for MEEP and MPB simulations was a funny-looking contraption called Scheme. How do you make a loop? You "map" a ""lambda"" over an array ???  Anyway, eventually it clicked and I started making my little Scheme scripts, graduated, then fell into the Lisp and later Haskell rabbit hole.
 
@@ -124,7 +124,7 @@ This library ( [https://hackage.haskell.org/package/ad-delcont](https://hackage.
 
 I already wrote [a post](http://ocramz.github.io/posts/2021-07-18-ad-delcont.html) about this project with explanation and examples, but here I want to highlight how I find the final result quite "ergonomic".
 
-It's ergonomic to _library authors_ because you can extend it safely and without knowing how its internals work; here `op1` turns a unary operator and its adjoint into a component that can be plugged into bigger AD-enabled functions. The type constraints on the first argument of `op1` are basic numbers.
+It's convenient to _library authors_ because you can extend it safely and without knowing how its internals work; here `op1` turns a unary operator and its adjoint into a component that can be plugged into bigger AD-enabled functions. The type constraints on the first argument of `op1` are basic numbers.
 
 
 ```haskell
@@ -146,7 +146,7 @@ rad1 :: (Num a, Num b) =>
 
 # Conclusion
 
-Respecting the _intent_ of numerical modeling in software libraries can play a significant part toward sharing of research artifacts, reproducibility and ultimately accelerating science, which is why I find it a topic well worthy of exploration. 
+Communicating the _intent_ of modeling in numerical software libraries can play a significant part toward sharing and reproducibility of research artifacts, and can ultimately accelerate science, which is why I find it a topic well worthy of exploration. 
 
 
 
