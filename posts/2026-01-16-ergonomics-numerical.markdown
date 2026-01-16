@@ -69,7 +69,7 @@ In this milieu I started wondering about long-term sustainability of research ar
 
 ## `sparse-linear-algebra`
 
-Here it is, in all its hacky glory : https://github.com/ocramz/sparse-linear-algebra . The git log tells me that I first committed code almost 10 years ago !
+Here it is, in all its hacky glory : [https://github.com/ocramz/sparse-linear-algebra](https://github.com/ocramz/sparse-linear-algebra) . The git log tells me that I first committed code almost 10 years ago !
 
 In this project I tried to replicate the "backslash" experience, somewhat succesfully:
 
@@ -90,7 +90,7 @@ This was also my first experiment in building a numerical library out of academi
 * building around an intuitive but very inefficient internal design (nested immutable hash maps)
 * unstructured workflow: loose or nonexisting ticket/PR/review scopes
 * committing straight to `master`
-* uploading a half-baked project to a write-only package index : https://hackage.haskell.org/package/sparse-linear-algebra
+* uploading a half-baked project to a write-only package index : [https://hackage.haskell.org/package/sparse-linear-algebra](https://hackage.haskell.org/package/sparse-linear-algebra)
 
 This was a nice learning exercise, and I'm thankful that at some point this library got some "traction" (I'm aware of at least one industrial user!) and OSS collaborators.  I should also acknowledge that while attempting to fix its many and branching shortcomings I got severely burnt out, and had to stop its development.
 
@@ -99,11 +99,11 @@ Recently I picked it up again and made some Copilot-based fixes (great tool when
 
 ## `sde`
 
-Link : https://github.com/ocramz/sde 
+Stochastic differential equations are a generalization of PDEs that admit randomness in some terms; they are common in finance and advanced control systems literature.
 
-Stochastic differential equations are a generalization of PDEs that admit randomness in some terms; they are very popular in finance and advanced control systems literature.
+While building [sde](https://github.com/ocramz/sde ) I investigated how to simulate complex random processes using only elementary ones as building blocks. 
 
-Here I implemented a `Transition` type for threading together random generation and "state" updates in order to implement Wiener/Brownian processes. In the example below we can compose a stochastic volatility process from simpler building blocks:
+The `Transition` type threads together random generation and "state" updates in order to implement Wiener/Brownian processes. In the example below we can compose a simple stochastic volatility process from a Normal and a heavy-tailed one :
 
 ```haskell
 data SV1 = SV1 {sv1x :: Double, sv1y :: Double} deriving (Eq, Show)
@@ -117,14 +117,14 @@ stochVolatility1 a b sig alpha = transition randf f where
                          in SV1 xt yt
 ```
 
-One problem is that accurate integration of SDEs is quite tricky as I was kindly made aware of : https://github.com/ocramz/sde/issues/2 , so anything beyond textbook examples would require significant rework.
+One problem is that accurate, long-horizon integration of SDEs is quite tricky as I was kindly made aware of : https://github.com/ocramz/sde/issues/2 , so anything beyond textbook examples would require significant rework.
 
 
 ## `ad-delcont`
 
 This library ( https://hackage.haskell.org/package/ad-delcont ) implements reverse-mode automatic differentiation using a certain control primitive ("delimited continuations"), rather than the more common "tape" data structure.
 
-I already wrote about this project with explanation and examples: http://ocramz.github.io/posts/2021-07-18-ad-delcont.html , but here I want to highlight how I find the final result quite "ergonomic":
+I already wrote about this project with explanation and examples: http://ocramz.github.io/posts/2021-07-18-ad-delcont.html , but here I want to highlight how I find the final result quite "ergonomic".
 
 It's ergonomic to _library authors_ because you can extend it safely and without knowing how its internals work; here `op1` turns a unary operator and its adjoint into a component that can be plugged into bigger AD-enabled functions. The type constraints on the first argument of `op1` are basic numbers.
 
@@ -148,9 +148,7 @@ rad1 :: (Num a, Num b) =>
 
 # Conclusion
 
-If you read this far, thank you, I think we might be kindred spirits.
-
-Respecting modeling intent in scientific libraries can play one small but significant part in helping reproducibility and ultimately accelerating science, which is why I find it a worthy topic of exploration.
+Respecting the _intent_ of numerical modeling in software libraries can play a significant part toward sharing of research artifacts, reproducibility and ultimately accelerating science, which is why I find it a topic well worthy of exploration. 
 
 
 
