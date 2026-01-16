@@ -99,8 +99,7 @@
 <li>committing straight to <code>master</code></li>
 <li>uploading a half-baked project to a write-only package index : <a href="https://hackage.haskell.org/package/sparse-linear-algebra">https://hackage.haskell.org/package/sparse-linear-algebra</a></li>
 </ul>
-<p>This was a nice learning exercise, and I’m thankful that at some point this library got some “traction” (I’m aware of at least one industrial user!) and OSS collaborators. I should also acknowledge that while attempting to fix its many and branching shortcomings I got severely burnt out, and had to stop its development.</p>
-<p>Recently I picked it up again and made some Copilot-based fixes (great tool when you’re out of mental energies for pushing a fix btw), but making it broadly useful like another LAPACK would require a level of committment that I cannot provide long-term.</p>
+<p>This was a nice learning exercise, and I’m thankful that at some point this library got some “traction” (I’m aware of at least one industrial user!) and OSS collaborators. I should also acknowledge that going from a research prototype to a broadly-useful LAPACK substitute would require a vast amount of additional attention and work.</p>
 <h2 id="sde"><code>sde</code></h2>
 <p>Stochastic differential equations are a generalization of PDEs that admit randomness in some terms; they are common in finance and advanced control systems literature.</p>
 <p>While building <a href="https://github.com/ocramz/sde">sde</a> I investigated how to simulate complex random processes using only elementary ones as building blocks.</p>
@@ -114,10 +113,10 @@
 <span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  f (<span class="dt">SV1</span> x _) (ut, vt) <span class="ot">=</span> <span class="kw">let</span> xt <span class="ot">=</span> b <span class="op">*</span> x <span class="op">+</span> sig <span class="op">*</span> ut</span>
 <span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>                             yt <span class="ot">=</span> a <span class="op">*</span> <span class="fu">exp</span> (xt <span class="op">/</span> <span class="dv">2</span>) <span class="op">*</span> vt</span>
 <span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>                         <span class="kw">in</span> <span class="dt">SV1</span> xt yt</span></code></pre></div>
-<p>One problem is that accurate, long-horizon integration of SDEs is quite tricky as I was kindly made aware of : https://github.com/ocramz/sde/issues/2 , so anything beyond textbook examples would require significant rework.</p>
+<p>It should be noted that accurate, long-horizon integration of SDEs is <a href="https://pubmed.ncbi.nlm.nih.gov/17280180/">quite tricky</a>, so extending the library beyond textbook examples would require significant additions.</p>
 <h2 id="ad-delcont"><code>ad-delcont</code></h2>
-<p>This library ( https://hackage.haskell.org/package/ad-delcont ) implements reverse-mode automatic differentiation using a certain control primitive (“delimited continuations”), rather than the more common “tape” data structure.</p>
-<p>I already wrote about this project with explanation and examples: http://ocramz.github.io/posts/2021-07-18-ad-delcont.html , but here I want to highlight how I find the final result quite “ergonomic”.</p>
+<p>This library ( <a href="https://hackage.haskell.org/package/ad-delcont">https://hackage.haskell.org/package/ad-delcont</a> ) implements reverse-mode automatic differentiation using a certain control primitive (“delimited continuations”), rather than the more common “tape” data structure.</p>
+<p>I already wrote <a href="http://ocramz.github.io/posts/2021-07-18-ad-delcont.html">a post</a> about this project with explanation and examples, but here I want to highlight how I find the final result quite “ergonomic”.</p>
 <p>It’s ergonomic to <em>library authors</em> because you can extend it safely and without knowing how its internals work; here <code>op1</code> turns a unary operator and its adjoint into a component that can be plugged into bigger AD-enabled functions. The type constraints on the first argument of <code>op1</code> are basic numbers.</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ot">op1 ::</span> (<span class="dt">Num</span> da, <span class="dt">Num</span> db) <span class="ot">=&gt;</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>       (a <span class="ot">-&gt;</span> (b, db <span class="ot">-&gt;</span> da)) <span class="co">-- ^ returns : (function result, pullback)</span></span>
@@ -131,8 +130,8 @@
 <h1 id="conclusion">Conclusion</h1>
 <p>Respecting the <em>intent</em> of numerical modeling in software libraries can play a significant part toward sharing of research artifacts, reproducibility and ultimately accelerating science, which is why I find it a topic well worthy of exploration.</p>
 <h1 id="references">References</h1>
-<p>[1] MEEP : https://meep.readthedocs.io/en/master/</p>
-<p>[2] MPB : https://mpb.readthedocs.io/en/latest/</p>
+<p>[1] MEEP : <a href="https://meep.readthedocs.io/en/master/">https://meep.readthedocs.io/en/master/</a></p>
+<p>[2] MPB : <a href="https://mpb.readthedocs.io/en/latest/">https://mpb.readthedocs.io/en/latest/</a></p>
     </section>
 </article>
 

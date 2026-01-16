@@ -92,9 +92,7 @@ This was also my first experiment in building a numerical library out of academi
 * committing straight to `master`
 * uploading a half-baked project to a write-only package index : [https://hackage.haskell.org/package/sparse-linear-algebra](https://hackage.haskell.org/package/sparse-linear-algebra)
 
-This was a nice learning exercise, and I'm thankful that at some point this library got some "traction" (I'm aware of at least one industrial user!) and OSS collaborators.  I should also acknowledge that while attempting to fix its many and branching shortcomings I got severely burnt out, and had to stop its development.
-
-Recently I picked it up again and made some Copilot-based fixes (great tool when you're out of mental energies for pushing a fix btw), but making it broadly useful like another LAPACK would require a level of committment that I cannot provide long-term.
+This was a nice learning exercise, and I'm thankful that at some point this library got some "traction" (I'm aware of at least one industrial user!) and OSS collaborators. I should also acknowledge that going from a research prototype to a broadly-useful LAPACK substitute would require a vast amount of additional attention and work.
 
 
 ## `sde`
@@ -117,14 +115,14 @@ stochVolatility1 a b sig alpha = transition randf f where
                          in SV1 xt yt
 ```
 
-One problem is that accurate, long-horizon integration of SDEs is quite tricky as I was kindly made aware of : https://github.com/ocramz/sde/issues/2 , so anything beyond textbook examples would require significant rework.
+It should be noted that accurate, long-horizon integration of SDEs is [quite tricky](https://pubmed.ncbi.nlm.nih.gov/17280180/), so extending the library beyond textbook examples would require significant additions.
 
 
 ## `ad-delcont`
 
-This library ( https://hackage.haskell.org/package/ad-delcont ) implements reverse-mode automatic differentiation using a certain control primitive ("delimited continuations"), rather than the more common "tape" data structure.
+This library ( [https://hackage.haskell.org/package/ad-delcont](https://hackage.haskell.org/package/ad-delcont) ) implements reverse-mode automatic differentiation using a certain control primitive ("delimited continuations"), rather than the more common "tape" data structure.
 
-I already wrote about this project with explanation and examples: http://ocramz.github.io/posts/2021-07-18-ad-delcont.html , but here I want to highlight how I find the final result quite "ergonomic".
+I already wrote [a post](http://ocramz.github.io/posts/2021-07-18-ad-delcont.html) about this project with explanation and examples, but here I want to highlight how I find the final result quite "ergonomic".
 
 It's ergonomic to _library authors_ because you can extend it safely and without knowing how its internals work; here `op1` turns a unary operator and its adjoint into a component that can be plugged into bigger AD-enabled functions. The type constraints on the first argument of `op1` are basic numbers.
 
@@ -154,6 +152,6 @@ Respecting the _intent_ of numerical modeling in software libraries can play a s
 
 # References
 
-[1] MEEP : https://meep.readthedocs.io/en/master/
+[1] MEEP : [https://meep.readthedocs.io/en/master/](https://meep.readthedocs.io/en/master/)
 
-[2] MPB : https://mpb.readthedocs.io/en/latest/
+[2] MPB : [https://mpb.readthedocs.io/en/latest/](https://mpb.readthedocs.io/en/latest/)
