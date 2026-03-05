@@ -66,11 +66,13 @@
 <p>Introducing:</p>
 <h1 id="ascend-run-python-functions-on-kubernetes">ascend ⬆️☁️ : run Python functions on Kubernetes</h1>
 <p>Programming the cloud directly (e.g. EC2 and similar, or indeed interfacing with k8s) for each new project is cumbersome, whereas managed MLOps services do a lot (perhaps too much): Experiment management, Data management, Collaboration, etc.</p>
-<p><strong>Desiderata</strong>:
-* The user should have to make minimal changes to their code : seamless UX
-* No container runtime (e.g. docker) needed on localhost
-* No dedicated CI/CD pipelines necessary
-* Scale cloud infra to ~zero when unused</p>
+<p><strong>Desiderata</strong>:</p>
+<ul>
+<li>The user should have to make minimal changes to their code : seamless UX</li>
+<li>No container runtime (e.g. docker) needed on localhost</li>
+<li>No dedicated CI/CD pipelines necessary</li>
+<li>Scale cloud infra to ~zero when unused</li>
+</ul>
 <p>This post describes <code>ascend</code>, a library I built to recreate the convenience of the above approaches, while incurring as few of the drawbacks as possible. The code is open source as of today and available <a href="https://github.com/ocramz/ascend">here</a>.</p>
 <p>The project was also a design exercise to learn more about some interesting pieces of kit: Kubernetes, Kaniko, cloudpickle, and how they fit together.</p>
 <h3 id="the-ascend-decorator">The <code>ascend</code> decorator</h3>

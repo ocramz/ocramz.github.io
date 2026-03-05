@@ -21,6 +21,7 @@ Introducing:
 Programming the cloud directly (e.g. EC2 and similar, or indeed interfacing with k8s) for each new project is cumbersome, whereas managed MLOps services do a lot (perhaps too much): Experiment management, Data management, Collaboration, etc.
 
 **Desiderata**:
+
 * The user should have to make minimal changes to their code : seamless UX
 * No container runtime (e.g. docker) needed on localhost
 * No dedicated CI/CD pipelines necessary
