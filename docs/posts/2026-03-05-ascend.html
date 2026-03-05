@@ -71,7 +71,7 @@
 <li>No dedicated CI/CD pipelines necessary</li>
 <li>Scale cloud infra to ~zero when unused</li>
 </ul>
-<p>This post describes <code>ascend</code>, a library I built to recreate the convenience of the above approaches, while incurring as few of the drawbacks as possible. The code is open source as of today and available <a href="https://github.com/ocramz/ascend">here</a>.</p>
+<p>This post describes <code>ascend</code>, a library I built to offer the convenience of the above approaches, while incurring as few of the drawbacks as possible. The code is open source as of today and available <a href="https://github.com/ocramz/ascend">here</a>.</p>
 <p>The project was also a design exercise to learn more about some interesting pieces of kit: Kubernetes, Kaniko, cloudpickle, and how they fit together.</p>
 <h3 id="the-ascend-decorator">The <code>ascend</code> decorator</h3>
 <div class="sourceCode" id="cb1"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="at">@ascend</span>(</span>

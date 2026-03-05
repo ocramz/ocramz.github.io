@@ -24,7 +24,7 @@ Programming the cloud directly (e.g. EC2 and similar, or indeed interfacing with
 * No dedicated CI/CD pipelines necessary
 * Scale cloud infra to ~zero when unused
 
-This post describes `ascend`, a library I built to recreate the convenience of the above approaches, while incurring as few of the drawbacks as possible. The code is open source as of today and available [here](https://github.com/ocramz/ascend).
+This post describes `ascend`, a library I built to offer the convenience of the above approaches, while incurring as few of the drawbacks as possible. The code is open source as of today and available [here](https://github.com/ocramz/ascend).
 
 The project was also a design exercise to learn more about some interesting pieces of kit: Kubernetes, Kaniko, cloudpickle, and how they fit together.
 
