@@ -12,11 +12,10 @@ You need a GPU but your workstation doesn't have one, what do you do?
 * Rewrite your program for a distributed runtime like Ray or Dask
 * Pay for an all-inclusive platform (Databricks, Modal etc.)
 
+Programming the cloud directly (e.g. EC2 and similar, or indeed interfacing with k8s) for each new project is cumbersome, whereas managed MLOps services do a lot (perhaps too much): Experiment management, Data management, Collaboration, etc.
+
 *What's the least amount of infrastructure needed to "teleport" a function from your laptop to a remote node*?
 
-Introducing `@ascend` !
-
-Programming the cloud directly (e.g. EC2 and similar, or indeed interfacing with k8s) for each new project is cumbersome, whereas managed MLOps services do a lot (perhaps too much): Experiment management, Data management, Collaboration, etc.
 
 **Desiderata**:
 
