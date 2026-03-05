@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description" content="Marco Zocca" /> 
+        <meta name="author" content="Marco Zocca" />
+        <title>Marco Zocca - ascend: run Python functions on Kubernetes</title>
+
+        <link rel="stylesheet" href="../css/default.css" />
+        <meta property="og:type" content="article" /><meta property="og:url" content="https://ocramz.github.io/posts/2026-03-05-ascend.html" /><meta property="og:title" content="ascend: run Python functions on Kubernetes" />
+
+        <link rel="stylesheet" href="../css/highlight_default.min.css">
+        <script src="../js/highlight.min.js"></script>
+        <script src="../js/haskell.min.js"></script>
+        <script>hljs.highlightAll();</script>
+
+        <!--  <script id="MathJax-script" async src="/js/mathjax.min.js"></script> -->
+        <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+        
+    </head>
+    <body>
+
+
+        <div class="container content">
+
+        <header class="masthead">
+            <div class="row">
+              <div class="col-sm-4">
+                    <h2 class="masthead-title">
+                      <a href="../index.html" title="Home">Marco Zocca</a>
+                </h2>
+              </div>
+              <div class="col-sm-8">
+                    <h4 class="masthead-title" style="text-align: right;">
+                      <a href="../about.html" title="About">About</a>
+                  &nbsp;
+                      <a href="../research.html" title="Research">Research</a>
+                  &nbsp;
+                      <a href="../oss.html" title="Open source">Open Source</a>
+                      <!-- <a class='icon-github-squared' href='/oss.html' title='Open source'>Open Source</a> -->
+                  &nbsp;
+                      <a href="../archive.html">Posts</a>
+                </h4>
+              </div>
+            </div>
+              </header>
+
+
+        <main role="main">
+            <h1>ascend: run Python functions on Kubernetes</h1>
+            <article class="post">
+    <section class="header">
+        March  5, 2026
+    </section>
+    <section>
+        <p>You need a GPU but your workstation doesn’t have one, what do you do?</p>
+<ul>
+<li>SSH into a GPU machine and do your development there</li>
+<li>Ship your laptop (or a Docker image)</li>
+<li>Rewrite your program for a distributed runtime like Ray or Dask</li>
+<li>Pay for an all-inclusive platform (Databricks, Modal etc.)</li>
+</ul>
+<p>Introducing:</p>
+<h1 id="ascend-run-python-functions-on-kubernetes">ascend ⬆️☁️ : run Python functions on Kubernetes</h1>
+<p>I’ve been wondering: <em>what’s the least amount of infrastructure needed to “teleport” a function from your laptop to a remote node</em>?</p>
+<p>Programming the cloud directly (e.g. EC2 and similar, or indeed interfacing with k8s) for each new project is cumbersome, whereas managed MLOps services do a lot (perhaps too much): Experiment management, Data management, Collaboration, etc.</p>
+<p><strong>Desiderata</strong>:
+* The user should have to make minimal changes to their code : seamless UX
+* No container runtime (e.g. docker) needed on localhost
+* No dedicated CI/CD pipelines necessary
+* Scale cloud infra to ~zero when unused</p>
+<p>This post describes <code>ascend</code>, a library I built to recreate the convenience of the above approaches, while incurring as few of the drawbacks as possible. The code is open source as of today and available <a href="https://github.com/ocramz/ascend">here</a>.</p>
+<p>The project was also a design exercise to learn more about some interesting pieces of kit: Kubernetes, Kaniko, cloudpickle, and how they fit together.</p>
+<h3 id="the-ascend-decorator">The <code>ascend</code> decorator</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="at">@ascend</span>(</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    node_type<span class="op">=</span><span class="st">&quot;nc8as_t4_v3&quot;</span>,</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    timeout<span class="op">=</span><span class="dv">3600</span>,</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    requirements<span class="op">=</span>[</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>        <span class="st">&quot;torch==2.6.0&quot;</span>,</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>        <span class="st">&quot;pytorch-lightning&gt;=2.0&quot;</span>,</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>        ...</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>    ]</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> train_and_validate(hparams: <span class="bu">dict</span>[<span class="bu">str</span>, Any]) <span class="op">-&gt;</span> <span class="bu">dict</span>[<span class="bu">str</span>, <span class="bu">float</span>]:</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>    ...</span></code></pre></div>
+<p>A Python “decorator” (the part starting with <code>@</code>) makes the user-facing part of the design aesthetically pleasing as you just add it on top of your function declarations; without the decorator, your function behaves normally.</p>
+<p>The <code>@ascend</code> decorator wraps a bunch of safety checks and control plane coordination, making your code ✨ cloud-native ✨ behind the scenes.</p>
+<p>In <code>ascend</code>, the body and arguments of the decorated function (as well as the definitions they import) are serialized with <code>cloudpickle</code> and sent to object storage with a searchable name like <code>projects/{project}/users/{user}/jobs/{job-id}/...</code>.
+Later, a Job is prepared for the user dependencies: from a set of base runner container images, deps are built, the work package is downloaded from object storage, deserialized and executed, the result is serialized and stored in turn.</p>
+<p>The whole process is synchronous: the user program is blocked during remote execution, and polls the control plane for updates; once the results are available, they are downloaded locally and deserialized, and returned as function result.</p>
+<h3 id="kubernetes">Kubernetes</h3>
+<p><code>ascend</code> talks directly to the k8s control plane API. Among its (many) functions, k8s acts as a Job queue, can allocate workloads to appropriate resources (with tags and taints), scales infrastructure according to need, and has GPU support.
+It has an <em>extensive</em> API, but that’s what AI is for right? ;)</p>
+<p>I’ve briefly considered implementing <code>ascend</code> as a combination of thin CLI client and k8s Controller/Operator (as Dask, Ray and similar do). Maybe you, gentle reader, will point your AI coding harness at this document and do just that.</p>
+<h3 id="docker-build-on-k8s">Docker build on k8s</h3>
+<p><a href="https://github.com/GoogleContainerTools/kaniko">Kaniko</a> is a build tool that runs in Kubernetes and produces container images from Dockerfiles; it’s pretty neat because it runs completely in user space, i.e. does not require admin permissions.
+Having this removes the need for CI pipelines <em>and</em> running Docker/podman on your laptop; you just tell the k8s control plane : “schedule this Kaniko job with this manifest and upload the results to this registry”. Refreshing, after toiling with low-level DevOps for too long.</p>
+<h3 id="security-monitoring-isolation-cleanup-etc.">Security, monitoring, isolation, cleanup etc.</h3>
+<p>Each <code>ascend</code> deployment is meant for a high-trust environment : users can see each others’ data since storage paths (at least on Azure) cannot be assigned to specific users. This could be modified one day though and assign e.g. one user or team per storage account.</p>
+<p>I rely on k8s facilities for isolation as much as possible: each user and administrative task gets a dedicated namespace, so this design supports user-specific secrets (e.g. SSH or service principal keys) and mapping to enterprise RBAC settings.</p>
+<p>The library also comes with a command line interface for admin operations (provisioning cloud storage, creating user namespaces, RBAC, retrieving logs, cleaning up artifacts).</p>
+<h2 id="wrapping-up">Wrapping up</h2>
+<p>This was a fun exercise, and I’m fond of the result: an <a href="https://ocramz.github.io/posts/2026-01-16-ergonomics-numerical.html">ergonomic</a> interface for cloud computing that doesn’t require a ton of effort to operate and maintain.</p>
+<p>Do <a href="https://github.com/ocramz/ascend">give it a try</a>, and let me know your thoughts on it.</p>
+    </section>
+</article>
+
+        </main>
+
+        <footer>
+        </footer>
+
+        </div>
+
+
+    </body>
+</html>

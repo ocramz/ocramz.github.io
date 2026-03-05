@@ -1,0 +1,87 @@
+---
+layout: post
+title: "ascend: run Python functions on Kubernetes"
+date: 2026-03-05
+categories: machine-learning mlops
+---
+
+You need a GPU but your workstation doesn't have one, what do you do?
+
+* SSH into a GPU machine and do your development there
+* Ship your laptop (or a Docker image)
+* Rewrite your program for a distributed runtime like Ray or Dask
+* Pay for an all-inclusive platform (Databricks, Modal etc.)
+
+Introducing:
+
+# ascend ⬆️☁️ : run Python functions on Kubernetes
+
+I've been wondering: *what's the least amount of infrastructure needed to "teleport" a function from your laptop to a remote node*?
+
+Programming the cloud directly (e.g. EC2 and similar, or indeed interfacing with k8s) for each new project is cumbersome, whereas managed MLOps services do a lot (perhaps too much): Experiment management, Data management, Collaboration, etc.
+
+**Desiderata**:
+* The user should have to make minimal changes to their code : seamless UX
+* No container runtime (e.g. docker) needed on localhost
+* No dedicated CI/CD pipelines necessary
+* Scale cloud infra to ~zero when unused
+
+This post describes `ascend`, a library I built to recreate the convenience of the above approaches, while incurring as few of the drawbacks as possible. The code is open source as of today and available [here](https://github.com/ocramz/ascend).
+
+The project was also a design exercise to learn more about some interesting pieces of kit: Kubernetes, Kaniko, cloudpickle, and how they fit together.
+
+
+
+
+
+### The `ascend` decorator
+
+```python
+@ascend(
+    node_type="nc8as_t4_v3",
+    timeout=3600,
+    requirements=[
+        "torch==2.6.0",
+        "pytorch-lightning>=2.0",
+        ...
+    ]
+)
+def train_and_validate(hparams: dict[str, Any]) -> dict[str, float]:
+    ...
+```
+
+A Python "decorator" (the part starting with `@`) makes the user-facing part of the design aesthetically pleasing as you just add it on top of your function declarations; without the decorator, your function behaves normally. 
+
+The `@ascend` decorator wraps a bunch of safety checks and control plane coordination, making your code ✨ cloud-native ✨ behind the scenes.
+
+In `ascend`, the body and arguments of the decorated function (as well as the definitions they import) are serialized with `cloudpickle` and sent to object storage with a searchable name like `projects/{project}/users/{user}/jobs/{job-id}/...`.
+Later, a Job is prepared for the user dependencies: from a set of base runner container images, deps are built, the work package is downloaded from object storage, deserialized and executed, the result is serialized and stored in turn.
+
+The whole process is synchronous: the user program is blocked during remote execution, and polls the control plane for updates; once the results are available, they are downloaded locally and deserialized, and returned as function result.
+
+### Kubernetes
+
+`ascend` talks directly to the k8s control plane API. Among its (many) functions, k8s acts as a Job queue, can allocate workloads to appropriate resources (with tags and taints), scales infrastructure according to need, and has GPU support.
+It has an *extensive* API, but that's what AI is for right? ;)
+
+I've briefly considered implementing `ascend` as a combination of thin CLI client and k8s Controller/Operator (as Dask, Ray and similar do). Maybe you, gentle reader, will point your AI coding harness at this document and do just that.
+
+### Docker build on k8s
+
+[Kaniko](https://github.com/GoogleContainerTools/kaniko) is a build tool that runs in Kubernetes and produces container images from Dockerfiles; it's pretty neat because it runs completely in user space, i.e. does not require admin permissions.
+Having this removes the need for CI pipelines *and* running Docker/podman on your laptop; you just tell the k8s control plane : "schedule this Kaniko job with this manifest and upload the results to this registry". Refreshing, after toiling with low-level DevOps for too long.
+
+### Security, monitoring, isolation, cleanup etc.
+
+Each `ascend` deployment is meant for a high-trust environment : users can see each others' data since storage paths (at least on Azure) cannot be assigned to specific users. This could be modified one day though and assign e.g. one user or team per storage account.
+
+I rely on k8s facilities for isolation as much as possible: each user and administrative task gets a dedicated namespace, so this design supports user-specific secrets (e.g. SSH or service principal keys) and mapping to enterprise RBAC settings.
+
+The library also comes with a command line interface for admin operations (provisioning cloud storage, creating user namespaces, RBAC, retrieving logs, cleaning up artifacts).
+
+## Wrapping up
+
+This was a fun exercise, and I'm fond of the result: an [ergonomic](https://ocramz.github.io/posts/2026-01-16-ergonomics-numerical.html) interface for cloud computing that doesn't require a ton of effort to operate and maintain.
+
+Do [give it a try](https://github.com/ocramz/ascend), and let me know your thoughts on it.
+
