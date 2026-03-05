@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "ascend: run Python functions on Kubernetes"
+title: "ascend ⬆️☁️ : run Python functions on Kubernetes"
 date: 2026-03-05
 categories: machine-learning mlops
 ---
@@ -14,9 +14,7 @@ You need a GPU but your workstation doesn't have one, what do you do?
 
 *What's the least amount of infrastructure needed to "teleport" a function from your laptop to a remote node*?
 
-Introducing:
-
-# ascend ⬆️☁️ : run Python functions on Kubernetes
+Introducing `@ascend` !
 
 Programming the cloud directly (e.g. EC2 and similar, or indeed interfacing with k8s) for each new project is cumbersome, whereas managed MLOps services do a lot (perhaps too much): Experiment management, Data management, Collaboration, etc.
 
