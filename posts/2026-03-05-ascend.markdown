@@ -48,9 +48,7 @@ def train_and_validate(hparams: dict[str, Any]) -> dict[str, float]:
     ...
 ```
 
-A Python "decorator" (the part starting with `@`) makes the user-facing part of the design aesthetically pleasing as you just add it on top of your function declarations; without the decorator, your function behaves normally. 
-
-The `@ascend` decorator wraps a bunch of safety checks and control plane coordination, making your code ✨ cloud-native ✨ behind the scenes.
+The `@ascend` decorator wraps a bunch of safety checks and control plane coordination, making your code ✨ cloud-native ✨ behind the scenes; without it, your function behaves normally. 
 
 In `ascend`, the body and arguments of the decorated function (as well as the definitions they import) are serialized with `cloudpickle` and sent to object storage with a searchable name like `projects/{project}/users/{user}/jobs/{job-id}/...`.
 Later, a Job is prepared for the user dependencies: from a set of base runner container images, deps are built, the work package is downloaded from object storage, deserialized and executed, the result is serialized and stored in turn.

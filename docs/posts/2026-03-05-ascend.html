@@ -85,8 +85,7 @@
 <span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> train_and_validate(hparams: <span class="bu">dict</span>[<span class="bu">str</span>, Any]) <span class="op">-&gt;</span> <span class="bu">dict</span>[<span class="bu">str</span>, <span class="bu">float</span>]:</span>
 <span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>    ...</span></code></pre></div>
-<p>A Python “decorator” (the part starting with <code>@</code>) makes the user-facing part of the design aesthetically pleasing as you just add it on top of your function declarations; without the decorator, your function behaves normally.</p>
-<p>The <code>@ascend</code> decorator wraps a bunch of safety checks and control plane coordination, making your code ✨ cloud-native ✨ behind the scenes.</p>
+<p>The <code>@ascend</code> decorator wraps a bunch of safety checks and control plane coordination, making your code ✨ cloud-native ✨ behind the scenes; without it, your function behaves normally.</p>
 <p>In <code>ascend</code>, the body and arguments of the decorated function (as well as the definitions they import) are serialized with <code>cloudpickle</code> and sent to object storage with a searchable name like <code>projects/{project}/users/{user}/jobs/{job-id}/...</code>.
 Later, a Job is prepared for the user dependencies: from a set of base runner container images, deps are built, the work package is downloaded from object storage, deserialized and executed, the result is serialized and stored in turn.</p>
 <p>The whole process is synchronous: the user program is blocked during remote execution, and polls the control plane for updates; once the results are available, they are downloaded locally and deserialized, and returned as function result.</p>
