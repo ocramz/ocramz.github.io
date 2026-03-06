@@ -81,3 +81,7 @@ This was a fun exercise, and I'm fond of the result: an [ergonomic](https://ocra
 
 Do [give it a try](https://github.com/ocramz/ascend), and let me know your thoughts on it.
 
+
+## Addendum
+
+I was kindly [reminded](https://bsky.app/profile/zzstoatzz.io/post/3mgdrkybiws2h) that Prefect [supports](https://docs.prefect.io/v3/advanced/submit-flows-directly-to-dynamic-infrastructure#customizing-infrastructure-configuration) this style of dynamic provisioning, in addition to being self-hostable. 
