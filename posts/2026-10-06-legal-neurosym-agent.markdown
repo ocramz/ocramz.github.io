@@ -14,7 +14,7 @@ image: /images/2026-10-06-legal-neurosym-agent/judge_agreement_kappa.png
 
 # Abstract
 
-We discuss a formal logic system to encode legal text ("Defeasible Deontic Logic"), encode it into Prolog, propose an evaluation protocol and show results to understand how well open-weight LLMs can perform semantic parsing into our grammar. We also build an agent backed by the DDL Prolog reasoner that answers quickly and correctly even in the face of linguistic and interpretive ambiguity.
+We discuss a formal logic system to encode legal text ("Defeasible Deontic Logic") embedded in Prolog. We give empirical evidence that open-weight LLMs can parse law from natural language into this formal system, and present a LLM-as-a-judge-panel evaluation protocol. We also present an agent backed by our Prolog reasoner, and as an example show it answers questions about articles from the US Code of Federal Regulations rigorously even in the face of linguistic and interpretive ambiguity.
 
 # Background
 
