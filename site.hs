@@ -41,7 +41,7 @@ main = hakyllWith cfg $ do
     --     compile $ do
     --         makeItem $ styleToCss pandocCodeStyle
 
-    match "images/*" $ do
+    match "images/**" $ do
         route   idRoute
         compile copyFileCompiler
 

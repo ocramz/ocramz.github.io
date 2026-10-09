@@ -6,6 +6,12 @@ categories: AI Prolog logic LLM
 image: /images/2026-10-06-legal-neurosym-agent/judge_agreement_kappa.png
 ---
 
+<p>
+<center>
+<img width=600 src="/images/2026-10-06-legal-neurosym-agent/demo3.gif"/></center>
+<p>
+
+
 # Abstract
 
 We discuss a formal logic system to encode legal text ("Defeasible Deontic Logic"), encode it into Prolog, propose an evaluation protocol and show results to understand how well open-weight LLMs can perform semantic parsing into our grammar. We also build an agent backed by the DDL Prolog reasoner that answers quickly and correctly even in the face of linguistic and interpretive ambiguity.
@@ -122,7 +128,7 @@ Equivalence checking is done by loading the rest of the Prolog encoding, taking 
 
 <p>
 <center>
-<img src="/images/confusion_mtx.png" width=800 />
+<img src="/images/2026-10-06-legal-neurosym-agent/confusion_mtx.png" width=800 />
 <br>
 <i>Fig 1. Confusion matrix for encoding quality judgements. The model returns an "interpretation" label when evidence cannot support either of the other cases.</i>
 </center>
