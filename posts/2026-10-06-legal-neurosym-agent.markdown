@@ -111,6 +111,7 @@ The reference natural language - DDL Prolog translations were computed zero-shot
 ### Language Models
 
 We experiment with 3 open-weight LLMs that are currently (October 2026) towards the top of the OpenRouter "intelligence" rankings:
+
 - Qwen 3.8 27b : qwen/qwen3.8-27b
 - DeepSeek 4 Flash : deepseek/deepseek-v4-flash (reasoning off or low)
 - GLM 5.3 Flash : glm-5.3-flash (reasoning low)
@@ -118,6 +119,7 @@ We experiment with 3 open-weight LLMs that are currently (October 2026) towards 
 ### Calibration dataset
 
 For each paragraph of a held-out section of law text, we:
+
 - take the reference Prolog encoding
 - rewrite the reference encoding in a meaning-preserving way : renaming the rules x1, x2 .. and switching the order of the rule's conditions (provided the results interprets identically)
 - compute 6 mutants of the reference encoding : a rule or condition removed, a priority removed or reversed, a duty turned into a permission or a status, a conclusion negated, ora predicate swapped. A mutant is only kept if it interprets _differently_ from the reference encoding.

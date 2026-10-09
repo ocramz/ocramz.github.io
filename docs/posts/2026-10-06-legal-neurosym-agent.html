@@ -122,15 +122,19 @@
 <h3 id="reference-dataset">Reference dataset</h3>
 <p>The reference natural language - DDL Prolog translations were computed zero-shot (i.e. instructions only) with a “frontier” model (Claude Opus 5.5). They have not been hand-checked by a legal expert so we cannot guarantee they are necessarily correct; on the other hand, I imagine it highly unlikely to find in 2026 a legal practitioner who is also conversant in logic programming. In the following we will try to understand whether expert translator judgement can be subsituted with an LLM.</p>
 <h3 id="language-models">Language Models</h3>
-<p>We experiment with 3 open-weight LLMs that are currently (October 2026) towards the top of the OpenRouter “intelligence” rankings:
-- Qwen 3.8 27b : qwen/qwen3.8-27b
-- DeepSeek 4 Flash : deepseek/deepseek-v4-flash (reasoning off or low)
-- GLM 5.3 Flash : glm-5.3-flash (reasoning low)</p>
+<p>We experiment with 3 open-weight LLMs that are currently (October 2026) towards the top of the OpenRouter “intelligence” rankings:</p>
+<ul>
+<li>Qwen 3.8 27b : qwen/qwen3.8-27b</li>
+<li>DeepSeek 4 Flash : deepseek/deepseek-v4-flash (reasoning off or low)</li>
+<li>GLM 5.3 Flash : glm-5.3-flash (reasoning low)</li>
+</ul>
 <h3 id="calibration-dataset">Calibration dataset</h3>
-<p>For each paragraph of a held-out section of law text, we:
-- take the reference Prolog encoding
-- rewrite the reference encoding in a meaning-preserving way : renaming the rules x1, x2 .. and switching the order of the rule’s conditions (provided the results interprets identically)
-- compute 6 mutants of the reference encoding : a rule or condition removed, a priority removed or reversed, a duty turned into a permission or a status, a conclusion negated, ora predicate swapped. A mutant is only kept if it interprets <em>differently</em> from the reference encoding.</p>
+<p>For each paragraph of a held-out section of law text, we:</p>
+<ul>
+<li>take the reference Prolog encoding</li>
+<li>rewrite the reference encoding in a meaning-preserving way : renaming the rules x1, x2 .. and switching the order of the rule’s conditions (provided the results interprets identically)</li>
+<li>compute 6 mutants of the reference encoding : a rule or condition removed, a priority removed or reversed, a duty turned into a permission or a status, a conclusion negated, ora predicate swapped. A mutant is only kept if it interprets <em>differently</em> from the reference encoding.</li>
+</ul>
 <p>Equivalence checking is done by loading the rest of the Prolog encoding, taking up to 3^8 permutations of ground fact values (true, false, unknown), and comparing the valuation of the derived encoding with the reference.</p>
 <h3 id="llm-panel">LLM panel</h3>
 <p>
