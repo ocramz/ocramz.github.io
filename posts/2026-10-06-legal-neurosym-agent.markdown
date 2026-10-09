@@ -75,7 +75,7 @@ DDL (Governatori, Rotolo 2006) combines the above approaches : every rule is tag
 
 <p>
 <center>
-<img width=600 src="neural-prolog-bisk.png"/></center>
+<img width=600 src="/images/2026-10-06-legal-neurosym-agent/neural-prolog-bisk.png"/></center>
 <p>
 
 The knowledge base of legal norms is encoded as Prolog terms written in defeasible deontic logic that are used as plain data (i.e. never executed as programs); our engine (derived from Antoniou et al. (2006)) is an intepreter for such DDL terms (Prolog authors would call this a "meta-interpreter").
@@ -122,7 +122,7 @@ Equivalence checking is done by loading the rest of the Prolog encoding, taking 
 
 <p>
 <center>
-<img src="confusion_mtx.png" width=800 />
+<img src="/images/confusion_mtx.png" width=800 />
 <br>
 <i>Fig 1. Confusion matrix for encoding quality judgements. The model returns an "interpretation" label when evidence cannot support either of the other cases.</i>
 </center>
@@ -137,7 +137,7 @@ In this configuration, Qwen has the lowest false positive rate, whereas Deepseek
 
 <p>
 <center>
-<img src="judge_agreement_kappa.png" width=800 />
+<img src="/images/2026-10-06-legal-neurosym-agent/judge_agreement_kappa.png" width=800 />
 <br>
 <i>Fig 2. LLM judge agreement (kappa and 95% confidence intervals).</i> 
 </center>
@@ -154,23 +154,17 @@ Agreement over the three labels is measured with kappa, the proportion of encodi
 
 Each comparison uses the encodings all its judges have a verdict on, so N differs between rows. In addition to the 128 calibration encodings (16 references, 16 rewrites, 96 mutants), the judges also rated encodings that the models wrote in earlier translation runs. A judge never rates its own model's output, so these add between 33 and 111 encodings depending on the pair.
 
-<!-- TODO explain how are the numbers obtained e2e -->
 
 * 2 LLM judges, overall verdict. Cohen kappa, for each pair of panel judges, on every encoding both have judged (N = 160 to 238).  
 * 3 LLM judges, overall verdict. Fleiss kappa, the extension of Cohen's to more than two judges, on the 135 encodings all three LLMs have judged: κ = 0.42 (moderate). All models give the same verdict on 88 of them.
-<!-- 3. 3 LLM judges, single items.  For each encoding, the Prolog side builds one message, and every item in it has a fixed id. All three judges are asked the same question about the same r2 or b1, so their answers can be matched item by item.  TODO -->
 * A judge against itself. Here we test whether the LLM is sensitive to meaning-preserving rewrites. We also test whether DeepSeek at two reasoning levels agrees on identical encodings.
 
-<!-- TODO add examples of "overall verdict"  -->
-
-<!-- TODO discuss how are confidence intervals computed -->
 
 The 95% confidence intervals come from a cluster bootstrap. Verdicts on encodings of the same paragraph are not independent: a judge that misreads a paragraph tends to misjudge all its encodings. So we resample whole paragraphs, not single encodings. 2000 times, we draw 16 paragraphs with replacement and recompute kappa on all their encodings. The interval runs from the 2.5th to the 97.5th percentile of the results. With only 16 paragraphs the intervals are wide, especially for the self-agreement rows, which have one pair of encodings per paragraph.
 
 
  The bands for kappa are from Landis & Koch: 0–0.2 slight, 0.2–0.4 fair, 0.4–0.6 moderate, 0.6–0.8 substantial, 0.8–1 almost perfect. 
 
-<!-- We can conclude that a panel of LLM judges cannot (yet?) replace a human expert -->
 
 From these results we conclude that, for this domain, agreement between LLM judges is moderate at best (kappa = 47% for GLM-5.3-flash). LLMs seem to be sensitive to rewrites that do not change the meaning.
 
@@ -179,59 +173,13 @@ From these results we conclude that, for this domain, agreement between LLM judg
 
 <p>
 <center>
-<img src="llm_cost_time.png" width=800 />
+<img src="/images/2026-10-06-legal-neurosym-agent/llm_cost_time.png" width=800 />
 <br>
 <i>Fig 3. (Left) Cost per 100 API calls and (Right) median time to complete a judgement for the LLM APIs we considered.</i>
 </center>
 <p>
 
 Figure 3 looks at cost and token efficiency of the LLM services used here (via OpenRouter), GLM-5.3-flash (released most recently) wins on both counts, whereas DeepSeek 4 Flash is both most expensive and most "indecisive".
-
-
-<!-- 
-### ShadowBench
-
-
-[ShadowBench](https://arxiv.org/html/2608.29270v2) evaluates autoformalization of mathematical statements in
-Lean 4. For each statement T, experts write a few *shadows* S₁…Sₙ, small formal statements that characterize
-it. A candidate formalization T̂ passes when three things hold:
-- it compiles;
-- it implies every shadow statement;
-- it is implied by the union of the shadow statements.
-
-Lean proves the implications. The idea carries over to the modal logic case well, since compiling is a poor stand-in for meaning in
-legal encodings too. In order to adopt the ShadowBench approach to our logic framework, we had to adjust the notion of implication, since ShadowBench implications rely on a monotonic entailment relation: if T̂
-proves S, then T̂ plus anything else still proves S.
-
-In defeasible logic, a paragraph's rules have no meaning in isolation. What they conclude depends on the rest of
-the regulation, and adding a rule can remove conclusions; there is no entailment between theories
-to prove. The closest notion, *strong equivalence* (the same conclusions in every context), is too strict:
-- an encoding that writes an exception as a condition, where the reference uses a rule plus a priority, can
-  read the text correctly and still not be strongly equivalent to the reference;
-- for defeasible deontic logic, no known characterization lets you decide strong equivalence without
-  enumerating cases.
--->
-
-
-<!-- TODO discuss how  we implement benchmarks inspired by ShadowBench -->
-<!-- 
-In our version of ShadowBench, each proof becomes a check that the engine can run over a finite set of scenarios. For each paragraph of the
-regulation (a "unit"), an LLM drafts 3 to 10 shadows from the official text alone. It sees the theory without
-that unit, but not the reference encoding. A shadow is a small behavioural test:
-`shadow(Unit, Id, Scenario, Day, Query, Expected, Source)`. An example: "a PMA has been filed, no order has
-issued, and it is not public, so disclosing its existence is forbidden: true".
-
-A candidate encoding is loaded in place of the unit and scored three ways:
-- **Forward.** The share of shadows it passes. The reference encoding must pass them too; if it doesn't,
-  either the shadow is wrong or the reference is, and either way it is a finding for the legal review.
-- **Backward, or no overreach.** The *probe space* holds the rest of the regulation fixed and tries every
-  true/false/unknown combination of the unit's input facts, with one entity per type. Candidate and reference
-  are compared on the unit's interface: its deontic conclusions and what the other paragraphs read. Formally,
-  this decides a relativized uniform equivalence with projection, by enumeration.
-- **Completeness.** ShadowBench proves that the shadows together are equivalent to T. I mutate the reference
-  encoding instead (drop a rule, a condition or a priority; flip a mode; use a more general predicate) and
-  count how many of the mutants the shadows catch. Only mutants that behave differently from the reference
-  count.  -->
 
 
 
@@ -252,7 +200,6 @@ the provisions it is based on, quoted literally, with links to the official text
 
 A rejected call comes back to the model as a tool error that gives the reason and the closest valid name, so the model can correct itself. The system prompt also gets a short section listing the theory's cases, provisions and predicate readings. It tells the model to take any question on those topics to the tools, rather than answer from its own knowledge of the law.
 
-<!-- The Appendix shows two example sessions in which the human user brings a question that is not well formed, incomplete or that requires reasoning through counterfactuals, and the agents produces a correct and grounded answer in a few turns. -->
 
 
 
@@ -283,7 +230,7 @@ F. Maier, D. Nute (2010). Well-founded semantics for defeasible logic. Synthese 
 
 M. Maher (2001). Propositional defeasible logic has linear complexity. TPLP 1(6)
 
-<!-- ShadowBench, arXiv:2608.29270, https://arxiv.org/abs/2608.29270 -->
+
 
 
 # Appendix
@@ -292,7 +239,6 @@ M. Maher (2001). Propositional defeasible logic has linear complexity. TPLP 1(6)
 ## Example session
 
 
-<!-- TODO produce an example that can be run with and without pi-ddl, to show that an ungrounded LLM may hedge or make factual errors. -->
 
 
 We ask the same question of the same model (DeepSeek 4 Flash, reasoning : high) in two pi sessions. The first has no tools so the only way it can answer is via the knowledge stored in its pretrained weights. The second has only the DDL tools on the 20 CFR 402 theory.
@@ -361,123 +307,3 @@ Some details of the approach :
 - **Time**: Event logs written in Event Calculus style compile to validity intervals.
 - **What-if scenarios**: We can add or remove facts and events, and a rule can ask a hypothetical question ("if consent were refused, would processing be forbidden?")
 - **Abduction**: "What must be true for this to hold?" - the engine finds minimal sets of unknown facts that would make a conclusion true (either by complete enumeration over a few unknowns, or with the s(CASP) approximation). We also integrate clingo for answer-set programming, which can check which unknowns can change an answer at all.
-
-<!-- Here we use a TODO -->
-
-
-<!-- 
-The user asks a question in natural language, with or without full context:
-
- **> What needs to be true for SSA to expedite my request?**
-
-The agent picks the tools to use from the system prompt we have given to it:
-
- > Call ddl_guide then what_must_be_shown / ask_query. Need a case; "my request" — check list_cases first. Let me read the guide and list cases.
->
- > ddl_guide task="dialogue"
->  You translate legal text and questions into the terms of a defeasible deontic logic engine.
-> Your output is checked by a Prolog program before anything uses it. ...
-> ... (599 more lines, ctrl+o to expand)
-
-The agent then issues a `list_cases` query to ground its later queries into the relevant legal framework:
-
-```yaml
- list_cases
- {"theory":"theories/cfr_20_402",
- "name":"cfr_20_402",
- ...
- ```
-
-The next "thinking trace" shows a failed query due to lack of grounding, and a corrected attempt:
-
- > Use what_must_be_shown for expedited processing. Which case? "my request" — maybe journalist case, but user hasn't described. Use what_must_be_shown on journalist or ask. Let's use what_must_be_shown on a generic expedite query in "journalist" case? Better ask user? Could just use what_must_be_shown with fact(expedited_processing) — need vocabulary. 
-
-```yaml
- what_must_be_shown case="journalist" day=100 query="fact(expedited(journalist))"
-...
- ```
-
- > Wrong predicate. Lookup vocabulary.
-
-```yaml
- lookup_vocabulary names=["expedite","expedited","compelling_need"]
- ...
- ```
-
-
-```yaml
-what_must_be_shown case="journalist" day=100 query="obl(expedite(r1))" 
-...
-```
-
-And eventually the agent produces a factual and grounded answer:
-
- > Based on 20 CFR 402.65, SSA must give your request expedited processing if all of these hold:
->
-> 1. You asked for expedited processing at the same time as your FOIA request (402.65(b)); and
-> 2. You submitted a statement certified to be true and correct; and
-> 3. Your request demonstrates a compelling need, which means at least one of these (402.65(a)):
->   - there is an imminent threat to the life or safety of a person; or
->    - you are primarily engaged in disseminating information and show an urgency to inform the public about government activities; or
->    - without the information you may be denied a legal right, benefit, or remedy, the information cannot be obtained elsewhere in a reasonable time, and you have shown this in detail and to SSA's satisfaction.
->
-> If you want, tell me about your actual situation (your case doesn't seem to match any I have on file yet) and I can check which of these applies to you — for example, are you a member of the media or a researcher, or is someone's safety at stake?
-
-Consistently with https://www.ecfr.gov/current/title-20/chapter-III/part-402/section-402.65 .
-
-
-## A harder session : defeasibility
-
-
-
-A user might query the agent about a particular case, which is harder than the last example, because the answer
-often depends on facts the case doesn't record. 20 CFR 402.40 is a general rule with two layers of exceptions.
-SSA will disclose a deceased person's records given acceptable proof of death. An obituary counts as proof if it
-identifies the person, but not if SSA doubts the proof, and SSA won't disclose if a law forbids it. In the case
-`obituary_unclear`, a daughter has asked for her late mother's earnings record and sent an obituary, and nothing
-else is known. The conversation below is a recorded run of `ddl-nl chat` with deepseek-v4-flash, from the
-evaluation set, so the person's replies are scripted.
-
- **> Does SSA have to release my mother's earnings record to me?**
-
-```yaml
-ask_query query="obl(disclose(earnings_record))" day=5
-pending_questions day=5
-```
-
-The engine answers *undefined*, not "no". The obligation of 402.40(a) is there, but it depends on three facts
-that nobody has stated yet:
-- whether the obituary identifies her, 402.40(b)(5);
-- whether SSA doubts the proof, (c);
-- whether a law forbids disclosure, (a): "unless …".
-
-The agent asks about exactly those:
-
-> 1. **The obituary** — does it have sufficient identifying information about your mother (e.g., full name, date of death, place, etc.)?
-> 2. **Is there any reason SSA might question the authenticity of the obituary or whether it really shows your mother is deceased?**
-> 3. **Do you know of any federal law or regulation that would prohibit SSA from releasing this record?**
-
- **> Yes, the obituary gives her full name, her date of birth and the date she died.**
-
-```yaml
-record_answer changes=["add(obituary_identifies(mother))"]
-ask_query query="obl(disclose(earnings_record))" day=5
-```
-
-The next two replies, "SSA has not questioned the proof" and "no law stops them", become
-`add(~proof_doubtful(mother))` and `add(~disclosure_prohibited_by_law(earnings_record))`. Each is checked
-against the vocabulary before it is recorded, and now the engine decides:
-
-> **Yes — SSA is required to release your mother's earnings record to you.**
-> - Under **20 CFR 402.40(a)**, SSA must disclose a deceased person's earnings record in response to a FOIA request, if SSA has acceptable proof of death.
-> - You provided an obituary with your mother's full name, date of birth, and date of death — that counts as acceptable proof under **20 CFR 402.40(b)(5)**.
-> - No federal law or regulation prohibits the disclosure, and SSA hasn't questioned the proof's authenticity.
-
-Behind this answer are the defeasible rules from earlier. The obligation `r40a` is attacked by `r40a_law`, which
-is superior to it. "An obituary is acceptable proof" (`r40b5`) loses to "doubtful proof is not acceptable"
-(`r40c`), which is superior to every kind of proof. Change one answer and the conclusion flips, with no change
-to the rules:
-- if the obituary gives only her first name, the answer becomes "no" (another scripted conversation);
-- if SSA doubts the proof, the request is handled as one about a living person (402.40(c));
-- if a statute bars disclosure, disclosure becomes forbidden.
- -->
