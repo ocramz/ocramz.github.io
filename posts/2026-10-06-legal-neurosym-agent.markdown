@@ -309,6 +309,7 @@ The grounded session cost $0.008, more than ten times the ungrounded one ($0.000
 
 
 Some details of the approach :
+
 - **Tabled negation** We use [SWI-Prolog](https://www.swi-prolog.org/)'s tabled negation `tnot/1` because  the meta-interpreter negates its own predicates ("not overruled", "not beaten"), and conflicting exceptions or crossed priorities make those negations recursive. Negation-as-failure (`\+`) makes the interpreter loop forever. With tabling, SWI-Prolog evaluates negated rules under the well-founded semantics (see Maier and Nute (2010)). Every query terminates, every subgoal is computed once, and a goal caught in a cycle through negation returns `undefined` instead of looping (see next).
 - **Three-valued answers (true, false, undefined)**: Unknown facts reuse the same tabling mechanism. An askable fact that is not mentioned explicitly in a case is proved by `unknown(C, A) :- tnot(unknown(C, A)).` , which is undefined by construction, so the residual program names exactly the missing facts. `tnot/1` needs ground goals, which is one reason for the grounding step below. As a result, the residual Prolog program contains the facts the answer needs in order to be fully evaluated. In other words, an undefined answer can be turned into a question (a clarification) to be asked to the user, or a detectable loop (which is an encoding defect therefore an exception).
 - **Finite grounding**: rules are grounded over the case's entities. Questions with variables ("May it disclose X?") are answered once per entity.
