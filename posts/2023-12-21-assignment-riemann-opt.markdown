@@ -3,6 +3,7 @@ layout: post
 title: Minimum bipartite matching via Riemann optimization
 date: 2023-12-21
 categories: optimization
+image: /images/assignment_riemann_tri.png
 ---
 
 # Introduction

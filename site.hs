@@ -56,14 +56,14 @@ main = hakyllWith cfg $ do
     match (fromList ["about.html", "contact.markdown", "oss.html", "research.html"]) $ do
         route   $ setExtension "html"
         compile $ pandocCompiler
-            >>= loadAndApplyTemplate "templates/default.html" defaultContext
+            >>= loadAndApplyTemplate "templates/default.html" (openGraphContext defaultContext)
             >>= relativizeUrls
 
     match "posts/*" $ do
         route $ setExtension "html"
         compile $ pandocCompiler
             >>= loadAndApplyTemplate "templates/post.html"    postCtx
-            >>= loadAndApplyTemplate "templates/default.html" (postCtx <> openGraphContext)
+            >>= loadAndApplyTemplate "templates/default.html" (openGraphContext postCtx)
             >>= relativizeUrls
 
     create ["archive.html"] $ do
@@ -77,7 +77,7 @@ main = hakyllWith cfg $ do
 
             makeItem ""
                 >>= loadAndApplyTemplate "templates/archive.html" archiveCtx
-                >>= loadAndApplyTemplate "templates/default.html" archiveCtx
+                >>= loadAndApplyTemplate "templates/default.html" (openGraphContext archiveCtx)
                 >>= relativizeUrls
 
 
@@ -92,7 +92,8 @@ main = hakyllWith cfg $ do
 
             getResourceBody
                 >>= applyAsTemplate indexCtx
-                >>= loadAndApplyTemplate "templates/default.html" indexCtx
+                >>= loadAndApplyTemplate "templates/default.html"
+                        (openGraphContext (constField "title" "Marco Zocca" <> indexCtx))
                 >>= relativizeUrls
 
     match "templates/*" $ compile templateBodyCompiler
@@ -105,11 +106,28 @@ postCtx =
     defaultContext
 
 
-openGraphContext :: Context String
-openGraphContext = openGraphField "opengraph" ctx
+-- | OpenGraph meta tags, rendered into the "opengraph" field of the default template.
+--
+-- Optional front matter:
+--   image: /images/foo.png   (falls back to 'defaultOgImage')
+--   description: ...
+openGraphContext :: Context String -> Context String
+openGraphContext baseCtx =
+    openGraphField "opengraph" ctx <> field "twitter-card" twitterCardField <> baseCtx
   where
-    ctx = field "og-image" ogImageField <> constField "root" siteRoot <> defaultContext
+    ctx = field "og-image" ogImageField
+       <> field "og-description" ogDescriptionField
+       <> constField "root" siteRoot
+       <> baseCtx
     ogImageField item = do
-      Just path <- getRoute $ setVersion (Just "og-image") (itemIdentifier item)
-      pure $ siteRoot <> toUrl path
+      mImage <- getMetadataField (itemIdentifier item) "image"
+      pure $ siteRoot <> maybe defaultOgImage id mImage
+    -- large card only for pages with their own (wide) image; the square default
+    -- image looks better as a small thumbnail
+    twitterCardField item = do
+      mImage <- getMetadataField (itemIdentifier item) "image"
+      pure $ maybe "summary" (const "summary_large_image") mImage
+    ogDescriptionField item =
+      getMetadataField (itemIdentifier item) "description" >>= maybe (noResult "no description") pure
     siteRoot = "https://ocramz.github.io"
+    defaultOgImage = "/images/me2.jpg"
