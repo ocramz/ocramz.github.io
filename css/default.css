@@ -767,7 +767,25 @@
     width: auto;
     margin: 0px;
     border: 0px; }
-  
+
+  /* figures and captions */
+  figure {
+    margin: 1.5rem 0;
+    text-align: center; }
+
+  figure img,
+  figure video {
+    display: block;
+    max-width: 100%;
+    margin: 0 auto .5rem; }
+
+  figcaption,
+  .caption {
+    font-size: 85%;
+    line-height: 1.4;
+    color: #7a7a7a;
+    text-align: center; }
+
   table {
     margin-bottom: 1rem;
     width: 100%;

@@ -128,13 +128,10 @@ Equivalence checking is done by loading the rest of the Prolog encoding, taking 
 
 ### LLM panel
 
-<p>
-<center>
+<figure>
 <img src="/images/2026-10-06-legal-neurosym-agent/confusion_mtx.png" width=800 />
-<br>
-<i>Fig 1. Confusion matrix for encoding quality judgements. The model returns an "interpretation" label when evidence cannot support either of the other cases.</i>
-</center>
-<p>
+<figcaption>Fig 1. Confusion matrix for encoding quality judgements. The model returns an "interpretation" label when evidence cannot support either of the other cases.</figcaption>
+</figure>
 
 The calibration dataset is fed zero-shot (i.e. instructions only, no translation examples) to a group of LLMs (Figure 1) in order to find out how reliably each model can tell whether an DDL Prolog encoding is faithful to the law text, a precondition for letting LLMs grade translations made by other LLMs. In the left panel of Fig. 1 we show the outcome a majority vote of 3 LLMs on the same question (a "LLM panel").
 
@@ -143,13 +140,10 @@ In this configuration, Qwen has the lowest false positive rate, whereas Deepseek
 
 
 
-<p>
-<center>
+<figure>
 <img src="/images/2026-10-06-legal-neurosym-agent/judge_agreement_kappa.png" width=800 />
-<br>
-<i>Fig 2. LLM judge agreement (kappa and 95% confidence intervals).</i> 
-</center>
-<p>
+<figcaption>Fig 2. LLM judge agreement (kappa and 95% confidence intervals).</figcaption>
+</figure>
 
 
 Do LLM judges agree with each other, and what do they disagree on? Is a panel of LLM judges reliable to be used for automatic encoding ? We attempt to answer these question in Figure 2.
@@ -179,13 +173,10 @@ From these results we conclude that, for this domain, agreement between LLM judg
 
 
 
-<p>
-<center>
+<figure>
 <img src="/images/2026-10-06-legal-neurosym-agent/llm_cost_time.png" width=800 />
-<br>
-<i>Fig 3. (Left) Cost per 100 API calls and (Right) median time to complete a judgement for the LLM APIs we considered.</i>
-</center>
-<p>
+<figcaption>Fig 3. (Left) Cost per 100 API calls and (Right) median time to complete a judgement for the LLM APIs we considered.</figcaption>
+</figure>
 
 Figure 3 looks at cost and token efficiency of the LLM services used here (via OpenRouter), GLM-5.3-flash (released most recently) wins on both counts, whereas DeepSeek 4 Flash is both most expensive and most "indecisive".
 

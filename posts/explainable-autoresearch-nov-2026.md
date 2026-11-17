@@ -6,15 +6,10 @@ categories: Autoresearch AI LLM
 image: /images/2026-11-9-explainable-autoresearch/og_exp_tree.png
 ---
 
-<p>
-<center>
-<video controls width=”100%″  autoplay loop muted playsinline> <source src=”/images/2026-11-9-explainable-autoresearch/rec.webm” type=”video/webm”> Your browser does not support the WebM format. </video>
-<p>
-Exploring the sequence of diffs along a branch of the experiment tree. 
-
-Agent: DeepSeek4-flash / pi harness. Task : maximizing the token/s throughput of GPT-2 (C language, based on GGML). The final result is ~66% faster than the original.
-</center>
-<p>
+<figure>
+<video controls width="100%"  autoplay loop muted playsinline> <source src="/images/2026-11-9-explainable-autoresearch/rec.webm" type="video/webm"/> Your browser does not support the WebM format. </video>
+<figcaption>Exploring the sequence of diffs along a branch of the experiment tree.<br>Agent: DeepSeek4-flash / pi harness. Task : maximizing the token/s throughput of GPT-2 (C language, based on GGML). The final result is ~66% faster than the original.</figcaption>
+</figure>
 
 
 In late 2026, there's plenty of evidence AI agents can do useful engineering work and make progress on a codebase with little supervision.
@@ -65,43 +60,31 @@ The planner brief is constructed by first gathering information from the SQLite 
 Similar autoresearch prompting techniques to avoid getting stuck in "idea basins" have been independently proposed, eg Fork-and-flush [Cai26].
 
 
-<p>
-<center>
+<figure>
 <img width="100%" src="/images/2026-11-9-explainable-autoresearch/agent_read_experiment.png" alt="The agent can look up rationale and details of past experiments, as well as their outcome."/>
-<p>
-Read experiment tool: rationale and details of past experiments, as well as their outcome.
-</center>
-<p>
+<figcaption>Read experiment tool: rationale and details of past experiments, as well as their outcome.</figcaption>
+</figure>
 
 
 
-<p>
-<center>
+<figure>
 <img width="100%" src="/images/2026-11-9-explainable-autoresearch/agent_lineage.png" alt="The agent can look at the lineage of a node to understand the changes that led to it, and their relative impact."/>
-<p>
-Lineage tool : list all changes that led to a specific experiment tree node, and their relative impact.
-</center>
-<p>
+<figcaption>Lineage tool : list all changes that led to a specific experiment tree node, and their relative impact.</figcaption>
+</figure>
 
 
 
 
 
-<!-- <p>
-<center>
+<!-- <figure>
 <img width="100%" src="2026-11-9-explainable-autoresearch/agent_ask_the_user.png" alt="The agent summarizes the results seen so far and asks the user to pick a follow-up experiment."/>
-<p>
-The agent analyzes the results seen so far and asks the user to pick a follow-up experiment.
-</center>
-<p>
+<figcaption>The agent analyzes the results seen so far and asks the user to pick a follow-up experiment.</figcaption>
+</figure>
 
-<p>
-<center>
+<figure>
 <img width="60%" src="2026-11-9-explainable-autoresearch/agent_summarize_results.png" alt="The agent summarizes the results and meaningful changes seen during a run."/>
-<p>
-The agent summarizes the results and meaningful changes seen during a run.
-</center>
-<p> -->
+<figcaption>The agent summarizes the results and meaningful changes seen during a run.</figcaption>
+</figure>-->
 
 
 
@@ -120,13 +103,10 @@ The program reads four synthetic event logs (200k lines each, 300 users) and wri
 
 Both objectives are ratios (e.g. `report_ms = candidate wall_ms / root wall_ms` ), so the weights 3:1 are normalized to 0.75:0.25. The combined sample is the convex combination S = 0.75·report_ms + 0.25·peak_kib .
 
-<p>
-<center>
+<figure>
 <img width="100%" src="/images/2026-11-9-explainable-autoresearch/cost_curve_report.png" alt="Multiobjective case: cost evolution along the best branch"/>
-<p>
-Multiobjective case: cost evolution along the best branch.
-</center>
-<p> 
+<figcaption>Multiobjective case: cost evolution along the best branch.</figcaption>
+</figure>
 
 
 Each objective is measured as a ratio to the original program, run side by side with the candidate on the same inputs.
@@ -141,25 +121,17 @@ Node n148 (the incumbent, 0.1991 ± 0.017) got there very unevenly. Time fell to
 Here we use GGML as starting point, and set up an autoresearch experiment to maximize the token generation rate of the [GPT-2 model provided as an example](https://github.com/ggml-org/ggml/tree/master/examples/gpt-2).
 In this case, the starting code is a popular repository and was [hand-written and checked by multiple experts](https://github.com/ggml-org/ggml/commits/master/examples/gpt-2/main-backend.cpp).
 
-<p>
-<center>
+<figure>
 <img width="100%" src="/images/2026-11-9-explainable-autoresearch/tps_curve_gpt2.png" alt="Following the improvement along the winning branch of the experiment tree."/>
-<p>
-GPT2 : improvement along the winning branch of the experiment tree. 
-</center>
-<p>
+<figcaption>GPT2 : improvement along the winning branch of the experiment tree.</figcaption>
+</figure>
 
 Across a few experiment generations, inference becomes ~66% faster, using a combination of known optimization techniques (eg loop fusion).
 
-<p>
-<center>
-<video controls width=”100%″  autoplay loop muted playsinline> <source src=”/images/2026-11-9-explainable-autoresearch/tree_growth_gpt2.mp4” type=”video/mp4”>  </video>
-<p>
-Playback of the experiment tree, as it grows during the campaign.
-
-Task : maximizing the token/s throughput of GPT-2.
-</center>
-<p>
+<figure>
+<video controls width="100%"  autoplay loop muted playsinline> <source src="/images/2026-11-9-explainable-autoresearch/tree_growth_gpt2.mp4" type="video/mp4" />  </video>
+<figcaption>Playback of the experiment tree of the GPT-2 throughput maximization experiment, as it grows during the campaign.</figcaption>
+</figure>
 
 
 
@@ -186,13 +158,10 @@ Task : maximizing the token/s throughput of GPT-2.
 
 At a high level, the scheduler must balance "exploration" of the space of hypotheses and "exploitation" of the most promising ones; this is a well-known setting for which we explored a few alternatives: AB-MCTS [Inoue25], UCB and UCB with progressive widening. We chose the scheduler algorithm with a set of benchmarks (see Appendix for the list), and we settled on progressive widening (described below) as it has the lowest regret while using the fewest planner sessions (Figure 1).
 
-<p>
-<center>
+<figure>
 <img width="100%" src="/images/2026-11-9-explainable-autoresearch/scheduler-cost-quality.svg" alt="Tree policies: regret relative to ucb against expansions per simulated run. Widening has the lowest regret ratio and the fewest expansions."/>
-<p>
-Figure 1. Regret relative to UCB against expansions per simulated run. Widening has the lowest regret ratio and the fewest expansions.
-</center>
-<p>
+<figcaption>Figure 1. Regret relative to UCB against expansions per simulated run. Widening has the lowest regret ratio and the fewest expansions.</figcaption>
+</figure>
 
 To pick which experiment node to expand, the scheduler use a variant of upper confidence bound (UCB) search; the scheduler takes the one with the highest UCB of all candidates $n$, computed as :
 
@@ -212,13 +181,10 @@ The widening allowance is the [progressive widening](https://hal.science/hal-005
 
 
 
-<p>
-<center>
+<figure>
 <img width="100%" src="/images/2026-11-9-explainable-autoresearch/scheduler-regret-over-time.svg" alt="Incumbent's median regret over a simulated run for widening, UCB and AB_MCTS, on select benchmark problems."/>
-<p>
-Figure 2. Incumbent's median regret over a simulated run for widening, UCB and AB_MCTS, on select benchmark problems.
-</center>
-<p>
+<figcaption>Figure 2. Incumbent's median regret over a simulated run for widening, UCB and AB_MCTS, on select benchmark problems.</figcaption>
+</figure>
 
 
 
