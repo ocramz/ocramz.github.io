@@ -19,7 +19,9 @@ Program optimization (["autoresearch"](https://github.com/search?q=autoresearch&
 Improving benchmarks is useful, but it would be best if the human users of an autoresearch agent could understand the output and explain its decisions.  We also want to be sure that measurements are grounded in reality, and that agent autonomy is safe. 
 
 In this post I present a first look at a _explainable_ autoresearch system:
+
 - All changes are justified, searchable and visualized
+
 - Agents cannot "cheat" and interfere with the evaluation
 
 Early results are promising (see Experiments), showing 60-80% improvements in LLM inference throughput (C++) and software performance (Python).
@@ -201,72 +203,3 @@ We designed our scheduler using benchmark functions with known optima. 50 proble
 - The other 36 problems come from COCO's [BBOB noisy testbed](https://inria.hal.science/inria-00369466): sphere, Rosenbrock, step ellipsoid, ellipsoid, different powers, Schaffer F7, Griewank–Rosenbrock and Gallagher under Gaussian, uniform or Cauchy noise, all 30 in 2-D and the six moderate-noise ones in 5-D. The continuous functions are searched over SOO's hierarchical partition of their domain: a node is a cell, measured at its centre, and its children are its three sub-cells. 
 
 The plots of Figure 1 and 2 above leave out 17 of the 50 problems, all of them 2-D BBOB functions under severe noise: every function under Gaussian or uniform noise, plus Griewank–Rosenbrock under Cauchy noise. On these, no policy's median incumbent ends up better than the root. The search does reach good cells: on 14 of the 17, widening's median best measured node is within 0.2 of the optimum in normalized regret. But the noise floor σ measured by the A/A runs is so large that a re-measured node can almost never clear the 2σ margin required for confirmation.
-
-<!-- double check the differences wrt our experiment tree setting (e.g. infinite nodes vs finite number of bandit arms) -->
-
-
-
-<!-- 
-## Architecture
-
-<center>
-<table>
-<tr>
-<td>
-The pi harness runs on the user's workstation; the workstation should be an isolated VM with only project-specific credentials and data. The main pi process spawns sub-agents for planning and implementing code edits (that act on copies of the repo we are optimizing).
-
-
-
-The actual code building and execution happens on serveless cloud functions, using a locked-down [sandbox](https://github.com/ocramz/sbx) with specific disk and network access.
-
-Run results are stored in a bucket, and indexed on the user workstation in a SQLite db, which is exposed to the agent as an "experiment search" tool.
-
-<br/>
-
-</td>
-
-<td>
-<img width="100%" src="2026-11-9-explainable-autoresearch/design_arch.png"/>
-</td>
-
-</tr>
-</table>
-</center> -->
-
-
-<!-- 
-## Configuration of an autoresearch run
-
-Each autoresearch campaign is configured in a single file, autoresearch.toml .
-In this file we declare how are hypotheses scored and what files and directories may or may not be modified; the config format is flexible enough to support repositories in any programming language.
-
-
-
-```toml
-[agents]
-max_tokens = 3000000
-
-[metric]
-name = "tokens_per_s"
-direction = "maximize"
-scale = "ratio"
-source = "score"
-
-[scope]
-# agent may edit
-allow  = ["examples/gpt-2/main-backend.cpp", "src/ggml-cpu/**"]
-# agent may not edit
-locked = ["**/CMakeLists.txt", "**/*.cmake", "**/*.cmake.in", "CMakePresets.json", "CMakeUserPresets.json", "vcpkg.json", "conanfile.*", "examples/gpt-2/verify.cpp", "bench/**", "eval/**"]
-
-[build]
-outputs = ["build/bin/gpt-2-backend", "build/bin/gpt-2-verify"]
-
-[steps]
-build    = { cmd = "cmake --build build --target gpt-2-backend gpt-2-verify", timeout_secs = 1200 }
-generate = { cmd = "sh bench/gen $SEED $INPUTS", timeout_secs = 60 }
-run      = { cmd = "$BUILD/build/bin/gpt-2-backend -m /opt/models/ggml-model-gpt-2-117M.bin -f $INPUTS/prompt.txt -n 512 -t 4 --top_k 1 -s 1 --repeat-penalty 1.3 --repeat-last-n 256 --ignore-eos --tokens-out $OUTPUTS/tokens.txt", timeout_secs = 180 }
-check    = { cmd = "sh eval/check $INPUTS $BASELINE_BUILD $BASELINE_OUT $CANDIDATE_OUT", timeout_secs = 900 }
-score    = { cmd = "sh eval/tps $OUTPUTS $WALL_MS", timeout_secs = 30 }
-```
-
- -->
