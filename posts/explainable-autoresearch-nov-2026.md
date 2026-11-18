@@ -133,7 +133,11 @@ Across a few experiment generations, inference becomes ~66% faster, using a comb
 <figcaption>Playback of the experiment tree of the GPT-2 throughput maximization experiment, as it grows during the campaign.</figcaption>
 </figure>
 
+# Conclusion
 
+In this post, I presented an architecture for autoresearch agents that produces explainable artifacts: experiments lineages are visible to the user and can be explored interactively.
+
+The system can optimize single- and multi-objective problems (e.g. memory and run time), and with open LLMs and 10s to 100s of evaluations it has been shown to produce significant gains (60-80% improvements for Python and C++ codebases).
 
 # References
 
@@ -189,11 +193,14 @@ The widening allowance is the [progressive widening](https://hal.science/hal-005
 
 
 We designed our scheduler using benchmark functions with known optima. 50 problems in total, each run with 20 seeds, from the following sets:
+
 -  [NK landscapes](https://doi.org/10.1016/S0022-5193%2889%2980019-0) are 16-bit strings whose ruggedness K is 0, 2, 4 or 8, and a child flips one or two bits.
+
 - Garland, two-sine and difficult are the one-dimensional test functions of the optimistic-optimization papers ([SOO](https://proceedings.neurips.cc/paper/2011/hash/7e889fb76e0e07c11733550f2a6c7a5a-Abstract.html), [StoSOO](https://proceedings.mlr.press/v28/valko13.html), [POO](https://papers.nips.cc/paper/2015/hash/ab817c9349cf9c4f6877e1894a1faa00-Abstract.html)). Both of these families run at 1% and at 5% measurement noise.
+
 - The other 36 problems come from COCO's [BBOB noisy testbed](https://inria.hal.science/inria-00369466): sphere, Rosenbrock, step ellipsoid, ellipsoid, different powers, Schaffer F7, Griewank–Rosenbrock and Gallagher under Gaussian, uniform or Cauchy noise, all 30 in 2-D and the six moderate-noise ones in 5-D. The continuous functions are searched over SOO's hierarchical partition of their domain: a node is a cell, measured at its centre, and its children are its three sub-cells. 
 
-The plots of Figure 1 and 2 above leave out 17 of the 50 problems, all of them 2-D BBOB functions under severe noise: every function under Gaussian or uniform noise, plus Griewank–Rosenbrock under Cauchy noise. On these, no policy's median incumbent ends up better than the root. The search does reach good cells: on 14 of the 17, widening's median best measured node is within 0.2 of the optimum in normalized regret. But the noise floor σ measured by the A/A runs is so wide that a re-measured node can almost never clear the 2σ margin that confirmation requires.
+The plots of Figure 1 and 2 above leave out 17 of the 50 problems, all of them 2-D BBOB functions under severe noise: every function under Gaussian or uniform noise, plus Griewank–Rosenbrock under Cauchy noise. On these, no policy's median incumbent ends up better than the root. The search does reach good cells: on 14 of the 17, widening's median best measured node is within 0.2 of the optimum in normalized regret. But the noise floor σ measured by the A/A runs is so large that a re-measured node can almost never clear the 2σ margin required for confirmation.
 
 <!-- double check the differences wrt our experiment tree setting (e.g. infinite nodes vs finite number of bandit arms) -->
 
