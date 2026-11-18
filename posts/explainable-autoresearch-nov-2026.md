@@ -33,8 +33,11 @@ Early results are promising (see Experiments), showing 60-80% improvements in LL
 One of the defining traits of an effective scientist is the ability to formulate good hypotheses; this is a learned skill that comes from mentorship and practice. While we cannot easily replicate that inside a software agent, we can set up infrastructure that guides it to choose its next attempts. 
 
 The autoresearch agent I present here has a few parts, coordinated by an orchestrator loop : 
+
 - *planner* agent that proposes changes (hypotheses)
+
 - *implementer* agent that makes the code edits in specific directories
+
 - *scheduler*, a fully deterministic component in charge of deciding the next actions.
 
 ## Anti-cheating safeguards 
@@ -78,22 +81,6 @@ Similar autoresearch prompting techniques to avoid getting stuck in "idea basins
 
 
 
-<!-- <figure>
-<img width="100%" src="2026-11-9-explainable-autoresearch/agent_ask_the_user.png" alt="The agent summarizes the results seen so far and asks the user to pick a follow-up experiment."/>
-<figcaption>The agent analyzes the results seen so far and asks the user to pick a follow-up experiment.</figcaption>
-</figure>
-
-<figure>
-<img width="60%" src="2026-11-9-explainable-autoresearch/agent_summarize_results.png" alt="The agent summarizes the results and meaningful changes seen during a run."/>
-<figcaption>The agent summarizes the results and meaningful changes seen during a run.</figcaption>
-</figure>-->
-
-
-
-
-
-
-
 
 # Experiments
 
@@ -103,7 +90,7 @@ As a warm-up, we consider a simple Python program that processes log files, for 
 The program reads four synthetic event logs (200k lines each, 300 users) and writes, for each, a per-user summary (action counts, total amount, session count) plus the top 20 spenders. The starting version has deliberately planted inefficiencies (linear-search user lookup, insertion sort, string concatenation, etc.), some of whose fixes trade memory for speed. Outputs must stay byte-identical to the original's.
 
 
-Both objectives are ratios (e.g. `report_ms = candidate wall_ms / root wall_ms` ), so the weights 3:1 are normalized to 0.75:0.25. The combined sample is the convex combination S = 0.75·report_ms + 0.25·peak_kib .
+Both objectives are ratios (e.g. `report_ms = candidate wall_ms / root wall_ms` ). The combined cost with weights 3:1 is the convex combination  `0.75 report_ms + 0.25 peak_kib` .
 
 <figure>
 <img width="100%" src="/images/2026-11-9-explainable-autoresearch/cost_curve_report.png" alt="Multiobjective case: cost evolution along the best branch"/>
@@ -137,7 +124,7 @@ Across a few experiment generations, inference becomes ~66% faster, using a comb
 
 # Conclusion
 
-In this post, I presented an architecture for autoresearch agents that produces explainable artifacts: experiments lineages are visible to the user and can be explored interactively.
+In this post, I presented an architecture for autoresearch agents that produces explainable artifacts: not only the experiments lineages are visible to the user and can be explored interactively, but the anti-cheating architecture rules out test set leakage and benchmark contamination.
 
 The system can optimize single- and multi-objective problems (e.g. memory and run time), and with open LLMs and 10s to 100s of evaluations it has been shown to produce significant gains (60-80% improvements for Python and C++ codebases).
 

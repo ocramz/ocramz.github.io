@@ -76,10 +76,12 @@ Exploring the sequence of diffs along a branch of the experiment tree.<br>Agent:
 <p>Early results are promising (see Experiments), showing 60-80% improvements in LLM inference throughput (C++) and software performance (Python).</p>
 <h1 id="inside-an-autoresearch-agent">Inside an autoresearch agent</h1>
 <p>One of the defining traits of an effective scientist is the ability to formulate good hypotheses; this is a learned skill that comes from mentorship and practice. While we cannot easily replicate that inside a software agent, we can set up infrastructure that guides it to choose its next attempts.</p>
-<p>The autoresearch agent I present here has a few parts, coordinated by an orchestrator loop :
-- <em>planner</em> agent that proposes changes (hypotheses)
-- <em>implementer</em> agent that makes the code edits in specific directories
-- <em>scheduler</em>, a fully deterministic component in charge of deciding the next actions.</p>
+<p>The autoresearch agent I present here has a few parts, coordinated by an orchestrator loop :</p>
+<ul>
+<li><p><em>planner</em> agent that proposes changes (hypotheses)</p></li>
+<li><p><em>implementer</em> agent that makes the code edits in specific directories</p></li>
+<li><p><em>scheduler</em>, a fully deterministic component in charge of deciding the next actions.</p></li>
+</ul>
 <h2 id="anti-cheating-safeguards">Anti-cheating safeguards</h2>
 <p>The agent must not be able to game the experiment metrics, so evaluation scripts and test datasets should be out of the agent’s control.</p>
 <p>The <em>implementer agent</em> makes the code edits and builds them. Neither the planner nor the implementer may call the shell or other programs, and the implementer can only edit files within its given worktree.</p>
@@ -103,20 +105,11 @@ Read experiment tool: rationale and details of past experiments, as well as thei
 Lineage tool : list all changes that led to a specific experiment tree node, and their relative impact.
 </figcaption>
 </figure>
-<!-- <figure>
-<img width="100%" src="2026-11-9-explainable-autoresearch/agent_ask_the_user.png" alt="The agent summarizes the results seen so far and asks the user to pick a follow-up experiment."/>
-<figcaption>The agent analyzes the results seen so far and asks the user to pick a follow-up experiment.</figcaption>
-</figure>
-
-<figure>
-<img width="60%" src="2026-11-9-explainable-autoresearch/agent_summarize_results.png" alt="The agent summarizes the results and meaningful changes seen during a run."/>
-<figcaption>The agent summarizes the results and meaningful changes seen during a run.</figcaption>
-</figure>-->
 <h1 id="experiments">Experiments</h1>
 <h2 id="python-performance-optimization-minimize-running-time-and-memory">Python performance optimization : minimize running time and memory</h2>
 <p>As a warm-up, we consider a simple Python program that processes log files, for which we want to minimize a linear combination of two objectives : running time and peak memory.
 The program reads four synthetic event logs (200k lines each, 300 users) and writes, for each, a per-user summary (action counts, total amount, session count) plus the top 20 spenders. The starting version has deliberately planted inefficiencies (linear-search user lookup, insertion sort, string concatenation, etc.), some of whose fixes trade memory for speed. Outputs must stay byte-identical to the original’s.</p>
-<p>Both objectives are ratios (e.g. <code>report_ms = candidate wall_ms / root wall_ms</code> ), so the weights 3:1 are normalized to 0.75:0.25. The combined sample is the convex combination S = 0.75·report_ms + 0.25·peak_kib .</p>
+<p>Both objectives are ratios (e.g. <code>report_ms = candidate wall_ms / root wall_ms</code> ). The combined cost with weights 3:1 is the convex combination <code>0.75 report_ms + 0.25 peak_kib</code> .</p>
 <figure>
 <img width="100%" src="../images/2026-11-9-explainable-autoresearch/cost_curve_report.png" alt="Multiobjective case: cost evolution along the best branch" />
 <figcaption>
@@ -145,7 +138,7 @@ Playback of the experiment tree of the GPT-2 throughput maximization experiment,
 </figcaption>
 </figure>
 <h1 id="conclusion">Conclusion</h1>
-<p>In this post, I presented an architecture for autoresearch agents that produces explainable artifacts: experiments lineages are visible to the user and can be explored interactively.</p>
+<p>In this post, I presented an architecture for autoresearch agents that produces explainable artifacts: not only the experiments lineages are visible to the user and can be explored interactively, but the anti-cheating architecture rules out test set leakage and benchmark contamination.</p>
 <p>The system can optimize single- and multi-objective problems (e.g. memory and run time), and with open LLMs and 10s to 100s of evaluations it has been shown to produce significant gains (60-80% improvements for Python and C++ codebases).</p>
 <h1 id="references">References</h1>
 <p>[Cai26] Cai et al, Fork-and-Flush: Escaping Idea Basins in Autoresearch Agents, 2026 https://arxiv.org/abs/2610.07447</p>
